@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EurekaMath</title>
+	 <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-2.1.4.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <%= csrf_meta_tags %>
+</head>
+<body>
+
+	<p class="notice"><%= notice %></p>
+   <p class="alert"><%= alert %></p>
+
+<%= yield %>
+
+<%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
+</body>
+</html>
