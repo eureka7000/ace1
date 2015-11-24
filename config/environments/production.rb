@@ -78,4 +78,19 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.default_url_options = { :host => '128.199.73.83:8080' }  
+  config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.perform_deliveryies = true
+  #config.action_mailer.rais_delivery_errors = false
+  config.action_mailer.default :charset => "utf-8"
+  
+  config.action_mailer.smtp_settings = {
+    address: "smtp.gmail.com",
+    port: 587,
+    domain: 'eurekamath.co.kr',
+    authentication: "plain",
+    enable_starttls_auto: true,
+    user_name: 'ghawk000@gmail.com',
+    password: 'leinhar0!'
+  }
+  
 end
