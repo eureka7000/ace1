@@ -1,0 +1,58 @@
+<!--=== Content Part ===-->
+<div class="container content">
+
+    <div class="row">
+	    
+		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+			
+			<%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html=>{:class=>'reg-page sky-form'} ) do |f| %>
+				
+            <div class="reg-header">
+				<h2>회원가입</h2>
+                <p>이미 가입하셨습니까? <%= link_to('여기', new_user_session_path, :class=>"color-green") %> 에서 로그인하세요.</p>
+            </div>
+			
+			<%= devise_error_messages! %>			
+
+            <label>Email Address <span class="color-red">*</span></label>
+			<input autofocus="autofocus" type="email" value="" name="user[email]" id="user_email" class="form-control margin-bottom-20">
+
+            <div class="row">
+            	<div class="col-sm-6">
+					<label>Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%></label>
+    				<input autocomplete="off" type="password" name="user[password]" id="user_password" class="form-control margin-bottom-20">
+                </div>
+                <div class="col-sm-6">
+                    <label>Confirm Password <span class="color-red">*</span></label>
+					<input autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" class="form-control margin-bottom-20">							
+                </div>
+            </div>
+			
+			<div class="row" style="padding-left:20px">
+				<% User::USER_TYPES.each_pair do |key, value| %>
+					<% unless key == "school manager" || key == "institute manager" || key == "mento"  %>
+                <label class="radio-inline"><input type="radio" name="user[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
+				    <% end %>
+				<% end %>
+			</div>	  
+
+
+
+            <hr>
+
+            <div class="row">
+				<div class="col-lg-6 checkbox">
+                    <label>
+                        <input type="checkbox">
+                        나는 <a href="page_terms.html" class="color-green">이용약관</a> 을 읽었습니다.</a>
+                    </label>
+                </div>
+                <div class="col-lg-6 text-right">
+                    <button class="btn-u" type="submit">가입</button>
+                </div>
+            </div>
+            <% end %>
+        </div>
+    </div>
+</div><!--/container-->
+<!--=== End Content Part ===-->
