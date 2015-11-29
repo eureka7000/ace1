@@ -14,24 +14,31 @@
 			
 			<%= devise_error_messages! %>			
 
-            <label>Email Address <span class="color-red">*</span></label>
-			<input autofocus="autofocus" type="email" value="" name="user[email]" id="user_email" class="form-control margin-bottom-20">
+			<div class="row">
+				<div class="col-sm-12">
+					<label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>">Email Address <span class="color-red">*</span>
+						<input autofocus="autofocus" type="text" value="" name="user[email]" id="user_email" class="form-control margin-bottom-20">
+					</label>
+				</div>	
+			</div>
 
             <div class="row">
             	<div class="col-sm-6">
-					<label>Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%></label>
+					<label style="width:100%" class="<%= 'state-error' unless resource.errors[:password].blank? %>">Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%>
     				<input autocomplete="off" type="password" name="user[password]" id="user_password" class="form-control margin-bottom-20">
+					</label>
                 </div>
                 <div class="col-sm-6">
-                    <label>Confirm Password <span class="color-red">*</span></label>
+                    <label style="width:100%">Confirm Password <span class="color-red">*</span>
 					<input autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" class="form-control margin-bottom-20">							
+					</label>
                 </div>
             </div>
 			
 			<div class="row" style="padding-left:20px">
 				<% User::USER_TYPES.each_pair do |key, value| %>
 					<% unless key == "school manager" || key == "institute manager" || key == "mento"  %>
-                <label class="radio-inline"><input type="radio" name="user[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
+                <label class="radio-inline"><input type="radio" name="user_type[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
 				    <% end %>
 				<% end %>
 			</div>	  

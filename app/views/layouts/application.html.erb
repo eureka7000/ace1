@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
     <link rel="stylesheet" href="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
 	
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">	
+	
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">			
 		
@@ -70,7 +73,7 @@
                     <li class="topbar-devider"></li>
                     <li><a href="page_faq.html">Help</a></li>
                     <li class="topbar-devider"></li>
-                    <li><%= link_to('Login', new_user_session_path) %></li>
+                    <li><%= (user_signed_in?) ? link_to('Logout', destroy_user_session_path, :method => :delete) : link_to('Login', new_user_session_path) %></li>
                 </ul>
             </div>
             <!-- End Topbar -->
