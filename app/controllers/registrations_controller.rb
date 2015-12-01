@@ -12,7 +12,7 @@ class RegistrationsController < Devise::RegistrationsController
     logger.debug user_type
     
     user_type.user_id = @user.id
-    user_type.user_type = params[:user_type]
+    user_type.user_type = params[:user_type][:user_type]
     user_type.save
     
   end
