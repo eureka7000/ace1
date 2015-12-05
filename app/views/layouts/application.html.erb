@@ -27,11 +27,8 @@
     <link rel="stylesheet" href="/assets/plugins/animate.css">
     <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
     <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">
-    <link rel="stylesheet" href="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
-	
-    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
-    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">	
+
+    <%= raw JsCssRender.get_css(controller_name, action_name) %>
 	
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">			
@@ -90,6 +87,14 @@
         <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
             <div class="container">
                 <ul class="nav navbar-nav">
+                    
+                    <li class="<%= 'active' if @active == 'home' %>">
+                        <a href="javascript:void(0);">Main</a>
+                    </li>
+                    <li class="<%= 'active' if @active == 'mypages' %>">
+                        <a href="/mypages/overall">My Pages</a>
+                    </li>    
+                    
                     <!-- Search Block -->
                     <li>
                         <i class="search fa fa-search search-btn"></i>
@@ -269,25 +274,9 @@
 <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<!-- JS Implementing Plugins -->
-<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
-<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
-<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>
-<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
-<script type="text/javascript" src="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
-<!-- JS Customization -->
-<script type="text/javascript" src="/assets/js/custom.js"></script>
-<!-- JS Page Level -->
-<script type="text/javascript" src="/assets/js/app.js"></script>
-<script type="text/javascript" src="/assets/js/plugins/owl-carousel.js"></script>
-<script type="text/javascript" src="/assets/js/plugins/parallax-slider.js"></script>
-<script type="text/javascript">
-    jQuery(document).ready(function() {
-      	App.init();
-        OwlCarousel.initOwlCarousel();
-        ParallaxSlider.initParallaxSlider();
-    });
-</script>
+
+<%= raw JsCssRender.get_js(controller_name, action_name) %>
+
 <!--[if lt IE 9]>
     <script src="assets/plugins/respond.js"></script>
     <script src="assets/plugins/html5shiv.js"></script>

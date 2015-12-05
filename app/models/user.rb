@@ -14,5 +14,6 @@ class User < ActiveRecord::Base
         "school manager"    => "학교 관리자",
         "institute manager" => "학원 관리자", 
         "mento"             => "멘토"
-    }            
+    }
+                
 end
