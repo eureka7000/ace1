@@ -15,5 +15,9 @@ class User < ActiveRecord::Base
         "institute manager" => "학원 관리자", 
         "mento"             => "멘토"
     }
+    
+    def user_params
+        params.require(:user).permit(:email, :name, :location, :phone)
+    end    
                 
 end

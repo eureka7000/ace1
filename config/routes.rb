@@ -5,8 +5,11 @@ Rails.application.routes.draw do
 	
     root :to => "homes#index"
 
-    get "users/welcome" => "users#welcome"
     get "mypages/overall" => "mypages#overall"
     
+    # Mypages
+    get 'mypages/settings' => "mypages#settings"  
+    
+    resources :users  
 
 end
