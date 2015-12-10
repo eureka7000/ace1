@@ -15,7 +15,7 @@ class MypagesController < ApplicationController
     
     def settings
         
-        @active_tab = params[:active_tab] || '1'
+        @active_tab = params[:active_tab] || '2'
         
         respond_to do |format|
             format.html
