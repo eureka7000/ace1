@@ -12,5 +12,10 @@ Rails.application.routes.draw do
     get 'mypages/settings' => "mypages#settings"  
     
     resources :users  
+    
+    get 'admins/login' => 'admins#login'
+    post 'admins/sign_in' => 'admins#sign_in'
+    resources :admins
+    
 
 end

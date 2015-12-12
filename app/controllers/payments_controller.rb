@@ -4,7 +4,8 @@ class PaymentsController < ApplicationController
   # GET /payments
   # GET /payments.json
   def index
-    @payments = Payment.all
+      @active = 'payments'
+      @payments = Payment.all
   end
 
   # GET /payments/1

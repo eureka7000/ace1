@@ -4,15 +4,9 @@ class JsCssRender
        
         if controller_name == 'homes' && page_name == 'index'
             
-            ret = '<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>' +
-                  '<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>' +
-                  '<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>' +
+            ret = '<script type="text/javascript" src="/assets/plugins/parallax-slider/js/modernizr.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>' +  
-                  '<!-- JS Customization -->' +
-                  '<script type="text/javascript" src="/assets/js/custom.js"></script>' +
-                  '<!-- JS Page Level -->' +
-                  '<script type="text/javascript" src="/assets/js/app.js"></script>' +
                   '<script type="text/javascript" src="/assets/js/plugins/owl-carousel.js"></script>' +
                   '<script type="text/javascript" src="/assets/js/plugins/parallax-slider.js"></script>' +
                   '<script type="text/javascript">' +
@@ -25,16 +19,10 @@ class JsCssRender
                   
         elsif controller_name == 'mypages' && ( page_name == 'overall' || page_name == 'settings' )
                   
-            ret = '<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>' +
-                  '<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>' +
-                  '<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>' +
+            ret = '<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>' +
-                  '<!-- JS Customization -->' +
-                  '<script type="text/javascript" src="/assets/js/custom.js"></script>' +
-                  '<!-- JS Page Level -->' +
-                  '<script type="text/javascript" src="/assets/js/app.js"></script>' +
                   '<script type="text/javascript" src="/assets/js/plugins/datepicker.js"></script>' +
                   '<script type="text/javascript">' +
                   '      jQuery(document).ready(function() { ' +
@@ -45,7 +33,13 @@ class JsCssRender
                   '      }); ' +
                   '</script>'   
                   
+        else
                        
+            ret = '<script type="text/javascript">' +
+                  '    jQuery(document).ready(function() { ' +
+                  '          App.init();    ' +
+                  '    });  ' +
+                  '</script>'
             
         end     
         
@@ -68,6 +62,16 @@ class JsCssRender
                   '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">' +
                   '<!-- CSS Page Style -->' +
                   '<link rel="stylesheet" href="/assets/css/pages/profile.css">'
+        elsif controller_name == 'payments' && page_name == 'index'
+
+            ret = '<link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">' +
+                  '<link rel="stylesheet" href="/assets/plugins/flexslider/flexslider.css">' +
+                  '<!-- CSS Page Style -->' +
+                  '<link rel="stylesheet" href="/assets/css/pages/pricing/pricing_v1.css">' +
+                  '<link rel="stylesheet" href="/assets/css/pages/pricing/pricing_v2.css">' +
+                  '<link rel="stylesheet" href="/assets/css/pages/pricing/pricing_v3.css">' +
+                  '<link rel="stylesheet" href="/assets/css/pages/pricing/pricing_v4.css">' +
+                  '<link rel="stylesheet" href="/assets/css/pages/pricing/pricing_v5.css">'       
 
         end    
         
