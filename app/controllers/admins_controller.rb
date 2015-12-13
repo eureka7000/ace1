@@ -1,7 +1,9 @@
 class AdminsController < ApplicationController
 
-    before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy]
+    before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy, :main]
     before_action :set_admin, only: [:show, :edit, :update, :destroy]
+
+    layout '/layouts/admin_main'
 
     # GET /admins
     # GET /admins.json
@@ -13,32 +15,44 @@ class AdminsController < ApplicationController
         render :layout => false
     end
     
+    def logout
+        session[:admin] = nil
+        redirect_to '/admins/login'
+    end
+    
     def sign_in
         
         email = params[:admin][:email] unless params[:admin][:email].blank?
-        password = params[:admin][:password] unless params[:admin][:password].blank?
+        password = Digest::SHA1.hexdigest(params[:admin][:password]) unless params[:admin][:password].blank?
         error = false
-        
+                
         if email.nil? || password.nil?
             error = true
         else
-            logger.debug "********* email : " + email.inspect
-            logger.debug "********* password : " + password.inspect
-        
             @admin = Admin.where('email = ? and password = ?',email, password)
+            if @admin.nil?
+                error = true
+            else
+                session[:admin] = @admin
+            end
         end    
         
         respond_to do |format|
             if error
                 format.html { redirect_to '/admins/login', notice: 'Email or password is empty.' }
             else
-                
+                format.html { redirect_to '/admins/main' }
             end    
         end              
         
-   
-        
     end    
+    
+    
+    def main
+        
+        
+        
+    end
 
   # GET /admins/1
   # GET /admins/1.json

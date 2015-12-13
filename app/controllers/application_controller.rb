@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
     
     def authenticate_admin_user!
         
-        logger.debug '********' + params[:except].inspect
-        
         if session[:admin].nil?
             redirect_to '/admins/login'
         end    

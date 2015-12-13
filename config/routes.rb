@@ -14,7 +14,9 @@ Rails.application.routes.draw do
     resources :users  
     
     get 'admins/login' => 'admins#login'
+    get 'admins/logout' => 'admins#logout'
     post 'admins/sign_in' => 'admins#sign_in'
+    get 'admins/main' => 'admins#main'
     resources :admins
     
 
