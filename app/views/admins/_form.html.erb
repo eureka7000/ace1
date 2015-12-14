@@ -1,33 +1,80 @@
-<%= form_for(@admin) do |f| %>
-  <% if @admin.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@admin.errors.count, "error") %> prohibited this admin from being saved:</h2>
+<div class="row">
 
-      <ul>
-      <% @admin.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="col-md-12 ">
+
+        <div class="well">
+
+            <%= form_for(@admin, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <% if @admin.errors.any? %>
+                        <div id="error_explanation">
+                            <h2><%= pluralize(@admin.errors.count, "error") %> prohibited this anniversary from being saved:</h2>
+
+                            <ul>
+                                <% @admin.errors.full_messages.each do |msg| %>
+                                    <li><%= msg %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <% end %>
+                        
+                        <div class="form-group">
+                            <%= f.label :admin_type, '구분', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="admin[admin_type]" id="admin_admin_type" class="form-control">
+                                    <% Admin::ADMIN_TYPES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" <%= "selected" if key == params[:admin_type]%> ><%= value %></option>
+                                    <% end %>
+                                </select>    
+                            </div>                            
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :name, '성명', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :name, :class => 'form-control' %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :email, '전자우편', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :email, :class => 'form-control' %>
+                            </div>
+                        </div>                        
+                        
+                        <div class="form-group">
+                            <%= f.label :password, '비밀번호', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <p style="padding-top: 7px">기본비밀번호 <span style="color: blue">eurekamath</span> 로 셋팅됩니다. 최초 로그인시 비밀번호변경 창이 뜹니다.</p>
+                            </div>
+                        </div>   
+                        
+                        <div class="form-group">
+                            <%= f.label :org_name, '학교명/학원명', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :org_name, :class => 'form-control' %>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= f.submit '저장', :class => 'btn btn-success' %>
+                    <%= link_to '뒤로', admins_path, :class => 'btn btn-info' %>
+                </footer>
+
+            <% end %>
+
+        </div>
+
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :password %><br>
-    <%= f.text_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label :salt %><br>
-    <%= f.text_field :salt %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
+
