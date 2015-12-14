@@ -50,8 +50,6 @@ class AdminsController < ApplicationController
     
     def main
         
-        
-        
     end
 
   # GET /admins/1
