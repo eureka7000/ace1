@@ -62,25 +62,34 @@ class AdminsController < ApplicationController
     @admin = Admin.new
   end
 
-  # GET /admins/1/edit
-  def edit
-  end
-
-  # POST /admins
-  # POST /admins.json
-  def create
-    @admin = Admin.new(admin_params)
-
-    respond_to do |format|
-      if @admin.save
-        format.html { redirect_to @admin, notice: 'Admin was successfully created.' }
-        format.json { render :show, status: :created, location: @admin }
-      else
-        format.html { render :new }
-        format.json { render json: @admin.errors, status: :unprocessable_entity }
-      end
+    # GET /admins/1/edit
+    def edit
     end
-  end
+
+    # POST /admins
+    # POST /admins.json
+    def create
+        
+        @admin = Admin.new
+        @admin.name = params[:admin][:name]
+        @admin.email = params[:admin][:email]
+        @admin.password = Digest::SHA1.hexdigest('eurekamath')
+        @admin.admin_type = params[:admin][:admin_type]
+        @admin.org_name = params[:admin][:org_name]
+
+        respond_to do |format|
+            
+            if @admin.save
+                format.html { redirect_to @admin, notice: 'Admin was successfully created.' }
+                format.json { render :show, status: :created, location: @admin }
+            else
+                format.html { render :new }
+                format.json { render json: @admin.errors, status: :unprocessable_entity }
+            end
+        end
+        
+    end
+
 
   # PATCH/PUT /admins/1
   # PATCH/PUT /admins/1.json
@@ -114,6 +123,6 @@ class AdminsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def admin_params
-      params.require(:admin).permit(:name, :email, :password, :salt)
+      params.require(:admin).permit(:name, :email, :password, :admin_type, :org_name)
     end
 end
