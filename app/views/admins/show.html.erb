@@ -1,24 +1,58 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid" style="margin-top: 50px">
 
-<p>
-  <strong>Name:</strong>
-  <%= @admin.name %>
-</p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Admin / 학교관리자 / 학원관리자</h2>
+        </div>
+    </div>
 
-<p>
-  <strong>Email:</strong>
-  <%= @admin.email %>
-</p>
+    <% unless notice.blank? %>
+        <p class="alert alert-warning"><%= notice %></p>
+    <% end %>
 
-<p>
-  <strong>Password:</strong>
-  <%= @admin.password %>
-</p>
+    <div class="row">
 
-<p>
-  <strong>Salt:</strong>
-  <%= @admin.salt %>
-</p>
+        <div class="col-md-12">
 
-<%= link_to 'Edit', edit_admin_path(@admin) %> |
-<%= link_to 'Back', admins_path %>
+            <div class="well">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered table-striped" style="clear: both">
+                        <tr>
+                        <td style="width:25%;"><b>이름</b></td>
+                        <td style="width:75%"><%= @admin.name %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>전자우편</b></td>
+                        <td style="width:75%"><%= @admin.email %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>관리자구분</b></td>
+                        <td style="width:75%;"><%= Admin::ADMIN_TYPES[@admin.admin_type] %></td>
+                        </tr>
+                    
+                        <tr>
+                        <td style="width:25%;"><b>기관명</b></td>
+                        <td style="width:75%;"><%= @admin.org_name %></td>
+                        </tr>                    
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= link_to 'Edit', edit_admin_path(@admin), :class => 'btn btn-primary' %>
+                    <%= link_to 'Back', admins_path, :class => 'btn btn-default' %>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+    
+</div>    
