@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
-    before_filter :authenticate_user!
+    before_filter :authenticate_user!, only: [:update]
+    before_action :authenticate_admin_user!, only: [:index]
 
     def welcome
 
@@ -29,6 +30,13 @@ class UsersController < ApplicationController
                 format.json { render json: @account_item.errors, status: :unprocessable_entity }
             end
         end
+        
+    end
+    
+    def index
+        
+        @users = User.all
+        render :layout => 'layouts/admin_main'
         
     end
 
