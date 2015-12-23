@@ -46,7 +46,11 @@ class UsersController < ApplicationController
         respond_to do |format|
             format.html 
         end
-    end      
+    end     
+    
+    def edit
+        @user       = User.find(params[:id])
+    end     
 
 
 end
