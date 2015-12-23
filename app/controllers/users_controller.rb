@@ -39,6 +39,14 @@ class UsersController < ApplicationController
         render :layout => 'layouts/admin_main'
         
     end
+    
+    def show
+        @user = User.find(params[:id])
+
+        respond_to do |format|
+            format.html 
+        end
+    end      
 
 
 end
