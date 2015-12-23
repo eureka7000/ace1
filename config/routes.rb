@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get 'mypages/settings' => "mypages#settings"  
     
     resources :users  
+    post 'users/cert_teacher' => 'users#cert_teacher'
     
     get 'admins/login' => 'admins#login'
     get 'admins/logout' => 'admins#logout'

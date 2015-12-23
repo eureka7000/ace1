@@ -5,6 +5,8 @@
         <div class="well">
 
             <%= form_for(@user, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+            
+                <input type="hidden" name="target_from" value="admin" />
 
                 <div class="row">
 
@@ -23,28 +25,28 @@
                         <% end %>
 
                         <div class="form-group">
-                            <%= f.label :user_name, :class => 'col-sm-1 control-label' %>
+                            <%= f.label :user_name, '이름', :class => 'col-sm-1 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :user_name, :class => 'form-control' %>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <%= f.label :email, :class => 'col-sm-1 control-label' %>
+                            <%= f.label :email, '전자우편', :class => 'col-sm-1 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :email, :class => 'form-control' %>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <%= f.label :phone, :class => 'col-sm-1 control-label' %>
+                            <%= f.label :phone, '전화번호', :class => 'col-sm-1 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :phone, :class => 'form-control' %>
                             </div>
                         </div> 
                         
                         <div class="form-group">
-                            <%= f.label :location, :class => 'col-sm-1 control-label' %>
+                            <%= f.label :location,'지역', :class => 'col-sm-1 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :location, :class => 'form-control' %>
                             </div>
@@ -55,9 +57,9 @@
                 </div>
 
                 <footer>
-                    <%= f.submit 'submit', :class => 'btn btn-success' %>
-                    <% unless @user.id.blank? %><%= link_to 'Show', @user, :class => 'btn btn-info' %><% end %>
-                    <%= link_to 'Back', users_path, :class => 'btn btn-info' %>
+                    <%= f.submit '저장', :class => 'btn btn-success' %>
+                    <% unless @user.id.blank? %><%= link_to '상세', @user, :class => 'btn btn-info' %><% end %>
+                    <%= link_to '뒤로', users_path, :class => 'btn btn-info' %>
                 </footer>
 
             <% end %>
