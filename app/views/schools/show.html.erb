@@ -1,0 +1,100 @@
+<div class="container-fluid" style="margin-top: 50px">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> 학교/학원 </h2>
+        </div>
+    </div>
+
+    <% unless notice.blank? %>
+        <p class="alert alert-warning"><%= notice %></p>
+    <% end %>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="well">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered table-striped" style="clear: both">
+                        <tr>
+                        <td style="width:25%;"><b>학교명</b></td>
+                        <td style="width:75%"><%= @school.name %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>학교등급</b></td>
+                        <td style="width:75%"><%= School::SCHOOL_GEADES[@school.grade] %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>학교.학원 구분</b></td>
+                        <td style="width:75%;"><%= @school.is_school == '1' ? '학교' : '학원' %></td>
+                        </tr>
+                    
+                        <tr>
+                        <td style="width:25%;"><b>주소</b></td>
+                        <td style="width:75%;"><%= @school.address %></td>
+                        </tr>    
+                        
+                        <tr>
+                        <td style="width:25%;"><b>전화번호</b></td>
+                        <td style="width:75%;"><%= @school.phone %></td>
+                        </tr>                         
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= link_to 'Edit', edit_school_path(@school), :class => 'btn btn-primary' %>
+                    <%= link_to 'Back', schools_path, :class => 'btn btn-default' %>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h4 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> 학교/학원 관리자</h4>
+        </div>
+    </div>   
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>전자우편</th>
+                    <th>비밀번호</th>
+                    <th>관리자구분</th>
+                    <th>기관명</th>
+                    <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @admins.each do |admin| %>
+                <tr>
+                    <td><%= admin.name %></td>
+                    <td><%= admin.email %></td>
+                    <td><%= admin.password %></td>
+                    <td><%= Admin::ADMIN_TYPES[admin.admin_type] %></td>
+                    <td><%= admin.org_name %></td>
+                    <td><%= link_to 'Show', admin %></td>
+                    <td><%= link_to 'Edit', edit_admin_path(admin) %></td>
+                    <td><%= link_to 'Destroy', admin, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>
+    
+    <%= link_to '관리자 등록', new_admin_path + "?school_id=#{@school.id}", :class => 'btn btn-primary align-right' %>     
+    
+</div>

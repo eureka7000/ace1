@@ -1,5 +1,7 @@
 class Admin < ActiveRecord::Base
     
+    belongs_to :school
+    
     ADMIN_TYPES = {
         "admin" => "admin",
         "school manager" => "학교 관리자",

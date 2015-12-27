@@ -1,0 +1,82 @@
+<div class="row">
+
+    <div class="col-md-12 ">
+
+        <div class="well">
+
+            <%= form_for(@school, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <% if @school.errors.any? %>
+                        <div id="error_explanation">
+                            <% @school.errors.messages.each do |msg| %>
+                                <div class="alert alert-danger fade in">
+                                    <%= msg[1][0] %>
+                                </div>
+                            <% end %>
+                        </div>
+                        <% end %>
+                        
+                        <div class="form-group">
+                            <%= f.label :name, '학교(학원)명', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :name, :class => 'form-control' %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :grade, '학교등급', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%  School::SCHOOL_GEADES.each do |key, value|  %>
+                                <label class="radio-inline">
+                                    <input type="radio" name="school[grade]" value="<%= key %>" <%= 'checked' if key == @school.grade %> > <%= value %>
+                                </label>
+                                <% end %>
+                            </div>
+                        </div>                        
+                        
+                        <div class="form-group">
+                            <%= f.label :is_school, '학교.학원 구분', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <label class="radio-inline">
+                                    <input type="radio" name="school[is_school]" value="1" <%= 'checked' if @school.is_school == '1' %> /> 학교
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="school[is_school]" value="0" <%= 'checked' if @school.is_school == '0' %> /> 학원
+                                </label>                                    
+                            </div>
+                        </div>   
+                        
+                        <div class="form-group">
+                            <%= f.label :address, '주소', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :address, :class => 'form-control' %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :phone, '전화번호', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :phone, :class => 'form-control' %>
+                            </div>
+                        </div>                        
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= f.submit '저장', :class => 'btn btn-success' %>
+                    <%= link_to '뒤로', schools_path, :class => 'btn btn-info' %>
+                </footer>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+</div>

@@ -33,7 +33,7 @@ class AdminsController < ApplicationController
             if @admin.nil?
                 error = true
             else
-                session[:admin] = @admin
+                session[:admin] = @admin.first
             end
         end    
         
@@ -57,13 +57,24 @@ class AdminsController < ApplicationController
   def show
   end
 
-  # GET /admins/new
-  def new
-    @admin = Admin.new
-  end
+    # GET /admins/new
+    def new
+        @admin = Admin.new
+        unless params[:school_id].blank?
+            @school = School.find(params[:school_id])
+            if @school.is_school == '1' 
+                params[:admin_type] = 'school manager'
+            else
+                params[:admin_type] = 'institute manager'
+            end
+        end
+    end
 
     # GET /admins/1/edit
     def edit
+        unless @admin.school_id.nil?
+            @school = @admin.school
+        end    
     end
 
     # POST /admins
@@ -76,6 +87,7 @@ class AdminsController < ApplicationController
         @admin.password = Digest::SHA1.hexdigest('eurekamath')
         @admin.admin_type = params[:admin][:admin_type]
         @admin.org_name = params[:admin][:org_name]
+        @admin.school_id = params[:admin][:school_id]
 
         respond_to do |format|
             

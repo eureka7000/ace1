@@ -48,7 +48,7 @@
 
                 <footer>
                     <%= link_to 'Edit', edit_admin_path(@admin), :class => 'btn btn-primary' %>
-                    <%= link_to 'Back', admins_path, :class => 'btn btn-default' %>
+                    <%= link_to 'Back', "/schools/#{@admin.school.id}", :class => 'btn btn-default' %>
                 </footer>
 
             </div>

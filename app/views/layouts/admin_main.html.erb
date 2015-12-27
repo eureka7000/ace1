@@ -37,10 +37,18 @@
                 </button>
                 <a class="navbar-brand" href="/admins/main">Eureka Math</a>
             </div>
+            
+            <p class="navbar-text">안녕하세요. <%= session[:admin]['org_name'] %> <%= session[:admin]['name'] %>님.</p>
+                       
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/admins">학교/학원/admin 관리</a></li>
-                    <li><a href="/users">사용자 관리</a></li>                    
+                    <% if session[:admin]['admin_type'] == 'school manager' %>
+                    <li><a href="/teachers">교사 관리</a></li>
+                    <% else %>
+                    <li><a href="/schools">학교(학원)</a></li>
+                    <li><a href="/admins">관리자</a></li>
+                    <li><a href="/users">사용자 관리</a></li>
+                    <% end %>
                     <li><a href="/admins/logout">logout</a></li>
                 </ul>
             </div>

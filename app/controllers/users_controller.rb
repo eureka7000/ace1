@@ -25,7 +25,9 @@ class UsersController < ApplicationController
         
         if manager.empty?
             ret = { :error => '해당 정보로 학교(학원)관리자를 찾을 수 없습니다.' }
-        end    
+        end
+        
+        UserMailer.cert_teacher(manager.first, current_user).deliver
         
         respond_to do |format|
             format.json { render :json => ret }
