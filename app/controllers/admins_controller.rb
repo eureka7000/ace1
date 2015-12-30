@@ -126,6 +126,25 @@ class AdminsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+    # POST /admins/change_password  
+    def change_password
+      
+        admin = Admin.find(params[:admin_id])
+        admin.password = Digest::SHA1.hexdigest(params[:password])
+        admin.init_password_changed = 'Y'
+        admin.save
+        
+        session[:admin] = admin
+        
+        ret = {}
+        ret["msg"] = "ok"
+        
+        respond_to do |format|
+            format.json { render :json => ret }
+        end        
+      
+    end      
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -92,18 +92,12 @@
     		    dataType:"JSON",
     		    data:data,
     		    success: function(data){
-    			    if(data.error != null){
-    				    alert(data.error);
-    				    return false;
-    			    } else {
-                        
-                        
-                        
-    			    }
+                    if (data.msg == "ok") {
+                        alert('정상적으로 변경되었습니다.');
+                        $('#passwordModal').modal('hide');
+                    }                    
     	        },
-    	        error: function(xhr, ajaxOptions, thrownError){
-                    alert(xhr.status);
-       	        }
+    	        error: function(xhr, ajaxOptions, thrownError){}
     	    });                
         }
     

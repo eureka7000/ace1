@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     get 'admins/logout' => 'admins#logout'
     post 'admins/sign_in' => 'admins#sign_in'
     get 'admins/main' => 'admins#main'
+    post 'admins/change_password' => 'admins#change_password'
     resources :admins
     
 
