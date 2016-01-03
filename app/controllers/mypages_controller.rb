@@ -17,6 +17,8 @@ class MypagesController < ApplicationController
         
         @active_tab = params[:active_tab] || '2'
         
+        @schools = School.where('is_school = 1')
+        
         respond_to do |format|
             format.html
         end         

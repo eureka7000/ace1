@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  school_id: 1
+  confirm_yn: MyString
+  confirmed_at: 2016-01-03 14:39:42
+  comfirmed_id: 1
+
+two:
+  user_id: 1
+  school_id: 1
+  confirm_yn: MyString
+  confirmed_at: 2016-01-03 14:39:42
+  comfirmed_id: 1

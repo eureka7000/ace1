@@ -115,7 +115,17 @@
                                 
                                 <% elsif current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
                                 
-                                <p>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp; <button class="btn-u" data-toggle="modal" data-target="#responsive">확인요청</button></p>
+                                <p>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp; 
+                                
+                                <% if current_user.teachers.blank? %>    
+                                    <button class="btn-u" data-toggle="modal" data-target="#responsive">확인요청</button></p>
+                                <% else %>
+                                    <% if current_user.teachers[0].confirm_yn.nil? %>
+                                    <span class="label label-info">담당자 확인중 ..</span>
+                                    <% elsif current_user.teacher[0].confirm_yn == 'N' %>
+                                    <span class="label label-error">거절</span>
+                                    <% end %>
+                                <% end %>
                                 
                                 <div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -125,12 +135,32 @@
                                                 <h4 class="modal-title" id="myModalLabel4">확인요청</h4>
                                             </div>
                                             <div class="modal-body">
+                                                
+                                                <% if current_user.user_name.empty? || current_user.phone.empty? %>
+                                                <div class="row">
+                                                    <div class="alert alert-warning">
+                                                        <p>학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
+                                                    </div>    
+                                                </div>
+                                                <% end %>  
+
+                                                <div id="alert" class="row" style="display:none">
+                                                    <div class="alert alert-warning">
+                                                        <p id="message"></p>
+                                                    </div>    
+                                                </div>
+                                                
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         학교명
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input class="form-control" type="text" id="school_name" />
+                                                        <select id="school" class="form-control">
+                                                        <option value="">학교를 선택하세요.</option>
+                                                        <% @schools.each do |school| %>
+                                                        <option value="<%= school.id %>"><%= school.name %></option>
+                                                        <% end %>
+                                                        </select>
                                                     </div>    
                                                 </div>
                                                 
@@ -147,7 +177,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn-u btn-u-primary" onclick="requestCert()">요청하기</button>
+                                                <button type="button" class="btn-u btn-u-primary" onclick="requestCert()" <%= 'disabled' if current_user.user_name.empty? || current_user.phone.empty? %> >요청하기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -156,8 +186,8 @@
                                     
                                     function requestCert() {
                                         
-                                        if ($('#school_name').val() == '') {
-                                            alert('학교명이 필요합니다.');
+                                        if ($('#school').val() == '') {
+                                            alert('학교를 선택해 주세요.');
                                             return false;
                                         }
                                         
@@ -174,24 +204,24 @@
                                         }
                                         
                                         var data = {
-                                            "school_name": $('#school_name').val(),
-                                            "manager_email": $('#manager_email').val() 
+                                            "school_id": $('#school').val(),
+                                            "manager_email": $('#manager_email').val(),
+                                            "user_id" : <%= current_user.id %>
                                         }
 
                                 	    $.ajax({
                                             type:	"POST",
                                 		    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                                		    url: "/users/cert_teacher",
+                                		    url: "/teachers",
                                 		    dataType:"JSON",
                                 		    data:data,
                                 		    success: function(data){
                                 			    if(data.error != null){
-                                				    alert(data.error);
+                                                    $('#message').text(data.error);
+                                                    $('#alert').show();
                                 				    return false;
                                 			    } else {
-                                                    
-                                                    
-                                                    
+                                                    location.href = "/mypages/settings?active_tab=2";
                                 			    }
                                 	        },
                                 	        error: function(xhr, ajaxOptions, thrownError){
