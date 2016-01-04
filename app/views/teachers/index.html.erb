@@ -1,35 +1,41 @@
-<p id="notice"><%= notice %></p>
+    <div class="container-fluid" style="margin-top: 50px">
+        
+        <div class="row">
+            
+            <div class="col-sm-12 col-md-12 main">
+                
+                <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 교사 목록 </h2>
+                    
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>School</th>
+                                <th>Confirm yn</th>
+                                <th>Confirmed at</th>
+                                <th>Comfirmed</th>
+                                <th colspan="2"><span class="glyphicon glyphicon-cog" aria-hidden="true"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% @teachers.each do |teacher| %>
+                          <tr>
+                            <td><%= teacher.user.user_name %></td>
+                            <td><%= teacher.school.name %></td>
+                            <td><%= teacher.confirm_yn %></td>
+                            <td><%= teacher.confirmed_at %></td>
+                            <td><%= teacher.comfirmed_id %></td>
+                            <td><%= link_to 'Confirm', teacher %> &nbsp;&nbsp;<%= link_to 'Reject', teacher %></td>
+                          </tr>
+                        <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            
+            </div>
+            
+        </div>
+    </div>
 
-<h1>Listing Teachers</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>School</th>
-      <th>Confirm yn</th>
-      <th>Confirmed at</th>
-      <th>Comfirmed</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @teachers.each do |teacher| %>
-      <tr>
-        <td><%= teacher.user_id %></td>
-        <td><%= teacher.school_id %></td>
-        <td><%= teacher.confirm_yn %></td>
-        <td><%= teacher.confirmed_at %></td>
-        <td><%= teacher.comfirmed_id %></td>
-        <td><%= link_to 'Show', teacher %></td>
-        <td><%= link_to 'Edit', edit_teacher_path(teacher) %></td>
-        <td><%= link_to 'Destroy', teacher, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Teacher', new_teacher_path %>
