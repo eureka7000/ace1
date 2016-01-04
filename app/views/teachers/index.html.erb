@@ -24,9 +24,9 @@
                             <td><%= teacher.user.user_name %></td>
                             <td><%= teacher.school.name %></td>
                             <td><%= teacher.confirm_yn %></td>
-                            <td><%= teacher.confirmed_at %></td>
-                            <td><%= teacher.comfirmed_id %></td>
-                            <td><%= link_to 'Confirm', teacher %> &nbsp;&nbsp;<%= link_to 'Reject', teacher %></td>
+                            <td><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
+                            <td><%= teacher.confirmed_id %></td>
+                            <td><%= link_to 'Confirm', "/teachers/#{teacher.id}?confirm=Y" %> &nbsp;&nbsp;<%= link_to 'Reject',"/teachers/#{teacher.id}?confirm=N" %></td>
                           </tr>
                         <% end %>
                         </tbody>

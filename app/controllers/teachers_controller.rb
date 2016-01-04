@@ -9,22 +9,34 @@ class TeachersController < ApplicationController
       # GET /teachers
       # GET /teachers.json
       def index
-          @teachers = Teacher.all
+
+          @teachers = Teacher.where('school_id = ?',session[:admin]['school_id'])
+          
       end
 
       # GET /teachers/1
       # GET /teachers/1.json
       def show
+          
+          teacher = Teacher.find(params[:id])
+          teacher.confirm_yn = params[:confirm]
+          teacher.confirmed_at = DateTime.now
+          teacher.confirmed_id = session[:admin]['id']
+          
+          if teacher.save
+              redirect_to '/teachers'      
+          end
+          
       end
 
       # GET /teachers/new
-      def new
-          @teacher = Teacher.new
-      end
+      # def new
+      #     @teacher = Teacher.new
+      # end
 
       # GET /teachers/1/edit
-      def edit
-      end
+      # def edit
+      # end
 
       # POST /teachers
       # POST /teachers.json
@@ -79,28 +91,28 @@ class TeachersController < ApplicationController
 
       # PATCH/PUT /teachers/1
       # PATCH/PUT /teachers/1.json
-      def update
-          respond_to do |format|
-              if @teacher.update(teacher_params)
-                  format.html { redirect_to @teacher, notice: 'Teacher was successfully updated.' }
-                  format.json { render :show, status: :ok, location: @teacher }
-              else
-                  format.html { render :edit }
-                  format.json { render json: @teacher.errors, status: :unprocessable_entity }
-              end
-          end
-      end
+      # def update
+      #     respond_to do |format|
+      #         if @teacher.update(teacher_params)
+      #             format.html { redirect_to @teacher, notice: 'Teacher was successfully updated.' }
+      #             format.json { render :show, status: :ok, location: @teacher }
+      #         else
+      #             format.html { render :edit }
+      #             format.json { render json: @teacher.errors, status: :unprocessable_entity }
+      #         end
+      #     end
+      # end
 
       # DELETE /teachers/1
       # DELETE /teachers/1.json
-      def destroy
-          @teacher.destroy
-          
-          respond_to do |format|
-              format.html { redirect_to teachers_url, notice: 'Teacher was successfully destroyed.' }
-              format.json { head :no_content }
-          end
-      end
+      # def destroy
+      #     @teacher.destroy
+      #
+      #     respond_to do |format|
+      #         format.html { redirect_to teachers_url, notice: 'Teacher was successfully destroyed.' }
+      #         format.json { head :no_content }
+      #     end
+      # end
 
       private
       # Use callbacks to share common setup or constraints between actions.

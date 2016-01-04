@@ -122,8 +122,10 @@
                                 <% else %>
                                     <% if current_user.teachers[0].confirm_yn.nil? %>
                                     <span class="label label-info">담당자 확인중 ..</span>
-                                    <% elsif current_user.teacher[0].confirm_yn == 'N' %>
-                                    <span class="label label-error">거절</span>
+                                    <% elsif current_user.teachers[0].confirm_yn == 'N' %>
+                                    <span class="label label-danger">거절 <i class="fa fa-exclamation"></i></span>
+                                    <% elsif current_user.teachers[0].confirm_yn == 'Y' %>
+                                    <span class="label label-warning">확인 완료 <i class="fa fa-check"></i></span>
                                     <% end %>
                                 <% end %>
                                 
@@ -136,7 +138,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 
-                                                <% if current_user.user_name.empty? || current_user.phone.empty? %>
+                                                <% if current_user.user_name.blank? || current_user.phone.blank? %>
                                                 <div class="row">
                                                     <div class="alert alert-warning">
                                                         <p>학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
@@ -152,11 +154,11 @@
                                                 
                                                 <div class="row">
                                                     <div class="col-md-3">
-                                                        학교명
+                                                        학교(학원)명
                                                     </div>
                                                     <div class="col-md-9">
                                                         <select id="school" class="form-control">
-                                                        <option value="">학교를 선택하세요.</option>
+                                                        <option value="">학교(학원)를 선택하세요.</option>
                                                         <% @schools.each do |school| %>
                                                         <option value="<%= school.id %>"><%= school.name %></option>
                                                         <% end %>
@@ -177,7 +179,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn-u btn-u-primary" onclick="requestCert()" <%= 'disabled' if current_user.user_name.empty? || current_user.phone.empty? %> >요청하기</button>
+                                                <button type="button" class="btn-u btn-u-primary" onclick="requestCert()" <%= 'disabled' if current_user.user_name.blank? || current_user.phone.blank? %> >요청하기</button>
                                             </div>
                                         </div>
                                     </div>

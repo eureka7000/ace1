@@ -43,7 +43,7 @@
                        
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <% if session[:admin]['admin_type'] == 'school manager' %>
+                    <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
                     <% else %>
                     <li><a href="/schools">학교(학원)</a></li>
