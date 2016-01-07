@@ -46,6 +46,7 @@
                     <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
                     <% else %>
+                    <li><a href="/categories">컨텐츠</a></li>
                     <li><a href="/schools">학교(학원)</a></li>
                     <li><a href="/admins">관리자</a></li>
                     <li><a href="/users">사용자 관리</a></li>
