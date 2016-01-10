@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107060758) do
+ActiveRecord::Schema.define(version: 20160110124557) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -26,11 +26,13 @@ ActiveRecord::Schema.define(version: 20160107060758) do
     t.string   "init_password_changed", limit: 255
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "concepts", force: :cascade do |t|
+    t.string   "category",     limit: 255
+    t.string   "sub_category", limit: 255
+    t.string   "concept_code", limit: 255
+    t.string   "concept_name", limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -50,23 +52,6 @@ ActiveRecord::Schema.define(version: 20160107060758) do
     t.string   "is_school",  limit: 255
   end
 
-  create_table "sub_categories", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.string   "code",        limit: 255
-    t.integer  "category_id", limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  create_table "sub_units", force: :cascade do |t|
-    t.string   "name",       limit: 255
-    t.string   "code",       limit: 255
-    t.integer  "unit_id",    limit: 4
-    t.string   "grade",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "teachers", force: :cascade do |t|
     t.integer  "user_id",      limit: 4
     t.integer  "school_id",    limit: 4
@@ -75,14 +60,6 @@ ActiveRecord::Schema.define(version: 20160107060758) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "confirmed_id", limit: 4
-  end
-
-  create_table "units", force: :cascade do |t|
-    t.string   "name",            limit: 255
-    t.string   "code",            limit: 255
-    t.integer  "sub_category_id", limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
   end
 
   create_table "user_types", force: :cascade do |t|

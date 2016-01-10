@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :sub_units
-  resources :units
-  resources :sub_categories
-  resources :categories
+  resources :concepts
   resources :schools
   resources :payments
   resources :teachers
