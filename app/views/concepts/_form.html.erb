@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <select name="concept[category]" id="category" class="form-control">
+                                <select name="concept[category]" id="category" class="form-control" onchange="changedCategory()">
                                     <option value="">--- Category ---</option>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
                                     <option value="<%= key %>" ><%= value %></option>
@@ -39,9 +39,6 @@
                             <div class="input-group col-sm-4">
                                 <select name="concept[sub_category]" id="sub_category" class="form-control">
                                     <option value="">--- Sub Category ---</option>
-                                    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" ><%= value %></option>
-                                    <% end %>
                                 </select> 
                             </div>
                         </div>
@@ -77,6 +74,40 @@
 
 </div>
 
+<script type="text/javascript">
+
+    <% index = 0 %>
+
+    var options = [
+    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+    <%      index = index + 1  %>    
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
+    <% end %>
+    ]    
+
+    function changedCategory(t) {
+        
+        $('#sub_category').empty();
+        
+        var cetegory_val = $('#category').val();
+        var divChar = '';
+        
+        if (cetegory_val != '') {
+            divChar = cetegory_val.substring(0,1);
+        }
+        
+        $.each(options, function(i) {
+            if (options[i].values.substring(0,1) == divChar) {
+                $('#sub_category').append( $('<option>').text(options[i].text).val(options[i].value) );                
+            }
+        });
+    
+    }
+
+</script>
 
 
 
