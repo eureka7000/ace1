@@ -25,9 +25,9 @@
                         <div class="form-group">
                             <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <select name="admin[admin_type]" id="admin_admin_type" class="form-control">
+                                <select name="concept[category]" id="category" class="form-control">
                                     <option value="">--- Category ---</option>
-                                    <% Concept::CATEGORYS.each_pair do |key, value| %>
+                                    <% Concept::CATEGORIES.each_pair do |key, value| %>
                                     <option value="<%= key %>" ><%= value %></option>
                                     <% end %>
                                 </select> 
@@ -37,7 +37,12 @@
                         <div class="form-group">
                             <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <%= f.text_field :sub_category, :class => 'form-control' %>
+                                <select name="concept[sub_category]" id="sub_category" class="form-control">
+                                    <option value="">--- Sub Category ---</option>
+                                    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" ><%= value %></option>
+                                    <% end %>
+                                </select> 
                             </div>
                         </div>
                         

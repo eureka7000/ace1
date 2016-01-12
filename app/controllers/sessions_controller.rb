@@ -1,12 +1,13 @@
 class SessionsController < Devise::SessionsController
 
   def new
-    @page_name = 'Login'
-    super
+      logger.debug "********** new "
+      super
   end
 
   def create
-    super
+      logger.debug "********** create "
+      super
   end
 
 end
