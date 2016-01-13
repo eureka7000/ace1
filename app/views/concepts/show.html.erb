@@ -1,24 +1,58 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid" style="margin-top: 50px">
 
-<p>
-  <strong>Category:</strong>
-  <%= @concept.category %>
-</p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept</h2>
+        </div>
+    </div>
 
-<p>
-  <strong>Sub category:</strong>
-  <%= @concept.sub_category %>
-</p>
+    <% unless notice.blank? %>
+        <p class="alert alert-warning"><%= notice %></p>
+    <% end %>
 
-<p>
-  <strong>Concept code:</strong>
-  <%= @concept.concept_code %>
-</p>
+    <div class="row">
 
-<p>
-  <strong>Concept name:</strong>
-  <%= @concept.concept_name %>
-</p>
+        <div class="col-md-12">
 
-<%= link_to 'Edit', edit_concept_path(@concept) %> |
-<%= link_to 'Back', concepts_path %>
+            <div class="well">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered table-striped" style="clear: both">
+                        <tr>
+                        <td style="width:25%;"><b>Category</b></td>
+                        <td style="width:75%"><%= @concept.category %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>Sub category</b></td>
+                        <td style="width:75%"><%= @concept.sub_category %></td>
+                        </tr>
+
+                        <tr>
+                        <td style="width:25%;"><b>Concept code</b></td>
+                        <td style="width:75%;"><%= @concept.concept_code %></td>
+                        </tr>
+                    
+                        <tr>
+                        <td style="width:25%;"><b>Concept name</b></td>
+                        <td style="width:75%;"><%= @concept.concept_name %></td>
+                        </tr>                    
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= link_to 'Edit', edit_concept_path(@concept), :class => 'btn btn-primary' %>
+                    <%= link_to 'Back', concepts_path, :class => 'btn btn-default' %>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+    
+</div>
