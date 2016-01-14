@@ -28,7 +28,7 @@
                                 <select name="concept[category]" id="category" class="form-control" onchange="changedCategory()">
                                     <option value="">--- Category ---</option>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" ><%= value %></option>
+                                    <option value="<%= key %>" <%= "selected" if @concept.category == key %> ><%= value %></option>
                                     <% end %>
                                 </select> 
                             </div>
@@ -86,9 +86,9 @@
         }
         <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
     <% end %>
-    ]    
-
-    function changedCategory(t) {
+    ]
+    
+    function changedCategory() {
         
         $('#sub_category').empty();
         
@@ -104,8 +104,17 @@
                 $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
             }
         });
+        
+        <% unless @concept.category.nil? %>
+        $("#sub_category").val("<%= @concept.sub_category %>");
+        <% end %>
     
     }
+    
+    <% unless @concept.category.nil? %>
+    changedCategory();
+    <% end %>
+    
 
 </script>
 

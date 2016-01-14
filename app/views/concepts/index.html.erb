@@ -21,7 +21,7 @@
                         <% @concepts.each do |concept| %>
                         <tr>
                         <td><%= Concept::CATEGORIES[concept.category] %></td>
-                        <td><%= concept.sub_category %></td>
+                        <td><%= Concept::SUB_CATEGORIES[concept.sub_category] %></td>
                         <td><%= concept.concept_code %></td>
                         <td><%= concept.concept_name %></td>
                         <td><%= link_to 'Show', concept %></td>

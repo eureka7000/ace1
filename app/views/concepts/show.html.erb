@@ -23,12 +23,12 @@
                         <table class="table table-bordered table-striped" style="clear: both">
                         <tr>
                         <td style="width:25%;"><b>Category</b></td>
-                        <td style="width:75%"><%= @concept.category %></td>
+                        <td style="width:75%"><%= Concept::CATEGORIES[@concept.category] %></td>
                         </tr>
 
                         <tr>
                         <td style="width:25%;"><b>Sub category</b></td>
-                        <td style="width:75%"><%= @concept.sub_category %></td>
+                        <td style="width:75%"><%= Concept::SUB_CATEGORIES[@concept.sub_category] %></td>
                         </tr>
 
                         <tr>
