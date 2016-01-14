@@ -101,7 +101,7 @@
         
         $.each(options, function(i) {
             if (options[i].values.substring(0,1) == divChar) {
-                $('#sub_category').append( $('<option>').text(options[i].text).val(options[i].value) );                
+                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
             }
         });
     

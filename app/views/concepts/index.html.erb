@@ -20,7 +20,7 @@
                         <tbody>
                         <% @concepts.each do |concept| %>
                         <tr>
-                        <td><%= concept.category %></td>
+                        <td><%= Concept::CATEGORIES[concept.category] %></td>
                         <td><%= concept.sub_category %></td>
                         <td><%= concept.concept_code %></td>
                         <td><%= concept.concept_name %></td>
