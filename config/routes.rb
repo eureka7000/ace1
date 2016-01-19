@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :unit_concepts
   resources :concepts
   resources :schools
   resources :payments

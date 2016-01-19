@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @unit_concept.code %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @unit_concept.name %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @unit_concept.level %>
+</p>
+
+<%= link_to 'Edit', edit_unit_concept_path(@unit_concept) %> |
+<%= link_to 'Back', unit_concepts_path %>

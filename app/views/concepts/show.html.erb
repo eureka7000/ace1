@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept</h2>
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %></h2>
         </div>
     </div>
 
@@ -12,47 +12,32 @@
 
     <div class="row">
 
-        <div class="col-md-12">
-
+        <div class="col-md-2">
+        <p><i class="fa fa-share-alt"></i> Concept</p>
             <div class="well">
-
-                <div class="row">
-
-                    <div class="col-md-12">
-
-                        <table class="table table-bordered table-striped" style="clear: both">
-                        <tr>
-                        <td style="width:25%;"><b>Category</b></td>
-                        <td style="width:75%"><%= Concept::CATEGORIES[@concept.category] %></td>
-                        </tr>
-
-                        <tr>
-                        <td style="width:25%;"><b>Sub category</b></td>
-                        <td style="width:75%"><%= Concept::SUB_CATEGORIES[@concept.sub_category] %></td>
-                        </tr>
-
-                        <tr>
-                        <td style="width:25%;"><b>Concept code</b></td>
-                        <td style="width:75%;"><%= @concept.concept_code %></td>
-                        </tr>
-                    
-                        <tr>
-                        <td style="width:25%;"><b>Concept name</b></td>
-                        <td style="width:75%;"><%= @concept.concept_name %></td>
-                        </tr>                    
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <footer>
-                    <%= link_to 'Edit', edit_concept_path(@concept), :class => 'btn btn-primary' %>
-                    <%= link_to 'Back', concepts_path, :class => 'btn btn-default' %>
-                </footer>
-
+                <p><%= @concept.concept_name %></p>
             </div>
         </div>
+        
+        <div class="col-md-2">
+            <p><i class="fa fa-share-alt"></i> Unit Concept</p>
+            <div class="row">
+                <div class="well">
+                </div>
+            </div>
+            <div class="row">
+                <div style="width:30%; float:left; display:inline-block">
+                    <input type="text" class="form-control" id="unit_concept_code" placeholder="code" />
+                </div>
+                <div style="margin-left:5px; width:50%; float:left; display:inline-block">
+                    <input type="text" class="form-control" id="unit_concept_name" placeholder="name" />
+                </div>
+                <div style="float:right; display:inline-block"> 
+                    <button type="button" class="btn-u btn-u-green"><i class="fa fa-plus"></i></button>
+                </div>    
+            </div>    
+        </div>    
+        
     </div>
     
 </div>
