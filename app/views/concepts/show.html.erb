@@ -11,35 +11,106 @@
     <% end %>
 
     <div class="row">
-
-        <div class="col-md-2">
-        <p><i class="fa fa-share-alt"></i> Concept</p>
-            <div class="well">
-                <p><%= @concept.concept_name %></p>
-            </div>
-        </div>
         
-        <div class="col-md-2">
-            <p><i class="fa fa-share-alt"></i> Unit Concept</p>
-            <div class="row">
-                <div class="well">
-                </div>
-            </div>
-            <div class="row">
-                <div style="width:30%; float:left; display:inline-block">
-                    <input type="text" class="form-control" id="unit_concept_code" placeholder="code" />
-                </div>
-                <div style="margin-left:5px; width:50%; float:left; display:inline-block">
-                    <input type="text" class="form-control" id="unit_concept_name" placeholder="name" />
-                </div>
-                <div style="float:right; display:inline-block"> 
-                    <button type="button" class="btn-u btn-u-green"><i class="fa fa-plus"></i></button>
-                </div>    
+        <div class="col-sm-12 col-md-12">
+        
+            <div class="table-responsive">
+        
+                <table class="table table-hover table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>
+                                Unit Concept
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn-u btn-u-green btn-brd rounded-4x btn-u-xs" onclick="$('#unitConceptModal').modal()"><i class="fa fa-plus"></i></button>
+                            </th>
+                            <th> Explanation </th>
+                            <th></th>
+                        </tr>    
+                    </thead>
+                    <tbody>
+                        <% @concept.unit_concepts.each do | unit_concept | %>
+                        <tr>
+                            <td>
+                                ( <%= unit_concept.code %> ) 
+                                <a href="/unit_concepts/<%= unit_concept.id %>"><%= unit_concept.name %></a>
+                                <a href="javascript:unitConceptModi(<%= unit_concept.id %>)"><span class="icon-wrench"></span></a>
+                                <a href="javascript:unitConceptDel(<%= unit_concept.id %>)"><span class="icon-trash"></span></a>
+                                <a href="javascript:explanationModal()"><span class="label label-danger">explanation</span></a>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>        
+                        <% end %>
+                    </tbody>    
+                </table>   
+             
             </div>    
+            
         </div>    
         
     </div>
     
+</div>
+
+<!-- unit concept modal -->
+<div class="modal fade" id="unitConceptModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel4">Unit Concept</h4>
+            </div>
+            <div class="modal-body">
+                
+                <input type="hidden" id="unit_concept_id" value="" />
+                <input type="hidden" id="method" value="create" />
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Code</h4>
+                        <p><input type="text" class="form-control" id="unit_concept_code" placeholder="code" /></p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Name</h4>
+                        <p><input type="text" class="form-control" id="unit_concept_name" placeholder="name" /></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- unit concept modal -->
+<div class="modal fade" id="explanationModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel4">Explanation</h4>
+            </div>
+            <div class="modal-body">
+                
+                <input type="hidden" id="explanation_unit_concept_id" value="" />
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Code</h4>
+                        <p><input type="text" class="form-control" id="explanation_code" placeholder="code" /></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-u btn-u-blue">추가</button>
+                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -48,10 +119,123 @@
 	    if (e.which == 13) {
 		    insertUnitConcept();
 	    }
-    })
+    });
+    
+    function explanationModal() {
+        $('#explanationModal').modal();
+    }
+    
+    function unitConceptDel(id) {
+        
+        var url = "/unit_concepts/" + id
+        
+        $.ajax({
+            url: url,
+            type: "DELETE",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            dataType: "JSON",
+            success: function(data) {
+                location.reload();
+            },
+            error: function(err){}
+        });                
+        
+    }
+    
+    function unitConceptModi(id) {
+        
+        var url = "/unit_concepts/" + id
+        
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            dataType: "JSON",
+            success: function(data) {
+                
+                $('#method').val('update');
+                $('#unit_concept_id').val(data.id);
+                $('#unit_concept_code').val(data.code);
+                $('#unit_concept_name').val(data.name);
+                $('#unitConceptModal').modal();
+            },
+            error: function(err){}
+        });        
+        
+    }
     
     function insertUnitConcept() {
-        alert('will be insert unit concept');
+        
+        var url, data, type;
+
+        data = {
+            "unit_concept" : {
+                "code"       : $('#unit_concept_code').val(),
+                "name"       : $('#unit_concept_name').val(),
+                "level"      : null,
+                "concept_id" : <%= @concept.id %>
+            }
+        };
+        
+        if ($('#method').val() == 'create') {
+            url = "/unit_concepts";
+            type = "POST";
+        } else if ( $('#method').val() == 'update' ) {
+            url = '/unit_concepts/' + $('#unit_concept_id').val();
+            type = "PUT";
+        }
+
+        $.ajax({
+            url: url,
+            type: type,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            dataType: "JSON",
+            data: data,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(err){
+                alert('실패했습니다.');
+                return false;
+            }
+        });        
+
     }
+    
+    // function getUnitConcepts() {
+    //
+    //     var url = "/unit_concepts";
+    //
+    //     data = {
+    //         "concept_id" : <%= @concept.id %>
+    //     }
+    //
+    //     $.ajax({
+    //         url: url,
+    //         type: "GET",
+    //         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+    //         dataType: "JSON",
+    //         data: data,
+    //         success: function(data) {
+    //             genUnitConcept(data);
+    //         },
+    //         error: function(err){
+    //             return false;
+    //         }
+    //     });
+    //
+    // }
+    //
+    // function genUnitConcept(unitConcepts) {
+    //
+    //     $("#unit_concepts").empty();
+    //
+    //     for ( x in unitConcepts ) {
+    //         $("#unit_concepts").append("<li>(" + unitConcepts[x].code + ") " + unitConcepts[x].name + "</li>");
+    //     }
+    // }
+    //
+    // getUnitConcepts();
+    
 
 </script>

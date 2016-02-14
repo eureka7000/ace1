@@ -62,6 +62,7 @@ class JsCssRender
                   '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">' +
                   '<!-- CSS Page Style -->' +
                   '<link rel="stylesheet" href="/assets/css/pages/profile.css">'
+                  
         elsif controller_name == 'payments' && page_name == 'index'
 
             ret = '<link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">' +

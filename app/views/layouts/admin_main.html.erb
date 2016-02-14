@@ -27,8 +27,9 @@
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="/assets/plugins/animate.css">
     <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
-    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">    
-    
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css"> 
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">   
     
     <%= csrf_meta_tags %>
     <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
@@ -74,7 +75,15 @@
 <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/libs/jquery_ujs.js"></script>
 <script src="/js/libs/jquery.form.js"></script>   
-
+<script>
+    $('.btn-u').on('click', function() {
+        var $this = $(this);
+        $this.button('loading');
+        setTimeout(function() {
+            $this.button('reset');
+        }, 8000);
+    });
+</script>
         
 </body>
 </html>

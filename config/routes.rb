@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
 
-  resources :unit_concepts
-  resources :concepts
-  resources :schools
-  resources :payments
-  resources :teachers
+    resources :unit_concept_descs
+    resources :explanations
+    resources :unit_concepts
+    resources :concepts
+    resources :schools
+    resources :payments
+    resources :teachers
   
     devise_for :users, :controllers => {:registrations => "registrations", :sessions=>"sessions", :confirmations => "confirmations"}
   	#devise_for :users
@@ -25,6 +27,5 @@ Rails.application.routes.draw do
     get 'admins/main' => 'admins#main'
     post 'admins/change_password' => 'admins#change_password'
     resources :admins
-    
 
 end

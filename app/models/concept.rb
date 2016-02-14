@@ -1,5 +1,7 @@
 class Concept < ActiveRecord::Base
     
+    has_many :unit_concepts
+    
     CATEGORIES = {
         "a000" => "총괄",
         "b100" => "집합과 명제",
