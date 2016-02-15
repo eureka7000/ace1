@@ -8,10 +8,13 @@ class UnitConceptDescsController < ApplicationController
         respond_to do |format|
             if @unit_concept_desc.save
                 format.html { redirect_to @unit_concept, notice: 'Explanation Desc was successfully created.' }
+            else
+                format.html { redirect_to '/' }
             end
         end
         
     end
+
 
     private
 
