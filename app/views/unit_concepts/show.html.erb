@@ -29,10 +29,12 @@
                                 <span class="zoom-icon"></span>
                             </span>
                 
-                            <hr>
-                
-                            <div class="caption">
+                            <div class="caption" style="border-top: 1px solid #ddd">
                                 <p><%= unit_concept_desc.memo %></p>
+                                <div style="text-align: right">
+                                    <button class="btn btn-xs rounded btn-primary" type="button"><i class="fa fa-wrench"></i></button>
+                                    <%= link_to '<i class="fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-xs rounded btn-default" %>
+                                </div>
                             </div>
                         </div>          
                     </div>

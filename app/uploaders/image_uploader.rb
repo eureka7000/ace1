@@ -5,7 +5,11 @@ class ImageUploader < CarrierWave::Uploader::Base
     storage :fog
     
     def store_dir
-        "uploads/#{model.unit_concept.id}/#{model.class.to_s.underscore}/#{model.id}"
+        if Rails.env.production?
+            "uploads/#{model.unit_concept.id}/#{model.class.to_s.underscore}/#{model.id}"
+        else
+            "tests/#{model.unit_concept.id}/#{model.class.to_s.underscore}/#{model.id}"            
+        end        
     end
     
     version :large do
