@@ -6,6 +6,281 @@
         </div>
     </div>
     
+    <!--=== Cube-Portfdlio ===-->
+    <div class="cube-portfolio margin-bottom-20">
+        <div class="content-xs">
+            <div id="filters-container" class="cbp-l-filters-text content-xs">
+                <div data-filter="*" class="cbp-filter-item cbp-filter-item-active"> All </div> |
+                <% idx = 0 %>
+                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
+                <div data-filter=".<%= key %>" class="cbp-filter-item "> <%= value %> </div><% unless idx == UnitConcept::DESC_TYPES.count - 1 %> | <% end %>
+                <% idx = idx + 1 %>
+                <% end %>
+            </div><!--/end Filters Container-->
+        </div>
+
+        <div id="grid-container" class="cbp-l-grid-agency">
+
+            <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+            
+            <div class="cbp-item unit_concept_desc">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="<%= unit_concept_desc.file_name %>" class="cbp-lightbox" data-title="<%= unit_concept_desc.file_name %>"><i class="rounded-x fa fa-search"></i></a></li>
+                                    <li><%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-desc"><%= unit_concept_desc.memo %></div>
+                </div>
+            </div>            
+                
+            <% end %> 
+
+            <div class="cbp-item web-design logos">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img2.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img2.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 02</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item graphic logos">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img9.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img9.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 03</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item web-design graphic">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img10.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img10.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 04</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item identity web-design">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img11.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img11.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 05</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item identity web-design">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img12.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img12.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 06</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item web-design identity">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img19.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img19.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 07</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item identity logo">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img7.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img7.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 08</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item graphic">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img20.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img20.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 09</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item web-design logos">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img3.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img3.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 10</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item graphic logos">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img6.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img6.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 11</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+            <div class="cbp-item web-design graphic">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="assets/img/main/img16.jpg" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="portfolio_single_item.html"><i class="rounded-x fa fa-link"></i></a></li>
+                                    <li><a href="assets/img/main/img16.jpg" class="cbp-lightbox" data-title="Design Object"><i class="rounded-x fa fa-search"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title">Design Object 12</div>
+                    <div class="cbp-l-grid-agency-desc">Web Design</div>
+                </div>
+            </div>
+        </div><!--/end Grid Container-->
+    </div>
+    <!--=== End Cube-Portfdlio ===-->
+
     <div class="row">
 
         <div class="col-md-12">
@@ -15,52 +290,34 @@
                 <%= token_tag nil %>
                 
                 <input type="hidden" name="unit_concept_desc[unit_concept_id]" value="<%= @unit_concept.id %>" />
-                
-                <header>Unit Concept</header>
-                
-                <div class="row" style="padding: 5px;">
-        
-                    <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
-                        
-                    <div class="col-md-4">
-                        <div class="thumbnail">
-                            <span class="overlay-zoom">
-                                <img class="img-responsive" src="<%= unit_concept_desc.file_name.medium %>" alt="">
-                                <span class="zoom-icon"></span>
-                            </span>
-                
-                            <div class="caption" style="border-top: 1px solid #ddd">
-                                <p><%= unit_concept_desc.memo %></p>
-                                <div style="text-align: right">
-                                    <button class="btn btn-xs rounded btn-primary" type="button"><i class="fa fa-wrench"></i></button>
-                                    <%= link_to '<i class="fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-xs rounded btn-default" %>
-                                </div>
-                            </div>
-                        </div>          
-                    </div>
-            
-                    <% end %>
-                    
-                </div>                 
 
                 <fieldset>
                     <div class="row">
-                        <section class="col col-6">
+                        <section class="col col-2">
+                            <label class="select">
+                                <select>
+                                <option value="">항목선택</option>
+                                <option value="unit_concept_descs">Unit Concept Desc</option>
+                                <option value="explanations">Explanation</option>
+                                </select>    
+                                <i></i>
+                            </label>    
+                        </section>    
+                        <section class="col col-4">
                             <label for="file" class="input input-file">
                                 <div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
                             </label>
                         </section>
-                        <section class="col col-6">
+                        <section class="col col-4">
                             <label class="input">
                                 <input type="text" name="unit_concept_desc[memo]" placeholder="memo">
                             </label>
                         </section>
+                        <section class="col col-2">
+                            <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                        </section>    
                     </div>
                 </fieldset>
-                
-                <footer>
-                    <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
-                </footer>                
                 
             </form>
             
