@@ -1,41 +1,47 @@
 class UnitConceptsController < ApplicationController
-  before_action :set_unit_concept, only: [:show, :edit, :update, :destroy]
 
-  # GET /unit_concepts
-  # GET /unit_concepts.json
-  def index
-    @unit_concepts = UnitConcept.all
-  end
+    before_action :authenticate_admin_user!
+    before_action :set_unit_concept, only: [:show, :edit, :update, :destroy]
+    layout '/layouts/admin_main'
 
-  # GET /unit_concepts/1
-  # GET /unit_concepts/1.json
-  def show
-  end
-
-  # GET /unit_concepts/new
-  def new
-    @unit_concept = UnitConcept.new
-  end
-
-  # GET /unit_concepts/1/edit
-  def edit
-  end
-
-  # POST /unit_concepts
-  # POST /unit_concepts.json
-  def create
-    @unit_concept = UnitConcept.new(unit_concept_params)
-
-    respond_to do |format|
-      if @unit_concept.save
-        format.html { redirect_to @unit_concept, notice: 'Unit concept was successfully created.' }
-        format.json { render :show, status: :created, location: @unit_concept }
-      else
-        format.html { render :new }
-        format.json { render json: @unit_concept.errors, status: :unprocessable_entity }
-      end
+    # GET /unit_concepts
+    # GET /unit_concepts.json
+    def index
+        @unit_concepts = UnitConcept.where('concept_id = ?', params[:concept_id])
     end
-  end
+
+    # GET /unit_concepts/1
+    # GET /unit_concepts/1.json
+    def show
+        
+    end
+
+    # GET /unit_concepts/new
+    def new
+        @unit_concept = UnitConcept.new
+    end
+
+    # GET /unit_concepts/1/edit
+    def edit
+    end
+
+    # POST /unit_concepts
+    # POST /unit_concepts.json
+    def create
+        
+        @unit_concept = UnitConcept.new(unit_concept_params)
+
+        respond_to do |format|
+            if @unit_concept.save
+                format.html { redirect_to @unit_concept, notice: 'Unit concept was successfully created.' }
+                format.json { render :show, status: :created, location: @unit_concept }
+            else
+                format.html { render :new }
+                format.json { render json: @unit_concept.errors, status: :unprocessable_entity }
+            end
+        end
+        
+    end
 
   # PATCH/PUT /unit_concepts/1
   # PATCH/PUT /unit_concepts/1.json
@@ -69,6 +75,6 @@ class UnitConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_concept_params
-      params.require(:unit_concept).permit(:code, :name, :level)
+      params.require(:unit_concept).permit(:code, :name, :level, :concept_id)
     end
 end

@@ -12,7 +12,9 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
 gem "thin"
-gem 'paperclip','~> 4.3'
+gem 'carrierwave-aws'
+gem 'mini_magick'
+gem 'fog'
 
 group :development, :test do
   gem 'byebug'

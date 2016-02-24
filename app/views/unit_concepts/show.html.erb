@@ -1,19 +1,99 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid" style="margin-top: 50px">
 
-<p>
-  <strong>Code:</strong>
-  <%= @unit_concept.code %>
-</p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Unit Concept - <%= @unit_concept.name %></h2>
+        </div>
+    </div>
+    
+    <!--=== Cube-Portfdlio ===-->
+    <div class="cube-portfolio margin-bottom-20">
+        <div class="content-xs">
+            <div id="filters-container" class="cbp-l-filters-text content-xs">
+                <div data-filter="*" class="cbp-filter-item cbp-filter-item-active"> All </div> |
+                <% idx = 0 %>
+                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
+                <div data-filter=".<%= key %>" class="cbp-filter-item "> <%= value %> </div><% unless idx == UnitConcept::DESC_TYPES.count - 1 %> | <% end %>
+                <% idx = idx + 1 %>
+                <% end %>
+            </div><!--/end Filters Container-->
+        </div>
 
-<p>
-  <strong>Name:</strong>
-  <%= @unit_concept.name %>
-</p>
+        <div id="grid-container" class="cbp-l-grid-agency">
 
-<p>
-  <strong>Level:</strong>
-  <%= @unit_concept.level %>
-</p>
+            <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+            
+            <div class="cbp-item <%= unit_concept_desc.desc_type %>">
+                <div class="cbp-caption margin-bottom-20">
+                    <div class="cbp-caption-defaultWrap">
+                        <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
+                    </div>
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="<%= unit_concept_desc.file_name %>" class="cbp-lightbox" data-title="<%= unit_concept_desc.file_name %>"><i class="rounded-x fa fa-search"></i></a></li>
+                                    <li><%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cbp-title-dark">
+                    <div class="cbp-l-grid-agency-title blue "><p class="text-primary"><%= unit_concept_desc.desc_type %></p></div>
+                    <div class="cbp-l-grid-agency-desc"><%= unit_concept_desc.memo %></div>
+                </div>
+            </div>            
+                
+            <% end %> 
 
-<%= link_to 'Edit', edit_unit_concept_path(@unit_concept) %> |
-<%= link_to 'Back', unit_concepts_path %>
+        </div><!--/end Grid Container-->
+    </div>
+    <!--=== End Cube-Portfdlio ===-->
+
+    <div class="row">
+
+        <div class="col-md-12">
+            
+            <form action="/unit_concept_descs" method="post" enctype="multipart/form-data" class="sky-form" novalidate="novalidate" charset="utf-8">
+                
+                <%= token_tag nil %>
+                
+                <input type="hidden" name="unit_concept_desc[unit_concept_id]" value="<%= @unit_concept.id %>" />
+
+                <fieldset>
+                    <div class="row">
+                        <section class="col col-2">
+                            <label class="select">
+                                <select name="unit_concept_desc[desc_type]">
+                                <option value="">항목선택</option>
+                                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
+                                <option value="<%= key %>"><%= value %></option>
+                                <% end %>
+                            </select>    
+                            <i></i>
+                            </label>    
+                        </section>    
+                        <section class="col col-4">
+                            <label for="file" class="input input-file">
+                                <div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
+                            </label>
+                        </section>
+                        <section class="col col-4">
+                            <label class="input">
+                                <input type="text" name="unit_concept_desc[memo]" placeholder="memo">
+                            </label>
+                        </section>
+                        <section class="col col-2">
+                            <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                        </section>    
+                    </div>
+                </fieldset>
+                
+            </form>
+            
+        </div>    
+
+    </div>
+
+</div>
