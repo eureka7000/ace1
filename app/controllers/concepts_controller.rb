@@ -7,7 +7,18 @@ class ConceptsController < ApplicationController
     # GET /concepts
     # GET /concepts.json
     def index
-        @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
+        
+        category = params[:category]
+        
+        logger.debug "*******" + category.inspect
+
+        if category == ''
+            @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:id)
+        else
+            @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:id)
+        end        
+        
+        @categorys = Concept.group('category')
     end
 
     # GET /concepts/1

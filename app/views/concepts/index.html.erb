@@ -5,8 +5,19 @@
             <div class="col-sm-12 col-md-12 main">
                 
                 <h2 class="sub-header"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Listing Concepts</h2>
+                
+                <div class="row">
+                </div>
                     
                 <div class="table-responsive">
+                    
+                    <select id="cetegory" class="form-control" style="width: 100px;" onchange="changeCategory()">
+                    <option value="">Category</option>  
+                    <% @categorys.each do |category| %>
+                    <option value="<%= category.category %>"><%= Concept::CATEGORIES[category.category] %></option>
+                    <% end %>  
+                    </select>
+                    
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -42,3 +53,14 @@
             
         </div>
     </div>
+    
+    <script type="text/javascript">
+    
+    function changeCategory() {
+        location = "/concepts?category=" + $('#cetegory').val();
+        
+    }
+    
+    </script>
+    
+    
