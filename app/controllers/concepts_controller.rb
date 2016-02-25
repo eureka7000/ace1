@@ -4,16 +4,16 @@ class ConceptsController < ApplicationController
     before_action :set_concept, only: [:show, :edit, :update, :destroy]
     layout '/layouts/admin_main'
 
-  # GET /concepts
-  # GET /concepts.json
-  def index
-    @concepts = Concept.all
-  end
+    # GET /concepts
+    # GET /concepts.json
+    def index
+        @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
+    end
 
-  # GET /concepts/1
-  # GET /concepts/1.json
-  def show
-  end
+    # GET /concepts/1
+    # GET /concepts/1.json
+    def show
+    end
 
   # GET /concepts/new
   def new

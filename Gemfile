@@ -15,6 +15,7 @@ gem "thin"
 gem 'carrierwave-aws'
 gem 'mini_magick'
 gem 'fog'
+gem 'will_paginate-bootstrap'
 
 group :development, :test do
   gem 'byebug'

@@ -31,6 +31,9 @@
                         <% end %>
                         </tbody>
                     </table>
+                    
+                    <%= will_paginate @notifications, renderer: BootstrapPagination::Rails %>
+                    
                 </div>
             
                 <%= link_to 'New Concept', new_concept_path, :class => 'btn btn-primary align-right' %>
