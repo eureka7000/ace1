@@ -6,7 +6,7 @@ class UnitConcept < ActiveRecord::Base
     has_many :explanations
     
     DESC_TYPES = {
-        :unit_concept_desc => "Unit Concept",
+        :unit_concept => "Unit Concept",
         :explanation => "Explanation",
         :exercise => "Exercise"
     }    
