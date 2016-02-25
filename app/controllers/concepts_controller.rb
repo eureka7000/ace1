@@ -12,7 +12,7 @@ class ConceptsController < ApplicationController
         
         logger.debug "*******" + category.inspect
 
-        if category == ''
+        if category.nil?
             @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:id)
         else
             @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:id)
