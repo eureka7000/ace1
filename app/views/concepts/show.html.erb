@@ -19,31 +19,32 @@
                 <table class="table table-hover table-bordered" >
                     <thead>
                         <tr>
-                            <th>
-                                Unit Concept
-                                &nbsp;&nbsp;
-                                <button type="button" class="btn-u btn-u-green btn-brd rounded-4x btn-u-xs" onclick="$('#unitConceptModal').modal()"><i class="fa fa-plus"></i></button>
-                            </th>
-                            <th> Explanation </th>
-                            <th></th>
+                            <th>Code</th>
+                            <th>Unit Concept</th>
+                            <th>Unit Concept Count</th>
+                            <th>Explanation Count</th>
+                            <th>Excecise</th>
+                            <th><i class="fa fa-cog"></i></th>
                         </tr>    
                     </thead>
                     <tbody>
                         <% @concept.unit_concepts.each do | unit_concept | %>
                         <tr>
+                            <td><%= unit_concept.code %></td>
+                            <td><a href="/unit_concepts/<%= unit_concept.id %>"><%= unit_concept.name %></a></td>
+                            <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'unit_concept').count %>
+                            <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'explanation').count %></td>
+                            <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'exercise').count %></td>
                             <td>
-                                ( <%= unit_concept.code %> ) 
-                                <a href="/unit_concepts/<%= unit_concept.id %>"><%= unit_concept.name %></a>
-                                <a href="javascript:unitConceptModi(<%= unit_concept.id %>)"><span class="icon-wrench"></span></a>
-                                <a href="javascript:unitConceptDel(<%= unit_concept.id %>)"><span class="icon-trash"></span></a>
-                                <a href="javascript:explanationModal()"><span class="label label-danger">explanation</span></a>
+                                <button class="btn btn-warning btn-xs" onclick="unitConceptModi(<%= unit_concept.id %>)"><i class="fa fa-pencil"></i> Edit</button>
+                                <button class="btn btn-danger btn-xs" onclick="unitConceptDel(<%= unit_concept.id %>)"><i class="fa fa-trash-o"></i> Delete</button>
                             </td>
-                            <td></td>
-                            <td></td>
                         </tr>        
                         <% end %>
                     </tbody>    
                 </table>   
+                
+                <button type="button" class="btn-u btn-u-blue" onclick="$('#unitConceptModal').modal()"><i class="fa fa-plus"></i> Add Unit Concept</button>
              
             </div>    
             
