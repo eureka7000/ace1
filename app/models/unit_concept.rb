@@ -8,7 +8,8 @@ class UnitConcept < ActiveRecord::Base
     DESC_TYPES = {
         :unit_concept => "Unit Concept",
         :explanation => "Explanation",
-        :exercise => "Exercise"
-    }    
+        :exercise => "Exercise",
+        :video => "Video"
+    }
     
 end

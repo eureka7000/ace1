@@ -26,7 +26,11 @@
             <div class="cbp-item <%= unit_concept_desc.desc_type %>">
                 <div class="cbp-caption margin-bottom-20">
                     <div class="cbp-caption-defaultWrap">
+                        <% if unit_concept_desc.desc_type == 'video' %>
+                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <% else %>
                         <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
+                        <% end %>
                     </div>
                     <div class="cbp-caption-activeWrap">
                         <div class="cbp-l-caption-alignCenter">
@@ -41,7 +45,13 @@
                 </div>
                 <div class="cbp-title-dark">
                     <div class="cbp-l-grid-agency-title blue "><p class="text-primary"><%= unit_concept_desc.desc_type %></p></div>
-                    <div class="cbp-l-grid-agency-desc"><%= unit_concept_desc.memo %></div>
+                    <div class="cbp-l-grid-agency-desc">
+                        <% if unit_concept_desc.desc_type == 'video' %>
+                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <% else %>
+                        <%= unit_concept_desc.memo %>
+                        <% end %>
+                    </div>
                 </div>
             </div>            
                 
@@ -65,7 +75,7 @@
                     <div class="row">
                         <section class="col col-2">
                             <label class="select">
-                                <select name="unit_concept_desc[desc_type]">
+                                <select id="unit_concept_desc_select" name="unit_concept_desc[desc_type]" onchange="changedUnitCocenpt()">
                                 <option value="">항목선택</option>
                                 <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
                                 <option value="<%= key %>"><%= value %></option>
@@ -75,9 +85,12 @@
                             </label>    
                         </section>    
                         <section class="col col-4">
-                            <label for="file" class="input input-file">
+                            <label id="file_label" for="file" class="input input-file">
                                 <div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
                             </label>
+                            <label id="video_label" class="input" style="display:none">
+                                <input type="text" name="unit_concept_desc[video]" class="form-control" placeholder="video url" />
+                            </label>                            
                         </section>
                         <section class="col col-4">
                             <label class="input">
@@ -97,3 +110,19 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    function changedUnitCocenpt() {
+        
+        if ( $('#unit_concept_desc_select').val() == 'video' ) {
+            $('#file_label').hide();
+            $('#video_label').show();
+        } else {
+            $('#video_label').hide();
+            $('#file_label').show();
+        }
+        
+    }
+
+</script>
