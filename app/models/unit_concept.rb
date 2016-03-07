@@ -9,7 +9,8 @@ class UnitConcept < ActiveRecord::Base
         :unit_concept => "Unit Concept",
         :explanation => "Explanation",
         :exercise => "Exercise",
-        :video => "Video"
+        :video => "Video",
+        :link => "link"
     }
     
 end

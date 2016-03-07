@@ -21,10 +21,11 @@
                         <tr>
                             <th>Code</th>
                             <th>Unit Concept</th>
-                            <th>Unit Concept Count</th>
-                            <th>Explanation Count</th>
-                            <th>Excecise</th>
-                            <th><i class="fa fa-cog"></i></th>
+                            <th class="col-md-1">Concepts</th>
+                            <th class="col-md-1">Explanations</th>
+                            <th class="col-md-1">Excecises</th>
+                            <th class="col-md-1">Videos</th>
+                            <th class="col-md-2"><i class="fa fa-cog"></i></th>
                         </tr>    
                     </thead>
                     <tbody>
@@ -35,6 +36,7 @@
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'unit_concept').count %>
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'explanation').count %></td>
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'exercise').count %></td>
+                            <th><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'video').count %></th>
                             <td>
                                 <button class="btn btn-warning btn-xs" onclick="unitConceptModi(<%= unit_concept.id %>)"><i class="fa fa-pencil"></i> Edit</button>
                                 <button class="btn btn-danger btn-xs" onclick="unitConceptDel(<%= unit_concept.id %>)"><i class="fa fa-trash-o"></i> Delete</button>

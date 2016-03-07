@@ -25,13 +25,15 @@
             
             <div class="cbp-item <%= unit_concept_desc.desc_type %>">
                 <div class="cbp-caption margin-bottom-20">
+                    
                     <div class="cbp-caption-defaultWrap">
                         <% if unit_concept_desc.desc_type == 'video' %>
-                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <!-- <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
                         <% else %>
                         <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
                         <% end %>
                     </div>
+                    
                     <div class="cbp-caption-activeWrap">
                         <div class="cbp-l-caption-alignCenter">
                             <div class="cbp-l-caption-body">
@@ -42,16 +44,30 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
+                
                 <div class="cbp-title-dark">
-                    <div class="cbp-l-grid-agency-title blue "><p class="text-primary"><%= unit_concept_desc.desc_type %></p></div>
+                    
+                    <% if unit_concept_desc.desc_type == 'video' %>
                     <div class="cbp-l-grid-agency-desc">
-                        <% if unit_concept_desc.desc_type == 'video' %>
                         <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        <% else %>
-                        <%= unit_concept_desc.memo %>
-                        <% end %>
+                    </div>                    
+                    <% end %>
+                    
+                    <div class="cbp-l-grid-agency-title blue ">
+                        <p class="text-primary">
+                            <%= unit_concept_desc.desc_type %>
+                            <%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
+                        </p>
                     </div>
+                    
+                    <% unless unit_concept_desc.desc_type == 'video' %>
+                    <div class="cbp-l-grid-agency-desc">
+                        <%= unit_concept_desc.memo %>
+                    </div>
+                    <% end %>
+                    
                 </div>
             </div>            
                 
@@ -90,7 +106,11 @@
                             </label>
                             <label id="video_label" class="input" style="display:none">
                                 <input type="text" name="unit_concept_desc[video]" class="form-control" placeholder="video url" />
-                            </label>                            
+                            </label>
+                            <label id="link_label" class="input" style="display:none">
+                                <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer"></i>
+                                <input type="text" name="unit_concept_desc[link]" class="form-control" placeholder="related concept" />
+                            </label>    
                         </section>
                         <section class="col col-4">
                             <label class="input">
@@ -111,18 +131,47 @@
 
 </div>
 
+<div class="modal fade" id="conceptSearchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myModalLabel1" class="modal-title">Concept Search</h4>
+            </div>
+
+            <div class="modal-body"></div>
+            
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
+                <button class="btn-u" type="button">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     function changedUnitCocenpt() {
         
-        if ( $('#unit_concept_desc_select').val() == 'video' ) {
+        if ( $('#unit_concept_desc_select').val() == 'video') {
             $('#file_label').hide();
             $('#video_label').show();
+            $('#link_label').hide();
+        } else if ($('#unit_concept_desc_select').val() == 'link') {    
+            $('#file_label').hide();
+            $('#video_label').hide();            
+            $('#link_label').show();            
         } else {
             $('#video_label').hide();
             $('#file_label').show();
+            $('#link_label').hide();
         }
         
+    }
+    
+    function conceptSearch() {
+        $('#conceptSearchModal').modal();
     }
 
 </script>
