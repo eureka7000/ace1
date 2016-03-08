@@ -3,6 +3,8 @@ Rails.application.routes.draw do
     resources :unit_concept_descs
     resources :explanations
     resources :unit_concepts
+    
+    get '/concepts/get_concepts' => 'concepts#get_concepts'
     resources :concepts
     resources :schools
     resources :payments

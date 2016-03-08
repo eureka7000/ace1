@@ -4,6 +4,13 @@ class ConceptsController < ApplicationController
     before_action :set_concept, only: [:show, :edit, :update, :destroy]
     layout '/layouts/admin_main'
 
+    def get_concepts
+       
+        concepts = Concept.where('category = ? and sub_category = ?',params[:category], params[:sub_category])
+        render :json => concepts
+        
+    end    
+
     # GET /concepts
     # GET /concepts.json
     def index

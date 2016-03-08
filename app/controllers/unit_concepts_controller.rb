@@ -13,7 +13,7 @@ class UnitConceptsController < ApplicationController
     # GET /unit_concepts/1
     # GET /unit_concepts/1.json
     def show
-        
+        @concepts = Concept.all
     end
 
     # GET /unit_concepts/new
