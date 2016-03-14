@@ -159,22 +159,34 @@
                     </div>    
                     
                     <div class="col-md-3">
-                        <select id="concept" class="form-control">
+                        <select id="concept" class="form-control" onchange="getUnitConcepts()">
                             <option value="">--- Concept ---</option>
                         </select>
                     </div>
                     
-                </div>    
+                </div> 
                 
-
-                    
-                    
+                <hr>   
+                
+                <table id="unit_concepts" class="table table-bordered" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>Unit Concept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="text-center">No Data</td>
+                        </tr>
+                    </tbody>
+                </table>                    
                 
             </div>
             
             <div class="modal-footer">
                 <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
-                <button class="btn-u" type="button">Save changes</button>
             </div>
         </div>
     </div>
@@ -234,6 +246,40 @@
                 alert("try to again. please.");
             }
         });                    
+    }
+    
+    function getUnitConcepts() {
+        
+        var url = "/concepts/get_unit_concepts?concept=" + $('#concept').val();
+        
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                
+                $('#unit_concepts > tbody').empty();
+                
+                for (var i=0; i< data.length; i++) {
+                    
+                    var html = $("<tr>"
+                        + "<td>" + (i+1) + "</td>"
+                        + "<td>" + data[i].code + "</td>"
+                        + "<td>" + data[i].name + "</td>"
+                        + "</tr>");
+                        
+                    $('#unit_concepts > tbody:last').append(html);                        
+                    
+                }
+                
+                $('#unit_concepts').show();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });         
+                
     }
     
     </script>

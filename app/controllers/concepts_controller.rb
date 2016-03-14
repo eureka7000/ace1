@@ -10,6 +10,13 @@ class ConceptsController < ApplicationController
         render :json => concepts
         
     end    
+    
+    def get_unit_concepts
+       
+        unit_concepts = UnitConcept.where('concept_id = ?', params[:concept])
+        render :json => unit_concepts
+        
+    end    
 
     # GET /concepts
     # GET /concepts.json
