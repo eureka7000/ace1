@@ -29,6 +29,8 @@
                     <div class="cbp-caption-defaultWrap">
                         <% if unit_concept_desc.desc_type == 'video' %>
                         <!-- <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+                        <% elsif unit_concept_desc.desc_type == 'link' %>
+                        <!-- <a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a> -->
                         <% else %>
                         <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
                         <% end %>
@@ -52,7 +54,12 @@
                     <% if unit_concept_desc.desc_type == 'video' %>
                     <div class="cbp-l-grid-agency-desc">
                         <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    </div>                    
+                    </div>
+                    
+                    <% elsif unit_concept_desc.desc_type == 'link' %>
+                    <div class="cbp-l-grid-agency-desc">
+                        <a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                    </div>    
                     <% end %>
                     
                     <div class="cbp-l-grid-agency-title blue ">
@@ -62,14 +69,14 @@
                         </p>
                     </div>
                     
-                    <% unless unit_concept_desc.desc_type == 'video' %>
+                    <% unless unit_concept_desc.desc_type == 'video' && unit_concept_desc.link == 'link' %>
                     <div class="cbp-l-grid-agency-desc">
                         <%= unit_concept_desc.memo %>
                     </div>
                     <% end %>
                     
                 </div>
-            </div>            
+            </div>
                 
             <% end %> 
 
@@ -109,7 +116,8 @@
                             </label>
                             <label id="link_label" class="input" style="display:none">
                                 <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
-                                <input type="text" name="unit_concept_desc[link]" class="form-control" placeholder="related concept" />
+                                <input type="text" id="unit_concept_desc" disabled class="form-control" placeholder="related concept" />
+                                <input type="hidden" id="unit_concept_id" name="unit_concept_desc[link]">
                             </label>    
                         </section>
                         <section class="col col-4">
@@ -168,7 +176,7 @@
                 
                 <hr>   
                 
-                <table id="unit_concepts" class="table table-bordered" style="display:none">
+                <table id="unit_concepts" class="table table-bordered table-hover" style="display:none">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -263,7 +271,7 @@
                 
                 for (var i=0; i< data.length; i++) {
                     
-                    var html = $("<tr>"
+                    var html = $("<tr onclick='setUnitConcept(" + data[i].id  + ", \"" + data[i].name + "\")'>"
                         + "<td>" + (i+1) + "</td>"
                         + "<td>" + data[i].code + "</td>"
                         + "<td>" + data[i].name + "</td>"
@@ -280,6 +288,12 @@
             }
         });         
                 
+    }
+    
+    function setUnitConcept(unitConceptId, unitConceptName) {
+        $('#unit_concept_id').val(unitConceptId);
+        $('#unit_concept_desc').val(unitConceptName);
+        $('#conceptSearchModal').modal('hide');
     }
     
     </script>

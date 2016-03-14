@@ -37,7 +37,7 @@ class UnitConceptDescsController < ApplicationController
     end    
 
     def unit_concept_desc_params
-        params.require(:unit_concept_desc).permit(:memo, :file_name, :unit_concept_id, :desc_type, :video)
+        params.require(:unit_concept_desc).permit(:memo, :file_name, :unit_concept_id, :desc_type, :video, :link)
     end
     
 end
