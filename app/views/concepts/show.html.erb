@@ -81,6 +81,28 @@
                         <p><input type="text" class="form-control" id="unit_concept_name" placeholder="name" /></p>
                     </div>
                 </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Grade</h4>
+                        <select class="inline form-control">
+                        <option value=""></option>
+                        <% UnitConcept::GRADES.each_pair do |key, value| %>
+                        <option value="<%= key %>"><%= value %></option>
+                        <% end %>    
+                        </select>    
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Level</h4>
+                        <select class="inline form-control">
+                        <option value=""></option>
+                        <% (1..5).each do |idx|%>    
+                        <option value="<%= idx %>"><%= idx %></option>
+                        <% end %>
+                        </select>    
+                    </div>                    
+                </div>    
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>

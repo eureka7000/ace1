@@ -13,4 +13,13 @@ class UnitConcept < ActiveRecord::Base
         :link => "link"
     }
     
+    GRADES = {
+        1 => '중1',
+        2 => '중2',
+        3 => '중3',
+        4 => '고1',
+        5 => '고2',
+        6 => '고3'
+    }
+    
 end
