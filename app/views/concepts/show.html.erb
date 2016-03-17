@@ -21,6 +21,8 @@
                         <tr>
                             <th>Code</th>
                             <th>Unit Concept</th>
+                            <th class="col-md-1">Grade</th>
+                            <th class="col-md-1">Level</th>
                             <th class="col-md-1">Concepts</th>
                             <th class="col-md-1">Explanations</th>
                             <th class="col-md-1">Excecises</th>
@@ -34,6 +36,21 @@
                         <tr>
                             <td><%= unit_concept.code %></td>
                             <td><a href="/unit_concepts/<%= unit_concept.id %>"><%= unit_concept.name %></a></td>
+                            <td><%= UnitConcept::GRADES[unit_concept.grade] %></td>
+                            <td><% unless unit_concept.level.nil? %>
+                                <% rst = 5 - unit_concept.level %>
+                                <span style="color:red">
+                                <% (1..unit_concept.level).each do |idx| %>
+                                *
+                                <% end%>
+                                </span>
+                                <span style="color:gray">
+                                <% (1..rst).each do |idx| %>
+                                *
+                                <% end %>
+                                </span>
+                                <% end %>
+                            </td>
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'unit_concept').count %>
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'explanation').count %></td>
                             <td><%= unit_concept.unit_concept_descs.where('desc_type = ?', 'exercise').count %></td>
@@ -48,7 +65,7 @@
                     </tbody>    
                 </table>   
                 
-                <button type="button" class="btn-u btn-u-blue" onclick="$('#unitConceptModal').modal()"><i class="fa fa-plus"></i> Add Unit Concept</button>
+                <button type="button" class="btn-u btn-u-blue" onclick="$('#method').val(); $('#unitConceptModal').modal();"><i class="fa fa-plus"></i> Add Unit Concept</button>
              
             </div>    
             
@@ -85,7 +102,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <h4>Grade</h4>
-                        <select class="inline form-control">
+                        <select id="grade" class="inline form-control">
                         <option value=""></option>
                         <% UnitConcept::GRADES.each_pair do |key, value| %>
                         <option value="<%= key %>"><%= value %></option>
@@ -94,51 +111,24 @@
                     </div>
                     <div class="col-md-6">
                         <h4>Level</h4>
-                        <select class="inline form-control">
+                        <select id="level" class="inline form-control">
                         <option value=""></option>
                         <% (1..5).each do |idx|%>    
                         <option value="<%= idx %>"><%= idx %></option>
                         <% end %>
                         </select>    
                     </div>                    
-                </div>    
+                </div>
                 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
+                <button id="unit_cocept_btn" type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- unit concept modal -->
-<div class="modal fade" id="explanationModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel4">Explanation</h4>
-            </div>
-            <div class="modal-body">
-                
-                <input type="hidden" id="explanation_unit_concept_id" value="" />
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>Code</h4>
-                        <p><input type="text" class="form-control" id="explanation_code" placeholder="code" /></p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-u btn-u-blue">추가</button>
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
 
@@ -147,10 +137,6 @@
 		    insertUnitConcept();
 	    }
     });
-    
-    function explanationModal() {
-        $('#explanationModal').modal();
-    }
     
     function unitConceptDel(id) {
         
@@ -179,14 +165,16 @@
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             dataType: "JSON",
             success: function(data) {
-                
                 $('#method').val('update');
                 $('#unit_concept_id').val(data.id);
                 $('#unit_concept_code').val(data.code);
                 $('#unit_concept_name').val(data.name);
-                $('#unitConceptModal').modal();
+                $('#grade').val(data.grade);
+                $('#level').val(data.level);
+                $('#unitConceptModal').modal('show');
             },
-            error: function(err){}
+            error: function(err){
+            }
         });        
         
     }
@@ -194,12 +182,39 @@
     function insertUnitConcept() {
         
         var url, data, type;
+        
+        $('#loading').show();
+        
+        if ($('#unit_concept_code').val() == '') {
+            alert('Code를 입력하십시요.');
+            $('#loading').hide();
+            return false;
+        }
+        
+        if ($('#unit_concept_name').val() == '') {
+            alert('Name을 입력하십시요.');
+            $('#loading').hide();
+            return false;
+        }
+        
+        if ($('#grade').val() == '') {
+            alert('Grade를 선택하세요.');
+            $('#loading').hide();
+            return false;
+        }
+        
+        if ($('#level').val() == '') {
+            alert('Level을 선택하세요.');
+            $('#loading').hide();
+            return false;
+        }
 
         data = {
             "unit_concept" : {
                 "code"       : $('#unit_concept_code').val(),
                 "name"       : $('#unit_concept_name').val(),
-                "level"      : null,
+                "grade"      : $('#grade').val(),
+                "level"      : $('#level').val(),
                 "concept_id" : <%= @concept.id %>
             }
         };
@@ -223,9 +238,12 @@
             },
             error: function(err){
                 alert('실패했습니다.');
+                $('#loading').hide();
                 return false;
             }
-        });        
+        });    
+        
+        $('#unit_cocept_btn').button('reset');    
 
     }
     

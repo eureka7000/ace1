@@ -13,7 +13,14 @@ class UnitConceptsController < ApplicationController
     # GET /unit_concepts/1
     # GET /unit_concepts/1.json
     def show
+        
         @concepts = Concept.all
+        
+        respond_to do |format|
+            format.html { render :show }
+            format.json { render json: @unit_concept }
+        end
+        
     end
 
     # GET /unit_concepts/new
@@ -25,37 +32,25 @@ class UnitConceptsController < ApplicationController
     def edit
     end
 
-    # POST /unit_concepts
-    # POST /unit_concepts.json
     def create
-        
         @unit_concept = UnitConcept.new(unit_concept_params)
-
-        respond_to do |format|
-            if @unit_concept.save
-                format.html { redirect_to @unit_concept, notice: 'Unit concept was successfully created.' }
-                format.json { render :show, status: :created, location: @unit_concept }
-            else
-                format.html { render :new }
-                format.json { render json: @unit_concept.errors, status: :unprocessable_entity }
-            end
-        end
+        @unit_concept.save
         
+        ret = {
+            status: 'success'
+        }
+        
+        render json: ret
     end
 
-  # PATCH/PUT /unit_concepts/1
-  # PATCH/PUT /unit_concepts/1.json
-  def update
-    respond_to do |format|
-      if @unit_concept.update(unit_concept_params)
-        format.html { redirect_to @unit_concept, notice: 'Unit concept was successfully updated.' }
-        format.json { render :show, status: :ok, location: @unit_concept }
-      else
-        format.html { render :edit }
-        format.json { render json: @unit_concept.errors, status: :unprocessable_entity }
-      end
+    def update
+        @unit_concept.update(unit_concept_params)
+        ret = {
+            status: 'success'
+        }
+        
+        render json: ret
     end
-  end
 
   # DELETE /unit_concepts/1
   # DELETE /unit_concepts/1.json
@@ -75,6 +70,6 @@ class UnitConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_concept_params
-      params.require(:unit_concept).permit(:code, :name, :level, :concept_id)
+      params.require(:unit_concept).permit(:code, :name, :level, :concept_id, :grade)
     end
 end

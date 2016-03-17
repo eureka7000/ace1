@@ -1,1 +1,12 @@
 /* Add here all your css styles (customizations) */
+
+#loading
+{
+    position:fixed;
+    _position:absolute;
+    top: 50%;
+    left:47%;
+    padding:2px 5px;
+    z-index: 5000;
+    color:#fff;
+}
