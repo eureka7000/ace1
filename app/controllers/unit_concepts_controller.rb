@@ -70,6 +70,6 @@ class UnitConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def unit_concept_params
-      params.require(:unit_concept).permit(:code, :name, :level, :concept_id, :grade)
+      params.require(:unit_concept).permit(:code, :name, :level, :concept_id, :grade, :exercise_yn)
     end
 end
