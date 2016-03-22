@@ -44,6 +44,20 @@
                         </div>
                         
                         <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="concept[exercise_yn]" value="concept" checked> Concept
+                                    </label>
+                                    &nbsp;&nbsp;
+                                    <label>     
+                                        <input type="radio" name="concept[exercise_yn]" value="exercise"> Exercise
+                                    </label>
+                                </div>
+                            </div>
+                        </div>                        
+                        
+                        <div class="form-group">
                             <%= f.label :concept_code, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :concept_code, :class => 'form-control' %>
