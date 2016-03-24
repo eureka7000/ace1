@@ -65,20 +65,19 @@ class ConceptsController < ApplicationController
       
   end
   
-
-  # PATCH/PUT /concepts/1
-  # PATCH/PUT /concepts/1.json
-  def update
-    respond_to do |format|
-      if @concept.update(concept_params)
-        format.html { redirect_to @concept, notice: 'Concept was successfully updated.' }
-        format.json { render :show, status: :ok, location: @concept }
-      else
-        format.html { render :edit }
-        format.json { render json: @concept.errors, status: :unprocessable_entity }
-      end
+    def update
+        
+        respond_to do |format|
+            if @concept.update(concept_params)
+                format.html { redirect_to concepts_path, notice: 'Concept was successfully updated.' }
+                format.json { render :show, status: :ok, location: @concept }
+            else
+                format.html { render :edit }
+                format.json { render json: @concept.errors, status: :unprocessable_entity }
+            end
+        end
+        
     end
-  end
 
   # DELETE /concepts/1
   # DELETE /concepts/1.json
