@@ -49,21 +49,22 @@ class ConceptsController < ApplicationController
   def edit
   end
 
-  # POST /concepts
-  # POST /concepts.json
   def create
-    @concept = Concept.new(concept_params)
+      
+      @concept = Concept.new(concept_params)
 
-    respond_to do |format|
-      if @concept.save
-        format.html { redirect_to @concept, notice: 'Concept was successfully created.' }
-        format.json { render :show, status: :created, location: @concept }
-      else
-        format.html { render :new }
-        format.json { render json: @concept.errors, status: :unprocessable_entity }
+      respond_to do |format|
+          if @concept.save
+              format.html { redirect_to concepts_path, notice: 'Concept was successfully created.' }
+              format.json { render :show, status: :created, location: @concept }
+          else
+              format.html { render :new }
+              format.json { render json: @concept.errors, status: :unprocessable_entity }
+          end
       end
-    end
+      
   end
+  
 
   # PATCH/PUT /concepts/1
   # PATCH/PUT /concepts/1.json
@@ -97,6 +98,6 @@ class ConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def concept_params
-      params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name)
+      params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn)
     end
 end
