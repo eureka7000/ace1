@@ -6,9 +6,9 @@ class ImageUploader < CarrierWave::Uploader::Base
     
     def store_dir
         if Rails.env.production?
-            "uploads/#{model.unit_concept.id}/#{model.class.to_s.underscore}/#{model.id}"
+            "uploads/#{model.class.to_s.underscore}/#{model.id}"
         else
-            "tests/#{model.unit_concept.id}/#{model.class.to_s.underscore}/#{model.id}"            
+            "tests/#{model.class.to_s.underscore}/#{model.id}"            
         end        
     end
     

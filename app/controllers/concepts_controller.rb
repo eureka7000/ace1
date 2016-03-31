@@ -1,7 +1,7 @@
 class ConceptsController < ApplicationController
 
     before_action :authenticate_admin_user!
-    before_action :set_concept, only: [:show, :edit, :update, :destroy]
+    before_action :set_concept, only: [:show, :edit, :update, :destroy, :exercise]
     layout '/layouts/admin_main'
 
     def get_concepts
@@ -48,22 +48,28 @@ class ConceptsController < ApplicationController
   # GET /concepts/1/edit
   def edit
   end
+  
+    def exercise
+        
+    end    
+          
 
-  def create
+    def create
       
-      @concept = Concept.new(concept_params)
+        @concept = Concept.new(concept_params)
 
-      respond_to do |format|
-          if @concept.save
-              format.html { redirect_to concepts_path, notice: 'Concept was successfully created.' }
-              format.json { render :show, status: :created, location: @concept }
-          else
-              format.html { render :new }
-              format.json { render json: @concept.errors, status: :unprocessable_entity }
-          end
-      end
+        respond_to do |format|
+            if @concept.save
+                format.html { redirect_to concepts_path, notice: 'Concept was successfully created.' }
+                format.json { render :show, status: :created, location: @concept }
+            else
+                format.html { render :new }
+                format.json { render json: @concept.errors, status: :unprocessable_entity }
+            end
+        end
       
-  end
+    end
+    
   
     def update
         

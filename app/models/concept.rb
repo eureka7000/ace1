@@ -1,6 +1,7 @@
 class Concept < ActiveRecord::Base
     
     has_many :unit_concepts
+    has_many :concept_exercises
     
     CATEGORIES = {
         "a000" => "총괄",
@@ -54,6 +55,14 @@ class Concept < ActiveRecord::Base
         "j920" => "확률의 계산",
         "j930" => "자료의 정리",
         "j940" => "자료의 분석"
+    }
+    
+    DESC_TYPES = {
+        :concept => "Concept",
+        :explanation => "Explanation",
+        :exercise => "Exercise",
+        :video => "Video",
+        :link => "link"
     }
     
 end

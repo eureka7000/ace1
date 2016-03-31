@@ -1,0 +1,326 @@
+<div class="container-fluid" style="margin-top: 50px">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %></h2>
+        </div>
+    </div>
+    
+    <!--=== Cube-Portfdlio ===-->
+    <div class="cube-portfolio margin-bottom-20">
+        <div class="content-xs">
+            <div id="filters-container" class="cbp-l-filters-text content-xs">
+                <div data-filter="*" class="cbp-filter-item cbp-filter-item-active"> All </div> |
+                <% idx = 0 %>
+                <% Concept::DESC_TYPES.each_pair do |key, value| %>
+                <div data-filter=".<%= key %>" class="cbp-filter-item "> <%= value %> </div><% unless idx == Concept::DESC_TYPES.count - 1 %> | <% end %>
+                <% idx = idx + 1 %>
+                <% end %>
+            </div>
+        </div>
+
+        <div id="grid-container" class="cbp-l-grid-agency">
+
+            <% @concept.concept_exercises.each do |concept_exercise| %>
+            
+            <div class="cbp-item <%= concept_exercise.desc_type %>">
+                <div class="cbp-caption margin-bottom-20">
+                    
+                    <div class="cbp-caption-defaultWrap">
+                        <% if concept_exercise.desc_type == 'video' %>
+                        <% elsif concept_exercise.desc_type == 'link' %>
+                        <% else %>
+                        <img src="<%= concept_exercise.file_name.medium %>" alt="">
+                        <% end %>
+                    </div>
+                    
+                    <div class="cbp-caption-activeWrap">
+                        <div class="cbp-l-caption-alignCenter">
+                            <div class="cbp-l-caption-body">
+                                <ul class="link-captions no-bottom-space">
+                                    <li><a href="<%= concept_exercise.file_name %>" class="cbp-lightbox" data-title="<%= concept_exercise.file_name %>"><i class="rounded-x fa fa-search"></i></a></li>
+                                    <li><%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, concept_exercise, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="cbp-title-dark">
+                    
+                    <% if concept_exercise.desc_type == 'video' %>
+                    <div class="cbp-l-grid-agency-desc">
+                        <iframe src="https://player.vimeo.com/video/<%= concept_exercise.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    </div>
+                    
+                    <% elsif concept_exercise.desc_type == 'link' %>
+                    <div class="cbp-l-grid-agency-desc">
+                        <a href="/concepts/<%= concept_exercise.link %>"><%= Concept.find(concept_exercise.link).name %></a>
+                    </div>    
+                    <% end %>
+                    
+                    <div class="cbp-l-grid-agency-title blue ">
+                        <p class="text-primary">
+                            <%= concept_exercise.desc_type %>
+                            <%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, concept_exercise, method: :delete, data: { confirm: 'Are you sure?' } %>
+                        </p>
+                    </div>
+                    
+                    <% unless concept_exercise.desc_type == 'video' && concept_exercise.link == 'link' %>
+                    <div class="cbp-l-grid-agency-desc">
+                        <%= concept_exercise.memo %>
+                    </div>
+                    <% end %>
+                    
+                </div>
+            </div>
+                
+            <% end %> 
+
+        </div><!--/end Grid Container-->
+    </div>
+    <!--=== End Cube-Portfdlio ===-->
+
+    <div class="row">
+
+        <div class="col-md-12">
+            
+            <form action="/concept_exercises" method="post" enctype="multipart/form-data" class="sky-form" novalidate="novalidate" charset="utf-8">
+                
+                <%= token_tag nil %>
+                
+                <input type="hidden" name="concept_exercise[concept_id]" value="<%= @concept.id %>" />
+
+                <fieldset>
+                    <div class="row">
+                        <section class="col col-2">
+                            <label class="select">
+                                <select id="unit_concept_desc_select" name="concept_exercise[desc_type]" onchange="changedUnitCocenpt()">
+                                <option value="">항목선택</option>
+                                <% Concept::DESC_TYPES.each_pair do |key, value| %>                                
+                                <option value="<%= key %>"><%= value %></option>
+                                <% end %>
+                            </select>    
+                            <i></i>
+                            </label>    
+                        </section>    
+                        <section class="col col-4">
+                            <label id="file_label" for="file" class="input input-file">
+                                <div class="button state-success"><input type="file" name="concept_exercise[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
+                            </label>
+                            <label id="video_label" class="input" style="display:none">
+                                <input type="text" name="concept_exercise[video]" class="form-control" placeholder="video url" />
+                            </label>
+                            <label id="link_label" class="input" style="display:none">
+                                <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
+                                <input type="text" id="unit_concept_desc" disabled class="form-control" placeholder="related concept" />
+                                <input type="hidden" id="unit_concept_id" name="unit_concept_desc[link]">
+                            </label>    
+                        </section>
+                        <section class="col col-4">
+                            <label class="input">
+                                <input type="text" name="concept_exercise[memo]" placeholder="code">
+                            </label>
+                        </section>
+                        <section class="col col-2">
+                            <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                            <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>
+                        </section>    
+                    </div>
+                </fieldset>
+                
+            </form>
+            
+        </div>    
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="conceptSearchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myModalLabel1" class="modal-title">Concept Search</h4>
+            </div>
+
+            <div class="modal-body">
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <select id="category" class="form-control inline-block" onchange="changedCategory()">
+                            <option value="">--- Category ---</option>
+                            <% Concept::CATEGORIES.each_pair do |key, value| %>
+                            <option value="<%= key %>"><%= value %></option>
+                            <% end %>
+                        </select>                            
+                    </div>    
+                    
+                    <div class="col-md-3">
+                        <select id="sub_category" class="form-control" onchange="getConcepts()">
+                            <option value="">--- Sub Category ---</option>
+                        </select>
+                    </div>    
+                    
+                    <div class="col-md-3">
+                        <select id="concept" class="form-control" onchange="getUnitConcepts()">
+                            <option value="">--- Concept ---</option>
+                        </select>
+                    </div>
+                    
+                </div> 
+                
+                <hr>   
+                
+                <table id="unit_concepts" class="table table-bordered table-hover" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>Unit Concept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="text-center">No Data</td>
+                        </tr>
+                    </tbody>
+                </table>                    
+                
+            </div>
+            
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    
+    <% index = 0 %>
+
+    var options = [
+    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+    <%      index = index + 1  %>    
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
+    <% end %>
+    ]
+    
+    function changedCategory() {
+        
+        $('#sub_category').empty();
+        $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value','') ); 
+        
+        var cetegory_val = $('#category').val();
+        var divChar = '';
+        
+        if (cetegory_val != '') {
+            divChar = cetegory_val.substring(0,1);
+        }
+        
+        $.each(options, function(i) {
+            if (options[i].values.substring(0,1) == divChar) {
+                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
+            }
+        });
+    
+    }    
+    
+    function getConcepts() {
+        
+        var url = "/concepts/get_concepts?category=" + $('#category').val() + "&sub_category=" + $('#sub_category').val();
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                $('#concept').empty();
+                $('#concept').append( $('<option>').text('--- Concept ---').attr('value','') );
+                
+                for (var i=0; i<data.length; i++) {
+                    $('#concept').append( $('<option>').text(data[i].concept_name).attr('value',data[i].id));
+                }
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });                    
+    }
+    
+    function getUnitConcepts() {
+        
+        var url = "/concepts/get_unit_concepts?concept=" + $('#concept').val();
+        
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                
+                $('#unit_concepts > tbody').empty();
+                
+                for (var i=0; i< data.length; i++) {
+                    
+                    var html = $("<tr onclick='setUnitConcept(" + data[i].id  + ", \"" + data[i].name + "\")'>"
+                        + "<td>" + (i+1) + "</td>"
+                        + "<td>" + data[i].code + "</td>"
+                        + "<td>" + data[i].name + "</td>"
+                        + "</tr>");
+                        
+                    $('#unit_concepts > tbody:last').append(html);                        
+                    
+                }
+                
+                $('#unit_concepts').show();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });         
+                
+    }
+    
+    function setUnitConcept(unitConceptId, unitConceptName) {
+        $('#unit_concept_id').val(unitConceptId);
+        $('#unit_concept_desc').val(unitConceptName);
+        $('#conceptSearchModal').modal('hide');
+    }
+    
+    </script>
+    
+</div>
+
+<script type="text/javascript">
+
+    function changedUnitCocenpt() {
+        
+        if ( $('#unit_concept_desc_select').val() == 'video') {
+            $('#file_label').hide();
+            $('#video_label').show();
+            $('#link_label').hide();
+        } else if ($('#unit_concept_desc_select').val() == 'link') {    
+            $('#file_label').hide();
+            $('#video_label').hide();            
+            $('#link_label').show();            
+        } else {
+            $('#video_label').hide();
+            $('#file_label').show();
+            $('#link_label').hide();
+        }
+        
+    }
+    
+    function conceptSearch() {
+        $('#conceptSearchModal').modal();
+    }
+
+</script>

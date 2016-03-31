@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160324110725) do
+ActiveRecord::Schema.define(version: 20160330125453) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 20160324110725) do
     t.string   "admin_type",            limit: 255
     t.integer  "school_id",             limit: 4
     t.string   "init_password_changed", limit: 255
+  end
+
+  create_table "concept_exercises", force: :cascade do |t|
+    t.integer "concept_id", limit: 4
+    t.string  "file_name",  limit: 255
+    t.string  "memo",       limit: 255
+    t.string  "desc_type",  limit: 255
+    t.string  "video",      limit: 255
+    t.string  "link",       limit: 255
   end
 
   create_table "concepts", force: :cascade do |t|
