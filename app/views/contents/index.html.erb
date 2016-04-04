@@ -1,0 +1,97 @@
+<div class="breadcrumbs">
+    <div class="container">
+        <h1 class="pull-left"><%= @view_type == '1' ? "단원별 학습" : "학년별 학습" %></h1>
+        <ul class="pull-right breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><a href="">Main</a></li>
+            <li class="active">단원별 학습</li>
+        </ul>
+    </div>
+</div>
+
+<ul class="row list-row margin-bottom-30">
+    
+    <% if @step == '1' %>
+    
+        <% Concept::CATEGORIES.each_pair do |key, value| %>
+        
+                <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                        <i class="icon-custom rounded-x icon-bg-yellow fa fa-diamond"></i>
+                        <div class="content-boxes-in-v3">
+                            <!-- <ul class="star-vote">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star-half-o"></i></li>
+                                <li><i class="fa fa-star-o"></i></li>
+                                <li><i class="fa fa-star-o"></i></li>
+                            </ul> -->
+                            <h3><a href="#"><%= value  %></a></h3>
+                            <!-- <ul class="list-inline block-grid-v1-add-info">
+                                <li><a href="#"><i class="fa fa-eye"></i> 34039</a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i> 451</a></li>
+                                <li><a href="#"><i class="fa fa-download"></i> 10842</a></li>
+                                <li><a href="#"><i class="fa fa-heart"></i> 863</a></li>
+                            </ul> -->
+                        </div>
+                    </div>
+                </li>        
+        
+        <% end %>
+    
+    <% end %>
+    
+
+                <!-- <li class="col-md-4">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                        <i class="icon-custom rounded-x icon-bg-dark fa fa-connectdevelop"></i>
+                        <div class="content-boxes-in-v3">
+                            <ul class="star-vote">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star-half-o"></i></li>
+                                <li><i class="fa fa-star-o"></i></li>
+                            </ul>
+                            <h3><a href="#">Web Programming</a></h3>
+                            <ul class="list-inline margin-bottom-5">
+                                <li>By <a class="color-green" href="#">Edward Rooster</a></li>
+                                <li><i class="fa fa-clock-o"></i> Jan 02, 2013</li>
+                            </ul>
+                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium...</p>
+                            <ul class="list-inline block-grid-v1-add-info">
+                                <li><a href="#"><i class="fa fa-eye"></i> 34039</a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i> 451</a></li>
+                                <li><a href="#"><i class="fa fa-download"></i> 10842</a></li>
+                                <li><a href="#"><i class="fa fa-heart"></i> 863</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                        <i class="icon-custom rounded-x icon-bg-red fa fa-line-chart"></i>
+                        <div class="content-boxes-in-v3">
+                            <ul class="star-vote">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star-half-o"></i></li>
+                            </ul>
+                            <h3><a href="#">Business &amp; Finance</a></h3>
+                            <ul class="list-inline margin-bottom-5">
+                                <li>By <a class="color-green" href="#">The Economist</a></li>
+                                <li><i class="fa fa-clock-o"></i> Oct 02, 2014</li>
+                            </ul>
+                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium...</p>
+                            <ul class="list-inline block-grid-v1-add-info">
+                                <li><a href="#"><i class="fa fa-eye"></i> 4258</a></li>
+                                <li><a href="#"><i class="fa fa-retweet"></i> 382</a></li>
+                                <li><a href="#"><i class="fa fa-download"></i> 2938</a></li>
+                                <li><a href="#"><i class="fa fa-heart"></i> 230</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li> -->
+            </ul>

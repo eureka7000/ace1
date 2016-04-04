@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :concept_exercises
     resources :explanations
     resources :unit_concepts
+    resources :contents
     
     get '/concepts/get_concepts' => 'concepts#get_concepts'
     get '/concepts/get_unit_concepts' => 'concepts#get_unit_concepts'

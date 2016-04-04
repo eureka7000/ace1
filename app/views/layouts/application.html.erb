@@ -57,6 +57,7 @@
             <!-- Topbar -->
             <div class="topbar">
                 <ul class="loginbar pull-right">
+                    <li>안녕하세요. <%= current_user.user_name %>님
                     <li class="hoverSelector">
                         <i class="fa fa-globe"></i>
                         <a>Languages</a>
@@ -88,20 +89,34 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
             <div class="container">
+                
                 <ul class="nav navbar-nav">
                     
-                    <li class="<%= 'active' if @active == 'home' %>">
-                        <a href="javascript:void(0);">Main</a>
+                    <% unless current_user.nil? %>
+                    <li class="<%= 'active' if @active == 'home' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Main</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/contents?view_type=1">단원별</a>
+                            </li>
+                            <li>
+                                <a href="/contents?view_type=2">학년별</a>
+                            </li>                            
+                        </ul>    
                     </li>
+                    
                     <li class="<%= 'active' if @active == 'mypages' %>">
                         <a href="/mypages/overall">My Pages</a>
                     </li>
                     <li class="<%= 'active' if @active == 'payments' %>">
                         <a href="/payments">상품결제</a>
-                    </li>    
+                    </li>  
+                    <% end %>  
+                    
+                    <li><a></a></li>
                     
                     <!-- Search Block -->
-                    <li>
+                    <!-- <li>
                         <i class="search fa fa-search search-btn"></i>
                         <div class="search-open">
                             <div class="input-group animated fadeInDown">
@@ -111,30 +126,13 @@
                                 </span>
                             </div>
                         </div>
-                    </li>
+                    </li> -->
                     <!-- End Search Block -->
                 </ul>
             </div><!--/end container-->
         </div><!--/navbar-collapse-->
     </div>
     <!--=== End Header ===-->
-
-	<% unless notice.nil? %>
-	<div class="tab-pane fade in active" id="alert-1">
-		<div class="margin-bottom-15"></div>
-		<div class="alert alert-warning fade in">
-			<%= notice %>
-    	</div>	
-	</div>	
-	<% end %>
-	<% unless alert.nil? %>
-	<div class="tab-pane fade in active" id="alert-1">
-		<div class="margin-bottom-15"></div>
-		<div class="alert alert-danger fade in">
-			<%= alert %>
-    	</div>	
-	</div>
-	<% end %>
 	
 	<% unless @page_name.nil? %>
 	<!--=== Breadcrumbs ===-->
