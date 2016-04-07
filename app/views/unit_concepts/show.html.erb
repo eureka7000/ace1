@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Unit Concept - <%= @unit_concept.name %></h2>
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Unit Concept - <%= @unit_concept.name %> (<span style="color: red"><%= @unit_concept.code %></span>)</h2>
         </div>
     </div>
     
@@ -107,7 +107,7 @@
                             <i></i>
                             </label>    
                         </section>    
-                        <section class="col col-4">
+                        <section class="col col-6">
                             <label id="file_label" for="file" class="input input-file">
                                 <div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
                             </label>
@@ -120,13 +120,14 @@
                                 <input type="hidden" id="unit_concept_id" name="unit_concept_desc[link]">
                             </label>    
                         </section>
-                        <section class="col col-4">
+                        <section class="col col-2">
                             <label class="input">
                                 <input type="text" name="unit_concept_desc[memo]" placeholder="code">
                             </label>
                         </section>
                         <section class="col col-2">
                             <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                            <%= link_to 'Back', "/concepts/#{@unit_concept.concept.id}", :class => 'btn-u btn-primary align-right' %>                            
                         </section>    
                     </div>
                 </fieldset>

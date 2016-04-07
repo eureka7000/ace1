@@ -30,16 +30,18 @@ class AdminsController < ApplicationController
             error = true
         else
             @admin = Admin.where('email = ? and password = ?',email, password)
-            if @admin.nil?
+            if @admin.empty?
+                logger.error "----------" + @admin.inspect
                 error = true
             else
                 session[:admin] = @admin.first
+                logger.debug "--------" + session[:admin].inspect
             end
         end    
         
         respond_to do |format|
             if error
-                format.html { redirect_to '/admins/login', notice: 'Email or password is empty.' }
+                format.html { redirect_to '/admins/login', notice: 'Email or password is wrong.' }
             else
                 format.html { redirect_to '/admins/main' }
             end    

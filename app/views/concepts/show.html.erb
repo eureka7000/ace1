@@ -69,7 +69,8 @@
                     </tbody>    
                 </table>   
                 
-                <button type="button" class="btn-u btn-u-blue" onclick="$('#method').val(); $('#unitConceptModal').modal();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
+                <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptModal').modal();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
+                <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>                            
              
             </div>    
             
@@ -244,23 +245,23 @@
             type = "PUT";
         }
 
-        $.ajax({
-            url: url,
-            type: type,
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-            dataType: "JSON",
-            data: data,
-            success: function(data) {
-                location.reload();
-            },
-            error: function(err){
-                alert('실패했습니다.');
-                $('#loading').hide();
-                return false;
-            }
-        });    
-        
-        $('#unit_cocept_btn').button('reset');    
+        // $.ajax({
+        //     url: url,
+        //     type: type,
+        //     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        //     dataType: "JSON",
+        //     data: data,
+        //     success: function(data) {
+        //         location.reload();
+        //     },
+        //     error: function(err){
+        //         alert('실패했습니다.');
+        //         $('#loading').hide();
+        //         return false;
+        //     }
+        // });
+        //
+        // $('#unit_cocept_btn').button('reset');
 
     }
 
