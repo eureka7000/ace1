@@ -57,7 +57,7 @@
             <!-- Topbar -->
             <div class="topbar">
                 <ul class="loginbar pull-right">
-                    <li>안녕하세요. <%= current_user.user_name %>님
+                    <% unless current_user.nil? %><li>안녕하세요. <%= current_user.user_name %>님</li><% end %>
                     <li class="hoverSelector">
                         <i class="fa fa-globe"></i>
                         <a>Languages</a>

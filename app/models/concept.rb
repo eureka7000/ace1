@@ -16,6 +16,16 @@ class Concept < ActiveRecord::Base
         "j900" => "확률과 통계"
     }
     
+    FA_ICONS = [
+        "fa-car", "fa-bomb", "fa-child", "fa-cube", "fa-deviantart", "fa-envelope-square", "fa-openid", "fa-paw",
+        "fa-qq", "fa-reddit", "fa-share-alt", "fa-soundcloud", "fa-steam", "fa-wordpress", "fa-building", "fa-circle-o-notch"
+    ]
+    
+    ICONS_BGS = [
+        "icon-bg-u", "icon-bg-blue", "icon-bg-red", "icon-bg-sea", "icon-bg-green", "icon-bg-yellow", "icon-bg-orange", "icon-bg-grey",
+        "icon-bg-dark", "icon-bg-darker", "icon-bg-purple", "icon-bg-aqua", "icon-bg-brown", "icon-bg-dark-blue", "icon-bg-light-green", "icon-bg-light"
+    ]    
+    
     SUB_CATEGORIES = {
         "a010" => "수학 전반",
         "b110" => "집합",
