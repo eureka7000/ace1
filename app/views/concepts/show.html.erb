@@ -245,23 +245,23 @@
             type = "PUT";
         }
 
-        // $.ajax({
-        //     url: url,
-        //     type: type,
-        //     beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        //     dataType: "JSON",
-        //     data: data,
-        //     success: function(data) {
-        //         location.reload();
-        //     },
-        //     error: function(err){
-        //         alert('실패했습니다.');
-        //         $('#loading').hide();
-        //         return false;
-        //     }
-        // });
-        //
-        // $('#unit_cocept_btn').button('reset');
+        $.ajax({
+            url: url,
+            type: type,
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            dataType: "JSON",
+            data: data,
+            success: function(data) {
+                location.reload();
+            },
+            error: function(err){
+                alert('실패했습니다.');
+                $('#loading').hide();
+                return false;
+            }
+        });
+
+        $('#unit_cocept_btn').button('reset');
 
     }
 
