@@ -2,7 +2,7 @@
 
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %></h2>
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %>(<span style="color:red"><%= @concept.concept_code %></span>)</h2>
         </div>
     </div>
 
@@ -69,7 +69,7 @@
                     </tbody>    
                 </table>   
                 
-                <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptModal').modal();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
+                <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptFrm').show();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
                 <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>                            
              
             </div>    
@@ -77,75 +77,67 @@
         </div>    
         
     </div>
-    
-</div>
+	
+	<form id="unitConceptFrm" action="unit_concepts" style="margin-top:20px; display: none" method="post"  class="sky-form" novalidate="novalidate">
+		
+		<header>Unit Concept Add</header>
+		
+        <input type="hidden" id="unit_concept_id" value="" />
+        <input type="hidden" id="method" value="create" />		
+                    
+		<fieldset>                  
+			<div class="row">
+				<section class="col col-4">
+					<label class="label">구분</label>
+                    <label class="select">
+                    	<select name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
+                   		<option value="concept">Unit Concept</option>
+                   	 	<option value="exercise">Exercise</option>   
+                   		</select>
+						<i></i>
+					</label>
+                </section>
+                <section class="col col-4">
+					<label class="label">Code</label>
+					<input type="text" class="form-control" id="unit_concept_code" placeholder="code" />
+				</section>
+                <section class="col col-4">
+					<label class="label">Name</label>
+					<input type="text" class="form-control" id="unit_concept_name" placeholder="name" />
+				</section>		
+			</div>
+			<div class="row">	
+                <section class="col col-4">
+					<label class="label">Grade</label>
+	                <select id="grade" class="form-control">
+	                <option value=""></option>
+	                <% UnitConcept::GRADES.each_pair do |key, value| %>
+	                <option value="<%= key %>"><%= value %></option>
+	                <% end %>    
+	                </select> 
+					<i></i>
+				</section>	
+                <section class="col col-4">
+					<label class="label">Level</label>
+	                <select id="level" class="form-control">
+	                <option value=""></option>
+	                <% (1..5).each do |idx|%>    
+	                <option value="<%= idx %>"><%= idx %></option>
+	                <% end %>
+	                </select> 
+					<i></i>
+				</section>
+			</div>									
+        </fieldset>
+                    
+        <footer>
+			<button type="button" class="btn-u btn-u-default" onclick="$('#unitConceptFrm').hide();">닫기</button>
+            <button id="unit_cocept_btn" type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
+        </footer>
 
-<!-- unit concept modal -->
-<div class="modal fade" id="unitConceptModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel4">Unit Concept</h4>
-            </div>
-            <div class="modal-body">
-                
-                <input type="hidden" id="unit_concept_id" value="" />
-                <input type="hidden" id="method" value="create" />
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <h4>구분</h4>
-                        <p>
-                           <select class="form-control" id="div" placeholder="구분" onchange="changedDiv(this)">
-                           <option value="concept">Unit Concept</option>
-                           <option value="exercise">Exercise</option>   
-                           </select>
-                        </p>
-                    </div>
-                </div>                
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <h4>Code</h4>
-                        <p><input type="text" class="form-control" id="unit_concept_code" placeholder="code" /></p>
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Name</h4>
-                        <p><input type="text" class="form-control" id="unit_concept_name" placeholder="name" /></p>
-                    </div>
-                </div>
-                
-                <div class="row" id="grade_div">
-                    <div class="col-md-6">
-                        <h4>Grade</h4>
-                        <select id="grade" class="inline form-control">
-                        <option value=""></option>
-                        <% UnitConcept::GRADES.each_pair do |key, value| %>
-                        <option value="<%= key %>"><%= value %></option>
-                        <% end %>    
-                        </select>    
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Level</h4>
-                        <select id="level" class="inline form-control">
-                        <option value=""></option>
-                        <% (1..5).each do |idx|%>    
-                        <option value="<%= idx %>"><%= idx %></option>
-                        <% end %>
-                        </select>    
-                    </div>                    
-                </div>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                <button id="unit_cocept_btn" type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
-            </div>
-        </div>
-    </div>
+    </form>	
+	
 </div>
-
 
 <script type="text/javascript">
 
@@ -188,7 +180,7 @@
                 $('#unit_concept_name').val(data.name);
                 $('#grade').val(data.grade);
                 $('#level').val(data.level);
-                $('#unitConceptModal').modal('show');
+                $('#unitConceptFrm').show();
             },
             error: function(err){
             }

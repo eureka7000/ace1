@@ -5,84 +5,69 @@
             <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Unit Concept - <%= @unit_concept.name %> (<span style="color: red"><%= @unit_concept.code %></span>)</h2>
         </div>
     </div>
-    
-    <!--=== Cube-Portfdlio ===-->
-    <div class="cube-portfolio margin-bottom-20">
-        <div class="content-xs">
-            <div id="filters-container" class="cbp-l-filters-text content-xs">
-                <div data-filter="*" class="cbp-filter-item cbp-filter-item-active"> All </div> |
-                <% idx = 0 %>
-                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
-                <div data-filter=".<%= key %>" class="cbp-filter-item "> <%= value %> </div><% unless idx == UnitConcept::DESC_TYPES.count - 1 %> | <% end %>
-                <% idx = idx + 1 %>
-                <% end %>
-            </div><!--/end Filters Container-->
-        </div>
-
-        <div id="grid-container" class="cbp-l-grid-agency">
-
-            <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
-            
-            <div class="cbp-item <%= unit_concept_desc.desc_type %>">
-                <div class="cbp-caption margin-bottom-20">
-                    
-                    <div class="cbp-caption-defaultWrap">
-                        <% if unit_concept_desc.desc_type == 'video' %>
-                        <!-- <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
-                        <% elsif unit_concept_desc.desc_type == 'link' %>
-                        <!-- <a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a> -->
-                        <% else %>
-                        <img src="<%= unit_concept_desc.file_name.medium %>" alt="">
-                        <% end %>
-                    </div>
-                    
-                    <div class="cbp-caption-activeWrap">
-                        <div class="cbp-l-caption-alignCenter">
-                            <div class="cbp-l-caption-body">
-                                <ul class="link-captions no-bottom-space">
-                                    <li><a href="<%= unit_concept_desc.file_name %>" class="cbp-lightbox" data-title="<%= unit_concept_desc.file_name %>"><i class="rounded-x fa fa-search"></i></a></li>
-                                    <li><%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div class="cbp-title-dark">
-                    
-                    <% if unit_concept_desc.desc_type == 'video' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    </div>
-                    
-                    <% elsif unit_concept_desc.desc_type == 'link' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
-                    </div>    
-                    <% end %>
-                    
-                    <div class="cbp-l-grid-agency-title blue ">
-                        <p class="text-primary">
-                            <%= unit_concept_desc.desc_type %>
-                            <%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
-                        </p>
-                    </div>
-                    
-                    <% unless unit_concept_desc.desc_type == 'video' && unit_concept_desc.link == 'link' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <%= unit_concept_desc.memo %>
-                    </div>
-                    <% end %>
-                    
-                </div>
-            </div>
-                
-            <% end %> 
-
-        </div><!--/end Grid Container-->
-    </div>
-    <!--=== End Cube-Portfdlio ===-->
+	
+	<div class="row" style="margin-bottom: 20px;">
+		<div class="col-md-2">	
+	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
+	        <option value="">ALL</option>
+	        <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
+	        <option value="<%= key %>" <% if key == @desc_type.to_sym %>selected<% end %> ><%= value %></option>
+	        <% end %>
+	        </select>    
+		</div>	
+	</div>	
+	
+    <div class="row">
+        
+        <div class="col-sm-12 col-md-12">
+        
+            <div class="table-responsive">
+        
+                <table class="table table-hover table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Code</th>
+                            <th></th>
+                            <th class="col-md-2"><i class="fa fa-cog"></i></th>
+                        </tr>    
+                    </thead>
+                    <tbody>
+						<% @unit_concept_descs.each do |unit_concept_desc| %>
+						<tr>
+							<td>
+                                <% if unit_concept_desc.desc_type == 'unit_concept' %>
+                                <span class="badge rounded-2x badge-u">Unit Concept</span>
+                                <% elsif unit_concept_desc.desc_type == 'explanation'  %>
+                                <span class="badge rounded-2x badge-blue">Explanation</span>
+								<% elsif unit_concept_desc.desc_type == 'exercise'  %>
+								<span class="badge rounded-2x badge-red">Exercise</span>
+								<% elsif unit_concept_desc.desc_type == 'video'  %>
+								<span class="badge rounded-2x badge-green">Video</span>
+								<% elsif unit_concept_desc.desc_type == 'link'  %>
+								<span class="badge rounded-2x badge-sea">Link</span>
+                                <% end  %>
+							</td>
+							<td><%= unit_concept_desc.memo %></td>
+							<td>
+                        		<% if unit_concept_desc.desc_type == 'video' %>
+                        		<iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        		<% elsif unit_concept_desc.desc_type == 'link' %>
+                        		<a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                        		<% else %>
+                        		<a href="<%= unit_concept_desc.file_name.medium %>"><img src="<%= unit_concept_desc.file_name.medium %>" alt=""></a>
+                        		<% end %>
+							</td>
+							<td>
+								<%= link_to 'Delete'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
+							</td>	
+						</tr>
+						<% end %>
+					</tbody>
+				</table>	
+			</div>	
+		</div>
+	</div>			
 
     <div class="row">
 
@@ -103,7 +88,7 @@
                                 <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
                                 <option value="<%= key %>"><%= value %></option>
                                 <% end %>
-                            </select>    
+								</select>    
                             <i></i>
                             </label>    
                         </section>    
@@ -296,6 +281,10 @@
         $('#unit_concept_desc').val(unitConceptName);
         $('#conceptSearchModal').modal('hide');
     }
+	
+	function changeSearchCondition() {
+		location = "/unit_concepts/<%= @unit_concept.id %>?desc_type=" + $('#desc_type_condition').val();
+	}
     
     </script>
     
