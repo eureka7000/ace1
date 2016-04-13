@@ -48,11 +48,19 @@
 								<span class="badge rounded-2x badge-sea">Link</span>
                                 <% end  %>
 							</td>
-							<td><%= unit_concept_desc.memo %></td>
+							<td><% if unit_concept_desc.desc_type == '4' %>
+								
+								<% elsif unit_concept_desc.desc_type == '5' %>
+									<% unit_concept = UnitConcept.find(unit_concept_desc.link) %>
+									<%= unit_concept.name %> ( <%= unit_concept.code %> )
+								<% else %>
+									<%= unit_concept_desc.memo %>
+								<% end %>
+							</td>
 							<td>
-                        		<% if unit_concept_desc.desc_type == 'video' %>
+                        		<% if unit_concept_desc.desc_type == '4' %>
                         		<iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        		<% elsif unit_concept_desc.desc_type == 'link' %>
+                        		<% elsif unit_concept_desc.desc_type == '5' %>
                         		<a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
                         		<% else %>
                         		<a href="<%= unit_concept_desc.file_name %>"><img src="<%= unit_concept_desc.file_name.thumb %>" alt=""></a>
