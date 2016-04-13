@@ -38,6 +38,7 @@ class ConceptsController < ApplicationController
     # GET /concepts/1
     # GET /concepts/1.json
     def show
+        @unit_concepts = UnitConcept.where('concept_id=?',params[:id]).order(:code)
     end
 
   # GET /concepts/new
@@ -87,7 +88,7 @@ class ConceptsController < ApplicationController
 
   # DELETE /concepts/1
   # DELETE /concepts/1.json
-  def destroy
+  def destroy=
     @concept.destroy
     respond_to do |format|
       format.html { redirect_to concepts_url, notice: 'Concept was successfully destroyed.' }

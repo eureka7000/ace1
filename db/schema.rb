@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330125453) do
+ActiveRecord::Schema.define(version: 20160413062453) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -101,6 +101,9 @@ ActiveRecord::Schema.define(version: 20160330125453) do
     t.integer  "grade",       limit: 4
     t.string   "exercise_yn", limit: 255
   end
+
+  add_index "unit_concepts", ["code"], name: "index_unit_concepts_on_code", unique: true, using: :btree
+  add_index "unit_concepts", ["concept_id", "code"], name: "index_unit_concepts_on_concept_id_and_code", unique: true, using: :btree
 
   create_table "user_types", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
