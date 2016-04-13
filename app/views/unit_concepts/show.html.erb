@@ -142,7 +142,7 @@
                         <select id="category" class="form-control inline-block" onchange="changedCategory()">
                             <option value="">--- Category ---</option>
                             <% Concept::CATEGORIES.each_pair do |key, value| %>
-                            <option value="<%= key %>"><%= value %></option>
+                            <option value="<%= key %>"><%= value %> ( <%= key %> )</option>
                             <% end %>
                         </select>                            
                     </div>    
@@ -214,7 +214,7 @@
         
         $.each(options, function(i) {
             if (options[i].values.substring(0,1) == divChar) {
-                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
+                $('#sub_category').append( $('<option>').text(options[i].text + ' ( ' + options[i].values + ' )').attr('value',options[i].values) );                
             }
         });
     
