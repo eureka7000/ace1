@@ -20,13 +20,9 @@ class UnitConceptsController < ApplicationController
         end
         @unit_concept_descs = nil
 
-        logger.debug "*****" + @desc_type.inspect
-
         if @desc_type == 'all'
-            logger.debug "1111*" + @desc_type.inspect
             @unit_concept_descs = @unit_concept.unit_concept_descs.order(:desc_type, :memo)            
         else
-            logger.debug "2222****" + @desc_type.inspect
             @unit_concept_descs = UnitConceptDesc.where("unit_concept_id=? and desc_type=?", @unit_concept.id, @desc_type).order(:desc_type, :memo)
         end        
         

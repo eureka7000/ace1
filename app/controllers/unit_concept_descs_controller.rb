@@ -11,7 +11,7 @@ class UnitConceptDescsController < ApplicationController
         @unit_concept = UnitConcept.find(params[:unit_concept_desc][:unit_concept_id])
 
         respond_to do |format|
-            format.html { redirect_to @unit_concept, notice: 'Explanation Desc was successfully created.' }
+            format.html { redirect_to "/unit_concepts/#{@unit_concept.id}?desc_type=#{params[:unit_concept_desc][:desc_type]}", notice: 'Explanation Desc was successfully created.' }
         end
         
     end

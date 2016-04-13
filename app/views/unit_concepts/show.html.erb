@@ -11,7 +11,7 @@
 	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
 	        <option value="">ALL</option>
 	        <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
-	        <option value="<%= key %>" <% if key == @desc_type.to_sym %>selected<% end %> ><%= value %></option>
+	        <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
 	        <% end %>
 	        </select>    
 		</div>	
@@ -36,15 +36,15 @@
 						<% @unit_concept_descs.each do |unit_concept_desc| %>
 						<tr>
 							<td>
-                                <% if unit_concept_desc.desc_type == 'unit_concept' %>
+                                <% if unit_concept_desc.desc_type == '1' %>
                                 <span class="badge rounded-2x badge-u">Unit Concept</span>
-                                <% elsif unit_concept_desc.desc_type == 'explanation'  %>
+                                <% elsif unit_concept_desc.desc_type == '2'  %>
                                 <span class="badge rounded-2x badge-blue">Explanation</span>
-								<% elsif unit_concept_desc.desc_type == 'exercise'  %>
+								<% elsif unit_concept_desc.desc_type == '3'  %>
 								<span class="badge rounded-2x badge-red">Exercise</span>
-								<% elsif unit_concept_desc.desc_type == 'video'  %>
+								<% elsif unit_concept_desc.desc_type == '4'  %>
 								<span class="badge rounded-2x badge-green">Video</span>
-								<% elsif unit_concept_desc.desc_type == 'link'  %>
+								<% elsif unit_concept_desc.desc_type == '5'  %>
 								<span class="badge rounded-2x badge-sea">Link</span>
                                 <% end  %>
 							</td>
@@ -81,12 +81,13 @@
 
                 <fieldset>
                     <div class="row">
+						
                         <section class="col col-2">
                             <label class="select">
                                 <select id="unit_concept_desc_select" name="unit_concept_desc[desc_type]" onchange="changedUnitCocenpt()">
                                 <option value="">항목선택</option>
                                 <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
-                                <option value="<%= key %>"><%= value %></option>
+                                <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
                                 <% end %>
 								</select>    
                             <i></i>
@@ -111,7 +112,7 @@
                             </label>
                         </section>
                         <section class="col col-2">
-                            <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                            <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
                             <%= link_to 'Back', "/concepts/#{@unit_concept.concept.id}", :class => 'btn-u btn-primary align-right' %>                            
                         </section>    
                     </div>

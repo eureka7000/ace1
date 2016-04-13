@@ -6,11 +6,11 @@ class UnitConcept < ActiveRecord::Base
     has_many :explanations
     
     DESC_TYPES = {
-        :unit_concept => "Unit Concept",
-        :explanation => "Explanation",
-        :exercise => "Exercise",
-        :video => "Video",
-        :link => "link"
+        1 => "Unit Concept",
+        2 => "Explanation",
+        3 => "Exercise",
+        4 => "Video",
+        5 => "link"
     }
     
     GRADES = {
