@@ -43,7 +43,7 @@
                             <span class="label rounded-2x label-brown">Exercise</span>
                             <% end %>
                         </td>    
-                        <td><%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? concept : "/concepts/#{concept.id}/exercise"  ) %></td>
+                        <td><%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?concept_page_num=#{params[:page]||1}" : "/concepts/#{concept.id}/exercise"  ) %></td>
                         <td><%= link_to 'Edit', edit_concept_path(concept) %></td>
                         <td><%= link_to 'Destroy', concept, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                         </tr>
