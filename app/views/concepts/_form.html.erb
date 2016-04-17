@@ -110,11 +110,11 @@
         var divChar = '';
         
         if (cetegory_val != '') {
-            divChar = cetegory_val.substring(0,1);
+            divChar = cetegory_val.substring(0,2);
         }
         
         $.each(options, function(i) {
-            if (options[i].values.substring(0,1) == divChar) {
+            if (options[i].values.substring(0,2) == divChar) {
                 $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
             }
         });

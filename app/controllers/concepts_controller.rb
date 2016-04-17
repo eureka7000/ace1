@@ -24,12 +24,10 @@ class ConceptsController < ApplicationController
         
         category = params[:category]
         
-        logger.debug "*******" + category.inspect
-
         if category.nil?
-            @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:id)
+            @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
         else
-            @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:id)
+            @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
         end        
         
         @categorys = Concept.group('category')
