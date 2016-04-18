@@ -70,7 +70,7 @@
                 </table>   
                 
                 <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptFrm').show();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
-                <%= link_to 'Back', concepts_path + "?page=#{params[:concept_page_num]}", :class => 'btn-u btn-primary align-right' %>                            
+                <%= link_to 'Back', concepts_path + "?page=#{params[:concept_page_num]||1}", :class => 'btn-u btn-primary align-right' %>                            
              
             </div>    
             
