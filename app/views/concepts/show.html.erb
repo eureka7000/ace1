@@ -39,7 +39,7 @@
                                 <% end  %>
                             </td>
                             <td><%= unit_concept.code %></td>
-                            <td><a href="/unit_concepts/<%= unit_concept.id %>"><%= unit_concept.name %></a></td>
+                            <td><a href="/unit_concepts/<%= unit_concept.id %>?concept_page_num=<%= params[:concept_page_num] %>"><%= unit_concept.name %></a></td>
                             <td><%= UnitConcept::GRADES[unit_concept.grade] %></td>
                             <td><% unless unit_concept.level.nil? %>
                                 <% rst = 5 - unit_concept.level %>
