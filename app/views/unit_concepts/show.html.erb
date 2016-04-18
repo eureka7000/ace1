@@ -116,7 +116,7 @@
                         </section>
                         <section class="col col-2">
                             <label class="input">
-                                <input type="text" name="unit_concept_desc[memo]" placeholder="code">
+                                <input type="text" id="memo" name="unit_concept_desc[memo]" placeholder="code">
                             </label>
                         </section>
                         <section class="col col-2">
@@ -195,6 +195,17 @@
     </div>
     
     <script type="text/javascript">
+	
+	$('input:file').change(
+	    function(e){
+	    	var f = e.target.files,
+	            len = f.length;
+	        for (var i=0;i<len;i++){
+				console.log('file',f[i]);
+				$('#memo').val(f[i].name.replace(/\..+$/, ''));
+	    	}
+		}
+	);	
     
     <% index = 0 %>
 
