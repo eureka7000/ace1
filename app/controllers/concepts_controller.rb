@@ -86,7 +86,7 @@ class ConceptsController < ApplicationController
 
   # DELETE /concepts/1
   # DELETE /concepts/1.json
-  def destroy=
+  def destroy
     @concept.destroy
     respond_to do |format|
       format.html { redirect_to concepts_url, notice: 'Concept was successfully destroyed.' }
