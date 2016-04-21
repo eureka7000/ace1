@@ -90,7 +90,7 @@
 				<section class="col col-4">
 					<label class="label">구분</label>
                     <label class="select">
-                    	<select name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
+                    	<select id="excercise_yn" name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
                    		<option value="concept">Unit Concept</option>
                    	 	<option value="exercise">Exercise</option>   
                    		</select>
@@ -220,7 +220,7 @@
 
         data = {
             "unit_concept" : {
-                "exercise_yn" : $('#div').val(),
+                "exercise_yn" : $('#excercise_yn').val(),
                 "code"       : $('#unit_concept_code').val(),
                 "name"       : $('#unit_concept_name').val(),
                 "grade"      : $('#grade').val(),
