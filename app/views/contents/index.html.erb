@@ -10,10 +10,11 @@
 </div>
 
 <ul class="row list-row margin-bottom-30">
+	
+    <% idx = 0 %>	
     
     <% if @step == '1' %>
     
-        <% idx = 0 %>
         <% Concept::CATEGORIES.each_pair do |key, value| %>
         
     <li class="col-md-4 md-margin-bottom-30">
@@ -31,7 +32,6 @@
         
     <% elsif @step == '2' %>    
     
-        <% idx = 0 %>
         <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
         
             <% if @category.first(2) == key.first(2) %>
@@ -40,7 +40,7 @@
         <div class="content-boxes-v2 text-center block-grid-v1 rounded">
             <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
             <div class="content-boxes-in-v3">
-                <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value  %></a></h3>
+                <h3><a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><%= value  %></a></h3>
             </div>
         </div>
     </li>
@@ -51,7 +51,23 @@
         
         <% end %>    
         
-    
+    <% elsif @step == '3' %>
+	
+		<% @concepts.each do | concept | %>
+		
+    <li class="col-md-4 md-margin-bottom-30">
+        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+            <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+            <div class="content-boxes-in-v3">
+                <h3><a href="/contents/<%= concept.id %>"><%= concept.concept_name %></a></h3>
+            </div>
+        </div>
+    </li>
+	
+			<% idx += 1 %>
+		
+		<% end %>
+	
     <% end %>
     
     
