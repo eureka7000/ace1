@@ -1,10 +1,34 @@
 <div class="breadcrumbs">
     <div class="container">
-        <h1 class="pull-left"><%= @view_type == '1' ? "단원별 학습" : "학년별 학습" %></h1>
+        <h1 class="pull-left">
+			<% 
+			if @view_type == '1'
+				str = "단원별 학습"
+			else
+				str = "학년별 학습"
+			end
+			
+			if @step > '1' 
+				str += " / #{Concept::CATEGORIES[@category]} "
+			end
+			
+			if @step > '2'
+				str += " / #{Concept::SUB_CATEGORIES[@sub_category]}"
+			end
+			
+			if @step > '3'
+				str += " / #{@concept.concept_name}"
+			end	
+			
+			%>
+			<%= str %>
+		</h1>
         <ul class="pull-right breadcrumb">
             <li><a href="/">Home</a></li>
             <li><a href="">Main</a></li>
-            <li class="active">단원별 학습</li>
+            <li class="active">
+				<a href="/contents">단원별 학습</a>
+			</li>
         </ul>
     </div>
 </div>
@@ -59,7 +83,7 @@
         <div class="content-boxes-v2 text-center block-grid-v1 rounded">
             <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
             <div class="content-boxes-in-v3">
-                <h3><a href="/contents/<%= concept.id %>"><%= concept.concept_name %></a></h3>
+                <h3><a href="/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= concept.id %>"><%= concept.concept_name %></a></h3>
             </div>
         </div>
     </li>
@@ -67,6 +91,24 @@
 			<% idx += 1 %>
 		
 		<% end %>
+		
+	<% elsif @step == '4' %>
+	
+		<% @unit_concepts.each do | unit_concept | %>
+			
+    <li class="col-md-4 md-margin-bottom-30">
+        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+            <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+            <div class="content-boxes-in-v3">
+                <h3><a href="/contents/<%= unit_concept.id %>"><%= unit_concept.name %></a></h3>
+            </div>
+        </div>
+    </li>	
+	
+			<% idx += 1 %>
+			
+		<% end %>
+		
 	
     <% end %>
     

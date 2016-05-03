@@ -1,0 +1,53 @@
+    <div class="row" style="margin: 20px;">
+
+        <div class="col-md-12">
+
+            <!-- tabs right -->
+            <div class="tabbable">
+                <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11">
+                    <li class="active"><a href="#d" data-toggle="tab">One</a></li>
+                    <li><a href="#e" data-toggle="tab">Two</a></li>
+                    <li><a href="#f" data-toggle="tab">Twee</a></li>
+                </ul>
+                <div class="tab-content col-sm-11  col-sm-pull-1">
+                    <div class="tab-pane active" id="d">
+						
+						<div class="col-md-6">
+							
+							<p>
+								<% unless @unit_concept.level.nil? %>
+                                <% rst = 5 - @unit_concept.level %>
+                                <span style="color:red">
+                                <% (1..@unit_concept.level).each do |idx| %>
+                                *
+                                <% end%>
+                                </span>
+                                <span style="color:gray">
+                                <% (1..rst).each do |idx| %>
+                                *
+                                <% end %>
+                                </span>
+                                <% end %>
+							</p>
+							<h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+							
+							<% @unit_concept_descs.each do | unit_concept_desc | %>
+							
+							<img src="<%= unit_concept_desc.file_name %>" style="width:100%" />
+							
+							<% end %>
+							
+						</div>
+						<div class="col-md-6">right pane</div>
+						
+					</div>
+                    <div class="tab-pane" id="e">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor rci quis tortor imperdiet venenatis. Aliquam in felis sit amet augue.</div>
+                    <div class="tab-pane" id="d">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
+                </div>
+            </div>
+            <!-- /tabs -->
+
+        </div>
+
+    </div>
+    <!-- /row -->
