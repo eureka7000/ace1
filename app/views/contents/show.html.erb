@@ -36,11 +36,7 @@
 							
 								<% @unit_concept_descs.each do | unit_concept_desc | %>
 							
-									<% if unit_concept_desc.desc_type == '1' %>
-							
 								<img src="<%= unit_concept_desc.file_name %>" style="width:100%" />
-							
-									<% end %>
 							
 								<% end %>
 								
@@ -49,6 +45,18 @@
 							<div class="row" style="margin-top: 20px;">
 								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> 관련 개념 </button>
 							</div>	
+							
+							<div class="row">
+							
+								<% @links.each do | link | %>
+
+								<h3><span style="color:red"><%= link.code %></span> <a href="/contents/<%= link.id %>"><%= link.name %></a></h3>
+							
+								<% end %>
+								
+							</div>								
+							
+							
 							
 						</div>
 						<div class="col-md-6">right pane</div>
