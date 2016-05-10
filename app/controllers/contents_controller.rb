@@ -21,7 +21,7 @@ class ContentsController < ApplicationController
     
     def show
         @unit_concept = UnitConcept.find(params[:id])
-        @unit_concept_descs = @unit_concept.unit_concept_descs.order('desc_type')
+        @unit_concept_descs = @unit_concept.unit_concept_descs.order(:id)
     end    
 
 end
