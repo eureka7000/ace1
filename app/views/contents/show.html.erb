@@ -54,9 +54,22 @@
 							
 								<% end %>
 								
-							</div>								
+							</div>	
 							
+							<div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> Self Evaluation </button>
+							</div>
 							
+							<div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> Video </button>
+							</div>							
+							
+							<div class="row">
+								<% @videos.each do | video | %>
+								<iframe src="https://player.vimeo.com/video/<%= video.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+								<% end %>
+								
+							</div>	
 							
 						</div>
 						<div class="col-md-6">right pane</div>

@@ -29,6 +29,9 @@ class ContentsController < ApplicationController
         
         # @links = ActiveRecord::Base.connection.execute(link_query)
         @links = UnitConceptDesc.find_by_sql(link_query)
+        @videos = @unit_concept.unit_concept_descs.where('desc_type=4').order(:memo)
+        
+        
     end    
     
 end
