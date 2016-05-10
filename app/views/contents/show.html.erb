@@ -1,4 +1,3 @@
-
     <div class="row" style="margin: 20px;">
 
         <div class="col-md-12">
@@ -6,165 +5,79 @@
             <!-- tabs right -->
             <div class="tabbable">
                 <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11">
-                    <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
-                    <li><a href="#e" data-toggle="tab" style="text-align: center">개념 설명</a></li>
-                    <li><a href="#f" data-toggle="tab" style="text-align: center">Exercise</a></li>
-                    <li><a href="#g" data-toggle="tab" style="text-align: center">관련 개념</a></li>
-                    <li><a href="#s" data-toggle="tab" style="text-align: center">Self Evaluation</a></li>
-                    <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
-
+                    <li class="active"><a href="#d" data-toggle="tab">One</a></li>
+                    <li><a href="#e" data-toggle="tab">Two</a></li>
+                    <li><a href="#f" data-toggle="tab">Twee</a></li>
                 </ul>
-                <div class="tab-content col-sm-11 col-sm-pull-1">
-
-                  <!-- Tab 개념 -->
-                  <div class="tab-pane active" id="d">
-
+                <div class="tab-content col-sm-11  col-sm-pull-1">
+                    <div class="tab-pane active" id="d">
+						
 						<div class="col-md-6">
-
+							
 							<p>
 								<% unless @unit_concept.level.nil? %>
-                    <% rst = 5 - @unit_concept.level %>
-                    <span style="color:red">
-                    <% (1..@unit_concept.level).each do |idx| %>
-                    *
-                    <% end%>
-                    </span>
-                    <span style="color:gray">
-                    <% (1..rst).each do |idx| %>
-                    *
-                    <% end %>
-                    </span>
-                    <% end %>
+                                <% rst = 5 - @unit_concept.level %>
+                                <span style="color:red">
+                                <% (1..@unit_concept.level).each do |idx| %>
+                                *
+                                <% end%>
+                                </span>
+                                <span style="color:gray">
+                                <% (1..rst).each do |idx| %>
+                                *
+                                <% end %>
+                                </span>
+                                <% end %>
 							</p>
-							<h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+							
+							<div class="row">
+							
+								<h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+							
+								<% @unit_concept_descs.each do | unit_concept_desc | %>
+							
+								<img src="<%= unit_concept_desc.file_name %>" style="width:100%" />
+							
+								<% end %>
+								
+							</div>	
+							
+							<div class="row" style="margin-top: 20px;">
+								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> 관련 개념 </button>
+							</div>	
+							
+							<div class="row">
+							
+								<% @links.each do | link | %>
 
-              <div style="overflow-y: scroll; width: 100%; height: 580px">
-							<% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <!--
-                  <img src="<%#= unit_concept_desc.file_name %>" style="width:100%" />
-
-                  <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/1/c221-1t-1.png"/>
-                  -->
-
-                  <!-- TEST CODE START-->
-                  <% unless unit_concept_desc.desc_type.to_i != 1 %>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                  <% end %>
-                  <!-- TEST CODE END -->
-              <% end %>
-             </div>
-
+								<h3><span style="color:red"><%= link.code %></span> <a href="/contents/<%= link.id %>"><%= link.name %></a></h3>
+							
+								<% end %>
+								
+							</div>	
+							
+							<div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> Self Evaluation </button>
+							</div>
+							
+							<div class="row" style="margin-top: 20px; margin-bottom: 10px;">
+								<button class="btn-u btn-brd rounded-3x btn-u-red btn-u-xs" type="button"> Video </button>
+							</div>							
+							
+							<div class="row">
+								<% @videos.each do | video | %>
+								<iframe src="https://player.vimeo.com/video/<%= video.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+								<% end %>
+								
+							</div>	
+							
 						</div>
-						<!-- div class="col-md-6">right pane</div -->
-
-            <!-- TEST CODE START
-            <div class="col-md-6">
-              <% @unit_concept_descs.each do | unit_concept_decs | %>
-                  <% unless unit_concept_decs.desc_type.to_i == 1 || unit_concept_decs.desc_type.to_i == 5 %>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                  <% end %>
-            <% end %>
-            </div>
-             TEST CODE END -->
-
-					</div> <!-- Tab 개념 END-->
-
-                    <!-- Tab 개념 설명 -->
-                    <div class="tab-pane" id="e">
-                      <div class="col-md-6">
-
-                        <p>
-                          <% unless @unit_concept.level.nil? %>
-                              <% rst = 5 - @unit_concept.level %>
-                              <span style="color:red">
-                                <% (1..@unit_concept.level).each do |idx| %>
-                                *
-                                <% end%>
-                                </span>
-                                <span style="color:gray">
-                                <% (1..rst).each do |idx| %>
-                                *
-                                <% end %>
-                                </span>
-                          <% end %>
-                        </p>
-                        <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
-
-                        <div style="overflow-y: scroll; width: 100%; height: 580px">
-                        <% @unit_concept_descs.each do | unit_concept_desc | %>
-                            <!-- TEST CODE START-->
-                            <% unless unit_concept_desc.desc_type.to_i != 1%>
-                                <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                            <% end %>
-                            <!-- TEST CODE END -->
-                        <% end %>
-                          </div>
-                      </div>
-
-                      <!-- TEST CODE START -->
-                      <div class="col-md-6">
-                        <p>개념 설명</p>
-                          <div style="overflow-y: scroll; width: 100%; height: 580px">
-                        <% @unit_concept_descs.each do | unit_concept_decs | %>
-                            <% unless unit_concept_decs.desc_type.to_i != 2 %>
-                                <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                            <% end %>
-                        <% end %>
-                          </div>
-                        </div>
-                      <!-- TEST CODE END -->
-                    </div> <!-- Tab TWO END -->
-
-
-                  <!-- Tab Exercise -->
-                  <div class="tab-pane" id="f">
-                    <div class="col-md-6">
-
-                      <p>
-                        <% unless @unit_concept.level.nil? %>
-                            <% rst = 5 - @unit_concept.level %>
-                            <span style="color:red">
-                                <% (1..@unit_concept.level).each do |idx| %>
-                                *
-                                <% end%>
-                                </span>
-                                <span style="color:gray">
-                                <% (1..rst).each do |idx| %>
-                                *
-                                <% end %>
-                                </span>
-                        <% end %>
-                      </p>
-                      <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
-
-                      <div style="overflow-y: scroll; width: 100%; height: 580px">
-                      <% @unit_concept_descs.each do | unit_concept_desc | %>
-
-                          <!-- TEST CODE START-->
-                          <% unless unit_concept_desc.desc_type.to_i != 1%>
-                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                          <% end %>
-                          <!-- TEST CODE END -->
-                      <% end %>
-                        </div>
-
-                    </div>
-
-                    <!-- TEST CODE START -->
-                    <div class="col-md-6">
-                      <div style="overflow-y: scroll; width: 100%; height: 580px">
-                      <% @unit_concept_descs.each do | unit_concept_decs | %>
-                          <% unless unit_concept_decs.desc_type.to_i == 1 || unit_concept_decs.desc_type.to_i == 5 %>
-                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                          <% end %>
-                      <% end %>
-                        </div>
-                    </div>
-                    <!-- TEST CODE END -->
-                  </div> <!-- Tab Exercise END -->
-
+						<div class="col-md-6">right pane</div>
+						
+					</div>
+                    <div class="tab-pane" id="e">Secondo sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor rci quis tortor imperdiet venenatis. Aliquam in felis sit amet augue.</div>
+                    <div class="tab-pane" id="d">Thirdamuno, ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate. Quisque mauris augue, molestie tincidunt condimentum vitae. </div>
                 </div>
-                 </div>
             </div>
             <!-- /tabs -->
 
@@ -172,4 +85,3 @@
 
     </div>
     <!-- /row -->
-
