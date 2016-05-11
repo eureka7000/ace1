@@ -103,7 +103,7 @@
 
           <!-- TEST CODE START -->
           <div class="col-md-6">
-            <p>개념 설</p>
+            <p>개념 설명</p>
             <div style="overflow-y: scroll; width: 100%; height: 580px">
               <% @unit_concept_descs.each do | unit_concept_decs | %>
                   <% unless unit_concept_decs.desc_type.to_i != 2 %>
@@ -141,7 +141,7 @@
               <% @unit_concept_descs.each do | unit_concept_desc | %>
 
                   <!-- TEST CODE START-->
-                  <% unless unit_concept_desc.desc_type.to_i != 1%>
+                  <% unless unit_concept_desc.desc_type.to_i != 3%>
                       <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
                   <% end %>
                   <!-- TEST CODE END -->
@@ -153,11 +153,7 @@
           <!-- TEST CODE START -->
           <div class="col-md-6">
             <div style="overflow-y: scroll; width: 100%; height: 580px">
-              <% @unit_concept_descs.each do | unit_concept_decs | %>
-                  <% unless unit_concept_decs.desc_type.to_i == 1 || unit_concept_decs.desc_type.to_i == 5 %>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                  <% end %>
-              <% end %>
+              <!-- empty space -->
             </div>
           </div>
           <!-- TEST CODE END -->
