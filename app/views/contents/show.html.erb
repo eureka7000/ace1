@@ -40,25 +40,15 @@
 
             <div style="overflow-y: scroll; width: 100%; height: 580px">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <!--
-                  <img src="<%#= unit_concept_desc.file_name %>" style="width:100%" />
 
-                  <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/1/c221-1t-1.png"/>
-                  -->
-
-                  <!-- TEST CODE START-->
                   <% unless unit_concept_desc.desc_type.to_i != 1 %>
                       <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
                   <% end %>
-                  <!-- TEST CODE END -->
               <% end %>
             </div>
 
           </div>
-          <!-- div class="col-md-6">right pane</div -->
 
-          <!-- TEST CODE START
-            <div class="col-md-6">
               <% @unit_concept_descs.each do | unit_concept_decs | %>
                   <% unless unit_concept_decs.desc_type.to_i == 1 || unit_concept_decs.desc_type.to_i == 5 %>
                       <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
@@ -92,16 +82,13 @@
 
             <div style="overflow-y: scroll; width: 100%; height: 580px">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <!-- TEST CODE START-->
                   <% unless unit_concept_desc.desc_type.to_i != 1%>
                       <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
                   <% end %>
-                  <!-- TEST CODE END -->
               <% end %>
             </div>
           </div>
 
-          <!-- TEST CODE START -->
           <div class="col-md-6">
             <p>개념 설명</p>
             <div style="overflow-y: scroll; width: 100%; height: 580px">
@@ -112,8 +99,7 @@
               <% end %>
             </div>
           </div>
-          <!-- TEST CODE END -->
-        </div> <!-- Tab TWO END -->
+        </div> <!-- Tab 개념 설명 END -->
 
 
         <!-- Tab Exercise -->
@@ -140,24 +126,62 @@
             <div style="overflow-y: scroll; width: 100%; height: 580px">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
 
-                  <!-- TEST CODE START-->
                   <% unless unit_concept_desc.desc_type.to_i != 3%>
                       <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
                   <% end %>
-                  <!-- TEST CODE END -->
               <% end %>
             </div>
 
           </div>
 
-          <!-- TEST CODE START -->
           <div class="col-md-6">
             <div style="overflow-y: scroll; width: 100%; height: 580px">
               <!-- empty space -->
             </div>
           </div>
-          <!-- TEST CODE END -->
         </div> <!-- Tab Exercise END -->
+
+        <!-- Tab Video -->
+        <div class="tab-pane" id="v">
+          <div class="col-md-6">
+
+            <p>
+              <% unless @unit_concept.level.nil? %>
+                  <% rst = 5 - @unit_concept.level %>
+                  <span style="color:red">
+                                <% (1..@unit_concept.level).each do |idx| %>
+                                *
+                                <% end%>
+                                </span>
+                                <span style="color:gray">
+                                <% (1..rst).each do |idx| %>
+                                *
+                                <% end %>
+                                </span>
+              <% end %>
+            </p>
+            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+
+            <p>강의 동영상</p>
+
+            <div style="overflow-y: scroll; width: 100%; height: 580px">
+              <% @unit_concept_descs.each do | unit_concept_desc | %>
+                  <% unless unit_concept_desc.desc_type.to_i != 4%>
+                      <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                      <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                  <% end %>
+              <% end %>
+
+            </div>
+
+          </div>
+
+          <div class="col-md-6">
+            <div style="overflow-y: scroll; width: 100%; height: 580px">
+              <!-- empty space -->
+            </div>
+          </div>
+        </div> <!-- Tab Video END -->
 
       </div>
     </div>
