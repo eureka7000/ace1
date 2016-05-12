@@ -46,16 +46,7 @@
                   <% end %>
               <% end %>
             </div>
-
           </div>
-
-              <% @unit_concept_descs.each do | unit_concept_decs | %>
-                  <% unless unit_concept_decs.desc_type.to_i == 1 || unit_concept_decs.desc_type.to_i == 5 %>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
-                  <% end %>
-            <% end %>
-            </div>
-             TEST CODE END -->
 
         </div> <!-- Tab 개념 END-->
 
