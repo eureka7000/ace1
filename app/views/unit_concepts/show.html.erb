@@ -68,7 +68,7 @@
                         		<% if unit_concept_desc.desc_type == '4' %>
                         		<iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         		<% elsif unit_concept_desc.desc_type == '5' %>
-                        		<a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                        		<a href="/unit_concepts/<%#= unit_concept_desc.link %>"><%#= UnitConcept.find(unit_concept_desc.link).name %></a>
                         		<% else %>
                         		<a href="<%= unit_concept_desc.file_name %>"><img src="<%= unit_concept_desc.file_name.thumb %>" alt=""></a>
                         		<% end %>
