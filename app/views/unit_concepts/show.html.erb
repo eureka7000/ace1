@@ -51,8 +51,12 @@
 							<td><% if unit_concept_desc.desc_type == '4' %>
 								
 								<% elsif unit_concept_desc.desc_type == '5' %>
+									<% if unit_concept_desc.link.nil? %>
+									<%= "link info is null." %>
+									<% else %>
 									<% unit_concept = UnitConcept.find(unit_concept_desc.link) %>
 									<%= unit_concept.name %> ( <%= unit_concept.code %> )
+									<% end %>
 								<% else %>
 									<%= unit_concept_desc.memo %>
 								<% end %>
