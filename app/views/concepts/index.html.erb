@@ -11,12 +11,24 @@
                     
                 <div class="table-responsive">
                     
-                    <select id="cetegory" class="form-control" style="width: 100px;" onchange="changeCategory()">
-                    <option value="">Category</option>  
-                    <% @categorys.each do |category| %>
-                    <option value="<%= category.category %>"><%= Concept::CATEGORIES[category.category] %></option>
-                    <% end %>  
-                    </select>
+					<div class="col-md-2">
+	                    <select id="cetegory" class="form-control" onchange="changeCategory(this.value)">
+	                    <option value="">Category</option>  
+	                    <% @categorys.each do |category| %>
+	                    <option value="<%= category.category %>" <%= "selected" if params[:category] == category.category %>><%= Concept::CATEGORIES[category.category] %></option>
+	                    <% end %>  
+	                    </select>
+					</div>
+					
+					<div class="col-md-2">	
+	                    <select id="sub_category" class="form-control col-md-2" >
+	                    <option value="">--- Sub Category ---</option>
+	                    </select> 					
+					</div>	
+					
+					<div class="col-md-1">
+						<a href="javascript:goSearch()" class="btn btn-success">Search</a>	
+					</div>	
                     
                     <table class="table table-striped">
                         <thead>
@@ -63,12 +75,53 @@
     </div>
     
     <script type="text/javascript">
+	
+	$( document ).ready(function() {
+	    changeCategory( '<%= params[:category] %>'  )
+	});	
+	
+	
+    <% index = 0 %>
+
+    var options = [
+    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+    <%      index = index + 1  %>    
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
+    <% end %>
+    ]	
     
-    function changeCategory() {
-        location = "/concepts?category=" + $('#cetegory').val();
+    function changeCategory(t) {
+		
+        $('#sub_category').empty();
+		
+		console.log('t', t);
+		
+        var divChar = '';
+		
+        if (t != '') {
+            divChar = t.substring(0,2);
+        }
+		
+        
+        $.each(options, function(i) {
+            if (options[i].values.substring(0,2) == divChar) {
+                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
+            }
+        });
+		
+        <% unless params[:sub_category].nil? %>
+        $("#sub_category").val("<%= params[:sub_category] %>");
+        <% end %>		
         
     }
-    
+	
+	function goSearch() {
+		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" + $('#sub_category').val();	
+	}
+	
     </script>
     
     
