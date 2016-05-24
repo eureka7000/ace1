@@ -93,19 +93,25 @@
 		<% end %>
 		
 	<% elsif @step == '4' %>
-	
+
 		<% @unit_concepts.each do | unit_concept | %>
-			
+
     <li class="col-md-4 md-margin-bottom-30">
         <div class="content-boxes-v2 text-center block-grid-v1 rounded">
             <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
             <div class="content-boxes-in-v3">
 				<ul class="star-vote">
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star"></i></li>
-                <li><i class="fa fa-star-half-o"></i></li>
-                <li><i class="fa fa-star-o"></i></li>
-                <li><i class="fa fa-star-o"></i></li>
+          <% unless unit_concept.level.nil? %>
+              <% rst = 5 - unit_concept.level %>
+                      <% (1..unit_concept.level).each do |idx| %>
+                      <li><i class="fa fa-star"></i></li>
+                      <% end%>
+
+                      <% (1..rst).each do |idx| %>
+                      <li><i class="fa fa-star-o"></i></li>
+                      <% end %>
+
+          <% end %>
                 </ul>				
                 <h3><a href="/contents/<%= unit_concept.id %>"><%= unit_concept.name %></a></h3>
             </div>
@@ -118,7 +124,5 @@
 		
 	
     <% end %>
-    
-    
-    
+
 </ul>
