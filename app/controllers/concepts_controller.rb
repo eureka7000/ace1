@@ -24,10 +24,34 @@ class ConceptsController < ApplicationController
         
         category = params[:category]
         sub_category = params[:sub_category]
+        exercise_yn = params[:exercise_yn]
         
-        if category.nil? && sub_category.nil?
+        if category.nil? && sub_category.nil? && exercise_yn.nil?
             @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
         else
+            
+            str = '';
+                        
+            unless category.nil?
+                str += ' category = ? '
+            end
+            
+            unless sub_category.nil?
+                if str == ''
+                    str += ' sub_category = ? '
+                else
+                    str += ' and sub_category = ? '
+                end        
+            end
+            
+            unless exercise_yn.nil?
+                if str == ''
+                    str += ' exercise_yn = ?'
+                else
+                    str += ' and exercise_yn = ? '
+                end        
+            end    
+                
             @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
             
             unless sub_category.nil?

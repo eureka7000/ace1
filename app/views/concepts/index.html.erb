@@ -24,7 +24,15 @@
 	                    <select id="sub_category" class="form-control col-md-2" >
 	                    <option value="">--- Sub Category ---</option>
 	                    </select> 					
-					</div>	
+					</div>
+					
+					<div class="col-md-2">	
+	                    <select id="exercise_yn" class="form-control col-md-2" >
+						<option value=""></option>	
+	                    <option value="concept">Concept</option>
+						<option value="exercise">Exercise</option>
+	                    </select>
+					</div>
 					
 					<div class="col-md-1">
 						<a href="javascript:goSearch()" class="btn btn-success">Search</a>	
@@ -119,7 +127,8 @@
     }
 	
 	function goSearch() {
-		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" + $('#sub_category').val();	
+		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" + 
+		$('#sub_category').val() + "&exercise_yn=" + $('#exercise_yn').val();
 	}
 	
     </script>
