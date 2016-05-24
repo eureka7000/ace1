@@ -23,11 +23,17 @@ class ConceptsController < ApplicationController
     def index
         
         category = params[:category]
+        sub_category = params[:sub_category]
         
-        if category.nil?
+        if category.nil? && sub_category.nil?
             @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
         else
             @concepts = Concept.where('category = ?',category).paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
+            
+            unless sub_category.nil?
+                @concepts = @concepts.where('sub_category = ?', sub_category)
+            end    
+            
         end        
         
         @categorys = Concept.group('category')
