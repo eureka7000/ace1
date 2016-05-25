@@ -77,7 +77,7 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { :host => 'www.eurekamath.co.kr' }
+  config.action_mailer.default_url_options = { :host => 'eurekamath.co.kr' }
   config.action_mailer.delivery_method = :smtp
   #config.action_mailer.perform_deliveryies = true
   #config.action_mailer.rais_delivery_errors = false
@@ -86,7 +86,7 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: "smtp.gmail.com",
     port: 587,
-    domain: 'www.eurekamath.co.kr',
+    domain: 'eurekamath.co.kr',
     authentication: :login,
     enable_starttls_auto: true,
     user_name: 'eureka6001@gmail.com',
