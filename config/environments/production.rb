@@ -89,8 +89,8 @@ Rails.application.configure do
     domain: 'eurekamath.co.kr',
     authentication: :login,
     enable_starttls_auto: true,
-    user_name: 'eureka6001@gmail.com',
-    password: 'dragon70'
+    user_name: 'ghawk000@gmail.com',
+    password: 'leinhar0!'
   }
   
 end
