@@ -1,6 +1,6 @@
 class UserMailer < ApplicationMailer
     
-    default from: "ghawk000@gmail.com"
+    default from: "eureka6001@gmail.com"
     
     def cert_teacher(school_manager, user)
         @school_manager = school_manager
