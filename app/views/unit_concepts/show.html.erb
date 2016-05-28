@@ -10,8 +10,14 @@
 		<div class="col-md-2">	
 	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
 	        <option value="">ALL</option>
-	        <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
-	        <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
+	        <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
+				<% if value == "Exercise" && @unit_concept.exercise_yn == "exercise" %>
+	        <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> >Solution</option>
+				<% elsif value=="Solution" && @unit_concept.exercise_yn == "exercise" %>
+			<% # skip generating option %>
+				<% else %>
+            <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
+				<% end %>			
 	        <% end %>
 	        </select>    
 		</div>	
@@ -41,7 +47,7 @@
                                 <% elsif unit_concept_desc.desc_type == '2'  %>
                                 <span class="badge rounded-2x badge-blue">Explanation</span>
 								<% elsif unit_concept_desc.desc_type == '3'  %>
-								<span class="badge rounded-2x badge-red">Exercise</span>
+								<span class="badge rounded-2x badge-red"><%= @unit_concept.exercise_yn == "exercise" ? "Solution" : "Exercise" %></span>
 								<% elsif unit_concept_desc.desc_type == '4'  %>
 								<span class="badge rounded-2x badge-green">Video</span>
 								<% elsif unit_concept_desc.desc_type == '5'  %>
@@ -56,8 +62,8 @@
 									<% unit_concept = UnitConcept.find(unit_concept_desc.link) %>
 									<%= unit_concept.name %> ( <%= unit_concept.code %> )
 								<% elsif unit_concept_desc.desc_type == '6' %>
-									<% unit_concept_desc = UnitConceptDesc.find(unit_concept_desc.memo) %>
-									<%= unit_concept_desc.memo %>
+									<% rel_unit_concept_desc = UnitConceptDesc.where('id = ?',unit_concept_desc.memo).first %>
+									<%= rel_unit_concept_desc.memo unless rel_unit_concept_desc.nil? %>
 								<% else %>
 									<%= unit_concept_desc.memo %>
 								<% end %>
@@ -96,16 +102,26 @@
                     <div class="row">
 						
                         <section class="col col-2">
+							
                             <label class="select">
                                 <select id="unit_concept_desc_select" name="unit_concept_desc[desc_type]" onchange="changedUnitCocenpt()">
                                 <option value="">항목선택</option>
-                                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>                                
+                                <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
+									<% if value == "Exercise" && @unit_concept.exercise_yn == "exercise" %>
+                                <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> >Solution</option>
+									<% elsif value=="Solution" && @unit_concept.exercise_yn == "exercise" %>
+									<% # skip generating option %>
+									<% else %>
                                 <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
+									<% end %>
+									
                                 <% end %>
+								
 								</select>    
                             <i></i>
                             </label>    
-                        </section>    
+                        </section>
+						
                         <section class="col col-6">
                             <label id="file_label" for="file" class="input input-file" <% if params[:desc_type] == '5' || params[:desc_type] == '4' || params[:desc_type] == '6' %>style="display:none"<% end %> >
                                 <div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
@@ -122,6 +138,7 @@
 								<div class="button state-success"><input type="file" name="unit_concept_desc[file_name]" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include solution file" readonly="" class="valid">
 							</label>	
                         </section>
+						
                         <section class="col col-2">
                             <label id="memo_label" class="input">
                                 <input type="text" id="memo" name="unit_concept_desc[memo]" placeholder="code">
