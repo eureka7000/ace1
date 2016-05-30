@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  grade: MyString
+  chapter: MyString
+  category: MyString
+  sub_category: MyString
+  code: MyString
+  unit_concept: MyString
+
+two:
+  grade: MyString
+  chapter: MyString
+  category: MyString
+  sub_category: MyString
+  code: MyString
+  unit_concept: MyString

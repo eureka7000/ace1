@@ -5,82 +5,82 @@
             <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %></h2>
         </div>
     </div>
-    
-    <!--=== Cube-Portfdlio ===-->
-    <div class="cube-portfolio margin-bottom-20">
-        <div class="content-xs">
-            <div id="filters-container" class="cbp-l-filters-text content-xs">
-                <div data-filter="*" class="cbp-filter-item cbp-filter-item-active"> All </div> |
-                <% idx = 0 %>
-                <% Concept::DESC_TYPES.each_pair do |key, value| %>
-                <div data-filter=".<%= key %>" class="cbp-filter-item "> <%= value %> </div><% unless idx == Concept::DESC_TYPES.count - 1 %> | <% end %>
-                <% idx = idx + 1 %>
-                <% end %>
-            </div>
-        </div>
-
-        <div id="grid-container" class="cbp-l-grid-agency">
-
-            <% @concept.concept_exercises.each do |concept_exercise| %>
-            
-            <div class="cbp-item <%= concept_exercise.desc_type %>">
-                <div class="cbp-caption margin-bottom-20">
-                    
-                    <div class="cbp-caption-defaultWrap">
-                        <% if concept_exercise.desc_type == 'video' %>
-                        <% elsif concept_exercise.desc_type == 'link' %>
-                        <% else %>
-                        <img src="<%= concept_exercise.file_name.medium %>" alt="">
-                        <% end %>
-                    </div>
-                    
-                    <div class="cbp-caption-activeWrap">
-                        <div class="cbp-l-caption-alignCenter">
-                            <div class="cbp-l-caption-body">
-                                <ul class="link-captions no-bottom-space">
-                                    <li><a href="<%= concept_exercise.file_name %>" class="cbp-lightbox" data-title="<%= concept_exercise.file_name %>"><i class="rounded-x fa fa-search"></i></a></li>
-                                    <li><%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, concept_exercise, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-                
-                <div class="cbp-title-dark">
-                    
-                    <% if concept_exercise.desc_type == 'video' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <iframe src="https://player.vimeo.com/video/<%= concept_exercise.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                    </div>
-                    
-                    <% elsif concept_exercise.desc_type == 'link' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <a href="/concepts/<%= concept_exercise.link %>"><%= Concept.find(concept_exercise.link).name %></a>
-                    </div>    
-                    <% end %>
-                    
-                    <div class="cbp-l-grid-agency-title blue ">
-                        <p class="text-primary">
-                            <%= concept_exercise.desc_type %>
-                            <%= link_to '<i class="rounded-x fa fa-trash"></i>'.html_safe, concept_exercise, method: :delete, data: { confirm: 'Are you sure?' } %>
-                        </p>
-                    </div>
-                    
-                    <% unless concept_exercise.desc_type == 'video' && concept_exercise.link == 'link' %>
-                    <div class="cbp-l-grid-agency-desc">
-                        <%= concept_exercise.memo %>
-                    </div>
-                    <% end %>
-                    
-                </div>
-            </div>
-                
-            <% end %> 
-
-        </div><!--/end Grid Container-->
-    </div>
-    <!--=== End Cube-Portfdlio ===-->
+	
+	<div class="row" style="margin-bottom: 20px;">
+		<div class="col-md-2">	
+	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
+	        <option value="">ALL</option>
+	        <% Concept::DESC_TYPES.each_pair do |key, value| %>
+            <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
+	        <% end %>
+	        </select>    
+		</div>	
+	</div>	
+	
+    <div class="row">
+        
+        <div class="col-sm-12 col-md-12">
+        
+            <div class="table-responsive">
+        
+                <table class="table table-hover table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Code</th>
+                            <th></th>
+                            <th class="col-md-2"><i class="fa fa-cog"></i></th>
+                        </tr>    
+                    </thead>
+                    <tbody>
+						<% @concept.concept_exercises.each do |unit_concept_desc| %>
+						<tr>
+							<td>
+                                <% if unit_concept_desc.desc_type == '1' %>
+                                <span class="badge rounded-2x badge-u">Concept</span>
+                                <% elsif unit_concept_desc.desc_type == '2'  %>
+                                <span class="badge rounded-2x badge-blue">Explanation</span>
+								<% elsif unit_concept_desc.desc_type == '3'  %>
+								<span class="badge rounded-2x badge-red">Exercise</span>
+								<% elsif unit_concept_desc.desc_type == '4'  %>
+								<span class="badge rounded-2x badge-green">Video</span>
+								<% elsif unit_concept_desc.desc_type == '5'  %>
+								<span class="badge rounded-2x badge-sea">Link</span>
+								<% elsif unit_concept_desc.desc_type == '6'  %>
+								<span class="badge rounded-2x badge-orange">Solution</span>								
+                                <% end  %>
+							</td>
+							<td><% if unit_concept_desc.desc_type == '4' %>
+								
+								<% elsif unit_concept_desc.desc_type == '5' %>
+									<% unit_concept = UnitConcept.find(unit_concept_desc.link) %>
+									<%= unit_concept.name %> ( <%= unit_concept.code %> )
+								<% elsif unit_concept_desc.desc_type == '6' %>
+									<% rel_unit_concept_desc = UnitConceptDesc.where('id = ?',unit_concept_desc.memo).first %>
+									<%= rel_unit_concept_desc.memo unless rel_unit_concept_desc.nil? %>
+								<% else %>
+									<%= unit_concept_desc.memo %>
+								<% end %>
+							</td>
+							<td>
+                        		<% if unit_concept_desc.desc_type == '4' %>
+                        		<iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        		<% elsif unit_concept_desc.desc_type == '5' %>
+                        		<a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                        		<% else %>
+                        		<a href="<%= unit_concept_desc.file_name %>"><img src="<%= unit_concept_desc.file_name.thumb %>" alt=""></a>
+                        		<% end %>
+							</td>
+							<td>
+								<%= link_to 'Delete'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
+							</td>	
+						</tr>
+						<% end %>
+					</tbody>
+				</table>	
+			</div>	
+		</div>
+	</div>			
 
     <div class="row">
 
@@ -90,41 +90,60 @@
                 
                 <%= token_tag nil %>
                 
-                <input type="hidden" name="concept_exercise[concept_id]" value="<%= @concept.id %>" />
+				<input type="hidden" name="concept_exercise[concept_id]" value="<%= @concept.id %>" />
 
                 <fieldset>
                     <div class="row">
+						
                         <section class="col col-2">
+							
                             <label class="select">
                                 <select id="unit_concept_desc_select" name="concept_exercise[desc_type]" onchange="changedUnitCocenpt()">
                                 <option value="">항목선택</option>
-                                <% Concept::DESC_TYPES.each_pair do |key, value| %>                                
-                                <option value="<%= key %>"><%= value %></option>
+                                <% Concept::DESC_TYPES.each_pair do |key, value| %>
+                                <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
                                 <% end %>
-                            </select>    
+								
+								</select>    
                             <i></i>
                             </label>    
-                        </section>    
+                        </section>
+						
                         <section class="col col-6">
-                            <label id="file_label" for="file" class="input input-file">
+                            <label id="file_label" for="file" class="input input-file" <% if params[:desc_type] == '5' || params[:desc_type] == '4' || params[:desc_type] == '6' %>style="display:none"<% end %> >
                                 <div class="button state-success"><input type="file" name="concept_exercise[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
                             </label>
-                            <label id="video_label" class="input" style="display:none">
+                            <label id="video_label" class="input" <% unless params[:desc_type] == '4' %>style="display:none"<% end %>>
                                 <input type="text" name="concept_exercise[video]" class="form-control" placeholder="video url" />
                             </label>
-                            <label id="link_label" class="input" style="display:none">
+                            <label id="link_label" class="input" <% unless params[:desc_type] == '5' %>style="display:none"<% end %>>
                                 <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
                                 <input type="text" id="unit_concept_desc" disabled class="form-control" placeholder="related concept" />
-                                <input type="hidden" id="unit_concept_id" name="unit_concept_desc[link]">
-                            </label>    
-                        </section>
-                        <section class="col col-2">
-                            <label class="input">
-                                <input type="text" name="concept_exercise[memo]" placeholder="code">
+                                <input type="hidden" id="unit_concept_id" name="concept_exercise[link]">
                             </label>
+							<label id="solution_label" for="file" class="input input-file" <% unless params[:desc_type] == '6' %>style="display:none"<% end %>>
+								<div class="button state-success"><input type="file" name="concept_exercise[file_name]" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include solution file" readonly="" class="valid">
+							</label>	
+                        </section>
+						
+                        <section class="col col-2">
+                            <label id="memo_label" class="input">
+                                <input type="text" id="memo" name="concept_exercise[memo]" placeholder="code">
+                            </label>
+							<label id="exercise_choice_label" class="select" style="display:none" >
+								<select id="exercise_choice" onchange="exerciseChanged()">
+								<option value="">=== 유형문제 선택 ===</option>
+								<% @concept.concept_exercises.each do |unit_concept_desc| %>
+									<% if unit_concept_desc.desc_type == '3' %>
+										<option value="<%= unit_concept_desc.id %>"><%= unit_concept_desc.memo %></option>
+									<% end %>	
+								<% end %>
+								</select>	
+								<i></i>
+							</label>	
                         </section>
                         <section class="col col-2">
-                            <button type="submit" class="btn-u" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Saving Image ..." onclick="saveUnitConceptDesc()">저장</button>
+                            <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
                             <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>
                         </section>    
                     </div>
@@ -154,7 +173,7 @@
                         <select id="category" class="form-control inline-block" onchange="changedCategory()">
                             <option value="">--- Category ---</option>
                             <% Concept::CATEGORIES.each_pair do |key, value| %>
-                            <option value="<%= key %>"><%= value %></option>
+                            <option value="<%= key %>"><%= value %> ( <%= key %> )</option>
                             <% end %>
                         </select>                            
                     </div>    
@@ -199,6 +218,19 @@
     </div>
     
     <script type="text/javascript">
+	
+	$('input:file').change(
+	    function(e){
+	    	var f = e.target.files,
+	            len = f.length;
+	        for (var i=0;i<len;i++){
+				var sname = f[i].name;
+				if ($('#unit_concept_desc_select').val() != '6') {
+					$('#memo').val(sname.replace(/\..+$/, ''));
+				}	
+	    	}
+		}
+	);	
     
     <% index = 0 %>
 
@@ -221,12 +253,12 @@
         var divChar = '';
         
         if (cetegory_val != '') {
-            divChar = cetegory_val.substring(0,1);
+            divChar = cetegory_val.substring(0,2);
         }
         
         $.each(options, function(i) {
-            if (options[i].values.substring(0,1) == divChar) {
-                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
+            if (options[i].values.substring(0,2) == divChar) {
+                $('#sub_category').append( $('<option>').text(options[i].text + ' ( ' + options[i].values + ' )').attr('value',options[i].values) );                
             }
         });
     
@@ -294,6 +326,10 @@
         $('#unit_concept_desc').val(unitConceptName);
         $('#conceptSearchModal').modal('hide');
     }
+	
+	function changeSearchCondition() {
+		location = "/concepts/<%= params[:id] %>/exercise?concept_page_num=<%= params[:concept_page_num]%>&desc_type=" + $('#desc_type_condition').val();
+	}
     
     </script>
     
@@ -303,21 +339,41 @@
 
     function changedUnitCocenpt() {
         
-        if ( $('#unit_concept_desc_select').val() == 'video') {
+        if ( $('#unit_concept_desc_select').val() == '4') {
             $('#file_label').hide();
             $('#video_label').show();
             $('#link_label').hide();
-        } else if ($('#unit_concept_desc_select').val() == 'link') {    
+			$('#solution_label').hide();
+			$('#exercise_choice_label').hide();
+			$('#memo_label').show();
+        } else if ($('#unit_concept_desc_select').val() == '5') {    
             $('#file_label').hide();
             $('#video_label').hide();            
-            $('#link_label').show();            
+            $('#link_label').show();
+			$('#solution_label').hide();
+			$('#exercise_choice_label').hide();
+			$('#memo_label').show();			
+		} else if ($('#unit_concept_desc_select').val() == '6') {
+            $('#file_label').hide();
+            $('#video_label').hide();            
+            $('#link_label').hide();
+			$('#solution_label').show();	
+			$('#exercise_choice_label').show();						
+			$('#memo_label').hide();			
         } else {
             $('#video_label').hide();
             $('#file_label').show();
             $('#link_label').hide();
+			$('#solution_label').hide();
+			$('#exercise_choice_label').hide();			
+			$('#memo_label').show();			
         }
         
     }
+	
+	function exerciseChanged() {
+		$('#memo').val($('#exercise_choice').val());
+	}
     
     function conceptSearch() {
         $('#conceptSearchModal').modal();
