@@ -1,11 +1,14 @@
 class GradeUnitConceptsController < ApplicationController
-  before_action :set_grade_unit_concept, only: [:show, :edit, :update, :destroy]
 
-  # GET /grade_unit_concepts
-  # GET /grade_unit_concepts.json
-  def index
-    @grade_unit_concepts = GradeUnitConcept.all
-  end
+    before_action :authenticate_admin_user!
+    before_action :set_grade_unit_concept, only: [:show, :edit, :update, :destroy]
+    layout '/layouts/admin_main'
+
+    # GET /grade_unit_concepts
+    # GET /grade_unit_concepts.json
+    def index
+        @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+    end
 
   # GET /grade_unit_concepts/1
   # GET /grade_unit_concepts/1.json
