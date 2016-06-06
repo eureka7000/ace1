@@ -13,6 +13,8 @@
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center">Self Evaluation</a></li>
         <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
         <li><a href="#m" data-toggle="tab" style="text-align: center">질문하기</a></li>
+        <li><a href="#p" data-toggle="tab" style="text-align: center">프린트</a></li>
+
 
       </ul>
       <div class="tab-content col-sm-11 col-sm-pull-1">
@@ -51,17 +53,32 @@
                       <% imgCount += 1 %>
                   <% end %>
               <% end %>
-              <ul class="list-inline badge-lists margin-bottom-30">
-                <li>
-                  <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
-                  <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
-                </li>
-              </ul>
+              <% if imgCount == 1 %>
+                 <div class="col-md-9">
+                 </div>
+                 <div class="col-md-3">
+                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                        <li>
+                          <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
+                          <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        </li>
+                    </ul>
+               </div>
+              <% else %>
+                  <div class="col-md-9">
+                  </div>
+                  <div class="col-md-3">
+                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                      <li>
+                        <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
+                        <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      </li>
+                    </ul>
+                  </div>
+              <% end %>
 
             </div>
           </div>
-
-
         </div> <!-- Tab 개념 END-->
 
         <!-- Tab 개념 설명 -->
@@ -108,12 +125,29 @@
                       <% imgCount += 1 %>
                   <% end %>
               <% end %>
-              <ul class="list-inline badge-lists margin-bottom-30">
-                <li>
-                  <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
-                  <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
-                </li>
-              </ul>
+              <% if imgCount == 1 %>
+                  <div class="col-md-9">
+                  </div>
+                  <div class="col-md-3">
+                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                      <li>
+                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      </li>
+                    </ul>
+                  </div>
+              <% else %>
+                  <div class="col-md-9">
+                  </div>
+                  <div class="col-md-3">
+                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                      <li>
+                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      </li>
+                    </ul>
+                  </div>
+              <% end %>
             </div>
           </div>
         </div> <!-- Tab 개념 설명 END -->
@@ -121,7 +155,7 @@
 
         <!-- Tab Exercise -->
         <div class="tab-pane" id="f">
-          <div class="col-md-6">
+          <div class="col-md-12">
 
             <p>
               <% unless @unit_concept.level.nil? %>
@@ -141,62 +175,167 @@
             <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
 
             <div style="overflow-y: auto; width: 100%; height: 580px">
+              <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <% unless unit_concept_desc.desc_type.to_i != 3%>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                  <% unless unit_concept_desc.desc_type.to_i != 3 %>
+                      <% if imgCount == 1 %>
+                          <div class="col-md-12" id="exercise1<%=imgCount%>">
+                            <div class="col-md-6">
+                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                            </div>
+                            <div class="col-md-6 text-center">
+                              <form role="form" style="padding-top: 3%">
+                                <label class="radio-inline">
+                                  <input type="radio" name="exe<%=unit_concept_desc.memo%>" value="correct">맞음
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="radio-inline">
+                                  <input type="radio" name="exe<%=unit_concept_desc.memo%>" value="wrong">틀림
+                                </label>
+                                &nbsp; &nbsp; &nbsp; &nbsp;
+                                <button class="btn rounded btn-info" type="button">저장</button>
+                              </form>
+                            </div>
+
+                          </div>
+                      <% else %>
+                          <div hidden class="col-md-12" id="exercise1<%=imgCount%>">
+                            <div class="col-md-6">
+                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                            </div>
+                            <div class="col-md-6 text-center">
+                              <form role="form" style="padding-top: 3%">
+                                <label class="radio-inline">
+                                  <input type="radio" name="exe<%=unit_concept_desc.memo%>" value="correct">맞음
+                                </label>
+                                &nbsp; &nbsp;
+                                <label class="radio-inline">
+                                  <input type="radio" name="exe<%=unit_concept_desc.memo%>" value="wrong">틀림
+                                </label>
+                                &nbsp; &nbsp; &nbsp; &nbsp;
+                                <button class="btn rounded btn-info" type="button">저장</button>
+                              </form>
+                            </div>
+
+                          </div>
+                      <% end %>
+                      <% imgCount += 1 %>
                   <% end %>
+              <% end %>
+              <% if imgCount == 1 %>
+                  <div class="col-md-11 text-right">
+                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                      <li>
+                        <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
+                        <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-1 t text-right">
+
+                  </div>
+              <% else %>
+                  <div class="col-md-11 text-right">
+                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                      <li>
+                        <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
+                        <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-md-1">
+
+                  </div>
               <% end %>
             </div>
           </div>
 
-          <div class="col-md-6">
-            <div style="overflow-y: auto; width: 100%; height: 580px">
-              <!-- empty space -->
-            </div>
-          </div>
+
         </div> <!-- Tab Exercise END -->
 
         <!-- Tab Video -->
         <div class="tab-pane" id="v">
-          <div class="col-md-6">
+          <div class="col-md-12">
 
             <p>
               <% unless @unit_concept.level.nil? %>
                   <% rst = 5 - @unit_concept.level %>
                   <span style="color:red">
-                                <% (1..@unit_concept.level).each do |idx| %>
-                                *
-                                <% end%>
-                                </span>
-                                <span style="color:gray">
-                                <% (1..rst).each do |idx| %>
-                                *
-                                <% end %>
-                                </span>
+                      <% (1..@unit_concept.level).each do |idx| %>
+                      *
+                      <% end%>
+                      </span>
+                      <span style="color:gray">
+                      <% (1..rst).each do |idx| %>
+                      *
+                      <% end %>
+                  </span>
               <% end %>
             </p>
             <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
 
-            <p>강의 동영상</p>
-
-            <div style="overflow-y: auto; width: 100%; height: 580px">
+            <div style="overflow-y: auto; ">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 4%>
-                      <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                      <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                      <div class="video-container">
+                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>"  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                        <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                      </div>
                   <% end %>
               <% end %>
 
             </div>
 
           </div>
+        </div> <!-- Tab Video END -->
 
-          <div class="col-md-6">
-            <div style="overflow-y: auto; width: 100%; height: 580px">
-              <!-- empty space -->
+        <!-- Tab 프린트 -->
+        <div class="tab-pane" id="p">
+
+          <% heightSize = 0 %>
+
+          <div class="col-md-12">
+            <div class="col-md-6">
+
+              <p>
+                <% unless @unit_concept.level.nil? %>
+                    <% rst = 5 - @unit_concept.level %>
+                    <span style="color:red">
+                                  <% (1..@unit_concept.level).each do |idx| %>
+                                  *
+                                  <% end%>
+                                  </span>
+                                  <span style="color:gray">
+                                  <% (1..rst).each do |idx| %>
+                                  *
+                                  <% end %>
+                                  </span>
+                <% end %>
+              </p>
+              <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+
+              <div style="overflow-y: auto; ">
+                <% @unit_concept_descs.each do | unit_concept_desc | %>
+                    <% unless unit_concept_desc.desc_type.to_i != 1%>
+                        <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                        <%  %>
+                    <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <p>개념 설명</p>
+              <div style="overflow-y: auto; ">
+                <% @unit_concept_descs.each do | unit_concept_decs | %>
+                    <% unless unit_concept_decs.desc_type.to_i != 2 %>
+                        <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                    <% end %>
+                <% end %>
+              </div>
             </div>
           </div>
-        </div> <!-- Tab Video END -->
+        </div> <!-- Tab 프린트 END -->
 
       </div>
     </div>
@@ -220,9 +359,17 @@
               <div class="row">
                 <div class="col-lg-6">
 
-                  <input type="radio" name="evaluation" value="easy"> 이해됨 &nbsp;
-                  <input type="radio" name="evaluation" value="middle"> 보통 &nbsp;
-                  <input type="radio" name="evaluation" value="difficult"> 어려움 <br><br>
+                  <form role="form">
+                    <label class="radio-inline">
+                      <input type="radio" name="evaluation" value="easy">이해됨
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="evaluation" value="middle">보통
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="evaluation" value="difficult">어려움
+                    </label>
+                  </form>
 
                   <label>comment</label></br>
 
@@ -328,6 +475,29 @@
       if (count == 1){
         $("#btn2").hide();
         $("#badge2").hide();
+      }
+    });
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    var index = 2;
+
+    $("#btn3").click(function(){
+      $("#exercise1"+index).show();
+      index++;
+
+      var count = Number($("#badge3").text());
+      if(count == -1){
+        count = 0;
+      }
+      if (count > 0){
+        $("#badge3").text(count-1);
+      }
+      if (count == 1){
+        $("#btn3").hide();
+        $("#badge3").hide();
       }
     });
   });
