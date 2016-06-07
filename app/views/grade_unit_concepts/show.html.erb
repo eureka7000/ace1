@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @grade_unit_concept.grade %>
+</p>
+
+<p>
+  <strong>Chapter:</strong>
+  <%= @grade_unit_concept.chapter %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @grade_unit_concept.category %>
+</p>
+
+<p>
+  <strong>Sub category:</strong>
+  <%= @grade_unit_concept.sub_category %>
+</p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @grade_unit_concept.code %>
+</p>
+
+<p>
+  <strong>Unit concept:</strong>
+  <%= @grade_unit_concept.unit_concept %>
+</p>
+
+<%= link_to 'Edit', edit_grade_unit_concept_path(@grade_unit_concept) %> |
+<%= link_to 'Back', grade_unit_concepts_path %>

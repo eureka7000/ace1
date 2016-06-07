@@ -11,7 +11,7 @@ class UnitConcept < ActiveRecord::Base
         3 => "Exercise",
         4 => "Video",
         5 => "link",
-        6 => "solution"
+        6 => "Solution"
     }
     
     GRADES = {

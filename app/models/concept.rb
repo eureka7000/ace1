@@ -70,11 +70,11 @@ class Concept < ActiveRecord::Base
     }
     
     DESC_TYPES = {
-        :concept => "Concept",
-        :explanation => "Explanation",
-        :exercise => "Exercise",
-        :video => "Video",
-        :link => "link"
+        1 => "Concept",
+        2 => "Explanation",
+        3 => "Exercise",
+        4 => "Video",
+        5 => "link"
     }
     
 end
