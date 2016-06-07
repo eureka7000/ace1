@@ -99,7 +99,10 @@ function grade_change() {
 	var grade = $('#grade').val();
 	
     $('#chapter').empty();
-	$('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));	
+	$('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));
+	
+    $('#category').empty();
+	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));			
 	
 	if (grade != '') {
 	
