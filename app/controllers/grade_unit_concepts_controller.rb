@@ -3,6 +3,66 @@ class GradeUnitConceptsController < ApplicationController
     before_action :authenticate_admin_user!
     before_action :set_grade_unit_concept, only: [:show, :edit, :update, :destroy]
     layout '/layouts/admin_main'
+    
+    def get_chapters
+        
+        grade = params[:grade]
+        err = false
+        ret = {
+            chapters: []
+        }
+        
+        if grade.blank?
+            err = true
+        else
+            GradeUnitConcept::CHAPTERS.each_pair do |key, value|
+                if grade == key.to_s[0]
+                    ret[:chapters] << { key: key, value: value }
+                end    
+            end    
+        end
+        
+        respond_to do |format|
+            if err
+                format.json { render json: ret, status: :grade_is_blank }
+            else
+                format.json { render json: ret }
+            end        
+        end    
+        
+    end    
+    
+    def get_categories
+        
+        chapter = params[:chapter]
+        err = false
+        ret = {
+            categoies: []
+        }
+        
+        if chapter.blank?
+            err = true
+        else
+            GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+                logger.debug "chapter" + chapter.inspect
+                logger.debug "chapter" + key.to_s[0..2].inspect
+                
+                if chapter == key.to_s[0..2]
+                    ret[:categoies] << { key: key, value: value }
+                end    
+            end    
+        end
+        
+        respond_to do |format|
+            if err
+                format.json { render json: ret, status: :chapter_is_blank }
+            else
+                format.json { render json: ret }
+            end        
+        end    
+        
+    end    
+        
 
     # GET /grade_unit_concepts
     # GET /grade_unit_concepts.json
@@ -10,10 +70,10 @@ class GradeUnitConceptsController < ApplicationController
         @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
     end
 
-  # GET /grade_unit_concepts/1
-  # GET /grade_unit_concepts/1.json
-  def show
-  end
+    # GET /grade_unit_concepts/1
+    # GET /grade_unit_concepts/1.json
+    def show
+    end
 
   # GET /grade_unit_concepts/new
   def new

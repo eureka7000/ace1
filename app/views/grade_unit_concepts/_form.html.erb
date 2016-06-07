@@ -1,41 +1,158 @@
-<%= form_for(@grade_unit_concept) do |f| %>
-  <% if @grade_unit_concept.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@grade_unit_concept.errors.count, "error") %> prohibited this grade_unit_concept from being saved:</h2>
+<div class="row">
 
-      <ul>
-      <% @grade_unit_concept.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="col-md-12 ">
+
+        <div class="well">
+
+            <%= form_for(@grade_unit_concept, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <% if @grade_unit_concept.errors.any? %>
+                        <div id="error_explanation">
+                            <h2><%= pluralize(@grade_unit_concept.errors.count, "error") %> prohibited this grade_unit_concept from being saved:</h2>
+
+                            <ul>
+                                <% @grade_unit_concept.errors.full_messages.each do |msg| %>
+                                    <li><%= msg %></li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <% end %>
+
+                        <div class="form-group">
+                            <%= f.label :grade, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="grade_unit_concept[grade]" id="grade" class="form-control" onchange="grade_change()">
+                                    <option value="">--- 학년 ---</option>
+                                    <% UnitConcept::GRADES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" <%= "selected" if @grade_unit_concept.grade == key %> ><%= value %></option>
+                                    <% end %>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :chapter, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="grade_unit_concept[chapter]" id="chapter" class="form-control" onchange="chapter_change()">
+                                    <option value="">--- Chapter ---</option>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="grade_unit_concept[category]" id="category" class="form-control">
+                                    <option value="">--- Category ---</option>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="grade_unit_concept[sub_category]" class="form-control">
+                                    <option value="">--- Sub Category ---</option>
+                                </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :code, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :code, :class => 'form-control' %>
+                            </div>
+                        </div>  
+						
+                        <div class="form-group">
+                            <%= f.label :unit_concept, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <%= f.text_field :unit_concept, :class => 'form-control' %>
+                            </div>
+                        </div>  						
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= f.submit '저장', :class => 'btn btn-success' %>
+                    <%= link_to '뒤로', "/grade_unit_concepts", :class => 'btn btn-info' %>
+                </footer>
+
+			<% end %>
+
+        </div>
+
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :grade %><br>
-    <%= f.text_field :grade %>
-  </div>
-  <div class="field">
-    <%= f.label :chapter %><br>
-    <%= f.text_field :chapter %>
-  </div>
-  <div class="field">
-    <%= f.label :category %><br>
-    <%= f.text_field :category %>
-  </div>
-  <div class="field">
-    <%= f.label :sub_category %><br>
-    <%= f.text_field :sub_category %>
-  </div>
-  <div class="field">
-    <%= f.label :code %><br>
-    <%= f.text_field :code %>
-  </div>
-  <div class="field">
-    <%= f.label :unit_concept %><br>
-    <%= f.text_field :unit_concept %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
+
+<script type="text/javascript">
+
+function grade_change() {
+	
+	var grade = $('#grade').val();
+	
+    $('#chapter').empty();
+	$('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));	
+	
+	if (grade != '') {
+	
+	    var url = "/grade_unit_concepts/get_chapters?grade=" + grade;
+    
+	    $.ajax({
+	        url: url,
+	        type: "GET",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+	        success : function(data) {
+        
+			        $.each(data.chapters, function(i) {
+	                	$('#chapter').append( $('<option>').text(data.chapters[i].value).attr('value',data.chapters[i].key) );                
+			        });				
+	        },
+	        error : function(){
+	            alert("try to again. please.");
+	        }
+	    });  
+		
+	}	
+}
+
+function chapter_change() {
+	
+	var chapter = $('#chapter').val();
+	
+    $('#category').empty();
+	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));		
+	
+	if (chapter != '') {
+	
+	    var url = "/grade_unit_concepts/get_categories?chapter=" + chapter;
+    
+	    $.ajax({
+	        url: url,
+	        type: "GET",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+	        success : function(data) {
+        
+			        $.each(data.categoies, function(i) {
+	                	$('#category').append( $('<option>').text(data.categoies[i].value).attr('value',data.categoies[i].key) );                
+			        });				
+	        },
+	        error : function(){
+	            alert("try to again. please.");
+	        }
+	    });  
+		
+	}		
+	
+}
+
+</script>

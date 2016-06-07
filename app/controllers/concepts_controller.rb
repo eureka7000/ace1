@@ -25,9 +25,10 @@ class ConceptsController < ApplicationController
         category = params[:category]
         sub_category = params[:sub_category]
         exercise_yn = params[:exercise_yn]
+        page = params[:page].blank? ? 1 : params[:page]
         
         if category.nil? && sub_category.nil? && exercise_yn.nil?
-            @concepts = Concept.all.paginate( :page => params[:page], :per_page => 30 ).order(:category, :sub_category, :concept_code)
+            @concepts = Concept.all.paginate( :page => page, :per_page => 30 ).order(:category, :sub_category, :concept_code)
         else
             
             str = "";
