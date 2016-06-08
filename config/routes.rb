@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
     get '/grade_unit_concepts/get_chapters' => 'grade_unit_concepts#get_chapters' 
     get '/grade_unit_concepts/get_categories' => 'grade_unit_concepts#get_categories' 
+    get '/grade_unit_concepts/get_sub_categories' => 'grade_unit_concepts#get_sub_categories'
+    get '/grade_unit_concepts/get_unit_concepts' => 'grade_unit_concepts#get_unit_concepts'
     resources :grade_unit_concepts
     
     get 'concepts/:id/exercise' => 'concepts#exercise'

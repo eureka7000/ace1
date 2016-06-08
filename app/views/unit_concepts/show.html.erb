@@ -157,7 +157,14 @@
                         </section>
                         <section class="col col-2">
                             <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
-                            <%= link_to 'Back', "/concepts/#{@unit_concept.concept.id}?concept_page_num=#{params[:concept_page_num]}", :class => 'btn-u btn-primary align-right' %>                            
+							<% back_url = "" 
+							   if params[:from] == "grade" 
+								   back_url = "/grade_unit_concepts"
+							   else
+								   back_url = "/concepts/#{@unit_concept.concept.id}?concept_page_num=#{params[:concept_page_num]}"
+							   end	   	   
+							%>
+                            <%= link_to 'Back', back_url, :class => 'btn-u btn-primary align-right' %>                            
                         </section>    
                     </div>
                 </fieldset>

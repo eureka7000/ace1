@@ -46,7 +46,7 @@
                         <div class="form-group">
                             <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[category]" id="category" class="form-control">
+                                <select name="grade_unit_concept[category]" id="category" class="form-control" onchange="category_change()">
                                     <option value="">--- Category ---</option>
                                 </select> 
                             </div>
@@ -55,9 +55,9 @@
                         <div class="form-group">
                             <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[sub_category]" class="form-control">
+                                <select name="grade_unit_concept[sub_category]" id="sub_category" class="form-control">
                                     <option value="">--- Sub Category ---</option>
-                                </select> 
+                                </select>
                             </div>
                         </div>
 
@@ -69,11 +69,22 @@
                         </div>  
 						
                         <div class="form-group">
-                            <%= f.label :unit_concept, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <%= f.label :name, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
-                                <%= f.text_field :unit_concept, :class => 'form-control' %>
+                                <%= f.text_field :name, :class => 'form-control' %>
                             </div>
-                        </div>  						
+                        </div>  
+						
+                        <div class="form-group">
+                            <%= f.label :unit_concept_id, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+								<input type="text" id="unit_concept_code" class="form-control" style="width:20%; float:left" />
+								<button class="btn-u btn-u-red"  style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
+                                <select name="grade_unit_concept[unit_concept_id]" id="unit_concept_id" class="form-control" style="width:70%; float:left">
+                                    <option value="">--- Unit Concept ---</option>
+                                </select>								
+                            </div>
+                        </div>  												
 
                     </div>
 
@@ -102,7 +113,10 @@ function grade_change() {
 	$('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));
 	
     $('#category').empty();
-	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));			
+	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));
+	
+    $('#sub_category').empty();
+	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));						
 	
 	if (grade != '') {
 	
@@ -132,7 +146,10 @@ function chapter_change() {
 	var chapter = $('#chapter').val();
 	
     $('#category').empty();
-	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));		
+	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));
+	
+    $('#sub_category').empty();
+	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));					
 	
 	if (chapter != '') {
 	
@@ -155,6 +172,68 @@ function chapter_change() {
 	    });  
 		
 	}		
+	
+}
+
+function category_change() {
+	
+	var category = $('#category').val();
+	
+    $('#sub_category').empty();
+	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));		
+	
+	if (category != '') {
+	
+	    var url = "/grade_unit_concepts/get_sub_categories?category=" + category;
+    
+	    $.ajax({
+	        url: url,
+	        type: "GET",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+	        success : function(data) {
+        
+			        $.each(data.sub_categoies, function(i) {
+	                	$('#sub_category').append( $('<option>').text(data.sub_categoies[i].value).attr('value',data.sub_categoies[i].key) );                
+			        });				
+	        },
+	        error : function(){
+	            alert("try to again. please.");
+	        }
+	    });  
+		
+	}		
+	
+}
+
+function search_click() {
+
+	var unit_concept_code = $('#unit_concept_code').val();
+	
+    $('#unit_concept_id').empty();
+	$('#unit_concept_id').append( $('<option>').text('--- Unit Concept ---').attr('value',''));		
+	
+	if (unit_concept_code != '') {
+	
+	    var url = "/grade_unit_concepts/get_unit_concepts?unit_concept_code=" + unit_concept_code;
+    
+	    $.ajax({
+	        url: url,
+	        type: "GET",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+	        success : function(data) {
+        
+			        $.each(data.unit_concepts, function(i) {
+	                	$('#unit_concept_id').append( $('<option>').text('[' + data.unit_concepts[i].code + '] ' + data.unit_concepts[i].name).attr('value',data.unit_concepts[i].id) );                
+			        });				
+	        },
+	        error : function(){
+	            alert("try to again. please.");
+	        }
+	    });  
+		
+	}	
 	
 }
 

@@ -44,9 +44,6 @@ class GradeUnitConceptsController < ApplicationController
             err = true
         else
             GradeUnitConcept::CATEGROIES.each_pair do |key, value|
-                logger.debug "chapter" + chapter.inspect
-                logger.debug "chapter" + key.to_s[0..2].inspect
-                
                 if chapter == key.to_s[0..2]
                     ret[:categoies] << { key: key, value: value }
                 end    
@@ -60,6 +57,63 @@ class GradeUnitConceptsController < ApplicationController
                 format.json { render json: ret }
             end        
         end    
+        
+    end    
+    
+    def get_sub_categories
+        
+        category = params[:category]
+        err = false
+        ret = {
+            sub_categoies: []
+        }
+        
+        if category.blank?
+            err = true
+        else
+            GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+                if category == key.to_s[0..4]
+                    ret[:sub_categoies] << { key: key, value: value }
+                end
+            end
+        end
+        
+        respond_to do |format|
+            if err
+                format.json { render json: ret, status: :category_is_blank }
+            else
+                format.json { render json: ret }
+            end        
+        end    
+        
+    end 
+    
+    def get_unit_concepts
+        
+        unit_concept_code = params[:unit_concept_code]
+        err = false
+        ret = {
+            unit_concepts: []
+        }
+        
+        if unit_concept_code.blank?
+            err = true
+        else
+            
+            unit_concepts = UnitConcept.where("code like ?", unit_concept_code + '%')
+            
+            unit_concepts.each do |rs|
+                ret[:unit_concepts] << { id: rs.id, name: rs.name, code: rs.code }
+            end
+        end
+        
+        respond_to do |format|
+            if err
+                format.json { render json: ret, status: :unit_concept_code_is_blank }
+            else
+                format.json { render json: ret }
+            end        
+        end          
         
     end    
         
@@ -132,6 +186,6 @@ class GradeUnitConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def grade_unit_concept_params
-      params.require(:grade_unit_concept).permit(:grade, :chapter, :category, :sub_category, :code, :unit_concept)
+      params.require(:grade_unit_concept).permit(:grade, :chapter, :category, :sub_category, :code, :name, :unit_concept_id)
     end
 end

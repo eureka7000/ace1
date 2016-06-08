@@ -1,5 +1,8 @@
 class GradeUnitConcept < ActiveRecord::Base
     
+    belongs_to :unit_concept
+    validates_presence_of :grade, :chapter, :category, :sub_category, :code, :name, :unit_concept_id
+    
     CHAPTERS = {
         110 => '수와 연산',
         120 => '문자와 식',
