@@ -1,4 +1,3 @@
-
 <div class="row" style="margin: 20px;">
 
   <div class="col-md-12">
@@ -274,8 +273,8 @@
             <div style="overflow-y: auto; ">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 4%>
-                      <div class="video-container">
-                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>"  frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                      <div class="responsive-video margin-bottom-30">
+                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
                         <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
                       </div>
                   <% end %>
@@ -289,49 +288,72 @@
         <!-- Tab 프린트 -->
         <div class="tab-pane" id="p">
           <div id="printArea">
-            <div class="col-md-12">
               <div class="col-xs-6">
                 <p>
                   <% unless @unit_concept.level.nil? %>
                       <% rst = 5 - @unit_concept.level %>
-                      <span style="color:red">
-                                    <% (1..@unit_concept.level).each do |idx| %>
-                                    *
-                                    <% end%>
-                                    </span>
-                                    <span style="color:gray">
-                                    <% (1..rst).each do |idx| %>
-                                    *
-                                    <% end %>
-                                    </span>
+                      <span style="-webkit-text-fill-color: red; font-size: large">
+                      <% (1..@unit_concept.level).each do |idx| %>
+                      *
+                      <% end%>
+                      </span>
+                      <span style="-webkit-text-fill-color: grey; font-size: large">
+                      <% (1..rst).each do |idx| %>
+                      *
+                      <% end %>
+                  </span>
                   <% end %>
                 </p>
-                <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
-
+                <h4 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
                 <div style="overflow-y: auto; ">
                   <% @unit_concept_descs.each do | unit_concept_desc | %>
                       <% unless unit_concept_desc.desc_type.to_i != 1%>
-                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; height:100%; margin-top: 10px;"/>
                           <%  %>
                       <% end %>
+                  <% end %>
+                  <br><br>
+                  <span class="label rounded-2x label-aqua">관련 개념</span>
+                  <br>
+
+                  <% @links.each do | link | %>
+                      <span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
+                         <i class="fa fa-circle"></i>
+                        &nbsp;
+                        <span style="-webkit-text-fill-color: #fc4674"><%= link.code %> </span>
+                        <span style="-webkit-text-fill-color: #020202"> : <%= link.name %> </span>
+                      </span>
+                      <br>
                   <% end %>
                 </div>
               </div>
 
               <div class="col-xs-6">
+                <br><br>
+                <span class="label rounded-2x label-aqua">개념보충설명</span>
+                <br>
+
                 <div style="overflow-y: auto; ">
                   <% @unit_concept_descs.each do | unit_concept_decs | %>
                       <% unless unit_concept_decs.desc_type.to_i != 2 %>
-                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; height:100%; margin-top: 5px;"/>
+                      <% end %>
+                  <% end %>
+
+                  <br><br>
+                  <span class="label rounded-2x label-aqua margin-bottom-30">Exercise</span>
+
+                  <% @unit_concept_descs.each do | unit_concept_decs | %>
+                      <% unless unit_concept_decs.desc_type.to_i != 3 %>
+                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; height:100%; margin-top: 5px;"/>
                       <% end %>
                   <% end %>
                 </div>
-                <div class="col-md-12 text-right margin-top-20">
-                      <button id="printBtn" class="btn rounded btn-success" type="button" >프린트하기</button>
-                </div>
               </div>
-            </div>
             </div> <!-- printArea -->
+          <div class="col-md-12 text-right margin-top-20">
+            <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
+          </div>
         </div> <!-- Tab 프린트 END -->
 
       </div>
@@ -508,14 +530,17 @@
   });
 </script>
 
+
+<!-- Print method -->
 <script type="text/javascript">
-  $(document).ready(function () {
-    $("#printBtn").click(function(){
-      $("#nav-pills").hide();
+    function printing(printId) {
+      var printElements = document.getElementById(printId).innerHTML;
+      var allPage = document.body.innerHTML;
+
+      document.body.innerHTML = printElements;
       $("#printBtn").hide();
       window.print();
-      $("#nav-pills").show();
-      $("#printBtn").show();
-    });
-  });
+
+      document.body.innerHTML = allPage;
+    }
 </script>
