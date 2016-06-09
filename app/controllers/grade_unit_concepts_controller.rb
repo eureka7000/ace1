@@ -130,6 +130,38 @@ class GradeUnitConceptsController < ApplicationController
         @chapters = []
         @categories = []
         @sub_categories = []
+        
+        unless params[:grade_unit_concept_id].blank?
+            
+            before_grade_unit_concept = GradeUnitConcept.find(params[:grade_unit_concept_id])
+            
+            @grade_unit_concept.grade = before_grade_unit_concept.grade
+            @grade_unit_concept.chapter = before_grade_unit_concept.chapter
+            @grade_unit_concept.category = before_grade_unit_concept.category
+            @grade_unit_concept.sub_category = before_grade_unit_concept.sub_category
+            
+            GradeUnitConcept::CHAPTERS.each_pair do |key, value|
+                if before_grade_unit_concept.grade == key.to_s[0]
+                    @chapters << { key: key, value: value }
+                end    
+            end  
+        
+            GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+                if before_grade_unit_concept.chapter == key.to_s[0..2]
+                    @categories << { key: key, value: value }
+                end    
+            end    
+        
+            GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+                if before_grade_unit_concept.category == key.to_s[0..4]
+                    @sub_categories << { key: key, value: value }
+                end
+            end              
+            
+        end    
+        
+
+        
     end
 
     # GET /grade_unit_concepts/1/edit
@@ -162,11 +194,12 @@ class GradeUnitConceptsController < ApplicationController
     # POST /grade_unit_concepts
     # POST /grade_unit_concepts.json
     def create
+        
         @grade_unit_concept = GradeUnitConcept.new(grade_unit_concept_params)
 
         respond_to do |format|
             if @grade_unit_concept.save
-                format.html { redirect_to grade_unit_concepts_url, notice: 'Grade unit concept was successfully created.' }
+                format.html { redirect_to "/grade_unit_concepts/new?grade_unit_concept_id=#{@grade_unit_concept.id}", notice: 'Grade unit concept was successfully created.' }
                 format.json { render :show, status: :created, location: @grade_unit_concept }
             else
                 format.html { render :new }
