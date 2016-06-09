@@ -12,7 +12,7 @@
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center">Self Evaluation</a></li>
         <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
         <li><a href="#m" data-toggle="tab" style="text-align: center">질문하기</a></li>
-        <li><a href="#p" data-toggle="tab" id="print" style="text-align: center">프린트</a></li>
+        <li><a href="#p" data-toggle="tab" style="text-align: center">프린트</a></li>
 
 
       </ul>
@@ -287,7 +287,7 @@
 
         <!-- Tab 프린트 -->
         <div class="tab-pane" id="p">
-          <div id="printArea">
+          <div id="printArea"> <!-- 프린트 영역 -->
               <div class="col-xs-6">
                 <p>
                   <% unless @unit_concept.level.nil? %>
@@ -350,7 +350,7 @@
                   <% end %>
                 </div>
               </div>
-            </div> <!-- printArea -->
+            </div> <!-- 프린트 영역 END-->
           <div class="col-md-12 text-right margin-top-20">
             <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
           </div>
@@ -522,15 +522,6 @@
   });
 </script>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    $("#print").click(function(){
-      $("#footer-v1").hide();
-    });
-  });
-</script>
-
-
 <!-- Print method -->
 <script type="text/javascript">
     function printing(printId) {
@@ -542,5 +533,6 @@
       window.print();
 
       document.body.innerHTML = allPage;
+      location.reload();
     }
 </script>
