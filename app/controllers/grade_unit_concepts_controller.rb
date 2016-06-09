@@ -159,21 +159,21 @@ class GradeUnitConceptsController < ApplicationController
         
     end
 
-  # POST /grade_unit_concepts
-  # POST /grade_unit_concepts.json
-  def create
-    @grade_unit_concept = GradeUnitConcept.new(grade_unit_concept_params)
+    # POST /grade_unit_concepts
+    # POST /grade_unit_concepts.json
+    def create
+        @grade_unit_concept = GradeUnitConcept.new(grade_unit_concept_params)
 
-    respond_to do |format|
-      if @grade_unit_concept.save
-        format.html { redirect_to @grade_unit_concept, notice: 'Grade unit concept was successfully created.' }
-        format.json { render :show, status: :created, location: @grade_unit_concept }
-      else
-        format.html { render :new }
-        format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
-      end
+        respond_to do |format|
+            if @grade_unit_concept.save
+                format.html { redirect_to grade_unit_concepts_url, notice: 'Grade unit concept was successfully created.' }
+                format.json { render :show, status: :created, location: @grade_unit_concept }
+            else
+                format.html { render :new }
+                format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
+            end
+        end
     end
-  end
 
     # PATCH/PUT /grade_unit_concepts/1
     # PATCH/PUT /grade_unit_concepts/1.json

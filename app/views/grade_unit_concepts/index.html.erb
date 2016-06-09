@@ -26,10 +26,10 @@
                         <tbody>
                         <% @grade_unit_concepts.each do |grade_unit_concept| %>
                         <tr>
-				        <td><%= grade_unit_concept.grade %></td>
-				        <td><%= grade_unit_concept.chapter %></td>
-				        <td><%= grade_unit_concept.category %></td>
-				        <td><%= grade_unit_concept.sub_category %></td>
+				        <td><%= UnitConcept::GRADES[grade_unit_concept.grade.to_i] %></td>
+				        <td><%= GradeUnitConcept::CHAPTERS[grade_unit_concept.chapter.to_i] %></td>
+				        <td><%= GradeUnitConcept::CATEGROIES[grade_unit_concept.category.to_i] %></td>
+				        <td><%= GradeUnitConcept::SUB_CATEGROIES[grade_unit_concept.sub_category.to_i] %></td>
 				        <td><%= grade_unit_concept.code %></td>
 				        <td><%= grade_unit_concept.name %></td>
                         <td><a href="/unit_concepts/<%= grade_unit_concept.unit_concept_id %>?from=grade">Show</a></td>
