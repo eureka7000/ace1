@@ -124,19 +124,40 @@ class GradeUnitConceptsController < ApplicationController
         @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
     end
 
-    # GET /grade_unit_concepts/1
-    # GET /grade_unit_concepts/1.json
-    def show
+    # GET /grade_unit_concepts/new
+    def new
+        @grade_unit_concept = GradeUnitConcept.new
+        @chapters = []
+        @categories = []
+        @sub_categories = []
     end
 
-  # GET /grade_unit_concepts/new
-  def new
-    @grade_unit_concept = GradeUnitConcept.new
-  end
-
-  # GET /grade_unit_concepts/1/edit
-  def edit
-  end
+    # GET /grade_unit_concepts/1/edit
+    def edit
+        
+        @chapters = [] 
+        @categories = []    
+        @sub_categories = []       
+        
+        GradeUnitConcept::CHAPTERS.each_pair do |key, value|
+            if @grade_unit_concept.grade == key.to_s[0]
+                @chapters << { key: key, value: value }
+            end    
+        end  
+        
+        GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+            if @grade_unit_concept.chapter == key.to_s[0..2]
+                @categories << { key: key, value: value }
+            end    
+        end    
+        
+        GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+            if @grade_unit_concept.category == key.to_s[0..4]
+                @sub_categories << { key: key, value: value }
+            end
+        end        
+        
+    end
 
   # POST /grade_unit_concepts
   # POST /grade_unit_concepts.json
@@ -154,19 +175,19 @@ class GradeUnitConceptsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /grade_unit_concepts/1
-  # PATCH/PUT /grade_unit_concepts/1.json
-  def update
-    respond_to do |format|
-      if @grade_unit_concept.update(grade_unit_concept_params)
-        format.html { redirect_to @grade_unit_concept, notice: 'Grade unit concept was successfully updated.' }
-        format.json { render :show, status: :ok, location: @grade_unit_concept }
-      else
-        format.html { render :edit }
-        format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
-      end
+    # PATCH/PUT /grade_unit_concepts/1
+    # PATCH/PUT /grade_unit_concepts/1.json
+    def update
+        respond_to do |format|
+            if @grade_unit_concept.update(grade_unit_concept_params)
+                format.html { redirect_to grade_unit_concepts_url, notice: 'Grade unit concept was successfully updated.' }
+                format.json { render :show, status: :ok, location: @grade_unit_concept }
+            else
+                format.html { render :edit }
+                format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
+            end
+        end
     end
-  end
 
   # DELETE /grade_unit_concepts/1
   # DELETE /grade_unit_concepts/1.json

@@ -28,7 +28,7 @@
                                 <select name="grade_unit_concept[grade]" id="grade" class="form-control" onchange="grade_change()">
                                     <option value="">--- 학년 ---</option>
                                     <% UnitConcept::GRADES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= "selected" if @grade_unit_concept.grade == key %> ><%= value %></option>
+                                    <option value="<%= key %>" <%= "selected" if @grade_unit_concept.grade == key.to_s %> ><%= value %></option>
                                     <% end %>
                                 </select> 
                             </div>
@@ -39,6 +39,9 @@
                             <div class="input-group col-sm-4">
                                 <select name="grade_unit_concept[chapter]" id="chapter" class="form-control" onchange="chapter_change()">
                                     <option value="">--- Chapter ---</option>
+									<% @chapters.each do |chapter|%>
+									<option value="<%= chapter[:key] %>" <%= "selected" if @grade_unit_concept.chapter == chapter[:key].to_s %>><%= chapter[:value] %></option>
+									<% end %>
                                 </select> 
                             </div>
                         </div>
@@ -48,6 +51,9 @@
                             <div class="input-group col-sm-4">
                                 <select name="grade_unit_concept[category]" id="category" class="form-control" onchange="category_change()">
                                     <option value="">--- Category ---</option>
+									<% @categories.each do |category|%>
+									<option value="<%= category[:key] %>" <%= "selected" if @grade_unit_concept.category == category[:key].to_s %>><%= category[:value] %></option>
+									<% end %>									
                                 </select> 
                             </div>
                         </div>
@@ -57,6 +63,9 @@
                             <div class="input-group col-sm-4">
                                 <select name="grade_unit_concept[sub_category]" id="sub_category" class="form-control">
                                     <option value="">--- Sub Category ---</option>
+									<% @sub_categories.each do |sub_category|%>
+									<option value="<%= sub_category[:key] %>" <%= "selected" if @grade_unit_concept.sub_category == sub_category[:key].to_s %>><%= sub_category[:value] %></option>
+									<% end %>										
                                 </select>
                             </div>
                         </div>
@@ -82,6 +91,9 @@
 								<button class="btn-u btn-u-red"  style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
                                 <select name="grade_unit_concept[unit_concept_id]" id="unit_concept_id" class="form-control" style="width:70%; float:left">
                                     <option value="">--- Unit Concept ---</option>
+									<% unless @grade_unit_concept.unit_concept.nil?  %>
+									<option value="<%= @grade_unit_concept.unit_concept.id %>" selected>[<%= @grade_unit_concept.unit_concept.code %>] <%= @grade_unit_concept.unit_concept.name %></option>
+									<% end %>
                                 </select>								
                             </div>
                         </div>  												
