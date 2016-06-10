@@ -29,7 +29,7 @@ class GradeUnitConcept < ActiveRecord::Base
         480 => '지수와 로그'
     }
     
-    CATEGROIES = {
+    CATEGORIES = {
         11010 => '약수와 배수',
         11020 => '정수와 유리수',
         12010 => '문자와 식',
@@ -83,7 +83,7 @@ class GradeUnitConcept < ActiveRecord::Base
         48020 => '로그'
     }
     
-    SUB_CATEGROIES = {
+    SUB_CATEGORIES = {
         1101010 => '소인수분해',
         1101020 => '최대공약수와 최소공배수',
         1102010 => '정수와 유리수',

@@ -97,9 +97,9 @@
                                           <select class="valid" name="user[grade]">
                                             <% unless current_user.grade.nil? %>
                                                 <% if current_user.grade.to_i > 0 && current_user.grade.to_i < 4 %>
-                                                    <option selected="selected">중<%= current_user.grade %></option>
+                                                    <option selected="selected" disabled="">중<%= current_user.grade %></option>
                                                 <% else %>
-                                                    <option selected="selected">고<%= current_user.grade.to_i - 3 %></option>
+                                                    <option selected="selected" disabled="">고<%= current_user.grade.to_i - 3 %></option>
                                                 <% end %>
                                             <% end %>
                                             <% UnitConcept::GRADES.each_pair() do |key, value| %>

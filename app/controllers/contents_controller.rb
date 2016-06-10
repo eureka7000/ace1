@@ -10,19 +10,29 @@ class ContentsController < ApplicationController
         @sub_category = params[:sub_category]
         @concept_id = params[:concept_id]
 
+        @chapter = params[:chapter]
 
-        if @step == '3'
-            @concepts = Concept.where('category = ? and sub_category = ?', @category, @sub_category)
-            @student = 'middle'
+        if @view_type == '1'
+            if @step == '3'
+                @concepts = Concept.where('category = ? and sub_category = ?', @category, @sub_category)
 
-            @unit_concepts = UnitConcept.all
+                if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
+                    @student = 'middle'
+                elsif current_user.grade.to_i > 4 && current_user.grade.to_i < 7
+                    @student = 'high'
+                end
 
-        elsif @step == '4'
-            @concept = Concept.find(@concept_id)
-            @unit_concepts = UnitConcept.where('concept_id = ?', @concept_id)
+                @unit_concepts = UnitConcept.all
 
-            @student = params[:student]
-            @level = params[:level]
+            elsif @step == '4'
+                @concept = Concept.find(@concept_id)
+                @unit_concepts = UnitConcept.where('concept_id = ?', @concept_id)
+
+                @student = params[:student]
+                @level = params[:level]
+            end
+        else
+
         end
     end
     
