@@ -49,6 +49,7 @@ class UsersController < ApplicationController
         @user.user_name = params[:user][:user_name]
         @user.location = params[:user][:location]
         @user.phone = params[:user][:phone]
+        @user.grade = params[:user][:grade]
 
         respond_to do |format|
             if @user.save

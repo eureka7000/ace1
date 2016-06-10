@@ -16,6 +16,12 @@ class User < ActiveRecord::Base
         "institute manager" => "학원 관리자", 
         "mento"             => "멘토"
     }
+
+    USER_STUDY_LEVELS = {
+        "1" => "초급",
+        "2" => "중급",
+        "3" => "상급"
+    }
     
     def user_params
         params.require(:user).permit(:email, :name, :location, :phone)

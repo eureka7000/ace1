@@ -88,9 +88,31 @@
                                 				<% end %>
                                             </div>
                                         </section>
-                                    </dd>            
+                                    </dd>
+
+                                    <dt>학년</dt>
+                                    <dd>
+                                      <section>
+                                        <label class="select">
+                                          <select class="valid" name="user[grade]">
+                                            <% unless current_user.grade.nil? %>
+                                                <% if current_user.grade.to_i > 0 && current_user.grade.to_i < 4 %>
+                                                    <option selected="selected">중<%= current_user.grade %></option>
+                                                <% else %>
+                                                    <option selected="selected">고<%= current_user.grade.to_i - 3 %></option>
+                                                <% end %>
+                                            <% end %>
+                                            <% UnitConcept::GRADES.each_pair() do |key, value| %>
+                                                <option value="<%= key.to_s %>"><%= value %></option>
+                                            <% end %>
+                                          </select>
+                                          <i></i>
+                                        </label>
+                                      </section>
+                                    </dd>
+
                                     </dl>
-                                    
+
                                     <button type="button" class="btn-u btn-u-default">취소</button>
                                     <button class="btn-u" type="submit">저장</button>
                                     
