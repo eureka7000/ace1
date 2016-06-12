@@ -12,6 +12,7 @@ class ContentsController < ApplicationController
 
         @chapter = params[:chapter]
 
+
         if @view_type == '1'
             if @step == '3'
                 @concepts = Concept.where('category = ? and sub_category = ?', @category, @sub_category)
@@ -23,6 +24,7 @@ class ContentsController < ApplicationController
                 end
 
                 @unit_concepts = UnitConcept.all
+                @study_level = current_user.study_level
 
             elsif @step == '4'
                 @concept = Concept.find(@concept_id)
@@ -30,6 +32,16 @@ class ContentsController < ApplicationController
 
                 @student = params[:student]
                 @level = params[:level]
+
+                @user = User.find(current_user.id)
+                if @student == 'high'
+                    @study_level = (@level.to_i - 2).to_s
+                    @user.study_level = @study_level
+                else
+                    @study_level = @level
+                    @user.study_level = @study_level
+                end
+                @user.save
             end
         else
 
@@ -47,6 +59,6 @@ class ContentsController < ApplicationController
         # @links = ActiveRecord::Base.connection.execute(link_query)
         @links = UnitConceptDesc.find_by_sql(link_query)
         @videos = @unit_concept.unit_concept_descs.where('desc_type=4').order(:memo)
-    end    
+    end
     
 end
