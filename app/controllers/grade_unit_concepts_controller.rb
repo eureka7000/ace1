@@ -43,7 +43,7 @@ class GradeUnitConceptsController < ApplicationController
         if chapter.blank?
             err = true
         else
-            GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+            GradeUnitConcept::CATEGORIES.each_pair do |key, value|
                 if chapter == key.to_s[0..2]
                     ret[:categoies] << { key: key, value: value }
                 end    
@@ -71,7 +71,7 @@ class GradeUnitConceptsController < ApplicationController
         if category.blank?
             err = true
         else
-            GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+            GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
                 if category == key.to_s[0..4]
                     ret[:sub_categoies] << { key: key, value: value }
                 end
@@ -146,13 +146,13 @@ class GradeUnitConceptsController < ApplicationController
                 end    
             end  
         
-            GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+            GradeUnitConcept::CATEGORIES.each_pair do |key, value|
                 if before_grade_unit_concept.chapter == key.to_s[0..2]
                     @categories << { key: key, value: value }
                 end    
             end    
         
-            GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+            GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
                 if before_grade_unit_concept.category == key.to_s[0..4]
                     @sub_categories << { key: key, value: value }
                 end
@@ -177,13 +177,13 @@ class GradeUnitConceptsController < ApplicationController
             end    
         end  
         
-        GradeUnitConcept::CATEGROIES.each_pair do |key, value|
+        GradeUnitConcept::CATEGORIES.each_pair do |key, value|
             if @grade_unit_concept.chapter == key.to_s[0..2]
                 @categories << { key: key, value: value }
             end    
         end    
         
-        GradeUnitConcept::SUB_CATEGROIES.each_pair do |key, value|
+        GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
             if @grade_unit_concept.category == key.to_s[0..4]
                 @sub_categories << { key: key, value: value }
             end
