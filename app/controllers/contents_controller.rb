@@ -10,8 +10,8 @@ class ContentsController < ApplicationController
         @sub_category = params[:sub_category]
         @concept_id = params[:concept_id]
 
+        @grade = params[:grade]
         @chapter = params[:chapter]
-
 
         if @view_type == '1'
             if @step == '3'
@@ -44,7 +44,9 @@ class ContentsController < ApplicationController
                 @user.save
             end
         else
-
+            if @step == '5'
+                @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
+            end
         end
     end
     

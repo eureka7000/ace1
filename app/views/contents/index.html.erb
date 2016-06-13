@@ -41,25 +41,24 @@
         if @step > '3'
           str += " / #{@concept.concept_name}"
         end
-      else
+      else @view_type == '2'
 				str = "학년별 학습"
 
         if @step > '1'
-          str += " / #{GradeUnitConcept::CHAPTERS[@chapter]}"
+          str += " / #{UnitConcept::GRADES[@grade.to_i]}"
         end
 
         if @step > '2'
-          str += " / #{GradeUnitConcept::CHAPTERS[@category]}"
+          str += " / #{GradeUnitConcept::CHAPTERS[@chapter.to_i]}"
         end
 
         if @step > '3'
-          str += " / #{GradeUnitConcept::CHAPTERS[@sub_category]}"
+          str += " / #{GradeUnitConcept::CATEGORIES[@category.to_i]}"
         end
 
         if @step > '4'
-          str += " / #{@concept.concept_name}"
+          str += " / #{GradeUnitConcept::SUB_CATEGORIES[@sub_category.to_i]}"
         end
-
       end
 			%>
 
@@ -357,13 +356,68 @@
                 <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                   <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
                   <div class="content-boxes-in-v3">
-                    <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value  %></a></h3>
+                    <h3><a href="/contents?view_type=2&step=2&grade=<%= key %>"><%= value %></a></h3>
                   </div>
                 </div>
               </li>
               <% idx += 1 %>
           <% end %>
-      <% end %>
+
+      <% elsif @step == '2' %>
+          <% GradeUnitConcept::CHAPTERS.each_pair do |key, value| %>
+              <% unless @grade.to_i != key/100 %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><%= value %></a></h3>
+                      </div>
+                    </div>
+                  </li>
+                  <% idx += 1 %>
+              <% end %>
+          <% end %>
+      <% elsif @step == '3' %>
+          <% GradeUnitConcept::CATEGORIES.each_pair do |key, value| %>
+              <% unless @chapter.to_i != key/100 %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><%= value %></a></h3>
+                      </div>
+                    </div>
+                  </li>
+                  <% idx += 1 %>
+              <% end %>
+          <% end %>
+      <% elsif @step == '4' %>
+          <% GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value| %>
+              <% unless @category.to_i != key/100 %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>
+                      </div>
+                    </div>
+                  </li>
+                  <% idx += 1 %>
+              <% end %>
+          <% end %>
+      <% elsif @step == '5' %>
+          <% @grade_unit_concepts.each do | grade_unit_concept | %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
+                      </div>
+                    </div>
+                  </li>
+                  <% idx += 1 %>
+          <% end %>
+    <% end %>
     </ul>
 <% end %> <!-- 학년별 학습 END -->
 <% end %><!-- current_user.grade -->
