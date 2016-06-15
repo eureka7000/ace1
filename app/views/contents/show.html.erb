@@ -45,9 +45,9 @@
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1 %>
                       <% if imgCount == 1 %>
-                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                       <% else %>
-                          <img id="ucd1<%= imgCount %>" hidden src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img id="ucd1<%= imgCount %>" hidden src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                       <% end %>
                       <% imgCount += 1 %>
                   <% end %>
@@ -104,7 +104,7 @@
             <div style="overflow-y: auto; width: 100%; height: 580px">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1%>
-                      <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                      <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                   <% end %>
               <% end %>
             </div>
@@ -113,12 +113,12 @@
           <div class="col-md-6">
             <div style="overflow-y: auto; width: 100%; height: 580px">
               <% imgCount = 1 %>
-              <% @unit_concept_descs.each do | unit_concept_decs | %>
-                  <% unless unit_concept_decs.desc_type.to_i != 2 %>
+              <% @unit_concept_descs.each do | unit_concept_desc | %>
+                  <% unless unit_concept_desc.desc_type.to_i != 2 %>
                       <% if imgCount == 1 %>
-                          <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                       <% else %>
-                          <img id="ucd2<%= imgCount %>" hidden src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_decs.id %>/<%= unit_concept_decs.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                          <img id="ucd2<%= imgCount %>" hidden src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                       <% end %>
                       <% imgCount += 1 %>
                   <% end %>
@@ -179,7 +179,7 @@
                       <% if imgCount == 1 %>
                           <div class="col-md-12" id="exercise1<%=imgCount%>">
                             <div class="col-md-6">
-                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                              <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                             </div>
                             <div class="col-md-6 text-center">
                               <form role="form" style="padding-top: 3%">
@@ -194,12 +194,11 @@
                                 <button class="btn rounded btn-info" type="button">저장</button>
                               </form>
                             </div>
-
                           </div>
                       <% else %>
                           <div hidden class="col-md-12" id="exercise1<%=imgCount%>">
                             <div class="col-md-6">
-                              <img src="https://s3.ap-northeast-2.amazonaws.com/eurekamath/uploads/unit_concept_desc/<%= unit_concept_desc.id %>/<%= unit_concept_desc.memo %>.png" style="width:100%; margin-top: 10px;"/>
+                              <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                             </div>
                             <div class="col-md-6 text-center">
                               <form role="form" style="padding-top: 3%">
@@ -456,26 +455,29 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
 <script type="text/javascript">
-  $(document).ready(function(){
-    var index = 2;
+	
+	$(document).ready(function(){
+		var index = 2;
 
-    $("#btn1").click(function(){
-      $("#ucd1"+index).show();
-      index++;
+		$("#btn1").click(function(){
+			
+			$("#ucd1"+index).show();
+			index++;
 
-      var count = Number($("#badge1").text());
-      if(count == -1){
-        count = 0;
-      }
-      if (count > 0){
-        $("#badge1").text(count-1);
-      }
-      if (count == 1){
-        $("#btn1").hide();
-        $("#badge1").hide();
-      }
-    });
-  });
+			var count = Number($("#badge1").text());
+			if (count == -1) {
+        		count = 0;
+			}
+			if (count > 0) {
+				$("#badge1").text(count-1);
+			}
+			if (count == 1) {
+				$("#btn1").hide();
+				$("#badge1").hide();
+			}
+		});
+	});
+	
 </script>
 
 

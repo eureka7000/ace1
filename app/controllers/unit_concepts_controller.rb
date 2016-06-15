@@ -24,9 +24,10 @@ class UnitConceptsController < ApplicationController
             @unit_concept_descs = @unit_concept.unit_concept_descs.order(:desc_type, :memo)            
         else
             @unit_concept_descs = UnitConceptDesc.where("unit_concept_id=? and desc_type=?", @unit_concept.id, @desc_type).order(:desc_type, :memo)
-        end        
+        end
         
         @concepts = Concept.all
+        @exercises = UnitConceptDesc.where("unit_concept_id=? and desc_type=?", @unit_concept.id, '3').order(:memo)
         
         respond_to do |format|
             format.html { render :show }
