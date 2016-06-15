@@ -24,7 +24,18 @@ Rails.application.routes.draw do
   
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations"}
   	#devise_for :users
-	
+
+    # sub_pages of main
+    get 'homes/history_of_eureka' => 'homes#history_of_eureka'
+    get 'homes/eureka_motto' => 'homes#eureka_motto'
+    get 'homes/self_directed_learning' => 'homes#self_directed_learning'
+    get 'homes/math_renouncer' => 'homes#math_renouncer'
+    get 'homes/goal_setting' => 'homes#goal_setting'
+    get 'homes/program_selection' => 'homes#program_selection'
+    get 'homes/do_study' => 'homes#do_study'
+    get 'homes/educational_evaluation' => 'homes#educational_evaluation'
+    get 'homes/how' => 'homes/how'
+
     root :to => "homes#index"
 
     get "mypages/overall" => "mypages#overall"

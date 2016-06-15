@@ -1,0 +1,14 @@
+/*테이블 설정*/
+
+table{border-top:3px solid #2692d0;!important;font-weight:lighter;color:#888;}
+table tr th{padding:10px 5px;}
+
+thead tr th{border:1px solid #bcbcbc;font-weight:bold}
+tbody tr th{border:1px solid #bcbcbc}
+tfoot tr th{border:1px solid #bcbcbc}
+/*tr th.no01{border-left:0px }
+tr th.no02{border-right:0px }*/
+
+th{font-weight:normal}
+caption{font-weight:600;color:#2692d0;background:url(/assets/img/subimg/caption_img.jpg) left 20px  no-repeat;padding-left:30px;}
+th.a_left{text-align:left;!important;padding:10px 5px;}
