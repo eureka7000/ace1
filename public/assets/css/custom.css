@@ -10,3 +10,117 @@
     z-index: 5000;
     color:#fff;
 }
+
+body,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,div,img{margin:0 auto;padding:0}
+body,input,textarea,select,button,table{font-family:'Nanum Gothic','dotum','Verdana','Arial','Helvetica',sans-serif,'돋움',Dotum,AppleGothic}
+
+@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
+body{font-family: 'Nanum Gothic', monospace;}
+
+p{font-size: 20px;line-height:24px;color:#777;!important;}
+p.view{margin-top:25px}
+p.view02{text-align:center}
+p.view03{margin-top:30px}
+
+/*header*/
+span.sign img{margin-top:10px;}
+.dropdown{font-weight:bold;}
+
+/*유레카 모토*/
+.mottoHbo{margin:0;padding:0;}
+.mottoHbo .mottoImB .mottoIc{margin:25px 0;}
+.mottoIc{float:left;width:33.333333%;}
+p.space-lg-hor{line-height:30px;}/*자기주도학습*/
+
+
+/*color*/
+.math{ color:#00c9f7;}
+.fun{ color:#00652e;}
+.dream{ color:#b11116;}
+
+.content-md01 .moto {
+    background: #f3f3f3;}
+
+/*자기주도학습*/
+.lineSS{border-bottom:2px solid #e1e1e1}
+.study01{text-align:center}
+.col-md-06 img{text-align:center;!important;}
+.study01 .space-lg-hor{padding:0 15px;}
+.container h2.solTep{margin-bottom:5px;}
+
+@media (max-width: 780px) {
+
+    .study01 h3{margin-top:30px;}
+
+}
+
+/*step 5단계*/
+h2.title-center{margin-top:40px;margin-bottom:15px;min-height:70px;}
+
+
+@media (min-width: 992px){
+    .col-md-6-1{
+        float:right;
+    }
+}
+
+.img-responsive{text-align:center }
+
+h2.step5{padding-top:50px}
+
+
+
+/*who what how*/
+.row01{border:0px solid red; min-height:150px;padding-top:30px;}
+.row02{border:0px solid red; clear:both;min-height:150px;padding-top:60px;}
+.content-md02 .who {background: #f8f8fa;}
+
+
+.Whotex {display:inline-block;  }
+.Whotex1{display:inline-block;}
+
+
+@media (min-width: 900px) {
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+        float: left;
+    }
+    .col-sm-6 {
+        width:40%;
+    }
+    .col-sm-7 {
+        width:60%;
+    }
+    .Whotex1{
+        padding-left:100px;
+    }
+
+}
+.content-md01 .container02 {
+    padding-top:50px;
+    padding-bottom:50px;
+}
+
+@media (max-width: 780px) {
+
+    h2{font-size: 36px;line-height: 45px; padding:0 5px; }
+    h3{font-size: 24px;line-height: 30px;}
+    p{font-size: 20px;line-height:26px;}
+
+    .content-md01 .container02 {
+        padding-top:50px;
+        padding-bottom:50px;
+    }
+
+    .content-md .row {
+        padding-top:50px;
+        padding-bottom:50px;
+    }
+    .ImaLeft img{float:left;}
+    .Whotex, .Whotex1{clear:both;padding:15px 15px; }
+    .motto{margin:5px 0;}
+}
+
+
+/*백그라운드 색상지정*/
+.content-md03 .container {background: #eaebed;max-width:990px;}
+.content-md03 .our {background: #eaebed;}

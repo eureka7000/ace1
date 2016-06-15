@@ -467,11 +467,11 @@
   margin: 8px 0;
   font-size: 15px;
   padding-top: 8px;
-  border-top: dotted 1px #72c02c;
+  border-top: dotted 1px #2c46c0;
 }
 
 .service-box-v1 li:hover {
-  color: #72c02c;
+  color: #00c8f6;
 }
 
 .service-box-v1 li:first-child {
