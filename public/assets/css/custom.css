@@ -12,7 +12,7 @@
 }
 
 body,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select,div,img{margin:0 auto;padding:0}
-img,fieldset{border:0;vertical-align:top}
+img,fieldset{border:0;vertical-align:center}
 body,input,textarea,select,button,table{font-family:'Nanum Gothic','dotum','Verdana','Arial','Helvetica',sans-serif,'돋움',Dotum,AppleGothic}
 legend{position:absolute;top:0;left:0;width:1px;height:1px;overflow:hidden;visibility:hidden;font-size:0;line-height:0}
 ul,ol{list-style:none;margin:0;padding:0}

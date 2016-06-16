@@ -34,7 +34,9 @@ Rails.application.routes.draw do
     get 'homes/program_selection' => 'homes#program_selection'
     get 'homes/do_study' => 'homes#do_study'
     get 'homes/educational_evaluation' => 'homes#educational_evaluation'
-    get 'homes/how' => 'homes/how'
+    get 'homes/how' => 'homes#how'
+    get 'homes/access_terms' => 'homes#access_terms'
+    get 'homes/personal_info_protection' => 'homes#personal_info_protection'
 
     root :to => "homes#index"
 
