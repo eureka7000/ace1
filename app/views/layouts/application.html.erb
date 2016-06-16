@@ -18,6 +18,8 @@
     <!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/blocks.css">
+    <link rel="stylesheet" href="/assets/css/one.style.css">
 
     <!-- CSS Header and Footer -->
     <link rel="stylesheet" href="/assets/css/headers/header-default.css">
@@ -31,6 +33,11 @@
     <link rel="stylesheet" href="/assets/plugins/cube-portfolio/cubeportfolio/custom/custom-cubeportfolio.css">
     <link rel="stylesheet" href="/assets/plugins/animated-headline/css/animated-headline.css">
 
+    <link rel="stylesheet" href="/assets/css/plugins/pace-flash.css">
+    <link rel="stylesheet" href="/assets/css/architecture.style.css">
+  <link rel="stylesheet" href="/assets/plugins/owl-carousel2/assets/owl.carousel.css">
+
+
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">
 
@@ -39,7 +46,9 @@
     <%= csrf_meta_tags %>
 
 </head>
+
 <body>
+  <div class="pace-activity"></div></div>
 
 <div id="loading" style="display:none">
     <img src="/assets/img/Loading.gif" />
@@ -50,16 +59,19 @@
 	<!--=== Header ===-->
     <div class="header">
 
-		<div class="container" style="height: 100px">
+		<div class="container col-md-12 col-xs-10" style="height: 100px">
 
 			<!-- Logo -->
-            <a class="logo" href="/">
-                <img src="/assets/img/logo.jpg" alt="Logo">
-            </a>
+      <div class="col-md-3 col-lg3 col-xs-3 margin-top-20">
+        <a class="logo" href="/">
+          <img src="/assets/img/logo.jpg" alt="Logo">
+        </a>
+      </div>
+
       <!-- End Logo -->
 
             <!-- Topbar -->
-            <div class="topbar">
+            <div class="topbar col-md-9 col-xs-9">
                 <ul class="loginbar pull-right">
                   <% unless current_user.nil? %>
                       <li>안녕하세요. <%= current_user.user_name %>님</li>
@@ -179,10 +191,16 @@
 <script type="text/javascript" src="/assets/plugins/jquery.parallax.js"></script>
 <script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
-<script src="/assets/plugins/animated-headline/js/modernizr.js"></script>
-<script src="/assets/plugins/animated-headline/js/animated-headline.js"></script>
+<script src="assets/plugins/animated-headline/js/modernizr.js"></script>
+<script src="assets/plugins/animated-headline/js/animated-headline.js"></script>
 <script type="text/javascript" src="/assets/plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/circles-master/circles.js"></script>
+
+<script src="assets/plugins/backstretch/jquery.backstretch.min.js"></script>
+<script src="assets/plugins/owl-carousel2/owl.carousel.min.js"></script>
+<script src="assets/plugins/jquery.easing.min.js"></script>
+<script src="assets/plugins/pace/pace.min.js"></script>
+
 <!-- JS Customization -->
 <script type="text/javascript" src="/assets/js/custom.js"></script>
 <!-- JS Page Level -->
@@ -191,6 +209,14 @@
 <script type="text/javascript" src="/assets/js/plugins/cube-portfolio/cube-portfolio-lightbox.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/circles-master.js"></script>
 <script type="text/javascript" src="/assets/plugins/wow-animations/js/wow.min.js"></script>
+
+
+<script src="assets/js/plugins/promo.js"></script>
+<script src="assets/js/plugins/pace-loader.js"></script>
+<script src="assets/plugins/backstretch/jquery.backstretch.min.js"></script>
+<script src="assets/js/plugins/owl-carousel2.js"></script>
+<script src="assets/js/plugins/cube-portfolio-lightbox.js"></script>
+<script src="assets/js/forms/contact.js"></script>
 
 <script type="text/javascript">
   WebFontConfig = {
