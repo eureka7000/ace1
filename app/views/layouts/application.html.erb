@@ -31,35 +31,12 @@
     <link rel="stylesheet" href="/assets/plugins/cube-portfolio/cubeportfolio/custom/custom-cubeportfolio.css">
     <link rel="stylesheet" href="/assets/plugins/animated-headline/css/animated-headline.css">
 
-
-  <!-- CSS Theme --> 
-  <link rel="stylesheet" href="assets/css/theme-colors/default.css" id="style_color">
-   <link rel="stylesheet" href="assets/css/theme-skins/dark.css">
-
-
-    <%= raw JsCssRender.get_css(controller_name, action_name) %>
-
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">
 
-    <%= csrf_meta_tags %>
+    <%= raw JsCssRender.get_css(controller_name, action_name) %>
 
-    <script type="text/javascript">
-      WebFontConfig = {
-        custom: {
-          families: ['Nanum Gothic'], urls: ['http://cdn.jsdelivr.net/font-nanum/1.0/nanumgothic/nanumgothic.css']
-        }
-      };
-      (function() {
-        var wf = document.createElement('script');
-        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-        wf.type = 'text/javascript';
-        wf.async = 'true';
-        var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(wf, s);
-      })();
-    </script>
+    <%= csrf_meta_tags %>
 
 </head>
 <body>
@@ -203,7 +180,6 @@
 <script type="text/javascript" src="/assets/plugins/jquery.parallax.js"></script>
 <script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/wow-animations/js/wow.min.js"></script>
 <script src="/assets/plugins/animated-headline/js/modernizr.js"></script>
 <script src="/assets/plugins/animated-headline/js/animated-headline.js"></script>
 <script type="text/javascript" src="/assets/plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
@@ -215,7 +191,32 @@
 <script type="text/javascript" src="/assets/js/plugins/style-switcher.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/cube-portfolio/cube-portfolio-lightbox.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/circles-master.js"></script>
+<script type="text/javascript" src="/assets/plugins/wow-animations/js/wow.min.js"></script>
 
+<script type="text/javascript">
+  WebFontConfig = {
+    custom: {
+      families: ['Nanum Gothic'], urls: ['http://cdn.jsdelivr.net/font-nanum/1.0/nanumgothic/nanumgothic.css']
+    }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })();
+</script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    StyleSwitcher.initStyleSwitcher();
+    new WOW().init();
+  });
+</script>
 
 <script type="text/javascript"> 
   jQuery(document).ready(function() { 
@@ -226,8 +227,6 @@
     CirclesMaster.initCirclesMaster2(); 
   });
 </script>
-
-<%= raw JsCssRender.get_js(controller_name, action_name) %>
 
 <!--[if lt IE 9]>
     <script src="/assets/plugins/respond.js"></script>
