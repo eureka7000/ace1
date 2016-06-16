@@ -119,7 +119,7 @@ var CirclesMaster = function () {
 		        ['#D3B6C6', '#9B6BCC'], ['#C9FF97', '#72c02c'], ['#BEE3F7', '#3498DB'], ['#FFC2BB', '#E74C3C']
 		    ];
 
-			var value = [ 7, 42, 226, 613 ]
+			var value = [ 10, 70, 376, 1021 ]
 
 		    for (var i = 1; i <= 4; i++) {
 		        var child = document.getElementById('circles-' + i),
