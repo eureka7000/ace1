@@ -126,22 +126,22 @@
                                 <% end %>
                                 
                                 <% if current_user.user_types.first.user_type == 'student'  %>
-                                <p>학생으로 공부할 수 있는 상품에 대한 안내를 받으시려면 <%= link_to '여기', payments_path %>를 클릭하여 주시기 바랍니다</p>
+                                <h7>학생으로 공부할 수 있는 상품에 대한 안내를 받으시려면 <%= link_to '여기', payments_path %>를 클릭하여 주시기 바랍니다</h7>
                                 
-                                <p>학생 회원으로서 부모, 학교, 학원, 선생님, 멘토와의 관계 사항은 하단에서 처리할 수 있습니다.</p>
+                                <h7>학생 회원으로서 부모, 학교, 학원, 선생님, 멘토와의 관계 사항은 하단에서 처리할 수 있습니다.</h7>
                                 
                                 <% elsif current_user.user_types.first.user_type == 'parent' %>    
                                 
-                                <p>학생이 공부할 수 있는 상품에 대한 안내를  받으시려면 <%= link_to '여기', payments_path %>를 클릭하여 주시기 바랍니다.</p> 
+                                <h7>학생이 공부할 수 있는 상품에 대한 안내를  받으시려면 <%= link_to '여기', payments_path %>를 클릭하여 주시기 바랍니다.</h7>
 
-                                <p>부모님으로서 학생과의 관계 사항은 하단에서 처리할 수 있습니다.</p>
+                                <h7>부모님으로서 학생과의 관계 사항은 하단에서 처리할 수 있습니다.</h7>
                                 
                                 <% elsif current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
                                 
-                                <p>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp; 
+                                <h7>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp;
                                 
                                 <% if current_user.teachers.blank? %>    
-                                    <button class="btn-u" data-toggle="modal" data-target="#responsive">확인요청</button></p>
+                                    <button class="btn-u" data-toggle="modal" data-target="#responsive">확인요청</button></h7>
                                 <% else %>
                                     <% if current_user.teachers[0].confirm_yn.nil? %>
                                     <span class="label label-info">담당자 확인중 ..</span>
