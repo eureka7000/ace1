@@ -31,8 +31,12 @@
       <% @blogs.each do |blog| %>
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a></h2>
-            </div>
+              <% if current_user.nil? %>
+                  <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px"> <%= blog.title %></a></h2>
+              <% else %>
+                  <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a></h2>
+            <% end %>
+             </div>
             <div class="panel-body">
               <i class="fa fa-calendar"></i> <%= blog.created_at %> &nbsp;
               <i class="fa fa-user"></i><%= blog.user_id %>
@@ -40,10 +44,10 @@
               <p><%= blog.content %></p>
               <% unless current_user.nil? %>
                 <% unless blog.user_id != current_user.id %>
-                    <div class="col-md-12 text-right">
-                      <hr class="devider devider-dashed">
-                      <div class="col-md-10"></div>
-                      <div class="col-md-1">
+                    <div class="col-md-12 text-right ">
+                      <hr class="devider devider-dashed no-padding no-margin">
+                      <div class="col-md-10 no-margin no-padding"></div>
+                      <div class="col-md-1 no-margin no-padding">
                         <%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
                       </div>
                       <div class="col-md-1">
@@ -56,7 +60,11 @@
           </div>
       <% end %>
 
-      <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
+      <% if current_user.nil? %>
+          <button class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-sm">글 작성</button>
+      <% else %>
+          <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
+      <% end %>
 
       <div class="text-center">
         <ul class="pagination">
@@ -135,79 +143,6 @@
   </div>
 </div>
 
-<!-- Blog Modals -->
-<div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content bloModTxt">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel4">수학이야기</h4>
-      </div>
-
-      <!--  panel -->
-      <div class="panel panel-blue">
-
-        <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-tasks"></i> 등록하기</h3>
-        </div>
-
-        <!-- Form Controls -->
-        <div class="tag-box tag-box-v3 form-page boMot">
-
-          <!--Inputs-->
-          <h4>제 목</h4>
-          <input type="text" class="form-control" placeholder="">
-          <!--End Inputs-->
-
-          <div>
-            <ul class="list-unstyled list-inline blog-info">
-              <li><i class="fa fa-calendar"></i> 2016-06-01</li>
-              <li><i class="fa  fa-user"></i> <a href="#">id</a></li>
-            </ul>
-          </div>
-
-          <!--내용입력-->
-          <h4>기본쓰기</h4>
-          <textarea class="form-control" rows="7"></textarea>
-          <!--End Textarea-->
-          <div class="margin-bottom-20"></div>
-
-          <!--파일첨부-->
-          <div class="file_input">
-            <label>
-              파일첨부
-              <input type="file" onchange="javascript:document.getElementById('file_route').value=this.value">
-            </label>
-            <input type="text" readonly="readonly" title="File Route" id="file_route">
-          </div>
-          <!--End 파일첨부-->
-          <div class="margin-bottom-40"></div>
-
-
-          <!--paging-->
-          <div class="text-center">
-            <ul class="pagination">
-              <li ><a href="#">&laquo;</a></li>
-              <li class="active"><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li ><a href="#">3</a></li>
-              <li><a href="#">&raquo;</a></li>
-            </ul>
-          </div>
-          <!--paging end-->
-
-        </div>
-        <!-- End Form Controls  -->
-      </div>
-      <!-- End panel -->
-
-    </div><!--End modal-content-->
-  </div><!--End modal-dialog-->
-
-</div>
-<!-- End Blog Modals -->
-
-
 <!-- Alert -->
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm">
@@ -221,8 +156,9 @@
         <div class="modAlertbox">
           <p>로그인이 필요합니다!</p>
           <ul>
-            <li class="modAlertbutton1"><a href="#">로그인</a></li>
-            <li class="modAlertbutton2"><a href="#">회원가입</a></li>
+            <li><%=link_to '로그인',  new_user_session_path, :class => 'btn btn-link' %></li>
+            <li><%=link_to '회원가입', new_user_registration_path, :class => 'btn btn-link' %></li>
+
           </ul>
         </div>
         <div class="margin-bottom-20"></div>

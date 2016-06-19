@@ -3,7 +3,7 @@
   <!--  panel -->
   <div class="panel panel-blue">
     <div class="panel-heading">
-      <h3 class="panel-title" style="font-size: 20px" ><i class="fa fa-tasks"></i> 저장완료</h3>
+      <h3 class="panel-title" style="font-size: 20px" ><i class="fa fa-tasks"></i> <%= @blog.title %></h3>
     </div>
     <!-- Form Controls -->
     <div class="tag-box tag-box-v3 form-page boMot">
@@ -12,27 +12,25 @@
         <ul class="list-unstyled list-inline blog-info">
           <% now_time = Time.now %>
           <li><i class="fa fa-calendar"> <%= now_time.strftime('%Y-%m-%d')%></i></li>
-          <li><i class="fa  fa-user"></i> <%= current_user.user_name %></li>
+          <li><i class="fa  fa-user"></i> <%= @blog.user_id %></li>
         </ul>
       </div>
       </br>
 
       <% Blog::BLOG_TYPES.each_pair do |key, value|%>
           <% if @blog.blog_type == key %>
-              <h4>블로그 타입 :  <span style="color: black"><%= value %></h4>
+              <h5>블로그 타입 :  <span style="color: black"><%= value %></h5>
           <% end %>
       <% end %>
 
-
-
-      <h4>제목 : <span style="color: black"><%= @blog.title %></h4>
+      </br>
 
       <!--내용입력-->
       <h4>내용 : </h4>
       <h5><span style="color: black"><%= @blog.content %></h5>
 
       <!-- user_id -->
-      <input hidden type="text" name="blog[user_id]" value="<%= current_user.id.to_i %>">
+      <input hidden type="text" name="blog[user_id]" value="<%= @blog.user_id %>">
 
 
 
