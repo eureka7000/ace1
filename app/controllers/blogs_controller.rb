@@ -3,8 +3,12 @@ class BlogsController < ApplicationController
 
   # GET /blogs
   # GET /blogs.json
+
   def index
-    @blogs = Blog.all
+    @blog_type = params[:blog_type]
+
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+
   end
 
   # GET /blogs/1
@@ -15,10 +19,12 @@ class BlogsController < ApplicationController
   # GET /blogs/new
   def new
     @blog = Blog.new
+    @blog_type = params[:blog_type]
   end
 
   # GET /blogs/1/edit
   def edit
+    @blog_type = params[:blog_type]
   end
 
   # POST /blogs

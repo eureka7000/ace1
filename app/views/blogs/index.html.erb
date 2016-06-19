@@ -1,33 +1,238 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Blogs</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Blog type</th>
-      <th>Title</th>
-      <th>Content</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @blogs.each do |blog| %>
-      <tr>
-        <td><%= blog.blog_type %></td>
-        <td><%= blog.title %></td>
-        <td><%= blog.content %></td>
-        <td><%= blog.user_id %></td>
-        <td><%= link_to 'Show', blog %></td>
-        <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
-        <td><%= link_to 'Destroy', blog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<% str = '' %>
+<% Blog::BLOG_TYPES.each_pair do |key, value| %>
+    <% if @blog_type == key %>
+        <% str = value %>
     <% end %>
-  </tbody>
-</table>
+<% end %>
 
-<br>
+<!--=== indicate ===-->
+<div class="breadcrumbs">
+  <div class="container">
 
-<%= link_to 'New Blog', new_blog_path %>
+    <h2 class="pull-left" style="color: black">Blog / <%= str %></h2>
+    <!--ul class="pull-right breadcrumb" style="font-size:15px">
+      <li><a href="index.html">Home</a></li>
+      <li style="color:#00c9f8">자기주도학습</li>
+
+    </ul-->
+  </div><!--/container-->
+</div><!--/breadcrumbs-->
+<!--=== End indicate ===-->
+
+
+<!--=== Content Part ===-->
+<div class="container content">
+  <div class="row">
+
+    <!-- Left Sidebar -->
+
+    <div class="col-md-9 md-margin-bottom-40 blog_eureka">
+
+      <% @blogs.each do |blog| %>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a></h2>
+            </div>
+            <div class="panel-body">
+              <i class="fa fa-calendar"></i> <%= blog.created_at %> &nbsp;
+              <i class="fa fa-user"></i><%= blog.user_id %>
+              </br></br>
+              <p><%= blog.content %></p>
+              <% unless current_user.nil? %>
+                <% unless blog.user_id != current_user.id %>
+                    <div class="col-md-12 text-right">
+                      <hr class="devider devider-dashed">
+                      <div class="col-md-10"></div>
+                      <div class="col-md-1">
+                        <%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
+                      </div>
+                      <div class="col-md-1">
+                        <%= button_to 'delete', blog, :method=>:delete, :class => 'btn btn-link' %>
+                      </div>
+                    </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+
+      <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
+
+      <div class="text-center">
+        <ul class="pagination">
+          <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
+        </ul>
+      </div>
+
+    </div>
+    <!--End left Sidebar -->
+
+
+
+
+
+    <!-- Right Sidebar -->
+    <div class="col-md-3 margin-top-30 " style="border:1px solid #fff">
+      <!-- Social Icons -->
+      <div class="shadow-wrapper">
+        <div class="tag-box tag-box-v1 box-shadow shadow-effect-2">
+          <div class="headline headline-md"><h2>소식지 신청하기</h2></div>
+          <div id="home-1" class="tab-pane active">
+            <p>유레카메스 소식지나 서비스업데이트에 대한 최신정보를 이메일로 받고자 하시면 신청하시기 바랍니다.</p>
+          </div>
+
+          <div class="clearfix">
+            <!-- Basic Form -->
+
+            <form class="margin-top-30 " role="form" >
+              <div class="form-group">
+                <label for="exampleInputEmail1">받아보실 메일주소</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="메일주소를 입력해주세요.">
+              </div>
+            </form>
+            <div>
+              <button type="submit" class="btn-u btn-u-blue" data-toggle="modal" data-target=".bs-example-modal-sm">메일신청하기</button>
+            </div>
+            <!-- End Basic Form -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- End Social Icons -->
+
+
+      <!-- Social Icons -->
+      <div class="shadow-wrapper">
+        <div class=" margin-bottom-30 tag-box tag-box-v1 box-shadow shadow-effect-2">
+          <div class="headline headline-md"><h2>최근소식</h2></div>
+          <ul class="list-unstyled blog-trending margin-bottom-50">
+            <li>
+              <h3><a href="#">유레카메스홈페이지를...</a></h3>
+              <p>2016-06-01</p>
+            </li>
+            <li>
+              <h3><a href="#">유레카메스홈페이지를...</a></h3>
+              <p>2016-06-01</p>
+            </li>
+            <li>
+              <h3><a href="#">유레카메스홈페이지를...</a></h3>
+              <p>2016-06-01</p>
+            </li>
+            <li>
+              <h3><a href="#">유레카메스홈페이지를...</a></h3>
+              <p>2016-06-01</p>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <!-- End Social Icons -->
+
+    </div>
+    <!-- End Right Sidebar -->
+
+  </div>
+</div>
+
+<!-- Blog Modals -->
+<div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bloModTxt">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel4">수학이야기</h4>
+      </div>
+
+      <!--  panel -->
+      <div class="panel panel-blue">
+
+        <div class="panel-heading">
+          <h3 class="panel-title"><i class="fa fa-tasks"></i> 등록하기</h3>
+        </div>
+
+        <!-- Form Controls -->
+        <div class="tag-box tag-box-v3 form-page boMot">
+
+          <!--Inputs-->
+          <h4>제 목</h4>
+          <input type="text" class="form-control" placeholder="">
+          <!--End Inputs-->
+
+          <div>
+            <ul class="list-unstyled list-inline blog-info">
+              <li><i class="fa fa-calendar"></i> 2016-06-01</li>
+              <li><i class="fa  fa-user"></i> <a href="#">id</a></li>
+            </ul>
+          </div>
+
+          <!--내용입력-->
+          <h4>기본쓰기</h4>
+          <textarea class="form-control" rows="7"></textarea>
+          <!--End Textarea-->
+          <div class="margin-bottom-20"></div>
+
+          <!--파일첨부-->
+          <div class="file_input">
+            <label>
+              파일첨부
+              <input type="file" onchange="javascript:document.getElementById('file_route').value=this.value">
+            </label>
+            <input type="text" readonly="readonly" title="File Route" id="file_route">
+          </div>
+          <!--End 파일첨부-->
+          <div class="margin-bottom-40"></div>
+
+
+          <!--paging-->
+          <div class="text-center">
+            <ul class="pagination">
+              <li ><a href="#">&laquo;</a></li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li ><a href="#">3</a></li>
+              <li><a href="#">&raquo;</a></li>
+            </ul>
+          </div>
+          <!--paging end-->
+
+        </div>
+        <!-- End Form Controls  -->
+      </div>
+      <!-- End panel -->
+
+    </div><!--End modal-content-->
+  </div><!--End modal-dialog-->
+
+</div>
+<!-- End Blog Modals -->
+
+
+<!-- Alert -->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content modAlertch">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 id="myLargeModalLabel3" class="modal-title"><i class="glyphicon glyphicon-check"></i> 알림</h4>
+      </div>
+
+      <div class="modal-body modAlert">
+        <div class="modAlertbox">
+          <p>로그인이 필요합니다!</p>
+          <ul>
+            <li class="modAlertbutton1"><a href="#">로그인</a></li>
+            <li class="modAlertbutton2"><a href="#">회원가입</a></li>
+          </ul>
+        </div>
+        <div class="margin-bottom-20"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Alert -->
+
+
+</div>
+</div>
+

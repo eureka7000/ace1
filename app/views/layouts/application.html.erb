@@ -110,17 +110,12 @@
                       <li class="<%= 'active' if @active == 'blog' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
                         <ul class="dropdown-menu">
-                          <li>
-                            <a href="/">학습문제해결</a>
-                          </li>
-                          <li>
-                            <a href="/">성공사례</a>
-                          </li>
-                          <li>
-                            <a href="/">수학이야기</a>
-                          </li>
+                          <% Blog::BLOG_TYPES.each_pair do |key, value| %>
+                              <li>
+                                <a href="/blogs?blog_type=<%= key %>"><%= value %></a>
+                              </li>
+                          <% end %>
                         </ul>
-                      </li>
 
                       <li class="<%= 'active' if @active == 'about' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">ABOUT</a>

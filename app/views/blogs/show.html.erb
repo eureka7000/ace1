@@ -1,24 +1,49 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Blog type:</strong>
-  <%= @blog.blog_type %>
-</p>
+<div class="col-md-12 margin-top-20" >
+  <!--  panel -->
+  <div class="panel panel-blue">
+    <div class="panel-heading">
+      <h3 class="panel-title" style="font-size: 20px" ><i class="fa fa-tasks"></i> 저장완료</h3>
+    </div>
+    <!-- Form Controls -->
+    <div class="tag-box tag-box-v3 form-page boMot">
 
-<p>
-  <strong>Title:</strong>
-  <%= @blog.title %>
-</p>
+      <div>
+        <ul class="list-unstyled list-inline blog-info">
+          <% now_time = Time.now %>
+          <li><i class="fa fa-calendar"> <%= now_time.strftime('%Y-%m-%d')%></i></li>
+          <li><i class="fa  fa-user"></i> <%= current_user.user_name %></li>
+        </ul>
+      </div>
+      </br>
 
-<p>
-  <strong>Content:</strong>
-  <%= @blog.content %>
-</p>
+      <% Blog::BLOG_TYPES.each_pair do |key, value|%>
+          <% if @blog.blog_type == key %>
+              <h4>블로그 타입 :  <span style="color: black"><%= value %></h4>
+          <% end %>
+      <% end %>
 
-<p>
-  <strong>User:</strong>
-  <%= @blog.user_id %>
-</p>
 
-<%= link_to 'Edit', edit_blog_path(@blog) %> |
-<%= link_to 'Back', blogs_path %>
+
+      <h4>제목 : <span style="color: black"><%= @blog.title %></h4>
+
+      <!--내용입력-->
+      <h4>내용 : </h4>
+      <h5><span style="color: black"><%= @blog.content %></h5>
+
+      <!-- user_id -->
+      <input hidden type="text" name="blog[user_id]" value="<%= current_user.id.to_i %>">
+
+
+
+      <div class="col-md-12 text-right">
+        <%= link_to '확인', blogs_path(blog_type: @blog.blog_type)%>
+      </div>
+
+      <div class="margin-bottom-20"></div>
+
+    </div>
+    <!-- End Form Controls  -->
+
+  </div>
+</div>
