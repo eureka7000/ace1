@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :unit_concept_self_evaluations
+    resources :unit_concept_self_evaluations
     resources :blogs
     resources :unit_concept_exercise_solutions
+    resources :unit_concept_exercise_histories
 
     get '/grade_unit_concepts/get_chapters' => 'grade_unit_concepts#get_chapters' 
     get '/grade_unit_concepts/get_categories' => 'grade_unit_concepts#get_categories' 
@@ -42,10 +43,11 @@ Rails.application.routes.draw do
 
     root :to => "homes#index"
 
-    get "mypages/overall" => "mypages#overall"
-    
+
     # Mypages
-    get 'mypages/settings' => "mypages#settings"  
+    get 'mypages/overall' => 'mypages#overall'
+    get 'mypages/evaluation' => 'mypages#evaluation'
+    get 'mypages/settings' => 'mypages#settings'
     
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
