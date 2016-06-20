@@ -11,7 +11,11 @@ class MypagesController < ApplicationController
         end 
         
     end    
-    
+
+    def evaluation
+
+    end
+
     
     def settings
         
