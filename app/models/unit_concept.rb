@@ -4,6 +4,7 @@ class UnitConcept < ActiveRecord::Base
     
     has_many :unit_concept_descs
     has_many :explanations
+    has_many :unit_concept_self_evaluations
     has_one  :grade_unit_concept
     
     DESC_TYPES = {

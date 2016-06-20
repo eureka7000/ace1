@@ -1,0 +1,29 @@
+<%= form_for(@unit_concept_self_evaluation) do |f| %>
+  <% if @unit_concept_self_evaluation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@unit_concept_self_evaluation.errors.count, "error") %> prohibited this unit_concept_self_evaluation from being saved:</h2>
+
+      <ul>
+      <% @unit_concept_self_evaluation.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :unit_concept_id %><br>
+    <%= f.number_field :unit_concept_id %>
+  </div>
+  <div class="field">
+    <%= f.label :evaluation %><br>
+    <%= f.text_field :evaluation %>
+  </div>
+  <div class="field">
+    <%= f.label :comment %><br>
+    <%= f.text_field :comment %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -387,48 +387,79 @@
 
     <!-- Tab Self Evaluation -->
 
-      <!-- Modal -->
-      <div class="modal fade" id="s" role="dialog">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <div class="modal-title">
-                <span class="label rounded-2x label-aqua">SELF EVALUATION</span>
-              </div>
-            </div>
-            <div class="modal-body">
+	<!-- Modal -->
+	<div class="modal fade" id="s" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
 
-              <div class="row">
-                <div class="col-lg-6">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<div class="modal-title">
+						<span class="label rounded-2x label-aqua">SELF EVALUATION</span>
+					</div>
+				</div>
+				
+				<div class="modal-body">
+					
+					<div class="row" style="margin-left: 5px; margin-right: 5px">
+						
+						<strong style="color:blue">자기평가 이력</strong>
+						
+						<table class="table">
+						<thead>	
+						<th>날짜</th>
+						<th>난이도</th>
+						<th>Comment</th>	
+						</thead>
+						
+						<tbody>
+						<% @self_evaluations.each do |eval| %>
+						<tr>
+						<td><%= eval.created_at.strftime("%Y/%m/%d %H:%M") %></td>
+						<td><%= eval.evaluation %></td>
+						<td><%= eval.comment %></td>	
+						</tr>
+						<% end %>
+						</tbody>	
+						</table>	
+					</div>	
+					
+					<div class="row">
+						<div class="col-md-3">
+							<strong style="color:blue">난이도</strong>
+						</div>
+						<div class="col-md-9">
+			            	<label class="radio-inline">
+								<input type="radio" id="evaluation_easy" name="evaluation" value="easy" > 이해됨
+							</label>
+							<label class="radio-inline">
+								<input type="radio" id="evaluation_normal" name="evaluation" value="normal" > 보통
+							</label>
+							<label class="radio-inline">
+								<input type="radio" id="evaluation_difficult" name="evaluation" value="difficult" > 어려움
+							</label>						
+						</div>
+					</div>
+					
+					<div class="row" style="margin-top: 10px; ">
+						<div class="col-md-3">
+							<strong style="color:blue">Comment</strong>
+						</div>
+						<div class="col-md-9">
+							<textarea id="evaluation_comment" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>							
+						</div>	
+					</div>	
 
-                  <form role="form">
-                    <label class="radio-inline">
-                      <input type="radio" name="evaluation" value="easy">이해됨
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="evaluation" value="middle">보통
-                    </label>
-                    <label class="radio-inline">
-                      <input type="radio" name="evaluation" value="difficult">어려움
-                    </label>
-                  </form>
+            	</div>
+				
+            	<div class="modal-footer">
+					<button class="btn rounded btn-success" type="button" onclick="saveEvaluation()">확인</button>
+            	</div>
+				
+			</div>	
+		</div>	
+    </div>
 
-                  <label>comment</label></br>
-
-                  <textarea class="form-control" rows="3" placeholder="입력하세요"></textarea>
-
-                </div><!-- /.col-lg-6 -->
-              </div><!-- /.row -->
-
-            </div>
-            <div class="modal-footer">
-              <button class="btn rounded btn-info" type="button">수정</button>
-              <button data-dismiss="modal" class="btn rounded btn-success" type="button">확인</button>
-            </div>
-          </div>
-        </div>
-      </div>
 
     <!-- Tab Self Evaluation END-->
 
@@ -502,6 +533,7 @@
 			}
 		});
 	});
+
 </script>
 
 
@@ -590,6 +622,51 @@
     });
 
   }
+  
+function saveEvaluation() {
+	
+	if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
+		alert('난이도를 선택하세요.');
+		return false;
+	}
+
+	$('#loading').show();
+	
+	var evaluation = "";
+	
+	if ($('#evaluation_easy').is(":checked")) evaluation = $('#evaluation_easy').val();
+	else if ( $('#evaluation_normal').is(":checked") ) evaluation = $('#evaluation_normal').val();
+	else if ( $('#evaluation_difficult').is(":checked") ) evaluation = $('#evaluation_difficult').val();
+	
+	var url = "/unit_concept_self_evaluations/";
+	
+	var data = {
+		"unit_concept_self_evaluation" : {
+			"user_id" : <%= current_user.id %>,
+			"unit_concept_id" : <%= @unit_concept.id %>,
+			"evaluation" : evaluation,
+			"comment" : $('#evaluation_comment').val()
+		}
+	}	
+	
+    $.ajax({
+        url: url,
+        type: "POST",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+		data:data,
+        success : function(data) {
+        	$('#loading').hide();
+			alert('자기평가를 등록하였습니다.');
+			location.reload();
+        },
+        error : function(){
+            alert("try to again. please.");
+        	$('#loading').hide();
+        }
+    }); 			
+	
+}  
 </script>
 
 <!-- Print method -->

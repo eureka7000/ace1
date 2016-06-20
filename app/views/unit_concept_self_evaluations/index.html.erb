@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Unit Concept Self Evaluations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Unit concept</th>
+      <th>Evaluation</th>
+      <th>Comment</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @unit_concept_self_evaluations.each do |unit_concept_self_evaluation| %>
+      <tr>
+        <td><%= unit_concept_self_evaluation.unit_concept_id %></td>
+        <td><%= unit_concept_self_evaluation.evaluation %></td>
+        <td><%= unit_concept_self_evaluation.comment %></td>
+        <td><%= link_to 'Show', unit_concept_self_evaluation %></td>
+        <td><%= link_to 'Edit', edit_unit_concept_self_evaluation_path(unit_concept_self_evaluation) %></td>
+        <td><%= link_to 'Destroy', unit_concept_self_evaluation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Unit concept self evaluation', new_unit_concept_self_evaluation_path %>
