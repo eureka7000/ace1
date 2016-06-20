@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Unit concept:</strong>
+  <%= @unit_concept_self_evaluation.unit_concept_id %>
+</p>
+
+<p>
+  <strong>Evaluation:</strong>
+  <%= @unit_concept_self_evaluation.evaluation %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @unit_concept_self_evaluation.comment %>
+</p>
+
+<%= link_to 'Edit', edit_unit_concept_self_evaluation_path(@unit_concept_self_evaluation) %> |
+<%= link_to 'Back', unit_concept_self_evaluations_path %>

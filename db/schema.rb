@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616110319) do
+ActiveRecord::Schema.define(version: 20160620090016) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -136,6 +136,14 @@ ActiveRecord::Schema.define(version: 20160616110319) do
     t.string   "link",            limit: 255
   end
 
+  create_table "unit_concept_exercise_histories", force: :cascade do |t|
+    t.integer  "user_id",              limit: 4
+    t.integer  "unit_concept_desc_id", limit: 4
+    t.string   "ox",                   limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "unit_concept_exercise_solutions", force: :cascade do |t|
     t.integer  "unit_concept_desc_id", limit: 4
     t.string   "code",                 limit: 255
@@ -144,6 +152,15 @@ ActiveRecord::Schema.define(version: 20160616110319) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ox",                   limit: 255
+  end
+
+  create_table "unit_concept_self_evaluations", force: :cascade do |t|
+    t.integer  "unit_concept_id", limit: 4
+    t.string   "evaluation",      limit: 255
+    t.string   "comment",         limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "user_id",         limit: 4
   end
 
   create_table "unit_concepts", force: :cascade do |t|

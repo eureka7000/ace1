@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :user_types
   has_many :teachers
   has_many :unit_concept_exercise_histories
+  has_many :unit_concept_self_evaluations, :dependent => :delete_all
     
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
