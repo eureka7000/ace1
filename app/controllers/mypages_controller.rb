@@ -13,7 +13,8 @@ class MypagesController < ApplicationController
     end    
 
     def evaluation
-
+        @unit_concept_exercise_histories = UnitConceptExerciseHistory.where('user_id = ?', current_user.id)
+        @unit_concept_exercise_solutions = UnitConceptExerciseSolution.all
     end
 
     

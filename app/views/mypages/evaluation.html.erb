@@ -8,7 +8,48 @@
     <div class="col-md-9">
 
       <div class="profile-body margin-bottom-20">
-        hello
+
+        <% if current_user.user_types[0].user_type == 'student' %>
+          <!-- 테이블 시작 -->
+          <div class="panel panel-red margin-bottom-40">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-user"></i> Unit Concepts Evaluation</h3>
+            </div>
+            <div class="panel-body">
+              <table class="table">
+                <thead>
+                <tr>
+                  <td>개념 이름</td>
+                  <td>선택한 답</td>
+                </tr>
+                </thead>
+                <tbody>
+                    <% @unit_concept_exercise_solutions.each do |unit_concept_exercise_solution| %>
+                      <% count = 0 %>
+                      <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                        <% if unit_concept_exercise_history.unit_concept_desc_id ==  unit_concept_exercise_solution.unit_concept_desc.id %>
+                            <% if count == 0 %>
+                              <tr>
+                                <td><%= unit_concept_exercise_solution.unit_concept_desc.memo %></td>
+                                <td><%= unit_concept_exercise_history.ox %></td>
+                              </tr>
+                            <% elsif count < 3 %>
+                              <tr>
+                                <td></td>
+                                <td><%= unit_concept_exercise_history.ox %></td>
+                              </tr>
+                            <% end %>
+                            <% count += 1 %>
+                        <% end %>
+                      <% end %>
+                    <% end %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- 테이블 끝 -->
+        <% end %>
+
       </div>
     </div>
     <!-- End Profile Content -->
