@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  has_many :user_types
+  has_many :user_types, :dependent => :delete_all
   has_many :teachers
   has_many :unit_concept_exercise_histories
   has_many :unit_concept_self_evaluations, :dependent => :delete_all

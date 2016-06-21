@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+    
+    before_action :authenticate_admin_user!, only: [:new]
 
     def welcome
 
@@ -7,6 +9,10 @@ class UsersController < ApplicationController
         end
 
     end
+    
+    def new
+        
+    end    
     
     
     def cert_teacher
