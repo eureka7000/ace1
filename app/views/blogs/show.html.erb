@@ -1,4 +1,4 @@
-
+<div class="container-fluid" style="margin-top: 50px">
 <div class="col-md-12 margin-top-20" >
   <!--  panel -->
   <div class="panel panel-blue">
@@ -10,16 +10,14 @@
 
       <div>
         <ul class="list-unstyled list-inline blog-info">
-          <% now_time = Time.now %>
-          <li><i class="fa fa-calendar"> <%= now_time.strftime('%Y-%m-%d')%></i></li>
           <li><i class="fa  fa-user"></i> <%= @blog.user_id %></li>
         </ul>
       </div>
       </br>
 
       <% Blog::BLOG_TYPES.each_pair do |key, value|%>
-          <% if @blog.blog_type == key %>
-              <h5>블로그 타입 :  <span style="color: black"><%= value %></h5>
+          <% unless @blog.blog_type != key %>
+              <h5>블로그 타입 : <span style="color: black"><%= value %></span> </h5>
           <% end %>
       <% end %>
 
@@ -27,15 +25,25 @@
 
       <!--내용입력-->
       <h4>내용 : </h4>
-      <h5><span style="color: black"><%= @blog.content %></h5>
+      <h4><span style="color: black"><%= @blog.content %></h4>
 
       <!-- user_id -->
       <input hidden type="text" name="blog[user_id]" value="<%= @blog.user_id %>">
 
 
 
+
       <div class="col-md-12 text-right">
-        <%= link_to '확인', blogs_path(blog_type: @blog.blog_type)%>
+        <% str = '/blogs/' %>
+        <% Blog::BLOG_NAMES.each_pair do |key, value| %>
+            <% if @blog.blog_type == key %>
+              <% str += value %>
+            <% end %>
+        <% end %>
+        <% if @blog.user_id.blank? %>
+            <% str = '/blogs/' %>
+        <% end %>
+        <%= link_to '확인', str %>
       </div>
 
       <div class="margin-bottom-20"></div>
@@ -44,4 +52,5 @@
     <!-- End Form Controls  -->
 
   </div>
+</div>
 </div>

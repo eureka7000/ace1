@@ -14,34 +14,32 @@
     <!-- Form Controls -->
     <div class="tag-box tag-box-v3 form-page boMot">
 
-      <div>
-        <ul class="list-unstyled list-inline blog-info">
-          <% now_time = Time.now %>
-          <li><i class="fa fa-calendar"> <%= now_time.strftime('%Y-%m-%d')%></i></li>
-          <li><i class="fa  fa-user"></i> <%= current_user.user_name %></li>
-        </ul>
-      </div>
-      </br>
-
       <!--Inputs-->
-      <h4>- 블로그 타입 선택 -</h4>
-      <label class="select">
-        <select class="valid" name="blog[blog_type]">
-          <% if @blog_type.nil? %>
-              <option selected="selected" disabled="disabled">블로그 선택하기</option>
-          <% else %>
-              <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-                  <% if @blog_type == key %>
-                      <option value="<%= key %>" selected="selected" ><%= value %></option>
-                  <% end %>
-              <% end %>
-          <% end %>
+      <% unless @admin.blank? %>
+          <h4>- 블로그 타입 선택 -</h4>
+      <% end %>
 
-          <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-              <option value="<%= key %>"><%= value %></option>
-          <% end %>
-        </select>
-      </label>
+      <% unless @admin.blank? %>
+        <label class="select">
+          <select class="form-control" name="blog[blog_type]">
+
+                <option selected="selected" disabled="disabled">블로그 선택하기</option>
+                <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
+                    <option value="<%= key %>"><%= value %></option>
+                <% end %>
+
+          </select>
+        </label>
+      <% end %>
+
+      <% if @admin.blank? %>
+        <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
+            <% if @blog_type == key %>
+                  <input hidden name="blog[blog_type]" value="<%= key %>">
+                <h4>- <%= value %> -</h4>
+            <% end %>
+        <% end %>
+      <% end %>
 
       <h4>- 제 목 -</h4>
       <input type="text" class="form-control" name="blog[title]" placeholder="" value="<%= @blog.title %>">
@@ -53,21 +51,29 @@
       <!--End Textarea-->
       <div class="margin-bottom-20"></div>
 
-      <!-- user_id -->
-      <input hidden type="text" name="blog[user_id]" value="<%= current_user.id.to_i %>">
+      <% if @admin.blank? %>
+          <!-- user_id -->
+          <input hidden type="text" name="blog[user_id]" value="<%= current_user.id.to_i %>">
+      <% else %>
+          <input hidden type="text" name="blog[user_id]">
+      <% end %>
 
 
 
       <div class="col-md-11 text-right">
-        <%= link_to '뒤로', blogs_path(blog_type: @blog_type), :class => 'btn btn-info' %>
+        <%= link_to '뒤로', _back_url, :class => 'btn btn-info' %>
       </div>
       <div class="col-md-1 text-right">
         <div class="actions">
-          <%= f.submit '작성완료', :class => 'btn btn-info' %>
+          <% unless @admin.blank? %>
+            <%= f.submit '완료', :class => 'btn btn-info' %>
+          <% else %>
+              <%= f.submit '완료', :class => 'btn btn-info' %>
+          <% end %>
         </div>
       </div>
 
-      <div class="margin-bottom-40"></div>
+      <div class="margin-bottom-20"></div>
 
     </div>
     <!-- End Form Controls  -->

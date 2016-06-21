@@ -110,30 +110,34 @@
                       <li class="<%= 'active' if @active == 'blog' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
                         <ul class="dropdown-menu">
-                          <% Blog::BLOG_TYPES.each_pair do |key, value| %>
-                              <li>
-                                <a href="/blogs?blog_type=<%= key %>"><%= value %></a>
-                              </li>
-                          <% end %>
+                          <li>
+                            <a href="/blogs/learning_problem_solution">학습문제해결</a>
+                          </li>
+                          <li>
+                            <a href="/blogs/succession_case">성공사례</a>
+                          </li>
+                          <li>
+                            <a href="/blogs/math_story">수학이야기</a>
+                          </li>
                         </ul>
 
                       <li class="<%= 'active' if @active == 'about' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">ABOUT</a>
                         <ul class="dropdown-menu">
-                          <li>
+                          <!--<li>
                             <a href="/">Contact Us</a>
+                          </li>-->
+                          <li>
+                            <a href="/blogs/faq">FAQ</a>
                           </li>
                           <li>
-                            <a href="/">FAQ</a>
+                            <a href="/blogs/notice">공지사항</a>
                           </li>
                           <li>
-                            <a href="/">공지사항</a>
+                            <a href="/blogs/the_news">새소식</a>
                           </li>
                           <li>
-                            <a href="/">새소식</a>
-                          </li>
-                          <li>
-                            <a href="/">회사소개</a>
+                            <a href="/blogs/company_introduction">회사소개</a>
                           </li>
                         </ul>
                       </li>

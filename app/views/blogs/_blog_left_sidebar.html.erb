@@ -1,0 +1,78 @@
+<!-- Left Sidebar -->
+
+<div class="col-md-9 md-margin-bottom-40 blog_eureka">
+
+  <% @blogs.each do |blog| %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <% if current_user.nil? %>
+              <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px"> <%= blog.title %></a></h2>
+          <% else %>
+              <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a></h2>
+          <% end %>
+        </div>
+        <div class="panel-body">
+          <i class="fa fa-calendar"></i> <%= blog.created_at %> &nbsp;
+          <i class="fa fa-user"></i><%= blog.user_id %>
+          </br></br>
+          <p><%= blog.content %></p>
+          <% unless current_user.nil? %>
+              <% unless blog.user_id != current_user.id %>
+                  <div class="col-md-12 text-right ">
+                    <hr class="devider devider-dashed no-padding no-margin">
+                    <div class="col-md-10 no-margin no-padding"></div>
+                    <div class="col-md-1 no-margin no-padding">
+                      <%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
+                    </div>
+                    <div class="col-md-1">
+                      <%= button_to 'delete', blog, :method=>:delete, :class => 'btn btn-link' %>
+                    </div>
+                  </div>
+              <% end %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+
+  <% if current_user.nil? %>
+      <button class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-sm">글 작성</button>
+  <% else %>
+      <% unless @blog_type == '5' || @blog_type == '6' || @blog_type == '7' %>
+        <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
+      <% end %>
+  <% end %>
+
+  <div class="text-center">
+    <ul class="pagination">
+      <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
+    </ul>
+  </div>
+
+</div>
+<!--End left Sidebar -->
+
+
+<!-- Alert -->
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content modAlertch">
+      <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+        <h4 id="myLargeModalLabel3" class="modal-title"><i class="glyphicon glyphicon-check"></i> 알림</h4>
+      </div>
+
+      <div class="modal-body modAlert">
+        <div class="modAlertbox">
+          <p>로그인이 필요합니다!</p>
+          <ul>
+            <li><%=link_to '로그인',  new_user_session_path, :class => 'btn btn-link' %></li>
+            <li><%=link_to '회원가입', new_user_registration_path, :class => 'btn btn-link' %></li>
+
+          </ul>
+        </div>
+        <div class="margin-bottom-20"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Alert -->
