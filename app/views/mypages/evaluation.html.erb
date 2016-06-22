@@ -32,12 +32,16 @@
                 </tr>
                 </thead>
                 <tbody>
+                <% index = 0 %>
+                <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                  <% index += 1 %>
+                <% end %>
                 <% str = '' %>
                 <% memo = '' %>
                 <% oxStr = '' %>
                 <% count = 0 %>
                   <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
-
+                    <% index -= 1 %>
                     <% if unit_concept_exercise_history.unit_concept_desc.memo != memo %>
                       <% unless memo == '' %>
                         <tr>
@@ -49,6 +53,7 @@
                         <% oxStr = '' %>
                         <% count == 0 %>
                       <% end %>
+
                     <% end %>
 
                     <% if unit_concept_exercise_history.unit_concept_desc.unit_concept.name != str %>
@@ -96,7 +101,14 @@
                         </tr> -->
 
                     <% end %>
-
+                    <% if index == 0 %>
+                        <tr>
+                          <td></td>
+                          <td colspan="2"><%= memo %></td>
+                          <td><%= oxStr %></td>
+                          <td colspan="2"></td>
+                        </tr>
+                    <% end %>
                   <% end %>
 
 
