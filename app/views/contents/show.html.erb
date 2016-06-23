@@ -1,3 +1,4 @@
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <div class="row" style="margin: 20px;">
 
   <div class="col-md-12">
@@ -5,16 +6,14 @@
     <!-- tabs right -->
     <div class="tabbable">
       <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
-        <li><a href="#e" data-toggle="tab" style="text-align: center">개념 설명</a></li>
-        <li><a href="#f" data-toggle="tab" style="text-align: center">Exercise</a></li>
-        <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center">관련 개념</a></li>
-        <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center">Self Evaluation</a></li>
+        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">개 념</a></li>
+        <li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
+        <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise</a></li>
+        <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
+        <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
         <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
-        <li><a href="#m" data-toggle="tab" style="text-align: center">질문하기</a></li>
-        <li><a href="#p" data-toggle="tab" style="text-align: center">프린트</a></li>
-
-
+        <li><a href="#m" data-toggle="tab" style="text-align: center" onclick="videoPause()">질문하기</a></li>
+        <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
       </ul>
       <div class="tab-content col-sm-11 col-sm-pull-1">
 
@@ -298,7 +297,7 @@
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 4%>
                       <div class="responsive-video margin-bottom-30">
-                        <iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                        <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
                         <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
                       </div>
                   <% end %>
@@ -682,4 +681,14 @@ function saveEvaluation() {
       document.body.innerHTML = allPage;
       location.reload();
     }
+
+
+</script>
+
+<script type="text/javascript">
+  function videoPause(){
+    var iframe = $('#vimeo-player')[0];
+    var player = $f(iframe);
+    player.api('pause');
+  }
 </script>
