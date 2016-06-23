@@ -10,44 +10,113 @@
       <div class="profile-body margin-bottom-20">
 
         <% if current_user.user_types[0].user_type == 'student' %>
-          <!-- 테이블 시작 -->
-          <div class="panel panel-red margin-bottom-40">
+
+          <!-- 테스트 작업 테이블 시작 -->
+          <div class="panel panel-sea margin-bottom-40">
             <div class="panel-heading">
               <h3 class="panel-title"><i class="fa fa-user"></i> Unit Concepts Evaluation</h3>
             </div>
             <div class="panel-body">
-              <table class="table">
-                <thead>
+              <table class="table table-striped">
+                <thead style="color: black;">
                 <tr>
-                  <td>개념 이름</td>
-                  <td>선택한 답</td>
+                  <td rowspan="2">단위 개념 이름</td>
+                  <td rowspan="2">개념 Level</td>
+                  <td rowspan="2">학습 Level</td>
+                  <td rowspan="2">exercise 평가</td>
+                  <td>자기평가</td>
+                </tr>
+                <tr>
+                  <td>O X</td>
+                  <td>comment</td>
                 </tr>
                 </thead>
                 <tbody>
-                    <% @unit_concept_exercise_solutions.each do |unit_concept_exercise_solution| %>
-                      <% count = 0 %>
-                      <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
-                        <% if unit_concept_exercise_history.unit_concept_desc_id ==  unit_concept_exercise_solution.unit_concept_desc.id %>
-                            <% if count == 0 %>
-                              <tr>
-                                <td><%= unit_concept_exercise_solution.unit_concept_desc.memo %></td>
-                                <td><%= unit_concept_exercise_history.ox %></td>
-                              </tr>
-                            <% elsif count < 3 %>
-                              <tr>
-                                <td></td>
-                                <td><%= unit_concept_exercise_history.ox %></td>
-                              </tr>
-                            <% end %>
-                            <% count += 1 %>
-                        <% end %>
+                <% index = 0 %>
+                <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                  <% index += 1 %>
+                <% end %>
+                <% str = '' %>
+                <% memo = '' %>
+                <% oxStr = '' %>
+                <% count = 0 %>
+                  <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                    <% index -= 1 %>
+                    <% if unit_concept_exercise_history.unit_concept_desc.memo != memo %>
+                      <% unless memo == '' %>
+                        <tr>
+                          <td></td>
+                          <td colspan="2"><%= memo %></td>
+                          <td><%= oxStr %></td>
+                          <td colspan="2"></td>
+                        </tr>
+                        <% oxStr = '' %>
+                        <% count == 0 %>
                       <% end %>
+
                     <% end %>
+
+                    <% if unit_concept_exercise_history.unit_concept_desc.unit_concept.name != str %>
+                        <tr>
+                      <% str = unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
+                        <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.name %></td>
+                        <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.level %></td>
+                        <td><%= unit_concept_exercise_history.user.study_level %></td>
+                        <td>동그라밍~</td>
+
+                        <% evaluationStr = '' %>
+                        <% commentStr = '' %>
+                        <% unit_concept_exercise_history.user.unit_concept_self_evaluations.each do |unit_concept_self_evaluation|%>
+                          <% if unit_concept_self_evaluation.unit_concept_id == unit_concept_exercise_history.unit_concept_desc.unit_concept.id %>
+                            <% evaluationStr = unit_concept_self_evaluation.evaluation %>
+                            <% commentStr = unit_concept_self_evaluation.comment %>
+                          <% end %>
+                        <% end %>
+                          <td><%= evaluationStr %></td>
+                          <td><%= commentStr %></td>
+                        </tr>
+
+                        <% oxStr += unit_concept_exercise_history.ox %>
+                        <% count += 1 %>
+                        <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
+                        <!--
+                        <tr>
+                          <td></td>
+                          <td colspan="2"><%= unit_concept_exercise_history.unit_concept_desc.memo %></td>
+                          <td><%= unit_concept_exercise_history.ox %></td>
+                          <td colspan="2"></td>
+                        </tr> -->
+
+                    <% else %>
+                        <% if count < 3 %>
+                            <% oxStr += unit_concept_exercise_history.ox %>
+                        <% end %>
+                        <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
+                        <!--
+                        <tr>
+                          <td></td>
+                          <td colspan="2"><%= unit_concept_exercise_history.unit_concept_desc.memo %></td>
+                          <td><%= unit_concept_exercise_history.ox %></td>
+                          <td colspan="2"></td>
+                        </tr> -->
+
+                    <% end %>
+                    <% if index == 0 %>
+                        <tr>
+                          <td></td>
+                          <td colspan="2"><%= memo %></td>
+                          <td><%= oxStr %></td>
+                          <td colspan="2"></td>
+                        </tr>
+                    <% end %>
+                  <% end %>
+
+
                 </tbody>
               </table>
             </div>
           </div>
-          <!-- 테이블 끝 -->
+          <!-- 테스트 작업 테이블 끝 -->
         <% end %>
 
       </div>
