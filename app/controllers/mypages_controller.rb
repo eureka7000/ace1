@@ -14,7 +14,7 @@ class MypagesController < ApplicationController
 
     def evaluation
 
-        @unit_concept_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id).order(:unit_concept_desc_id)
+        @unit_concept_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id).order(:unit_concept_desc_id).order(created_at: :desc)
 
     end
 
