@@ -2,6 +2,7 @@ class School < ActiveRecord::Base
     
     has_many :admins
     has_many :teachers
+    has_many :users
     
     validates :name, :presence => {:message => "학교명은 필수 입력항목입니다."}
     validates :grade, :presence => {:message => "등급은 필수 입력항목입니다."}

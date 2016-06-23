@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    resources :questions
     resources :user_relations
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160622114248) do
+ActiveRecord::Schema.define(version: 20160623104659) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -86,6 +86,29 @@ ActiveRecord::Schema.define(version: 20160622114248) do
     t.integer  "amount",     limit: 4
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer  "unit_concept_id", limit: 4
+    t.integer  "to_user_id",      limit: 4
+    t.integer  "user_id",         limit: 4
+    t.string   "title",           limit: 255
+    t.text     "content",         limit: 65535
+    t.string   "file_name",       limit: 255
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "replies", force: :cascade do |t|
+    t.integer  "question_id",     limit: 4
+    t.integer  "user_id",         limit: 4
+    t.text     "comment",         limit: 65535
+    t.integer  "group_id",        limit: 4
+    t.integer  "parent_reply_id", limit: 4
+    t.integer  "depth",           limit: 4
+    t.integer  "order_no",        limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "schools", force: :cascade do |t|
@@ -223,7 +246,7 @@ ActiveRecord::Schema.define(version: 20160622114248) do
     t.string   "grade",                  limit: 255
     t.string   "study_level",            limit: 255
     t.integer  "join_channel_sales_id",  limit: 4
-    t.integer  "join_channel",           limit: 4
+    t.integer  "school_id",              limit: 4
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

@@ -1,3 +1,15 @@
+<%
+user_type = ""
+	
+	
+unless @user.user_types.empty?
+	user_type = @user.user_types[0].user_type
+end		
+	
+	
+	
+%>
+
 <div class="row">
 
     <div class="col-md-12 ">
@@ -31,7 +43,7 @@
                             <div class="input-group col-md-4" style="float:left">
 								<select class="form-control" name="user_type[user_type]">
                                 <% User::USER_TYPES.each_pair() do |key, value| %>
-								<option value="<%= key.to_s %>"><%= value %></option>
+								<option value="<%= key.to_s %>" <%= "selected" if user_type == key.to_s %>><%= value %></option>
                                 <% end %>
 								</select>								
                             </div>
@@ -40,30 +52,32 @@
                         <div class="form-group">
 							<label class="col-md-1 control-label" for="user_user_name">이름</label>
                             <div class="input-group col-md-4" style="float:left">
-								<input class="form-control" type="text" name="user[user_name]" id="user_user_name">
+								<input class="form-control" type="text" name="user[user_name]" id="user_user_name" value="<%= @user.user_name %>">
                             </div>
                         </div>
 
                         <div class="form-group">
 							<label class="col-sm-1 control-label" for="user_email">전자우편</label>
                             <div class="input-group col-sm-4" style="float:left">
-								<input class="form-control" type="text" value="" name="user[email]" id="user_email">
+								<input class="form-control" type="text" name="user[email]" id="user_email" value="<%= @user.email %>">
                             </div>
                         </div>
                         
                         <div class="form-group">
 							<label class="col-sm-1 control-label" for="user_phone">전화번호</label>
                             <div class="input-group col-sm-4" style="float:left">
-								<input class="form-control" type="text" name="user[phone]" id="user_phone">
+								<input class="form-control" type="text" name="user[phone]" id="user_phone" value="<%= @user.phone %>">
                             </div>
                         </div> 
                         
                         <div class="form-group">
-							<label class="col-sm-1 control-label" for="user_location">지역</label>
+							<label class="col-sm-1 control-label" for="user_location">지역 </label>
                             <div class="input-group col-sm-4" style="float:left">
-								<input class="form-control" type="text" name="user[location]" id="user_location">
+								<input class="form-control" type="text" name="user[location]" id="user_location" value="<%= @user.location %>">
                             </div>
                         </div>
+						
+						<% if user_type == 'student' || action_name == "new"  %>
 						
 						<div class="form-group">
 							<label class="col-sm-1 control-label" for="user_grade">학년</label>
@@ -71,7 +85,7 @@
 								<select class="form-control" name="user[grade]">
 								<option value="">---학년---</option>	
                                 <% UnitConcept::GRADES.each_pair() do |key, value| %>
-								<option value="<%= key.to_s %>"><%= value %></option>
+								<option value="<%= key.to_s %>" <%= "selected" if @user.grade == key.to_s %> ><%= value %></option>
                                 <% end %>
 								</select>
                             </div>							
@@ -80,10 +94,10 @@
 						<div class="form-group">
 							<label class="col-sm-1 control-label" for="user_join_channel">가입경로</label>
                             <div class="input-group col-sm-4" style="float:left">
-								<select class="form-control" id="join_channel" name="user[join_channel]" onchange="getMento()">
+								<select class="form-control" id="join_channel" name="user[school_id]" onchange="getMento()">
 								<option value="">---가입경로---</option>
 								<% @schools.each do |school| %>
-								<option value="<%= school.id %>"><%= school.name %></option>
+								<option value="<%= school.id %>" <%= "selected" if @user.school_id == school.id %> ><%= school.name %></option>
 								<% end %>
 								</select>
                             </div>							
@@ -94,6 +108,11 @@
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" id="user_relations" name="user_relations[related_id]">
 								<option value="">---멘토---</option>
+								<% unless @teachers.nil? %>
+									<% @teachers.each do |teacher| %>
+								<option value="<%= teacher.id %>" <%= "selected" if @user.user_relations[0].related_user_id == teacher.id %> ><%= teacher.user_name %></option>
+									<% end %>
+								<% end %>
 								</select>
                             </div>							
 						</div>						
@@ -104,11 +123,13 @@
 								<select class="form-control" name="user[join_channel_sales_id]">
 								<option value="">---영업인---</option>
 								<% @admins.each do |admin| %>
-								<option value="<%= admin.id %>"><%= admin.name %></option>
+								<option value="<%= admin.id %>" <%= "selected" if @user.join_channel_sales_id == admin.id %>><%= admin.name %></option>
 								<% end %>
 								</select>
                             </div>							
-						</div>						
+						</div>	
+						
+						<% end %>					
 
                     </div>
 

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     
-    before_action :authenticate_admin_user!, only: [:new]
+    before_action :authenticate_admin_user!, only: [:new, :edit]
     
     layout '/layouts/admin_main'
 
@@ -18,24 +18,31 @@ class UsersController < ApplicationController
         @admins = Admin.all
     end
     
+    def edit
+        @user = User.find(params[:id])
+        @schools = School.all
+        @admins = Admin.all
+        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+        render :layout => 'layouts/admin_main'
+    end      
+    
     def get_mento
         
-        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('school_id = ?', params[:id])
+        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', params[:id])
         render json: @teachers
         
     end    
     
     def create
         
-        password_length = 8
-        password = Devise.friendly_token.first(password_length)
+        password = "11111111"
         
         @user = User.new(:email => params[:user][:email], :password => password, :password_confirmation => password)
         @user.phone = params[:user][:phone]
         @user.user_name = params[:user][:user_name]
         @user.location = params[:user][:location]
         @user.grade =  params[:user][:grade]
-        @user.join_channel = params[:user][:join_channel]
+        @user.school_id = params[:user][:school_id]
         @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
         @user.save
         
@@ -43,6 +50,12 @@ class UsersController < ApplicationController
         user_type.user_id = @user.id
         user_type.user_type = params[:user_type][:user_type]
         user_type.save
+        
+        user_relation = UserRelation.new
+        user_relation.user_id = @user.id
+        user_relation.related_user_id = params[:user_relations][:related_id]
+        user_relation.relation_type = 'mento'
+        user_relation.save
         
         @schools = School.all
         @admins = Admin.all
@@ -129,11 +142,7 @@ class UsersController < ApplicationController
         end
     end     
     
-    def edit
-        authenticate_admin_user!
-        @user = User.find(params[:id])
-        render :layout => 'layouts/admin_main'
-    end    
+  
     
     
     def destroy

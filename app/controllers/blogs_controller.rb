@@ -99,8 +99,9 @@ class BlogsController < ApplicationController
 
 
   def learning_problem_solution
-    @blog_type = '1'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
+      @blog_type = '1'
+      # @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
+      @blogs = Question.where('to_user_id = ?', current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
   end
 
   def succession_case

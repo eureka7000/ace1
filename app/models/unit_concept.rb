@@ -6,6 +6,7 @@ class UnitConcept < ActiveRecord::Base
     has_many :explanations
     has_many :unit_concept_self_evaluations
     has_one  :grade_unit_concept
+    has_many :questions
     
     DESC_TYPES = {
         1 => "Unit Concept",

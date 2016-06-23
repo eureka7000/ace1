@@ -11,7 +11,7 @@
         <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center">관련 개념</a></li>
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center">Self Evaluation</a></li>
         <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
-        <li><a href="#m" data-toggle="tab" style="text-align: center">질문하기</a></li>
+        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
         <li><a href="#p" data-toggle="tab" style="text-align: center">프린트</a></li>
 
 
@@ -501,6 +501,64 @@
   </div>
 </div>
 
+<!-- Tab 관련 개념 END-->
+
+<!-- Modal -->
+<div class="modal fade" id="question" role="dialog">
+	
+	<div class="modal-dialog">
+    	
+		<div class="modal-content">
+			
+			<form action="/questions" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+
+			<%= token_tag nil %>	
+			
+			<input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
+			<input type="hidden" name="question[to_user_id]" value="<%= @mento.id  %>" />
+			<input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
+			
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<div class="modal-title">
+					<span class="label rounded-2x label-aqua">질문 하기 : to <%= @mento.user_name %> 선생님.</span>
+				</div>
+			</div>
+			
+			<div class="modal-body">
+
+				<div class="row">
+					<div class="col-md-2" style="text-align:right">제목</div>
+					<div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
+				</div>
+				
+				<div class="row" style="margin-top: 10px">
+					<div class="col-md-2" style="text-align:right">내용</div>
+					<div class="col-md-10">
+						<textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+					</div>					
+				</div>
+				
+				<div class="row" style="margin-top: 10px">
+					<div class="col-md-2" style="text-align:right">파일첨부</div>
+					<div class="col-md-10">
+						<input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
+					</div>										
+				</div>
+				
+			</div>
+			
+			<div class="modal-footer">
+				<button class="btn rounded btn-success" type="submit">확인</button>
+			</div>
+			
+			</form>
+			
+		</div>	
+		
+	</div>
+	
+</div>
 <!-- Tab 관련 개념 END-->
 
 </div>
