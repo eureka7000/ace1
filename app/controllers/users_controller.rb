@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
     
     before_action :authenticate_admin_user!, only: [:new]
+    
+    layout '/layouts/admin_main'
 
     def welcome
 
@@ -11,6 +13,43 @@ class UsersController < ApplicationController
     end
     
     def new
+        @user = User.new
+        @schools = School.all
+        @admins = Admin.all
+    end
+    
+    def get_mento
+        
+        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('school_id = ?', params[:id])
+        render json: @teachers
+        
+    end    
+    
+    def create
+        
+        password_length = 8
+        password = Devise.friendly_token.first(password_length)
+        
+        @user = User.new(:email => params[:user][:email], :password => password, :password_confirmation => password)
+        @user.phone = params[:user][:phone]
+        @user.user_name = params[:user][:user_name]
+        @user.location = params[:user][:location]
+        @user.grade =  params[:user][:grade]
+        @user.join_channel = params[:user][:join_channel]
+        @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
+        @user.save
+        
+        user_type = UserType.new
+        user_type.user_id = @user.id
+        user_type.user_type = params[:user_type][:user_type]
+        user_type.save
+        
+        @schools = School.all
+        @admins = Admin.all
+        
+        respond_to do |format|
+            format.html { render :new }
+        end
         
     end    
     

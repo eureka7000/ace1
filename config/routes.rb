@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    resources :user_relations
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions
     resources :unit_concept_exercise_histories
@@ -58,8 +59,10 @@ Rails.application.routes.draw do
     get 'blogs/company_introduction' => 'blogs#company_introduction'
     resources :blogs
 
+    get 'users/get_mento' => 'users#get_mento'
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
+    post 'users/create' => 'users#create'
     
     get 'admins/login' => 'admins#login'
     get 'admins/logout' => 'admins#logout'
