@@ -3,8 +3,10 @@
     <div class="col-md-12 ">
 
         <div class="well">
-
-            <%= form_for(@user, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+			
+			<form role="form" class="form-horizontal" id="new_user" action="/users/create" accept-charset="UTF-8" method="post">
+				
+				<%= token_tag nil %>
             
                 <input type="hidden" name="target_from" value="admin" />
 
@@ -23,49 +25,133 @@
                             </ul>
                         </div>
                         <% end %>
-
+						
                         <div class="form-group">
-                            <%= f.label :user_name, '이름', :class => 'col-sm-1 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :user_name, :class => 'form-control' %>
+							<label class="col-md-1 control-label" for="user_user_name">사용자타입</label>
+                            <div class="input-group col-md-4" style="float:left">
+								<select class="form-control" name="user_type[user_type]">
+                                <% User::USER_TYPES.each_pair() do |key, value| %>
+								<option value="<%= key.to_s %>"><%= value %></option>
+                                <% end %>
+								</select>								
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <%= f.label :email, '전자우편', :class => 'col-sm-1 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :email, :class => 'form-control' %>
+							<label class="col-md-1 control-label" for="user_user_name">이름</label>
+                            <div class="input-group col-md-4" style="float:left">
+								<input class="form-control" type="text" name="user[user_name]" id="user_user_name">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+							<label class="col-sm-1 control-label" for="user_email">전자우편</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<input class="form-control" type="text" value="" name="user[email]" id="user_email">
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <%= f.label :phone, '전화번호', :class => 'col-sm-1 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :phone, :class => 'form-control' %>
+							<label class="col-sm-1 control-label" for="user_phone">전화번호</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<input class="form-control" type="text" name="user[phone]" id="user_phone">
                             </div>
                         </div> 
                         
                         <div class="form-group">
-                            <%= f.label :location,'지역', :class => 'col-sm-1 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :location, :class => 'form-control' %>
+							<label class="col-sm-1 control-label" for="user_location">지역</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<input class="form-control" type="text" name="user[location]" id="user_location">
                             </div>
-                        </div>                                                  
+                        </div>
+						
+						<div class="form-group">
+							<label class="col-sm-1 control-label" for="user_grade">학년</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<select class="form-control" name="user[grade]">
+								<option value="">---학년---</option>	
+                                <% UnitConcept::GRADES.each_pair() do |key, value| %>
+								<option value="<%= key.to_s %>"><%= value %></option>
+                                <% end %>
+								</select>
+                            </div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-1 control-label" for="user_join_channel">가입경로</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<select class="form-control" id="join_channel" name="user[join_channel]" onchange="getMento()">
+								<option value="">---가입경로---</option>
+								<% @schools.each do |school| %>
+								<option value="<%= school.id %>"><%= school.name %></option>
+								<% end %>
+								</select>
+                            </div>							
+						</div>
+						
+						<div class="form-group">
+							<label class="col-sm-1 control-label" for="mento">멘토</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<select class="form-control" id="user_relations" name="user_relations[related_id]">
+								<option value="">---멘토---</option>
+								</select>
+                            </div>							
+						</div>						
+						
+						<div class="form-group">
+							<label class="col-sm-1 control-label" for="user_join_channel_sales_id">영업인</label>
+                            <div class="input-group col-sm-4" style="float:left">
+								<select class="form-control" name="user[join_channel_sales_id]">
+								<option value="">---영업인---</option>
+								<% @admins.each do |admin| %>
+								<option value="<%= admin.id %>"><%= admin.name %></option>
+								<% end %>
+								</select>
+                            </div>							
+						</div>						
 
                     </div>
 
                 </div>
 
                 <footer>
-                    <%= f.submit '저장', :class => 'btn btn-success' %>
+					<input type="submit" name="commit" value="저장" class="btn btn-success">
                     <% unless @user.id.blank? %><%= link_to '상세', @user, :class => 'btn btn-info' %><% end %>
                     <%= link_to '뒤로', users_path, :class => 'btn btn-info' %>
                 </footer>
-
-            <% end %>
 
         </div>
 
     </div>
 
 </div>
+
+<script type="text/javascript">
+	
+function getMento() {
+	
+	 $('#user_relations').empty();
+	 $('#user_relations').append( $('<option>').text('---멘토---').attr('value','') ); 
+	
+	if ($('#join_channel').val() == "") return false;
+	
+	var url = "/users/get_mento?id=" + $('#join_channel').val();
+
+	$.ajax({
+	    url: url,
+	    type: "GET",
+	    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	    dataType: "JSON",
+	    success: function(data) {
+
+	        $.each(data, function(i) {
+                $('#user_relations').append( $('<option>').text(data[i].user_name).attr('value',data[i].id) );                
+	        });
+
+	    },
+	    error: function(err){}
+	});                
+        
+}
+	
+</script>

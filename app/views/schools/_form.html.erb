@@ -22,14 +22,14 @@
                         
                         <div class="form-group">
                             <%= f.label :name, '학교(학원)명', :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <div class="input-group col-sm-4 float-left">
                                 <%= f.text_field :name, :class => 'form-control' %>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <%= f.label :grade, '학교등급', :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <div class="input-group col-sm-4 float-left">
                                 <%  School::SCHOOL_GEADES.each do |key, value|  %>
                                 <label class="radio-inline">
                                     <input type="radio" name="school[grade]" value="<%= key %>" <%= 'checked' if key == @school.grade %> > <%= value %>
@@ -40,7 +40,7 @@
                         
                         <div class="form-group">
                             <%= f.label :is_school, '학교.학원 구분', :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <div class="input-group col-sm-4 float-left">
                                 <label class="radio-inline">
                                     <input type="radio" name="school[is_school]" value="1" <%= 'checked' if @school.is_school == '1' %> /> 학교
                                 </label>
@@ -52,14 +52,14 @@
                         
                         <div class="form-group">
                             <%= f.label :address, '주소', :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <div class="input-group col-sm-4 float-left">
                                 <%= f.text_field :address, :class => 'form-control' %>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <%= f.label :phone, '전화번호', :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <div class="input-group col-sm-4 float-left">
                                 <%= f.text_field :phone, :class => 'form-control' %>
                             </div>
                         </div>                        

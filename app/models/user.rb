@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
   has_many :teachers
   has_many :unit_concept_exercise_histories
   has_many :unit_concept_self_evaluations, :dependent => :delete_all
-    
+  
+  validates_presence_of :email
+  
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
          
