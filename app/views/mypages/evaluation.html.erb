@@ -24,7 +24,8 @@
                   <td rowspan="2">개념 Level</td>
                   <td rowspan="2">학습 Level</td>
                   <td rowspan="2">exercise 평가</td>
-                  <td>자기평가</td>
+                  <td colspan="2">자기평가</td>
+                  <td rowspan="2">최근 학습일</td>
                 </tr>
                 <tr>
                   <td>O X</td>
@@ -46,11 +47,13 @@
                     <% index -= 1 %>
                     <% if unit_concept_exercise_history.unit_concept_desc.memo != memo %>
                       <% unless memo == '' %>
+                        <% memoStr = 'exercise '%>
                         <tr>
                           <td></td>
-                          <td colspan="2"><%= memo %></td>
+                          <td colspan="2"><%= memoStr + memo.to_s.slice(-2, 2) %></td>
                           <td><%= oxStr %></td>
                           <td colspan="2"></td>
+                          <td></td>
                         </tr>
                         <% oxStr = '' %>
                         <% oxCount = 0 %>
@@ -76,6 +79,9 @@
                         <% end %>
                           <td><%= evaluationStr %></td>
                           <td><%= commentStr %></td>
+                          <% date = unit_concept_exercise_history.updated_at.localtime.to_s %>
+                          <% date.slice!(-5, 5) %>
+                          <td><%= date %></td>
                         </tr>
 
                         <% oxStr += unit_concept_exercise_history.ox %>
@@ -107,9 +113,10 @@
 
                     <% end %>
                     <% if index == 0 %>
+                        <% memoStr = 'exercise '%>
                         <tr>
                           <td></td>
-                          <td colspan="2"><%= memo %></td>
+                          <td colspan="2"><%= memoStr + memo.to_s.slice(-2, 2) %></td>
                           <td><%= oxStr %></td>
                           <td colspan="2"></td>
                         </tr>

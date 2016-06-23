@@ -204,6 +204,22 @@
                                 </label>
                                 &nbsp; &nbsp; &nbsp; &nbsp;
                                 <button class="btn rounded btn-info" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+                                &nbsp; &nbsp;
+                                <% hOX = '' %>
+                                <% @unit_concepts_exercise_histories.each do |history| %>
+                                    <% if history.unit_concept_desc_id == unit_concept_desc.id %>
+                                        <% hOX = history.ox %>
+                                    <% end %>
+                                <% end %>
+                                <% unless hOX == '' %>
+                                    <% if hOX == 'O'%>
+                                        <label>최근 학습 이력: 정답</label>
+                                    <% else %>
+                                        <label>최근 학습 이력: 오답</label>
+                                    <% end %>
+                                <% else %>
+                                    <label>최근 학습 이력: 없음</label>
+                                <% end %>
                               </div>
                             </div>
                           </div>
@@ -215,7 +231,6 @@
 
                             <div class="col-md-6 text-left">
                               <a href="javascript:viewSolution(<%= imgCount %>)" class="btn btn-success" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
-
                               <!-- OX 이미지 출력 부분 -->
                               <% unit_concept_desc.unit_concept_exercise_solutions.order(:code).each do |solution| %>
                                   <% if solution.file_name.blank? %>
@@ -236,6 +251,23 @@
                                 </label>
                                 &nbsp; &nbsp; &nbsp; &nbsp;
                                 <button class="btn rounded btn-info" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+                                &nbsp; &nbsp;
+
+                                <% hOX = '' %>
+                                <% @unit_concepts_exercise_histories.each do |history| %>
+                                    <% if history.unit_concept_desc_id == unit_concept_desc.id %>
+                                        <% hOX = history.ox %>
+                                    <% end %>
+                                <% end %>
+                                <% unless hOX == '' %>
+                                    <% if hOX == 'O'%>
+                                        <label>최근 학습 이력: 정답</label>
+                                    <% else %>
+                                        <label>최근 학습 이력: 오답</label>
+                                    <% end %>
+                                <% else %>
+                                    <label>최근 학습 이력: 없음</label>
+                                <% end %>
                               </div>
                             </div>
                           </div>
