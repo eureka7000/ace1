@@ -36,10 +36,12 @@
                 <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
                   <% index += 1 %>
                 <% end %>
+
                 <% str = '' %>
                 <% memo = '' %>
                 <% oxStr = '' %>
-                <% count = 0 %>
+                <% oxCount = 0 %>
+
                   <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
                     <% index -= 1 %>
                     <% if unit_concept_exercise_history.unit_concept_desc.memo != memo %>
@@ -51,7 +53,7 @@
                           <td colspan="2"></td>
                         </tr>
                         <% oxStr = '' %>
-                        <% count == 0 %>
+                        <% oxCount = 0 %>
                       <% end %>
 
                     <% end %>
@@ -62,9 +64,9 @@
                         <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.name %></td>
                         <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.level %></td>
                         <td><%= unit_concept_exercise_history.user.study_level %></td>
-                        <td>동그라밍~</td>
+                        <td>맞음/틀림 확인</td>
 
-                        <% evaluationStr = '' %>
+                       <% evaluationStr = '' %>
                         <% commentStr = '' %>
                         <% unit_concept_exercise_history.user.unit_concept_self_evaluations.each do |unit_concept_self_evaluation|%>
                           <% if unit_concept_self_evaluation.unit_concept_id == unit_concept_exercise_history.unit_concept_desc.unit_concept.id %>
@@ -77,7 +79,7 @@
                         </tr>
 
                         <% oxStr += unit_concept_exercise_history.ox %>
-                        <% count += 1 %>
+                        <% oxCount += 1 %>
                         <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
                         <!--
                         <tr>
@@ -88,8 +90,11 @@
                         </tr> -->
 
                     <% else %>
-                        <% if count < 3 %>
-                            <% oxStr += unit_concept_exercise_history.ox %>
+                        <% if oxCount < 3 %>
+                         <% oxStr += unit_concept_exercise_history.ox %>
+                         <% oxCount += 1 %>
+                        <% else %>
+                          <% oxCount +=1 %>
                         <% end %>
                         <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
                         <!--
