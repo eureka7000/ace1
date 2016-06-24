@@ -81,12 +81,10 @@ class ContentsController < ApplicationController
         @links = UnitConceptDesc.find_by_sql(link_query)
         @videos = @unit_concept.unit_concept_descs.where('desc_type=4').order(:memo)
         @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', current_user.id, params[:id]).order('created_at desc limit 3')
-        
         @mento = nil
         unless current_user.user_relations.empty?
             @mento = User.find(current_user.user_relations[0].related_user_id)
         end
-            
         @unit_concepts_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id)
         
     end
