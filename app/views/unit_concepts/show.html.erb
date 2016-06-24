@@ -96,7 +96,7 @@
 								<% end %>
                                 
                                 <% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "exercise") %>
-                                    <% unless unit_concept_desc.link.nil? %>
+                                    <% unless unit_concept_desc.link.blank? %>
                                         <% @link_exercise = UnitConcept.find(unit_concept_desc.link) %>
                                         <a href="/contents/<%= @link_exercise.id %>"><%= @link_exercise.code %> : <%= @link_exercise.name %></a>
                                     <% else %>    
