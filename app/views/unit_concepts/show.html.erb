@@ -82,7 +82,8 @@
 							</td>
 							<td>
 								<% # desc_type이 'exercise'일 경우 solution을 보여준다. %>
-								<% if unit_concept_desc.desc_type == '3' %>
+								<% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "concept") || 
+                                      (unit_concept_desc.desc_type == '1' && @unit_concept.exercise_yn == "exercise") %>
 									<% solutions = unit_concept_desc.unit_concept_exercise_solutions.order(:code) %>
 									<% solutions.each do |solution| %>
 										<% unless solution.file_name.blank? %>
@@ -205,7 +206,7 @@
                             <% Concept::CATEGORIES.each_pair do |key, value| %>
                             <option value="<%= key %>"><%= value %> ( <%= key %> )</option>
                             <% end %>
-                        </select>                            
+                        </select>
                     </div>    
                     
                     <div class="col-md-3">
