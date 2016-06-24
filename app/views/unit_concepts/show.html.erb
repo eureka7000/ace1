@@ -308,7 +308,7 @@
                 $('#concept').append( $('<option>').text('--- Concept ---').attr('value','') );
                 
                 for (var i=0; i<data.length; i++) {
-                    $('#concept').append( $('<option>').text(data[i].concept_name).attr('value',data[i].id));
+                    $('#concept').append( $('<option>').text(data[i].concept_name + " (" + data[i].concept_code + ")").attr('value',data[i].id));
                 }
             },
             error : function(){
