@@ -1,6 +1,23 @@
 class ContentsController < ApplicationController
 
     before_action :authenticate_user!
+    
+    def exercise
+       
+        @exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', params[:concept_id], "exercise")
+        @unit_concept = UnitConcept.find(params[:unit_concept_id])
+        link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
+                     "where b.unit_concept_id = #{params[:unit_concept_id]} " +
+                     "and b.desc_type = 5 and b.link = a.id " 
+        @links = UnitConceptDesc.find_by_sql(link_query)
+        @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', current_user.id, params[:unit_concept_id]).order('created_at desc limit 3')
+        @mento = nil
+        
+        unless current_user.user_relations.empty?
+            @mento = User.find(current_user.user_relations[0].related_user_id)
+        end    
+        
+    end    
 
     def index
         
@@ -28,7 +45,8 @@ class ContentsController < ApplicationController
 
             elsif @step == '4'
                 @concept = Concept.find(@concept_id)
-                @unit_concepts = UnitConcept.where('concept_id = ?', @concept_id)
+                @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
+                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
 
                 @student = params[:student]
                 @level = params[:level]
@@ -63,7 +81,12 @@ class ContentsController < ApplicationController
         @links = UnitConceptDesc.find_by_sql(link_query)
         @videos = @unit_concept.unit_concept_descs.where('desc_type=4').order(:memo)
         @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', current_user.id, params[:id]).order('created_at desc limit 3')
-        @mento = User.find(current_user.user_relations[0].related_user_id)
+        
+        @mento = nil
+        unless current_user.user_relations.empty?
+            @mento = User.find(current_user.user_relations[0].related_user_id)
+        end
+            
         @unit_concepts_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id)
         
     end

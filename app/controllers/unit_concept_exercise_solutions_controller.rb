@@ -33,7 +33,7 @@ class UnitConceptExerciseSolutionsController < ApplicationController
     end    
 
     def unit_concept_exercise_solution_params
-        params.require(:unit_concept_exercise_solution).permit(:unit_concept_desc_id, :code, :file_name, :ox, :memo)
+        params.require(:unit_concept_exercise_solution).permit(:unit_concept_desc_id, :code, :file_name, :ox, :memo, :link)
     end
     
 end

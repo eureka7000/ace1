@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160623104659) do
+ActiveRecord::Schema.define(version: 20160624083233) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 20160623104659) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "ox",                   limit: 255
+    t.integer  "link",                 limit: 4
   end
 
   create_table "unit_concept_self_evaluations", force: :cascade do |t|

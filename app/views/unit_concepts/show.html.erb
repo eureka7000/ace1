@@ -149,7 +149,7 @@
                                 <input type="text" name="unit_concept_desc[video]" class="form-control" placeholder="video url" />
                             </label>
                             <label id="link_label" class="input" <% unless params[:desc_type] == '5' %>style="display:none"<% end %>>
-                                <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
+                                <i class="icon-append fa fa-search" onclick="conceptSearch('link')" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
                                 <input type="text" id="unit_concept_desc" disabled class="form-control" placeholder="related concept" />
                                 <input type="hidden" id="unit_concept_id" name="unit_concept_desc[link]">
                             </label>
@@ -184,7 +184,7 @@
 
 </div>
 
-<div class="modal fade" id="conceptSearchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="conceptSearchModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; z-index:9999">
 	<div class="modal-dialog">
         
 		<div class="modal-content">
@@ -195,6 +195,8 @@
             </div>
 
             <div class="modal-body">
+                
+                <input type="hidden" id="whereareyoufrom" value="">
                 
                 <div class="row">
                     <div class="col-md-3">
@@ -350,8 +352,13 @@
     }
     
     function setUnitConcept(unitConceptId, unitConceptName) {
-        $('#unit_concept_id').val(unitConceptId);
-        $('#unit_concept_desc').val(unitConceptName);
+        if ($('#whereareyoufrom').val() == "link") {
+            $('#unit_concept_id').val(unitConceptId);
+            $('#unit_concept_desc').val(unitConceptName);
+        } else if ($('#whereareyoufrom').val() == "modal") {
+            $('#unit_concept_exercise_solution_text').val(unitConceptName);
+            $('#unit_concept_exercise_solution_link').val(unitConceptId);
+        }    
         $('#conceptSearchModal').modal('hide');
     }
 	
@@ -363,7 +370,7 @@
     
 </div>
 
-<div class="modal fade" id="addSolutionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+<div class="modal fade" id="addSolutionModal" tabindex="2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
 	
 	<div class="modal-dialog">
 		
@@ -418,6 +425,14 @@
 					
                     <dt style="margin-top: 7px; width:100px">Memo</dt>
                     <dd style="margin-bottom: 10px; margin-left:110px"><input type="text" name="unit_concept_exercise_solution[memo]" class="form-control"></dd>
+                    
+                    <dt style="margin-top: 7px; width:100px">관련개념</dt>
+                    <dd style="margin-bottom: 10px; margin-left:110px">
+                        <input type="text" id="unit_concept_exercise_solution_text" disabled="true" class="form-control" style="width:80%; float:left; margin-right:5px" />
+                        <input type="hidden" id="unit_concept_exercise_solution_link" name="unit_concept_exercise_solution[link]" />
+                        <a href="javascript:conceptSearch('modal')" class="btn btn-default" style="float:left">찾기</a>
+                    </dd>
+                    
                 </dl>
 
             </div>
@@ -473,7 +488,8 @@
 		$('#memo').val($('#exercise_choice').val());
 	}
     
-    function conceptSearch() {
+    function conceptSearch(target) {
+        $('#whereareyoufrom').val(target);
         $('#conceptSearchModal').modal();
     }
 	

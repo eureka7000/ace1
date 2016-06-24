@@ -311,8 +311,10 @@
 
     <% elsif @step == '4' %>
 
-      <% @unit_concepts.each do | unit_concept | %>
-            <% if unit_concept.level <= @level.to_i() %>
+		<% @unit_concepts.each do | unit_concept | %>
+	  		
+			<% if unit_concept.level <= @level.to_i() %>
+			
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                       <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
@@ -339,8 +341,21 @@
               <% end %>
 
           <% end %>
+		  
+    	  <% if @unit_concept_exercises.length > 0 %>
+		  
+              <li class="col-md-4 md-margin-bottom-30">
+                  <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <div class="content-boxes-in-v3">
+                          <h3><a href="/contents/exercise?concept_id=<%= @concept_id %>&unit_concept_id=<%= @unit_concept_exercises[0].id %>">유형문제</a></h3>
+                      </div>
+                  </div>
+              </li>		  
+		  
+		  <% end %>
 
-      <% end %>
+    <% end %>
 
   </ul>
   <!-- 단원별 학습 END -->
