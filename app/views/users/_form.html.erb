@@ -16,11 +16,14 @@ end
 
         <div class="well">
 			
-			<form role="form" class="form-horizontal" id="new_user" action="/users/create" accept-charset="UTF-8" method="post">
+			<form role="form" class="form-horizontal" id="new_user" action="/users/<%= (action_name == "new")?'create':'update_admin' %>" accept-charset="UTF-8" method="post">
 				
 				<%= token_tag nil %>
             
                 <input type="hidden" name="target_from" value="admin" />
+                <% unless action_name == "new" %>
+                <input type="hidden" name="user_id" value="<%= @user.id %>" />
+                <% end %>
 
                 <div class="row">
 
@@ -110,7 +113,15 @@ end
 								<option value="">---멘토---</option>
 								<% unless @teachers.nil? %>
 									<% @teachers.each do |teacher| %>
-								<option value="<%= teacher.id %>" <%= "selected" if @user.user_relations[0].related_user_id == teacher.id %> ><%= teacher.user_name %></option>
+                                        <% selected = ""
+                                            unless @user.user_relations.empty?
+                                                if @user.user_relations[0].related_user_id == teacher.id
+                                                    selected = "selected"
+                                                end        
+                                            end
+                                        %>    
+                                                
+								<option value="<%= teacher.id %>" <%= selected %> ><%= teacher.user_name %></option>
 									<% end %>
 								<% end %>
 								</select>

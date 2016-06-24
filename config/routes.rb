@@ -63,9 +63,11 @@ Rails.application.routes.draw do
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
+    post 'users/update_admin' => 'users#update_admin'    
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'
+
     
     get 'admins/login' => 'admins#login'
     get 'admins/logout' => 'admins#logout'
