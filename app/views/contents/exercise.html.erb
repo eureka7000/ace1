@@ -216,11 +216,18 @@
 									<% else %>
 							
 							<div hidden class="col-md-12 margin-bottom-20" id="exercise1<%=imgCount%>">
-                            <div class="col-md-6">
-								<img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
-                            </div>
+                                
+                                <% unless unit_concept_desc.link.nil? 
+                                        ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
+                                    <h4>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h4>
+                                <% end %>
+                                
+                                <div class="col-md-6">
+								    <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
+                                </div>
 							
-						</div>
+						    </div>
+                            
                       				<% end %>
                       			  	<% imgCount += 1 %>
 								<% end %>
