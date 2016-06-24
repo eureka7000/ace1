@@ -13,7 +13,7 @@ class ConceptsController < ApplicationController
     
     def get_unit_concepts
        
-        unit_concepts = UnitConcept.where('concept_id = ?', params[:concept])
+        unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', params[:concept], "concept")
         render :json => unit_concepts
         
     end    
