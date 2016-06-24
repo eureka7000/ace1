@@ -203,7 +203,7 @@
 								
 								<div class="col-md-6">
                                     
-                                    <% unless unit_concept_desc.link.nil? 
+                                    <% unless unit_concept_desc.link.blank? 
                                             ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
                                         <h4>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h4>
                                     <% end %>
@@ -217,7 +217,7 @@
 							
 							<div hidden class="col-md-12 margin-bottom-20" id="exercise1<%=imgCount%>">
                                 
-                                <% unless unit_concept_desc.link.nil? 
+                                <% unless unit_concept_desc.link.blank? 
                                         ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
                                     <h4>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h4>
                                 <% end %>
