@@ -82,8 +82,7 @@
 							</td>
 							<td>
 								<% # desc_type이 'exercise'일 경우 solution을 보여준다. %>
-								<% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "concept") || 
-                                      (unit_concept_desc.desc_type == '1' && @unit_concept.exercise_yn == "exercise") %>
+								<% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "concept") %>
 									<% solutions = unit_concept_desc.unit_concept_exercise_solutions.order(:code) %>
 									<% solutions.each do |solution| %>
 										<% unless solution.file_name.blank? %>
@@ -95,6 +94,16 @@
 									<p><br>
 									<a href="javascript:openSolutionModal(<%= unit_concept_desc.id %>)">Add</a>
 								<% end %>
+                                
+                                <% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "exercise") %>
+                                    <% unless unit_concept_desc.link.nil? %>
+                                        <% @link_exercise = UnitConcept.find(unit_concept_desc.link) %>
+                                        <a href="/contents/<%= @link_exercise.id %>"><%= @link_exercise.code %> : <%= @link_exercise.name %></a>
+                                    <% else %>    
+                                        <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>                                    
+                                    <% end %>
+                                <% end %>
+                                
 							</td>
 							<td>
 								<%= link_to 'Delete'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
@@ -356,11 +365,40 @@
         if ($('#whereareyoufrom').val() == "link") {
             $('#unit_concept_id').val(unitConceptId);
             $('#unit_concept_desc').val(unitConceptName);
-        } else if ($('#whereareyoufrom').val() == "modal") {
-            $('#unit_concept_exercise_solution_text').val(unitConceptName);
-            $('#unit_concept_exercise_solution_link').val(unitConceptId);
+            $('#conceptSearchModal').modal('hide');
+        } else {
+            setLink(unitConceptId, $('#whereareyoufrom').val());
+            // $('#unit_concept_exercise_solution_text').val(unitConceptName);
+            // $('#unit_concept_exercise_solution_link').val();
         }    
-        $('#conceptSearchModal').modal('hide');
+        
+    }
+    
+    function setLink(unitConceptId, unitConceptDescId) {
+
+	    var url = "/unit_concept_descs/" + unitConceptDescId;
+        
+        data = {
+            "unit_concept_desc" : {
+                // "id" : unitConceptDescId,
+                "link" : unitConceptId
+            }
+        }
+    
+	    $.ajax({
+	        url: url,
+	        type: "PUT",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+            data: data,
+	        success : function(data) {
+				location.reload();
+	        },
+	        error : function(){
+	            alert("try to again. please.");
+	        }
+	    });          
+        
     }
 	
 	function changeSearchCondition() {

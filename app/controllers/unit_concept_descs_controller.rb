@@ -28,6 +28,19 @@ class UnitConceptDescsController < ApplicationController
         end
         
     end    
+    
+    def update
+        
+        ret = { status: 'ok' }
+        
+        respond_to do |format|
+            if @unit_concept_desc.update(unit_concept_desc_params)
+                render json: ret
+            else
+                format.json { render json: @unit_concept_desc.errors, status: :unprocessable_entity }
+            end
+        end
+    end
 
 
     private
