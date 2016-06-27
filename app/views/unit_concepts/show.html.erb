@@ -121,7 +121,7 @@
 
         <div class="col-md-12">
             
-            <form action="/unit_concept_descs" method="post" enctype="multipart/form-data" class="sky-form" novalidate="novalidate" charset="utf-8">
+            <form action="/unit_concept_descs" onsubmit="return checkBlank()" method="post" enctype="multipart/form-data" class="sky-form" novalidate="novalidate" charset="utf-8">
                 
                 <%= token_tag nil %>
                 
@@ -481,7 +481,7 @@
 				<button type="button" class="btn-u" onclick="addSolution()">저장</button>
                 <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
             </div>
-			
+			</div>
 			</form>				
 			
         </div>
@@ -586,7 +586,16 @@
 		openSolutionModal(<%= params[:unit_concept_desc_id] %>);
 		<% end %>
 	});
-	
 
+  function checkBlank() {
+    if ($('#memo').val() == ""){
+      alert ('자료를 입력하세요');
+      $('#loading').hide();
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 
 </script>
