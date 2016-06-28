@@ -362,12 +362,12 @@
         <div class="col-md-3 sm-margin-bottom-40 emspac">
           <div class="heading-footer"><h2>Useful Links</h2></div>
           <ul class="list-unstyled footer-link-list">
-            <li><a href="#">STUDY</a></li>
-            <li><a href="#">MY PAGE</a></li>
-            <li><a href="#">BLOG</a></li>
-            <li><a href="#">ABOUT</a></li>
-            <li><a href="#">SIGN UP</a></li>
-            <li><a href="#">LOG IN</a></li>
+            <li><a href="/contents?view_type=1">STUDY</a></li>
+            <li><a href="/mypages/evaluation">MY PAGE</a></li>
+            <li><a href="/questions">BLOG</a></li>
+            <li><a href="/blogs/notice">ABOUT</a></li>
+            <li><%=link_to('SIGN IN', new_user_registration_path )%></li>
+            <li><%= (user_signed_in?) ? link_to('HOME', destroy_user_session_path, :method => :delete) : link_to('LOG IN', new_user_session_path) %></li>
           </ul>
         </div>
         <!-- End Useful Links -->
@@ -385,8 +385,9 @@
           <ul class="list-unstyled contacts ">
             <li><a href="homes/access_terms">이용약관</a></li>
             <li><a href="homes/personal_info_protection">개인정보보호</a></li>
-            <li><a href="#">SNS</a></li>
-            <li class="getintouch"><a href="sub/sub4-1.html">GET IN TOUCH</a></li>
+            <li><a href="/">SNS</a></li>
+            <!--
+            <li class="getintouch"><a href="sub/sub4-1.html">GET IN TOUCH</a></li>-->
           </ul>
         </div>
         <!-- End 이용약관 -->

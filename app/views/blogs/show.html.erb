@@ -40,9 +40,7 @@
               <% str += value %>
             <% end %>
         <% end %>
-        <% if @blog.user_id.blank? %>
-            <% str = '/blogs/' %>
-        <% end %>
+
         <%= link_to '확인', str %>
       </div>
 

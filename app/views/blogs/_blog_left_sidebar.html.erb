@@ -1,73 +1,65 @@
 <!-- Left Sidebar -->
 
-<div class="col-md-9 md-margin-bottom-40 blog_eureka">
+    <div class="col-md-9 md-margin-bottom-40 blog_eureka">
 
-	<% @blogs.each do |blog| %>
-	<div class="panel panel-default">
-		
-		<div class="panel-heading">
-			<% if current_user.nil? %>
-			<h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px"> <%= blog.title %></a></h2>
-			<% else %>
-			<h2 class="panel-title"><i class="fa fa-tasks"></i>
-				<a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a>
-			</h2>
-			<% end %>
-        </div>
-        
-		<div class="panel-body">
-			<i class="fa fa-calendar"></i> <%= blog.created_at.strftime('%Y-%m-%d %H:%M') %> &nbsp;
-			<i class="fa fa-user"></i><%= blog.user.user_name %>
-			</br></br>
-			
-			<h4><%= blog.unit_concept.name %>에 대한 질문</h4>
-			
-			<p><%= blog.content %></p>
-			
-			<img src="<%= blog.file_name.medium %>">
-			
-			<% unless current_user.nil? %>
-				
-				<% unless blog.user_id != current_user.id %>
-			
-			<div class="col-md-12 text-right ">
-				<hr class="devider devider-dashed no-padding no-margin">
-					<div class="col-md-10 no-margin no-padding"></div>
-					<div class="col-md-1 no-margin no-padding">
-						<%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
-                    </div>
-                    <div class="col-md-1">
-						<%= button_to 'delete', blog, :method=>:delete, :class => 'btn btn-link' %>
-                    </div>
-			</div>
-              	<% end %>
-				
-				<% if blog.to_user_id == current_user.id %>
-				
-				<% end %>
-				
-			<% end %>
-		</div>
+      <% @blogs.each do |blog| %>
+          <div class="panel panel-default">
+
+            <div class="panel-heading">
+              <% if current_user.nil? %>
+                  <h2 class="panel-title"><i class="fa fa-tasks"></i><a style="color: black; font-size: 22px"> <%= blog.title %></a></h2>
+              <% else %>
+                  <h2 class="panel-title"><i class="fa fa-tasks"></i>
+                    <a style="color: black; font-size: 22px" href="/blogs/<%= blog.id %>"> <%= blog.title %></a>
+                  </h2>
+              <% end %>
+            </div>
+
+            <div class="panel-body">
+              <i class="fa fa-calendar"></i> <%= blog.created_at.strftime('%Y-%m-%d %H:%M') %> &nbsp;
+              <i class="fa fa-user"></i><%= blog.user_id %>
+              </br></br>
+
+              <p><%= blog.content %></p>
+
+              <% unless current_user.nil? %>
+
+                  <% unless blog.user_id != current_user.id %>
+
+                      <div class="col-md-12 text-right ">
+                        <hr class="devider devider-dashed no-padding no-margin">
+                        <div class="col-md-10 no-margin no-padding"></div>
+                        <div class="col-md-1 no-margin no-padding">
+                          <%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
+                        </div>
+                        <div class="col-md-1">
+                          <%= button_to 'delete', blog, :method=>:delete, :class => 'btn btn-link' %>
+                        </div>
+                      </div>
+                  <% end %>
+
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+
+      <% if current_user.nil? %>
+          <% unless @blog_type == '5' || @blog_type == '6' || @blog_type == '7' %>
+              <button class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-sm">글 작성</button>
+          <% end %>
+      <% else %>
+          <% unless @blog_type == '5' || @blog_type == '6' || @blog_type == '7' %>
+              <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
+          <% end %>
+      <% end %>
+
+      <div class="text-center">
+        <ul class="pagination">
+          <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
+        </ul>
       </div>
-  <% end %>
 
-  <% if current_user.nil? %>
-      <% unless @blog_type == '5' || @blog_type == '6' || @blog_type == '7' %>
-        <button class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-sm">글 작성</button>
-      <% end %>
-  <% else %>
-      <% unless @blog_type == '5' || @blog_type == '6' || @blog_type == '7' %>
-        <%= link_to '글 작성', new_blog_path(blog_type: @blog_type), :class => 'btn btn-success' %>
-      <% end %>
-  <% end %>
-
-  <div class="text-center">
-    <ul class="pagination">
-      <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
-    </ul>
-  </div>
-
-</div>
+    </div>
 <!--End left Sidebar -->
 
 

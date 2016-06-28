@@ -1,0 +1,74 @@
+<!-- Left Sidebar -->
+<div class="col-md-9">
+
+  <ul class="timeline-v1">
+    <% index = 0 %>
+  <% @questions.each do |question| %>
+        <% unless index != 0 %>
+        <li>
+          <div class="timeline-badge primary"><i class="glyphicon glyphicon-record"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <% unless question.file_name.blank? %>
+                  <img class="img-responsive" src="<%= question.file_name %>" alt="">
+              <% else %>
+                  <img class="img-responsive" src="/assets/img/logo.jpg" alt="">
+              <% end %>
+            </div>
+            <div class="timeline-body text-justify">
+              <h3 style="font-style: italic">• <a href="#"><%= question.title %></a></h3>
+              <p style="width: 100%; text-overflow:ellipsis; -o-text-overow: ellipsis; word-wrap:normal; overflow: hidden; font-size: 15px; color: black;"><nobr><%= question.content %></nobr></p>
+              <div class="text-right">
+                <a class="btn-u btn-u-dark-blue" href="/questions/<%= question.id %>"> 더보기</a>
+              </div>
+
+            </div>
+            <div class="timeline-footer">
+              <ul class="list-unstyled list-inline blog-info">
+                <li><i class="fa fa-clock-o"></i> <%= question.created_at.strftime('%Y-%m-%d %H:%M') %></li>
+                <li><i class="fa fa-comments-o"></i> <a href="#">7 Comments</a></li>
+              </ul>
+              <!--<a class="likes" href="#"><i class="fa fa-heart"></i>239</a>-->
+            </div>
+          </div>
+        </li>
+        <% else %>
+        <li class="timeline-inverted">
+          <div class="timeline-badge primary"><i class="glyphicon glyphicon-record invert"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <% unless question.file_name.blank? %>
+                  <img class="img-responsive" src="<%= question.file_name %>" alt="">
+              <% else %>
+                  <img class="img-responsive" src="/assets/img/logo.jpg" alt="">
+              <% end %>
+            </div>
+            <div class="timeline-body text-justify">
+              <h3 style="font-style: italic">• <a href="#"><%= question.title %></a></h3>
+              <p style="width: 100%; text-overflow:ellipsis; -o-text-overow: ellipsis; word-wrap:normal; overflow: hidden; font-size: 15px; color: black;"><nobr><%= question.content %></nobr></p>
+              <div class="text-right">
+                <a class="btn-u btn-u-dark-blue" href="/questions/<%= question.id %>"> 더보기</a>
+              </div>
+            </div>
+            <div class="timeline-footer">
+              <ul class="list-unstyled list-inline blog-info">
+                <li><i class="fa fa-clock-o"></i> <%= question.created_at.strftime('%Y-%m-%d %H:%M') %></li>
+                <li><i class="fa fa-comments-o"></i> <a href="#">12 Comments</a></li>
+              </ul>
+              <!--<a class="likes" href="#"><i class="fa fa-heart"></i>87</a>-->
+            </div>
+          </div>
+        </li>
+        <% end %>
+        <% if index == 0 %>
+          <% index = 1 %>
+        <% else %>
+          <% index = 0 %>
+        <% end %>
+  <% end %>
+    <li class="clearfix" style="float: none;"></li> <!-- 세로줄 라인 코드 -->
+  </ul>
+</div>
+<!--End left Sidebar -->
+
+

@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="assets/css/pages/shortcode_timeline2.css">
+
+<!--=== indicate ===-->
+<div class="breadcrumbs">
+  <div class="container">
+
+    <h2 class="pull-left" style="color: black">Blog / 학습문제해결</h2>
+
+  </div><!--/container-->
+</div><!--/breadcrumbs-->
+<!--=== End indicate ===-->
+
+
+<!--=== Content Part ===-->
+<div class="container content">
+  <div class="row">
+    <div class="col-md-12">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <!-- Dark Blue Panel -->
+      <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-tasks"></i> <%= @question.title %></h3>
+          <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.strftime('%Y-%m-%d %H:%M') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name %></p>
+        </div>
+        <div class="panel-body">
+          <div class="col-md-6">
+            <img class="img-responsive" src="<%= @question.file_name %>">
+          </div>
+          <div class="col-md-6">
+            <p style="font-size: 17px; color: black;"><%= @question.content %></p>
+          </div>
+        </div>
+      </div>
+      <!-- End Dark Blue Panel -->
+    </div>
+    <div class="col-md-1"></div>
+    </div>
+
+
+
+    <div class="col-md-12">
+      <div class="col-md-1"></div>
+      <div class="col-md-10">
+        <hr>
+        <!-- Dark Blue Panel -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-tasks"></i> 답변 : 미정 </h3>
+            <p style="font-size: 12px; color: black; text-align: right;">답변 날짜 &nbsp; &nbsp; 작성자: 답변자 이름</p>
+          </div>
+          <div class="panel-body">
+            <div class="col-md-6">
+              <img class="img-responsive" src="<%= @question.file_name %>">
+            </div>
+            <div class="col-md-6">
+              <p style="font-size: 17px; color: black;">답변 내용 </p>
+            </div>
+          </div>
+        </div>
+        <!-- End Dark Blue Panel -->
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+
+  </div>
+</div>
