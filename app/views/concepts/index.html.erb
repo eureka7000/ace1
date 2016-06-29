@@ -15,7 +15,7 @@
 	                    <select id="cetegory" class="form-control" onchange="changeCategory(this.value)">
 	                    <option value="">Category</option>  
 	                    <% @categorys.each do |category| %>
-	                    <option value="<%= category.category %>" <%= "selected" if params[:category] == category.category %>><%= Concept::CATEGORIES[category.category] %></option>
+	                    <option value="<%= category.category %>" <%= "selected" if params[:category] == category.category %>><%= category.category %> &nbsp; <%= Concept::CATEGORIES[category.category] %></option>
 	                    <% end %>  
 	                    </select>
 					</div>
@@ -113,7 +113,7 @@
         
         $.each(options, function(i) {
             if (options[i].values.substring(0,2) == divChar) {
-                $('#sub_category').append( $('<option>').text(options[i].text).attr('value',options[i].values) );                
+                $('#sub_category').append( $('<option>').text(options[i].values+ ' ' + options[i].text).attr('value',options[i].values) );
             }
         });
 		
