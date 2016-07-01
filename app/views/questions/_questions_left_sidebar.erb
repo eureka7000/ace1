@@ -26,7 +26,8 @@
             <div class="timeline-footer">
               <ul class="list-unstyled list-inline blog-info">
                 <li><i class="fa fa-clock-o"></i> <%= question.created_at.strftime('%Y-%m-%d %H:%M') %></li>
-                <li><i class="fa fa-comments-o"></i> <a href="#">7 Comments</a></li>
+                <% count = question.replies.count() %>
+                <li><i class="fa fa-comments-o"></i> <a href="#"><%= count %> Comments</a></li>
               </ul>
               <!--<a class="likes" href="#"><i class="fa fa-heart"></i>239</a>-->
             </div>
@@ -53,7 +54,8 @@
             <div class="timeline-footer">
               <ul class="list-unstyled list-inline blog-info">
                 <li><i class="fa fa-clock-o"></i> <%= question.created_at.strftime('%Y-%m-%d %H:%M') %></li>
-                <li><i class="fa fa-comments-o"></i> <a href="#">12 Comments</a></li>
+                <% count = question.replies.count() %>
+                <li><i class="fa fa-comments-o"></i> <a href="#"><%= count %> Comments</a></li>
               </ul>
               <!--<a class="likes" href="#"><i class="fa fa-heart"></i>87</a>-->
             </div>
