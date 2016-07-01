@@ -19,7 +19,8 @@ class QuestionsController < ApplicationController
 
 
     def show
-
+        @replies1 = Reply.where('question_id = ? and depth = ?', params[:id], 1).order(id: :asc)
+        @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2).order(id: :asc)
     end
 
     private

@@ -134,3 +134,16 @@ h2.step5{padding-top:50px}
 .float-left {
     float: left !important;
 }
+
+.watermark {
+    -webkit-transform: rotate(-36deg);
+    -moz-transform: rotate(-36deg);
+    -o-transform: rotate(-36deg);
+    -ms-transform: rotate(-36deg);
+    transform: rotate(-36deg);
+    top: -100px;
+    position: relative;
+    width: 100%;
+    margin: 0;
+    opacity: 0.2;
+}

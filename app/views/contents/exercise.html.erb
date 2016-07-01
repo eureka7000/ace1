@@ -169,29 +169,29 @@
                     <% unless unit_concept_desc.desc_type.to_i != 3 %>
                         <% if imgCount == 1 %>
                           <div class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>">
-                            <% unless unit_concept_desc.link.blank?
-                                 ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
-                                <h5>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h5>
-                            <% end %>
                             <% unless unit_concept_desc.memo.to_s.include?('a') %>
                                 <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
                             <% else %>
                                 <img hidden src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
                                 <% imgCount -= 1 %>
                             <% end %>
-                          </div>
-                        <% else %>
-                          <div hidden class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>">
                             <% unless unit_concept_desc.link.blank?
                                  ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
                                 <h5>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h5>
                             <% end %>
+                          </div>
+                        <% else %>
+                          <div hidden class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>">
                             <div>
                               <% unless unit_concept_desc.memo.to_s.include?('a') %>
                                   <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
                               <% else %>
                                   <img hidden src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
                                   <% imgCount -= 1 %>
+                              <% end %>
+                              <% unless unit_concept_desc.link.blank?
+                                   ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
+                                  <h5>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>"><%= ret_unit_concept.name %></a></h5>
                               <% end %>
                             </div>
                           </div>
@@ -397,7 +397,7 @@
 					</div>
 				</div>
 					
-                <div class="row" style="margin-top: 10px; ">
+        <div class="row" style="margin-top: 10px; ">
 					<div class="col-md-3">
 						<strong style="color:blue">Comment</strong>
 					</div>
@@ -687,7 +687,7 @@ function saveEvaluation() {
 <script type="text/javascript">
   function videoPause(){
     var iframe = $('#vimeo-player')[0];
-    var player = $f(iframe);
+    var player = $(iframe);
     player.api('pause');
   }
 </script>

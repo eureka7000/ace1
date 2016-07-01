@@ -180,7 +180,7 @@
                             <div class="col-md-6">
                               <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                             </div>
-                            
+
                             <div class="col-md-6 text-left">
                               <a href="javascript:viewSolution(<%= imgCount %>)" class="btn btn-success" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
 
@@ -360,7 +360,7 @@
                   <% end %>
                 </p>
                 <h4 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
-                <div style="overflow-y: auto; ">
+
                   <% @unit_concept_descs.each do | unit_concept_desc | %>
                       <% unless unit_concept_desc.desc_type.to_i != 1%>
                           <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 10px;"/>
@@ -380,7 +380,7 @@
                       </span>
                       <br>
                   <% end %>
-                </div>
+                <img class="watermark" src="/assets/img/logo_watermark.png">
               </div>
 
               <div class="col-xs-6">
@@ -388,13 +388,12 @@
                 <span class="label rounded-2x label-aqua">개념보충설명</span>
                 <br>
 
-                <div style="overflow-y: auto; ">
+
                   <% @unit_concept_descs.each do | unit_concept_desc | %>
                       <% unless unit_concept_desc.desc_type.to_i != 2 %>
                           <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
                       <% end %>
                   <% end %>
-
                   <br><br>
                   <span class="label rounded-2x label-aqua margin-bottom-30">Exercise</span>
 
@@ -403,12 +402,13 @@
                           <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
                       <% end %>
                   <% end %>
+                <img class="watermark" src="/assets/img/logo_watermark.png">
                 </div>
-              </div>
-            </div> <!-- 프린트 영역 END-->
-          <div class="col-md-12 text-right margin-top-20">
-            <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
-          </div>
+            <div class="col-md-12 text-right margin-top-20">
+              <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
+            </div>
+
+          </div> <!-- 프린트 영역 END-->
         </div> <!-- Tab 프린트 END -->
 
       </div>
@@ -429,32 +429,32 @@
 						<span class="label rounded-2x label-aqua">SELF EVALUATION</span>
 					</div>
 				</div>
-				
+
 				<div class="modal-body">
-					
+
 					<div class="row" style="margin-left: 5px; margin-right: 5px">
-						
+
 						<strong style="color:blue">자기평가 이력</strong>
-						
+
 						<table class="table">
-						<thead>	
+						<thead>
 						<th>날짜</th>
 						<th>난이도</th>
-						<th>Comment</th>	
+						<th>Comment</th>
 						</thead>
-						
+
 						<tbody>
 						<% @self_evaluations.each do |eval| %>
 						<tr>
 						<td><%= eval.created_at.strftime("%Y/%m/%d %H:%M") %></td>
 						<td><%= eval.evaluation %></td>
-						<td><%= eval.comment %></td>	
+						<td><%= eval.comment %></td>
 						</tr>
 						<% end %>
-						</tbody>	
-						</table>	
-					</div>	
-					
+						</tbody>
+						</table>
+					</div>
+
 					<div class="row">
 						<div class="col-md-3">
 							<strong style="color:blue">난이도</strong>
@@ -468,27 +468,27 @@
 							</label>
 							<label class="radio-inline">
 								<input type="radio" id="evaluation_difficult" name="evaluation" value="difficult" > 어려움
-							</label>						
+							</label>
 						</div>
 					</div>
-					
+
 					<div class="row" style="margin-top: 10px; ">
 						<div class="col-md-3">
 							<strong style="color:blue">Comment</strong>
 						</div>
 						<div class="col-md-9">
-							<textarea id="evaluation_comment" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>							
-						</div>	
-					</div>	
+							<textarea id="evaluation_comment" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+						</div>
+					</div>
 
             	</div>
-				
+
             	<div class="modal-footer">
 					<button class="btn rounded btn-success" type="button" onclick="saveEvaluation()">확인</button>
             	</div>
-				
-			</div>	
-		</div>	
+
+			</div>
+		</div>
     </div>
 
 
@@ -536,59 +536,59 @@
 
 <!-- Modal -->
 <div class="modal fade" id="question" role="dialog">
-	
+
 	<div class="modal-dialog">
-    	
+
 		<div class="modal-content">
-			
+
 			<form action="/questions" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
 
-			<%= token_tag nil %>	
-			
+			<%= token_tag nil %>
+
 			<input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
 			<input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
 			<input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
-			
+
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">&times;</button>
 				<div class="modal-title">
 					<span class="label rounded-2x label-aqua">질문 하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
 				</div>
 			</div>
-			
+
 			<div class="modal-body">
 
 				<div class="row">
 					<div class="col-md-2" style="text-align:right">제목</div>
 					<div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
 				</div>
-				
+
 				<div class="row" style="margin-top: 10px">
 					<div class="col-md-2" style="text-align:right">내용</div>
 					<div class="col-md-10">
 						<textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
-					</div>					
+					</div>
 				</div>
-				
+
 				<div class="row" style="margin-top: 10px">
 					<div class="col-md-2" style="text-align:right">파일첨부</div>
 					<div class="col-md-10">
 						<input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
-					</div>										
+					</div>
 				</div>
-				
+
 			</div>
-			
+
 			<div class="modal-footer">
 				<button class="btn rounded btn-success" type="submit">확인</button>
 			</div>
-			
+
 			</form>
-			
-		</div>	
-		
+
+		</div>
+
 	</div>
-	
+
 </div>
 <!-- Tab 관련 개념 END-->
 
@@ -600,12 +600,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
 <script type="text/javascript">
-	
+
 	$(document).ready(function(){
 		var index = 2;
 
 		$("#btn1").click(function(){
-			
+
 			$("#ucd1"+index).show();
 			index++;
 
@@ -711,24 +711,24 @@
     });
 
   }
-  
+
 function saveEvaluation() {
-	
+
 	if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
 		alert('난이도를 선택하세요.');
 		return false;
 	}
 
 	$('#loading').show();
-	
+
 	var evaluation = "";
-	
+
 	if ($('#evaluation_easy').is(":checked")) evaluation = $('#evaluation_easy').val();
 	else if ( $('#evaluation_normal').is(":checked") ) evaluation = $('#evaluation_normal').val();
 	else if ( $('#evaluation_difficult').is(":checked") ) evaluation = $('#evaluation_difficult').val();
-	
+
 	var url = "/unit_concept_self_evaluations/";
-	
+
 	var data = {
 		"unit_concept_self_evaluation" : {
 			"user_id" : <%= current_user.id %>,
@@ -736,8 +736,8 @@ function saveEvaluation() {
 			"evaluation" : evaluation,
 			"comment" : $('#evaluation_comment').val()
 		}
-	}	
-	
+	}
+
     $.ajax({
         url: url,
         type: "POST",
@@ -753,9 +753,9 @@ function saveEvaluation() {
             alert("try to again. please.");
         	$('#loading').hide();
         }
-    }); 			
-	
-}  
+    });
+
+}
 </script>
 
 <!-- Print method -->
@@ -771,14 +771,12 @@ function saveEvaluation() {
       document.body.innerHTML = allPage;
       location.reload();
     }
-
-
 </script>
 
 <script type="text/javascript">
   function videoPause(){
     var iframe = $('#vimeo-player')[0];
-    var player = $f(iframe);
+    var player = $(iframe);
     player.api('pause');
   }
 </script>
