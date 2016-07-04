@@ -11,124 +11,139 @@
 
         <% if current_user.user_types[0].user_type == 'student' %>
 
-          <!-- 테스트 작업 테이블 시작 -->
-          <div class="panel panel-sea margin-bottom-40">
-            <div class="panel-heading">
-              <h3 class="panel-title"><i class="fa fa-user"></i> Unit Concepts Evaluation</h3>
-            </div>
-            <div class="panel-body">
-              <table class="table table-striped">
-                <thead style="color: black;">
-                <tr>
-                  <td rowspan="2">단위 개념 이름</td>
-                  <td rowspan="2">개념 Level</td>
-                  <td rowspan="2">학습 Level</td>
-                  <td rowspan="2">exercise 평가</td>
-                  <td colspan="2">자기평가</td>
-                  <td rowspan="2">최근 학습일</td>
-                </tr>
-                <tr>
-                  <td>O X</td>
-                  <td>comment</td>
-                </tr>
-                </thead>
-                <tbody>
-                <% index = 0 %>
-                <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
-                  <% index += 1 %>
-                <% end %>
-
-                <% str = '' %>
-                <% memo = '' %>
-                <% oxStr = '' %>
-                <% oxCount = 0 %>
-
+            <!-- 테스트 작업 테이블 시작 -->
+            <div class="panel panel-default-dark margin-bottom-40">
+              <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-user"></i> Unit Concepts Evaluation</h3>
+              </div>
+              <div class="panel-body">
+                <table class="table table-striped">
+                  <thead style="color: black;">
+                  <tr>
+                    <td colspan="4">단위 개념</td>
+                    <td colspan="6">개념레벨</td>
+                    <td colspan="8">학습레벨</td>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% unit_concept_exercise_histories_count = 0 %>
                   <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
-                    <% index -= 1 %>
-                    <% if unit_concept_exercise_history.unit_concept_desc.memo != memo %>
-                      <% unless memo == '' %>
-                        <% memoStr = 'exercise '%>
-                        <tr>
-                          <td></td>
-                          <td colspan="2"><%= memoStr + memo.to_s.slice(-2, 2) %></td>
-                          <td><%= oxStr %></td>
-                          <td colspan="2"></td>
-                          <td></td>
-                        </tr>
-                        <% oxStr = '' %>
-                        <% oxCount = 0 %>
-                      <% end %>
-
-                    <% end %>
-
-                    <% if unit_concept_exercise_history.unit_concept_desc.unit_concept.name != str %>
-                        <tr>
-                      <% str = unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
-                        <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.name %></td>
-                        <td><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.level %></td>
-                        <td><%= unit_concept_exercise_history.user.study_level %></td>
-                        <td>맞음/틀림 확인</td>
-
-                       <% evaluationStr = '' %>
-                        <% commentStr = '' %>
-                        <% unit_concept_exercise_history.user.unit_concept_self_evaluations.each do |unit_concept_self_evaluation|%>
-                          <% if unit_concept_self_evaluation.unit_concept_id == unit_concept_exercise_history.unit_concept_desc.unit_concept.id %>
-                            <% evaluationStr = unit_concept_self_evaluation.evaluation %>
-                            <% commentStr = unit_concept_self_evaluation.comment %>
-                          <% end %>
-                        <% end %>
-                          <td><%= evaluationStr %></td>
-                          <td><%= commentStr %></td>
-                          <% date = unit_concept_exercise_history.updated_at.localtime.to_s %>
-                          <% date.slice!(-5, 5) %>
-                          <td><%= date %></td>
-                        </tr>
-
-                        <% oxStr += unit_concept_exercise_history.ox %>
-                        <% oxCount += 1 %>
-                        <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
-                        <!--
-                        <tr>
-                          <td></td>
-                          <td colspan="2"><%= unit_concept_exercise_history.unit_concept_desc.memo %></td>
-                          <td><%= unit_concept_exercise_history.ox %></td>
-                          <td colspan="2"></td>
-                        </tr> -->
-
-                    <% else %>
-                        <% if oxCount < 3 %>
-                         <% oxStr += unit_concept_exercise_history.ox %>
-                         <% oxCount += 1 %>
-                        <% else %>
-                          <% oxCount +=1 %>
-                        <% end %>
-                        <% memo = unit_concept_exercise_history.unit_concept_desc.memo %>
-                        <!--
-                        <tr>
-                          <td></td>
-                          <td colspan="2"><%= unit_concept_exercise_history.unit_concept_desc.memo %></td>
-                          <td><%= unit_concept_exercise_history.ox %></td>
-                          <td colspan="2"></td>
-                        </tr> -->
-
-                    <% end %>
-                    <% if index == 0 %>
-                        <% memoStr = 'exercise '%>
-                        <tr>
-                          <td></td>
-                          <td colspan="2"><%= memoStr + memo.to_s.slice(-2, 2) %></td>
-                          <td><%= oxStr %></td>
-                          <td colspan="2"></td>
-                        </tr>
-                    <% end %>
+                      <% unit_concept_exercise_histories_count += 1 %>
                   <% end %>
 
+                  <% concept_name = '' %>
+                  <% previous_unit_concept_desc_memo = '' %>
+                  <% unit_concept_desc_id = '' %>
+                  <% unit_concept_desc_ox = '' %>
+                  <% oxCount = 0 %>
 
-                </tbody>
-              </table>
+                  <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                      <% unit_concept_exercise_histories_count -= 1 %>
+
+                      <% if concept_name != unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
+                          <% oxCount = 0 %>
+                          <% if concept_name != '' %>
+                              <% memoStr = 'exercise '%>
+                              <tr>
+                                <td colspan="4"></td>
+                                <td colspan="4"><%= memoStr + previous_unit_concept_desc_memo.slice(-2, 2) %></td>
+                                <td colspan="4"><%= unit_concept_desc_ox %></td>
+                                <td colspan="4"></td>
+                              </tr>
+                          <% end %>
+                          <tr>
+                            <td colspan="16"></td>
+                          </tr>
+                          <tr style="background-color: #9cbdff; font-style: italic; font-family: bold; font-size: 15px;">
+                            <td colspan="4"><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.name %></td>
+                            <td colspan="4"><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.level %> Lv</td>
+                            <td colspan="2"></td>
+                            <td colspan="8"><%= unit_concept_exercise_history.user.study_level %> Lv</td>
+                          </tr>
+
+                          <tr style="background-color: #bed5ff" class="text-center">
+                            <td colspan="16" style="font-size: 15px; font-style: italic;">- 자기평가 -</td>
+                          </tr>
+                          <tr>
+                            <% evaluation_my_check = '' %>
+                            <% learning_day = '' %>
+                            <% evaluation_my_comment = '' %>
+                            <% unit_concept_exercise_history.unit_concept_desc.unit_concept.unit_concept_self_evaluations.each do |evaluation| %>
+                                <% evaluation_my_check = evaluation.evaluation %>
+                                <% learning_day = evaluation.created_at.localtime.to_s %>
+                                <% learning_day.slice!(-5, 5) %>
+                                <% evaluation_my_comment = evaluation.comment %>
+                            <% end %>
+                            <td colspan="8">느낀 수준 : <%= evaluation_my_check %></td>
+                            <td colspan="8">최근 학습일: <%= learning_day %></td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">Comment:</td>
+                            <td colspan="4"></td>
+                            <td colspan="8"></td>
+                          </tr>
+                          <tr>
+                            <td colspan="16"><%= evaluation_my_comment %></td>
+                          </tr>
+
+                          <tr style="background-color: #f1eaff" class="text-center">
+                            <td colspan="16" style="font-size: 15px; font-style: italic;">- Exercise 평가 -</td>
+                          </tr>
+
+                          <tr>
+                            <td colspan="4"></td>
+                            <td colspan="4">문제 번호</td>
+                            <td colspan="4">맞음/틀림 확인</td>
+                            <td colspan="4"></td>
+                          </tr>
+
+                          <% unit_concept_desc_id = unit_concept_exercise_history.unit_concept_desc_id %>
+                          <% unit_concept_desc_ox = unit_concept_exercise_history.ox %>
+                          <% oxCount += 1 %>
+                          <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
+
+                      <% else %>
+                          <!-- o, x string 으로 표시-->
+                          <% if unit_concept_desc_id == unit_concept_exercise_history.unit_concept_desc_id %>
+                            <% if oxCount < 3 %>
+                              <% unit_concept_desc_ox += unit_concept_exercise_history.ox %>
+                            <% end %>
+                              <% oxCount += 1 %>
+                              <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
+                          <% else %>
+                              <% memoStr = 'exercise '%>
+                              <tr>
+                                <td colspan="4"></td>
+                                <td colspan="4"><%= memoStr + previous_unit_concept_desc_memo.to_s.slice(-2, 2) %></td>
+                                <td colspan="4"><%= unit_concept_desc_ox %></td>
+                                <td colspan="4"></td>
+                              </tr>
+                              <% unit_concept_desc_ox = unit_concept_exercise_history.ox %>
+                              <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
+                              <% oxCount = 1 %>
+                          <% end %>
+                      <% end %>
+
+                      <% concept_name = unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
+
+                      <% unit_concept_desc_id = unit_concept_exercise_history.unit_concept_desc_id %>
+
+                      <% if unit_concept_exercise_histories_count == 0 %>
+                          <% memoStr = 'exercise '%>
+                          <tr>
+                            <td colspan="4"></td>
+                            <td colspan="4"><%= memoStr + unit_concept_exercise_history.unit_concept_desc.memo.to_s.slice(-2, 2) %></td>
+                            <td colspan="4"><%= unit_concept_desc_ox %></td>
+                            <td colspan="4"></td>
+                          </tr>
+                      <% end %>
+                  <% end %>
+
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-          <!-- 테스트 작업 테이블 끝 -->
+            <!-- 테스트 작업 테이블 끝 -->
         <% end %>
 
       </div>
