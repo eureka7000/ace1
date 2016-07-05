@@ -366,7 +366,7 @@
             <li><a href="/mypages/evaluation">MY PAGE</a></li>
             <li><a href="/questions">BLOG</a></li>
             <li><a href="/blogs/notice">ABOUT</a></li>
-            <li><%=link_to('SIGN IN', new_user_registration_path )%></li>
+            <!--<li><%=link_to('SIGN IN', new_user_registration_path )%></li> 회원가입 Block-->
             <li><%= (user_signed_in?) ? link_to('HOME', destroy_user_session_path, :method => :delete) : link_to('LOG IN', new_user_session_path) %></li>
           </ul>
         </div>
