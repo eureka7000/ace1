@@ -21,6 +21,11 @@ class MypagesController < ApplicationController
 
     end
 
+
+    def question_list
+        @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+    end
+
     
     def settings
 

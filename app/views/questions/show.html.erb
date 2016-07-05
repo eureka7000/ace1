@@ -19,8 +19,8 @@
       <!-- Dark Blue Panel -->
       <div class="panel panel-info">
         <div class="panel-heading">
-          <h3 class="panel-title"><i class="fa fa-tasks"></i> <%= @question.title %></h3>
-          <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.strftime('%Y-%m-%d %H:%M') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name %></p>
+          <h1 class="panel-title" style="font-size: 20px;"><i class="fa fa-tasks"></i> <%= @question.title %></h1>
+          <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.localtime.strftime('%Y-%m-%d %H:%M') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name %></p>
         </div>
         <div class="panel-body">
           <div class="col-md-6">
@@ -33,6 +33,11 @@
       </div>
       <!-- End Dark Blue Panel -->
 
+      <div class="col-md-12 text-right no-padding no-margin">
+        <button class="btn-u btn-u-dark-blue"><a href="/questions/<%= @question.id %>/edit">Edit</a></button>
+      </div>
+
+      <hr>
 
       <% order_count = 0 %>
       <% reply2EditorIndex = 1 %>

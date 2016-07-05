@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  
+
     resources :replies
     resources :questions
     resources :user_relations
@@ -51,6 +51,7 @@ Rails.application.routes.draw do
     get 'mypages/overall' => 'mypages#overall'
     get 'mypages/evaluation' => 'mypages#evaluation'
     get 'mypages/settings' => 'mypages#settings'
+    get 'mypages/question_list' => 'mypages#question_list'
 
 
     # blogs

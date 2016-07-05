@@ -1,0 +1,113 @@
+<link rel="stylesheet" href="/assets/css/pages/shortcode_timeline2.css">
+<link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+<link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
+
+<!--=== indicate ===-->
+<div class="breadcrumbs">
+  <div class="container">
+
+    <h2 class="pull-left" style="color: black">Blog / 학습문제해결</h2>
+
+  </div><!--/container-->
+</div><!--/breadcrumbs-->
+<!--=== End indicate ===-->
+
+
+<!--=== Content Part ===-->
+<div class="container content">
+  <div class="row">
+    <div class="col-md-9">
+      <!-- Dark Blue Panel -->
+      <div class="panel panel-info">
+
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-tasks"></i> <%= @question.title %></h3>
+            <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.localtime.strftime('%Y-%m-%d %H:%M') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name %></p>
+          </div>
+          <div class="panel-body">
+            <div class="col-md-6">
+              <img class="img-responsive" src="<%= @question.file_name %>">
+            </div>
+            <div class="col-md-6">
+              <p style="font-size: 17px; color: black; width: 100%; height: 100%; border-color: transparent;"><%= @question.content %></p>
+            </div>
+          </div>
+      </div>
+      <!-- End Dark Blue Panel -->
+
+      <!-- Order Form -->
+      <form action="/questions/<%= @question.id %>" method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
+        <header>질문 수정하기</header>
+
+        <fieldset>
+          <section>
+            <label class="input">
+              <i class="icon-append fa fa-tag"></i>
+              <input type="text" name="question[title]" placeholder="제목 : <%= @question.title %>">
+            </label>
+          </section>
+
+          <section>
+            <label class="textarea state-success">
+              <i class="icon-append fa fa-comment"></i>
+              <textarea rows="5" name="question[content]" placeholder="내용 : <%= @question.content %>" class="valid"></textarea>
+            </label>
+          </section>
+
+          <section>
+            <label for="file" class="input input-file">
+              <div class="button"><input type="file" name="question[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value">첨부</div><input type="text" placeholder="이미지 첨부" readonl="">
+            </label>
+          </section>
+        </fieldset>
+
+        <input hidden name="question[unit_concept_id]" value="<%= @question.unit_concept_id %>">
+        <input hidden name="question[to_user_id]" value="<%= @question.to_user_id %>">
+        <input hidden name="question[user_id]" value="<%= @question.user_id %>">
+
+        <%= form_for(@question) do |f| %>
+        <footer class="text-right">
+          <%= f.submit '수정 완료', :class=> 'btn-u btn-u-dark-blue' %>
+        </footer>
+        <% end %>
+      </form>
+      <!-- End Order Form -->
+
+    </div>
+
+    <%= render partial: 'blogs/right_sidebar' %>
+
+  </div>
+</div>
+
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"></script>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.form.min.js"></script>
+<!-- JS Customization -->
+<script type="text/javascript" src="/assets/js/custom.js"></script>
+<!-- JS Page Level -->
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/forms/order.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    App.init();
+    OrderForm.initOrderForm();
+    StyleSwitcher.initStyleSwitcher();
+  });
+</script>
+<!--[if lt IE 9]>
+<script src="/assets/plugins/respond.js"></script>
+<script src="/assets/plugins/html5shiv.js"></script>
+<script src="/assets/plugins/placeholder-IE-fixes.js"></script>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/sky-forms-ie8.js"></script>
+<![endif]-->
+
+<!--[if lt IE 10]>
+<script src="/assets/plugins/sky-forms/version-2.0.1/js/jquery.placeholder.min.js"></script>
+<![endif]-->

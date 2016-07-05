@@ -25,6 +25,19 @@ class QuestionsController < ApplicationController
         @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2).order(id: :asc)
     end
 
+
+    def update
+        respond_to do |format|
+            if @question.update(question_params)
+                format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+                format.json { render :show, status: :ok, location: @question }
+            else
+                format.html { render :edit }
+                format.json { render json: @question.errors, status: :unprocessable_entity }
+            end
+        end
+    end
+
     private
     def set_question
         @question = Question.find(params[:id])
