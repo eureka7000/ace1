@@ -45,14 +45,14 @@
           <section>
             <label class="input">
               <i class="icon-append fa fa-tag"></i>
-              <input type="text" name="question[title]" placeholder="제목 : <%= @question.title %>">
+              <input type="text" name="question[title]" placeholder="제목 : <%= @question.title %>" value="<%= @question.title %>">
             </label>
           </section>
 
           <section>
             <label class="textarea state-success">
               <i class="icon-append fa fa-comment"></i>
-              <textarea rows="5" name="question[content]" placeholder="내용 : <%= @question.content %>" class="valid"></textarea>
+              <textarea rows="5" name="question[content]" placeholder="내용 : <%= @question.content %>" class="valid"><%= @question.content %></textarea>
             </label>
           </section>
 
