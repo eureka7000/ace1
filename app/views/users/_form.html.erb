@@ -44,7 +44,7 @@ end
                         <div class="form-group">
 							<label class="col-md-1 control-label" for="user_user_name">사용자타입</label>
                             <div class="input-group col-md-4" style="float:left">
-								<select class="form-control" name="user_type[user_type]">
+								<select class="form-control" name="user_type[user_type]" onchange="changedUserType(this)">
                                 <% User::USER_TYPES.each_pair() do |key, value| %>
 								<option value="<%= key.to_s %>" <%= "selected" if user_type == key.to_s %>><%= value %></option>
                                 <% end %>
@@ -82,7 +82,7 @@ end
 						
 						<% if user_type == 'student' || action_name == "new"  %>
 						
-						<div class="form-group">
+						<div class="form-group student">
 							<label class="col-sm-1 control-label" for="user_grade">학년</label>
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" name="user[grade]">
@@ -94,7 +94,7 @@ end
                             </div>							
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group student">
 							<label class="col-sm-1 control-label" for="user_join_channel">가입경로</label>
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" id="join_channel" name="user[school_id]" onchange="getMento()">
@@ -106,7 +106,7 @@ end
                             </div>							
 						</div>
 						
-						<div class="form-group">
+						<div class="form-group student">
 							<label class="col-sm-1 control-label" for="mento">멘토</label>
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" id="user_relations" name="user_relations[related_id]">
@@ -128,7 +128,7 @@ end
                             </div>							
 						</div>						
 						
-						<div class="form-group">
+						<div class="form-group student">
 							<label class="col-sm-1 control-label" for="user_join_channel_sales_id">영업인</label>
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" name="user[join_channel_sales_id]">
@@ -184,6 +184,14 @@ function getMento() {
 	    error: function(err){}
 	});                
         
+}
+
+function changedUserType(t) {
+    if (t.value == 'student') {
+        $('.student').show();
+    } else {
+        $('.student').hide();
+    }
 }
 	
 </script>
