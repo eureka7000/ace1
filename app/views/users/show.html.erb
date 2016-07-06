@@ -29,7 +29,7 @@
 						<% if @user.user_types[0].user_type == 'school teacher' || @user.user_types[0].user_type == 'institute teacher' %>
 	                    <tr>
 	                    <td style="width:25%;"><b>소속학교</b></td>
-	                    <td style="width:75%"><%= @user.teachers[0].school.name %></td>
+	                    <td style="width:75%"><%= @user.teachers[0].school.name unless @user.teachers.empty? %></td>
 	                    </tr>
 						<% end %>						
 							
