@@ -62,7 +62,7 @@ class UsersController < ApplicationController
         @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
         
         respond_to do |format|
-            format.html { render :new }
+            format.html { redirect_to "/users" }
         end
         
     end    

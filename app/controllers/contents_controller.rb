@@ -15,7 +15,7 @@ class ContentsController < ApplicationController
 
         link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
                      "where b.unit_concept_id = #{params[:unit_concept_id]} " +
-                     "and b.desc_type = 5 and b.link = a.id " 
+                     "and b.desc_type = 5 and b.link = a.id "
         @links = UnitConceptDesc.find_by_sql(link_query)
         @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', current_user.id, params[:unit_concept_id]).order('created_at desc limit 3')
         @mento = nil

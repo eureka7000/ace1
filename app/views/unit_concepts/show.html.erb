@@ -13,8 +13,8 @@
 	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
 	        <option value="">ALL</option>
 	        <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
-				<% if value == "Exercise" && @unit_concept.exercise_yn == "exercise" %>
-	        <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> >Solution</option>
+				<% if (key == 3 && @unit_concept.exercise_yn == "exercise") || (key == 3 && @unit_concept.exercise_yn == "similar exercise")   %>
+	        <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %>>Solution</option>
 				<% elsif value=="Solution" && @unit_concept.exercise_yn == "exercise" %>
 			<% # skip generating option %>
 				<% else %>
@@ -50,13 +50,15 @@
                                 <% elsif unit_concept_desc.desc_type == '2'  %>
                                 <span class="badge rounded-2x badge-blue">Explanation</span>
 								<% elsif unit_concept_desc.desc_type == '3'  %>
-								<span class="badge rounded-2x badge-red"><%= @unit_concept.exercise_yn == "exercise" ? "Solution" : "Exercise" %></span>
+								<span class="badge rounded-2x badge-red"><%= @unit_concept.exercise_yn == "exercise" || @unit_concept.exercise_yn == "similar exercise" ? "Solution" : "Exercise" %></span>
 								<% elsif unit_concept_desc.desc_type == '4'  %>
 								<span class="badge rounded-2x badge-green">Video</span>
 								<% elsif unit_concept_desc.desc_type == '5'  %>
 								<span class="badge rounded-2x badge-sea">Link</span>
 								<% elsif unit_concept_desc.desc_type == '6'  %>
-								<span class="badge rounded-2x badge-orange">Solution</span>								
+								<span class="badge rounded-2x badge-orange">Solution</span>	
+                                <% elsif unit_concept_desc.desc_type == '7' %>
+                                <span class="badge rounded-2x badge-yellow">Answer</span>								
                                 <% end  %>
 							</td>
 							<td>
@@ -137,7 +139,7 @@
                                 <select id="unit_concept_desc_select" name="unit_concept_desc[desc_type]" onchange="changedUnitCocenpt()">
                                 <option value="">항목선택</option>
                                 <% UnitConcept::DESC_TYPES.each_pair do |key, value| %>
-									<% if value == "Exercise" && @unit_concept.exercise_yn == "exercise" %>
+									<% if (key == 3 && @unit_concept.exercise_yn == "exercise") || (key == 3 && @unit_concept.exercise_yn == "similar exercise")  %>
                                 <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> >Solution</option>
 									<% elsif value=="Solution" && @unit_concept.exercise_yn == "exercise" %>
 									<% # skip generating option %>
