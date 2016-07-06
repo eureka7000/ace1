@@ -45,7 +45,7 @@
                             </td>
                             <td><%= unit_concept.code %></td>
                             <td><a href="/unit_concepts/<%= unit_concept.id %>?concept_page_num=<%= params[:concept_page_num] %>">
-                                    <%= unit_concept.name %><%= "<br>(#{related_unit_concept.name}-#{related_unit_concept.code}의 유사문제)".html_safe unless related_unit_concept.nil? %>
+                                    <%= unit_concept.name %><%= "<br>(#{related_unit_concept.name}:#{related_unit_concept.code}의 유사문제)".html_safe unless related_unit_concept.nil? %>
                                 </a>
                             </td>
                             <td><%= UnitConcept::GRADES[unit_concept.grade] %></td>
