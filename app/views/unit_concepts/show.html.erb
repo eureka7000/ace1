@@ -66,10 +66,10 @@
 								
 								<% elsif unit_concept_desc.desc_type == '5' %>
 									<% unit_concept = UnitConcept.where('id = ?',unit_concept_desc.link) %>
-                                    <% if unit_concept.count > 0 %>
-									    <%= unit_concept.name %> ( <%= unit_concept.code %> )
+                                    <% unless unit_concept.blank? %>
+									    <%= unit_concept[0].name %> ( <%= unit_concept[0].code %> )
                                     <% else %>
-                                        link unit concept id is not exist : <%= unit_concept.link %>
+                                        link unit concept id is not exist : <%= unit_concept_desc.link %>
                                     <% end %>
 								<% elsif unit_concept_desc.desc_type == '6' %>
 									<%= unit_concept_desc.memo %>
