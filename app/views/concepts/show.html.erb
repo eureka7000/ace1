@@ -17,7 +17,7 @@
                         <tr>
                             <th></th>
                             <th>Code</th>
-                            <th>Unit Concept</th>
+                            <th class="col-md-3">Unit Concept</th>
                             <th class="col-md-1">Grade</th>
                             <th class="col-md-1">Level</th>
                             <th class="col-md-1">Concepts</th>
@@ -30,16 +30,24 @@
                     </thead>
                     <tbody>
                         <% @unit_concepts.each do | unit_concept | %>
+                        <% if unit_concept.exercise_yn == 'similar exercise' 
+                               related_unit_concept = UnitConcept.find(unit_concept.related_unit_concept_id)
+                           end %>
                         <tr>
                             <td>
                                 <% if unit_concept.exercise_yn == 'concept' %>
                                 <span class="label rounded-2x label-purple">Unit Concept</span>
                                 <% elsif unit_concept.exercise_yn == 'exercise'  %>
-                                <span class="label rounded-2x label-brown">Exercise</span>
+                                <span class="label rounded-2x label-brown">유형문제</span>
+                                <% elsif unit_concept.exercise_yn == 'similar exercise' %>
+                                <span class="label rounded-2x label-yellow">유사문제</span>
                                 <% end  %>
                             </td>
                             <td><%= unit_concept.code %></td>
-                            <td><a href="/unit_concepts/<%= unit_concept.id %>?concept_page_num=<%= params[:concept_page_num] %>"><%= unit_concept.name %></a></td>
+                            <td><a href="/unit_concepts/<%= unit_concept.id %>?concept_page_num=<%= params[:concept_page_num] %>">
+                                    <%= unit_concept.name %><%= "<br>(#{related_unit_concept.name}:#{related_unit_concept.code}의 유사문제)".html_safe unless related_unit_concept.nil? %>
+                                </a>
+                            </td>
                             <td><%= UnitConcept::GRADES[unit_concept.grade] %></td>
                             <td><% unless unit_concept.level.nil? %>
                                 <% rst = 5 - unit_concept.level %>
@@ -92,7 +100,8 @@
                     <label class="select">
                     	<select id="excercise_yn" name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
                    		<option value="concept">Unit Concept</option>
-                   	 	<option value="exercise">Exercise</option>   
+                   	 	<option value="exercise">유형문제</option>
+                        <option value="similar exercise">유사문제</option>
                    		</select>
 						<i></i>
 					</label>
@@ -127,6 +136,18 @@
 	                </select> 
 					<i></i>
 				</section>
+                
+                <section id="related_exercise_section" class="col col-4" style="display:none">
+					<label class="label">유형문제</label>
+	                <select id="related_exercise" class="form-control">
+	                <option value=""></option>
+                    <% @exercises.each do |exercise| %>
+	                <option value="<%= exercise.id %>">(<%= exercise.code %>)<%= exercise.name %></option>
+                    <% end %>
+                </select> 
+					<i></i>
+				</section>                
+                
 			</div>									
         </fieldset>
                     
@@ -166,6 +187,8 @@
     
     function unitConceptModi(id) {
         
+        $('#related_exercise_section').hide();
+        
         var url = "/unit_concepts/" + id
         
         $.ajax({
@@ -175,12 +198,16 @@
             dataType: "JSON",
             success: function(data) {
                 $('#method').val('update');
+                $('#excercise_yn').val(data.exercise_yn);
                 $('#unit_concept_id').val(data.id);
                 $('#unit_concept_code').val(data.code);
                 $('#unit_concept_name').val(data.name);
                 $('#grade').val(data.grade);
                 $('#level').val(data.level);
+                $('#related_exercise').val(data.related_unit_concept_id);
                 $('#unitConceptFrm').show();
+                
+                if (data.exercise_yn == 'similar exercise') $('#related_exercise_section').show();
             },
             error: function(err){
             }
@@ -217,6 +244,12 @@
             $('#loading').hide();
             return false;
         }
+        
+        if ($('#excercise_yn').val() == 'similar exercise' && $('#related_exercise').val() == '') {
+            alert('관련된 유형문제를 선택하세요.');
+            $('#loading').hide();
+            return false;
+        }
 
         data = {
             "unit_concept" : {
@@ -225,7 +258,8 @@
                 "name"       : $('#unit_concept_name').val(),
                 "grade"      : $('#grade').val(),
                 "level"      : $('#level').val(),
-                "concept_id" : <%= @concept.id %>
+                "concept_id" : <%= @concept.id %>,
+                "related_unit_concept_id" : $('#related_exercise').val()
             }
         };
         
@@ -258,10 +292,10 @@
     }
 
     function changedDiv(t) {
-        if ( $(t).val() == 'exercise' ) {
-            $('#grade_div').hide();
+        if ( $(t).val() == 'similar exercise' ) {
+            $('#related_exercise_section').show();
         } else {
-            $('#grade_div').show();
+            $('#related_exercise_section').hide();
         }
     }
     

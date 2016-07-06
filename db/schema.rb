@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160624083233) do
+ActiveRecord::Schema.define(version: 20160706053306) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -188,14 +188,15 @@ ActiveRecord::Schema.define(version: 20160624083233) do
   end
 
   create_table "unit_concepts", force: :cascade do |t|
-    t.string   "code",        limit: 255
-    t.string   "name",        limit: 255
-    t.integer  "level",       limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "concept_id",  limit: 4
-    t.integer  "grade",       limit: 4
-    t.string   "exercise_yn", limit: 255
+    t.string   "code",                    limit: 255
+    t.string   "name",                    limit: 255
+    t.integer  "level",                   limit: 4
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "concept_id",              limit: 4
+    t.integer  "grade",                   limit: 4
+    t.string   "exercise_yn",             limit: 255
+    t.integer  "related_unit_concept_id", limit: 4
   end
 
   add_index "unit_concepts", ["code"], name: "index_unit_concepts_on_code", unique: true, using: :btree

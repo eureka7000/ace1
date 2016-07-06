@@ -65,6 +65,7 @@ class ConceptsController < ApplicationController
     # GET /concepts/1.json
     def show
         @unit_concepts = UnitConcept.where('concept_id=?',params[:id]).order(:code)
+        @exercises = UnitConcept.where('concept_id=? and exercise_yn = ?', params[:id], 'exercise').order(:code)
     end
 
   # GET /concepts/new
