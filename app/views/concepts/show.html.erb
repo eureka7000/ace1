@@ -187,6 +187,8 @@
     
     function unitConceptModi(id) {
         
+        $('#related_exercise_section').hide();
+        
         var url = "/unit_concepts/" + id
         
         $.ajax({
@@ -202,7 +204,10 @@
                 $('#unit_concept_name').val(data.name);
                 $('#grade').val(data.grade);
                 $('#level').val(data.level);
+                $('#related_exercise').val(data.related_unit_concept_id);
                 $('#unitConceptFrm').show();
+                
+                if (data.exercise_yn == 'similar exercise') $('#related_exercise_section').show();
             },
             error: function(err){
             }
