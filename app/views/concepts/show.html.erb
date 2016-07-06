@@ -196,6 +196,7 @@
             dataType: "JSON",
             success: function(data) {
                 $('#method').val('update');
+                $('#excercise_yn').val(data.exercise_yn);
                 $('#unit_concept_id').val(data.id);
                 $('#unit_concept_code').val(data.code);
                 $('#unit_concept_name').val(data.name);
