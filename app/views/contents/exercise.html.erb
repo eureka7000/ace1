@@ -1,17 +1,5 @@
 <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 
-<div class="row" style="padding-top: 5px; padding-left: 25px;">
-	<% @exercises.each do |exercise| %>
-	<a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= exercise.id %>" class="btn btn-default" >
-		<% if params[:unit_concept_id] == exercise.id.to_s %>
-		<strong style="color:blue"><%= exercise.name %></strong>
-		<% else %>
-		<%= exercise.name %>
-		<% end %>
-	</a>
-	<% end %>
-</div>	
-
 <div class="row" style="margin: 20px;">
 
 	<div class="col-md-12">
@@ -27,6 +15,12 @@
 				<li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
 				<li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
 				<li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
+
+        <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
+        <% @similar_exercises.each do |similar_exercise| %>
+          <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+        <% end %>
+
 			</ul>
 			
 			<div class="tab-content col-sm-11 col-sm-pull-1">

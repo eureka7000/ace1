@@ -379,7 +379,7 @@
                 <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                     <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
                     <div class="content-boxes-in-v3">
-                        <h3><a href="/contents/<%= unit_concept_exercise.id %>"><%= unit_concept_exercise.name %></a></h3>
+                        <h3><a href="/contents/exercise?concept_id=<%= unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= unit_concept_exercise.name %></a></h3>
                     </div>
                 </div>
             </li>
