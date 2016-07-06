@@ -39,7 +39,7 @@
             </p>
             <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
 
-            <div style="overflow-y: auto; width: 100%; height: 580px">
+            <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1 %>
@@ -100,7 +100,7 @@
             </p>
             <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
 
-            <div style="overflow-y: auto; width: 100%; height: 580px">
+            <div style="overflow-y: auto; width: 100%;">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1%>
                       <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
@@ -110,7 +110,7 @@
           </div>
 
           <div class="col-md-6">
-            <div style="overflow-y: auto; width: 100%; height: 580px">
+            <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 2 %>
@@ -171,7 +171,7 @@
 
             <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
 
-            <div style="overflow-y: auto; width: 100%; height: 580px">
+            <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 3 %>
