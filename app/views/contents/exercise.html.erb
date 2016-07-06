@@ -7,18 +7,31 @@
 		<!-- tabs right -->
 		<div class="tabbable">
 			<ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-				<li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유형문제</a></li>
-				<li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
-				<li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
-				<li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
-				<li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
-				<li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
-				<li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
-				<li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
 
-        <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
-        <% @similar_exercises.each do |similar_exercise| %>
-          <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+        <% if @is_exercise == 1 %>
+            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유형문제</a></li>
+            <li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
+            <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
+            <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
+            <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
+            <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
+            <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
+            <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
+
+            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
+            <% @similar_exercises.each do |similar_exercise| %>
+                <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+            <% end %>
+        <% else %>
+            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유사문제</a></li>
+            <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
+            <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
+            <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
+
+            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
+            <% @similar_exercises.each do |similar_exercise| %>
+                <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+            <% end %>
         <% end %>
 
 			</ul>

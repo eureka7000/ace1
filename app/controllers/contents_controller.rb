@@ -8,7 +8,9 @@ class ContentsController < ApplicationController
         if @unit_concept.exercise_yn == 'exercise'
             @exercise = @unit_concept
             @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.id )
+            @is_exercise = 1
         elsif @unit_concept.exercise_yn == 'similar exercise'
+            @is_exercise = 0
             @exercise = UnitConcept.find(@unit_concept.related_unit_concept_id)
             @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.related_unit_concept_id )
         end
