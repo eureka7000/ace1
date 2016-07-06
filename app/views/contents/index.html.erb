@@ -41,6 +41,11 @@
         if @step > '3'
           str += " / #{@concept.concept_name}"
         end
+        
+        if @step > '4'
+            str += " / 유형문제 "
+        end    
+        
       elsif @view_type == '2'
 				str = "학년별 학습"
 
@@ -348,21 +353,39 @@
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                       <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
                       <div class="content-boxes-in-v3">
-                        <span class="item-box">
-                                <span class="item">
+                          <span class="item-box">
+                              <span class="item">
                                   <i class="fa fa-star-o"></i>
                                   <i class="fa fa-star-o"></i>
                                   <i class="fa fa-star-o"></i>
                                   <i class="fa fa-star-o"></i>
                                   <i class="fa fa-star-o"></i>
-                                </span>
                               </span>
-                          <h3><a href="/contents/exercise?concept_id=<%= @concept_id %>&unit_concept_id=<%= @unit_concept_exercises[0].id %>">유형문제</a></h3>
+                          </span>
+                          <% params[:step] = 5 %>
+                          <h3><a href="/contents?<%= params.to_query %>">유형문제</a></h3>
                       </div>
                   </div>
               </li>		  
 		  
 		  <% end %>
+          
+    <% elsif @step == '5'  #유형문제 %>
+        
+        <% @unit_concept_exercises.each do |unit_concept_exercise| %>
+        
+            <li class="col-md-4 md-margin-bottom-30">
+                <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                    <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                    <div class="content-boxes-in-v3">
+                        <h3><a href="/contents/<%= unit_concept_exercise.id %>"><%= unit_concept_exercise.name %></a></h3>
+                    </div>
+                </div>
+            </li>
+            
+            <% idx += 1 %>
+            
+        <% end %>
 
     <% end %>
 

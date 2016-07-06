@@ -29,9 +29,16 @@ class ContentsController < ApplicationController
 
         @grade = params[:grade]
         @chapter = params[:chapter]
+        
+        unless @concept_id.nil?
+            @concept = Concept.find(@concept_id)
+            @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+        end
 
         if @view_type == '1'
+          
             if @step == '3'
+              
                 @concepts = Concept.where('category = ? and sub_category = ?', @category, @sub_category)
 
                 if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
@@ -44,9 +51,9 @@ class ContentsController < ApplicationController
                 @study_level = current_user.study_level
 
             elsif @step == '4'
-                @concept = Concept.find(@concept_id)
+
                 @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
-                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+                
 
                 @student = params[:student]
                 @level = params[:level]
@@ -60,7 +67,12 @@ class ContentsController < ApplicationController
                     @user.study_level = @study_level
                 end
                 @user.save
+                
+            elsif @step == '5'
+              
+                
             end
+            
         else
             if @step == '5'
                 @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
