@@ -4,7 +4,7 @@ class ConfirmationsController < Devise::ConfirmationsController
     
     def after_confirmation_path_for(resource_name, resource)
         logger.debug '******************' + current_user.inspect
-        '/mypages/settings?active_tab=2'
+        '/mypages/user_info?active_tab=2'
     end    
   
 end 

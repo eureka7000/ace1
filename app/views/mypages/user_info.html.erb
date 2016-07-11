@@ -13,8 +13,6 @@
                     
                     <ul class="nav nav-justified nav-tabs">
                     <li class="<%= 'active' if @active_tab == '2' %>"><a data-toggle="tab" href="#passwordTab">회원정보수정</a></li>
-                    <li class="<%= 'active' if @active_tab == '3' %>"><a data-toggle="tab" href="#payment">Payment Options</a></li>
-                    <li class="<%= 'active' if @active_tab == '4' %>"><a data-toggle="tab" href="#settings">Notification Settings</a></li>
                     </ul>
                     
                     <div class="tab-content">
@@ -254,7 +252,7 @@
                                                     $('#alert').show();
                                 				    return false;
                                 			    } else {
-                                                    location.href = "/mypages/settings?active_tab=2";
+                                                    location.href = "/mypages/user_info?active_tab=2";
                                 			    }
                                 	        },
                                 	        error: function(xhr, ajaxOptions, thrownError){

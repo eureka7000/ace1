@@ -23,13 +23,15 @@ class MypagesController < ApplicationController
 
 
     def question_list
+
+        @click = 'question_list'
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
     end
 
     
-    def settings
+    def user_info
 
-        @click = 'setting';
+        @click = 'user_info';
         @active_tab = params[:active_tab] || '2'
         
         @schools = School.where('is_school = ?', (current_user.user_types[0].user_type == 'school teacher' ? '1' : '0') )

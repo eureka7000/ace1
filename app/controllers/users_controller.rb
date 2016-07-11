@@ -132,12 +132,12 @@ class UsersController < ApplicationController
                 if params[:target_from] == "admin"
                     format.html { redirect_to '/users/#{@user.id}' }
                 else
-                    format.html { redirect_to '/mypages/settings?active_tab=2' }                    
+                    format.html { redirect_to '/mypages/user_info?active_tab=2' }
                 end
 
                 format.json { head :no_content }
             else
-                format.html { redirect_to '/mypages/settings?active_tab=2' }
+                format.html { redirect_to '/mypages/user_info?active_tab=2' }
                 format.json { render json: @account_item.errors, status: :unprocessable_entity }
             end
         end
