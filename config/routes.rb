@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     # Mypages
     get 'mypages/overall' => 'mypages#overall'
     get 'mypages/evaluation' => 'mypages#evaluation'
-    get 'mypages/settings' => 'mypages#settings'
+    get 'mypages/user_info' => 'mypages#user_info'
     get 'mypages/question_list' => 'mypages#question_list'
 
 
