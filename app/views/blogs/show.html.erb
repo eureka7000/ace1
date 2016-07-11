@@ -1,54 +1,53 @@
 <div class="container-fluid" style="margin-top: 50px">
-<div class="col-md-12 margin-top-20" >
-  <!--  panel -->
-  <div class="panel panel-blue">
-    <div class="panel-heading">
-      <h3 class="panel-title" style="font-size: 20px" ><i class="fa fa-tasks"></i> <%= @blog.title %></h3>
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> <%= Blog::BLOG_TYPES[@blog.blog_type] %> </h2>
+        </div>
     </div>
-    <!-- Form Controls -->
-    <div class="tag-box tag-box-v3 form-page boMot">
+    
+    <% unless notice.blank? %>
+        <p class="alert alert-warning"><%= notice %></p>
+    <% end %>
+        
+    <div class="row">
 
-      <div>
-        <ul class="list-unstyled list-inline blog-info">
-          <li><i class="fa  fa-user"></i> <%= @blog.user_id %></li>
-        </ul>
-      </div>
-      </br>
+        <div class="col-md-12">
 
-      <% Blog::BLOG_TYPES.each_pair do |key, value|%>
-          <% unless @blog.blog_type != key %>
-              <h5>블로그 타입 : <span style="color: black"><%= value %></span> </h5>
-          <% end %>
-      <% end %>
+            <div class="well">
 
-      </br>
+                <div class="row">
 
-      <!--내용입력-->
-      <h4>내용 : </h4>
-      <h4><span style="color: black"><%= @blog.content %></h4>
+                    <div class="col-md-12">
 
-      <!-- user_id -->
-      <input hidden type="text" name="blog[user_id]" value="<%= @blog.user_id %>">
+                        <table class="table table-bordered table-striped" style="clear: both">
+                        <tr>
+                        <td style="width:15%;"><b>제목</b></td>
+                        <td style="width:85%"><%= @blog.title %></td>
+                        </tr>
 
+                        <tr>
+                        <td style="width:15%;"><b>작성자</b></td>
+                        <td style="width:85%"><%= @user.name %><%= "(관리자)" if @blog.admin_yn == "Y" %></td>
+                        </tr>
 
+                        <tr>
+                        <td style="width:15%;"><b>내용</b></td>
+                        <td style="width:85%;"><%= raw @blog.content %></td>
+                        </tr>
+                        </table>
 
+                    </div>
 
-      <div class="col-md-12 text-right">
-        <% str = '/blogs/' %>
-        <% Blog::BLOG_NAMES.each_pair do |key, value| %>
-            <% if @blog.blog_type == key %>
-              <% str += value %>
-            <% end %>
-        <% end %>
+                </div>
 
-        <%= link_to '확인', str %>
-      </div>
+                <footer>
+                    <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
+                    <%= link_to 'Back', blogs_path, :class => 'btn btn-default' %>
+                </footer>
 
-      <div class="margin-bottom-20"></div>
-
+            </div>
+        </div>
     </div>
-    <!-- End Form Controls  -->
-
-  </div>
-</div>
+    
 </div>

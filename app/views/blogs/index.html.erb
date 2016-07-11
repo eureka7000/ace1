@@ -44,8 +44,8 @@
                 <% end %>
                 <td><%= blog.user_id %></td>
                 <td><%= blog.title %></td>
-                <td><%= link_to 'Show', blog_path(blog.id, admin: @admin)%></td>
-                <td><%= link_to 'Edit', edit_blog_path(blog, admin: @admin) %></td>
+                <td><%= link_to 'Show', blog_path(blog)%></td>
+                <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
                 <td><%= link_to 'Destroy', blog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
               </tr>
             <% end %>

@@ -17,10 +17,10 @@
 
             <div class="panel-body">
               <i class="fa fa-calendar"></i> <%= blog.created_at.strftime('%Y-%m-%d %H:%M') %> &nbsp;
-              <i class="fa fa-user"></i><%= blog.user_id %>
+              <i class="fa fa-user"></i> <%= blog.admin_yn == "Y" ? "관리자" : blog.user.user_name %>
               </br></br>
 
-              <p><%= blog.content %></p>
+              <p><%= raw blog.content %></p>
 
               <% unless current_user.nil? %>
 

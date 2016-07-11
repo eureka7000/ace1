@@ -24,16 +24,23 @@ class BlogsController < ApplicationController
     render layout: 'admin_main'
   end
 
-  # GET /blogs/1
-  # GET /blogs/1.json
-  def show
-    @blog_type = params[:blog_type]
 
-    @admin = params[:admin]
-    unless @admin.blank?
-      render layout: 'admin_main'
+    def show
+        
+        @blog_type = params[:blog_type]
+        
+        if @blog.admin_yn == "Y"
+            @user = Admin.find(@blog.user_id)
+        else
+            @user = User.find(@blog.user_id)
+        end        
+        
+        
+        unless session[:admin].nil?
+            render layout: 'admin_main'
+        end
     end
-  end
+
 
   # GET /blogs/new
   def new
@@ -47,13 +54,11 @@ class BlogsController < ApplicationController
 
   end
 
-  # GET /blogs/1/edit
-  def edit
-    @admin = params[:admin]
-    unless @admin.blank?
-      render layout: 'admin_main'
+    def edit
+        unless session[:admin].nil?
+            render layout: 'admin_main'
+        end
     end
-  end
 
   # POST /blogs
   # POST /blogs.json
@@ -105,9 +110,8 @@ class BlogsController < ApplicationController
   end
 
   def succession_case
-    @blog_type = '2'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+      @blog_type = '2'
+      @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
   end
 
   def math_story
@@ -148,6 +152,6 @@ class BlogsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def blog_params
-      params.require(:blog).permit(:blog_type, :title, :content, :user_id)
+      params.require(:blog).permit(:blog_type, :title, :content, :user_id, :admin_yn)
     end
 end

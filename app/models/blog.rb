@@ -1,4 +1,8 @@
 class Blog < ActiveRecord::Base
+    
+    belongs_to :user
+    
+    validates_presence_of :blog_type, :title, :content, :user_id
 
   BLOG_TYPES = {
     "1" => "학습문제해결",
@@ -19,4 +23,5 @@ class Blog < ActiveRecord::Base
     "6" => "the_news",
     "7" => "company_introduction"
   }
+  
 end
