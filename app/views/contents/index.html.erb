@@ -94,9 +94,9 @@
           <% Concept::CATEGORIES.each_pair do |key, value| %>
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
-                          <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value  %></a></h3>
+                          <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value %></a></h3>
                       </div>
                   </div>
               </li>
@@ -112,7 +112,7 @@
 
                   <li class="col-md-4 md-margin-bottom-30">
                       <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                          <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                          <a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                           <div class="content-boxes-in-v3">
                               <h3><a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><%= value  %></a></h3>
                           </div>
@@ -163,16 +163,8 @@
 
         <li class="col-md-4 md-margin-bottom-30">
             <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                <i data-toggle="modal" data-target="#level<%= concept.id%>" class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
                 <div class="content-boxes-in-v3">
-
-                  <!--
-                  <h3><a href="/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= concept.id %>"><%= concept.concept_name %></a></h3>
-                  -->
-
-                  <!--원본 코드
-                  <h3><a data-toggle="modal" data-target="#level<%=concept.id%>" style="text-align: center"><%= concept.concept_name %></a></h3>
-                  -->
 
                   <div class="btn-group">
                     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#level<%=concept.id%>"><h3><%= concept.concept_name %></h3></button>
@@ -323,7 +315,7 @@
 			
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents/<%= unit_concept.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                   <ul class="star-vote">
                     <% unless unit_concept.level.nil? %>
@@ -352,7 +344,8 @@
 		  
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <% params[:step] = 5 %>
+                      <a href="/contents?<%= params.to_query %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                           <span class="item-box">
                               <span class="item">
@@ -363,7 +356,6 @@
                                   <i class="fa fa-star-o"></i>
                               </span>
                           </span>
-                          <% params[:step] = 5 %>
                           <h3><a href="/contents?<%= params.to_query %>">유형문제</a></h3>
                       </div>
                   </div>
@@ -377,7 +369,7 @@
         
             <li class="col-md-4 md-margin-bottom-30">
                 <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                    <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                    <a href="/contents/exercise?concept_id=<%= unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                     <div class="content-boxes-in-v3">
                         <h3><a href="/contents/exercise?concept_id=<%= unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= unit_concept_exercise.name %></a></h3>
                     </div>
@@ -402,7 +394,7 @@
           <% UnitConcept::GRADES.each_pair do |key, value| %>
               <li class="col-md-4 md-margin-bottom-30">
                 <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                  <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                 <a href="/contents?view_type=2&step=2&grade=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                   <div class="content-boxes-in-v3">
                     <h3><a href="/contents?view_type=2&step=2&grade=<%= key %>"><%= value %></a></h3>
                   </div>
@@ -417,7 +409,7 @@
               <% unless @grade.to_i != key/100 %>
                   <li class="col-md-4 md-margin-bottom-30">
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                         <h3><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><%= value %></a></h3>
                       </div>
@@ -432,7 +424,7 @@
               <% unless @chapter.to_i != key/100 %>
                   <li class="col-md-4 md-margin-bottom-30">
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                         <h3><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><%= value %></a></h3>
                       </div>
@@ -447,7 +439,7 @@
               <% unless @category.to_i != key/100 %>
                   <li class="col-md-4 md-margin-bottom-30">
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                         <h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>
                       </div>
@@ -461,7 +453,7 @@
           <% @grade_unit_concepts.each do | grade_unit_concept | %>
                   <li class="col-md-4 md-margin-bottom-30">
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                      <a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
                         <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
                       </div>
