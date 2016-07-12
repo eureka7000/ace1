@@ -79,7 +79,7 @@
 						
 	                    <tr>
 	                    <td style="width:25%;"><b>영업인</b></td>
-	                    <td style="width:75%"><%= @user.admin.name %></td>
+	                    <td style="width:75%"><%= @user.admin.name unless @user.join_channel_sales_id.nil? %></td>
 	                    </tr>
 						
 						<% end %>
