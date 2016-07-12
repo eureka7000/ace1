@@ -16,6 +16,7 @@ gem 'carrierwave-aws'
 gem 'mini_magick'
 gem 'fog'
 gem 'will_paginate-bootstrap'
+gem 'twilio-ruby'
 
 group :development, :test do
   gem 'byebug'

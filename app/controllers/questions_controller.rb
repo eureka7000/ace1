@@ -12,7 +12,17 @@ class QuestionsController < ApplicationController
         @question = Question.new(question_params)
         
         respond_to do |format|
+            
             if @question.save
+                
+                # Sms 발송
+                mento = User.find(params[:question][:to_user_id])
+                
+                unless mento.phone.nil?
+                    message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."                    
+                    TwilioSms.sendSMS("+82"+mento.phone, message)
+                end    
+                
                 format.html { redirect_to "/contents/#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
             end
         end

@@ -101,7 +101,7 @@
 										<% unless solution.file_name.blank? %>
 									<p><a href="<%= solution.file_name %>"><img src="<%= solution.file_name.thumb %>" /></a> <a href="javascript:deleteSolution(<%= solution.id %>)">[x]</a></p>
 										<% else %>
-									<p><a href="/images/<%= solution.ox %>.png"><img src="/images/<%= solution.ox %>.png" /></a> <a href="javascript:deleteSolution(<%= solution.id %>)">[x]</a></p>	
+									<p><%= solution.ox %> <a href="javascript:deleteSolution(<%= solution.id %>)">[x]</a></p>	
 										<% end %>
 									<% end %>
 									<p><br>
