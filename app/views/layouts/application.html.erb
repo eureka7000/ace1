@@ -37,13 +37,12 @@
     <%= raw JsCssRender.get_css(controller_name, action_name) %>
 
     <%= csrf_meta_tags %>
-	
+
 	<meta name="google-site-verification" content="Hl1qEsuAB9XnNB6zkZUBHs6psTBMGG7gis6yZAAXWTo" />
 
 </head>
 
 <body>
-  <div class="pace-activity"></div></div>
 
 <div id="loading" style="display:none">
     <img src="/assets/img/Loading.gif" />
@@ -54,6 +53,8 @@
 	<!--=== Header ===-->
     <div class="header">
 
+
+
 		<div class="container" style="height: 100px">
 
 			<!-- Logo -->
@@ -62,17 +63,16 @@
         </a>
 
       <!-- End Logo -->
-
             <!-- Topbar -->
             <div class="topbar">
                 <ul class="loginbar pull-right">
                   <% unless current_user.nil? %>
                       <li>안녕하세요. <%= current_user.user_name %>님</li>
                   <% else %>
-                      <!--<li><span class="sign"><img style="padding-bottom: 14px" src="/assets/img/t_ic1.jpg" alt="회원가입">&nbsp;<%#막음=link_to('Sign In', new_user_registration_path )%></span></li>-->
+                      <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/t_ic1.jpg" alt="회원가입">&nbsp;<%=link_to('Sign In', new_user_registration_path )%></span></li>
                   <% end %>
                   &nbsp;
-                  <li ><span class="sign"><img style="padding-bottom: 14px" src="/assets/img/t_ic2.jpg"   alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('Logout', destroy_user_session_path, :method => :delete) : link_to('Login', new_user_session_path) %></span></li>
+                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/t_ic2.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('Logout', destroy_user_session_path, :method => :delete) : link_to('Login', new_user_session_path) %></span></li>
                     <li></li>
                 </ul>
             </div>
