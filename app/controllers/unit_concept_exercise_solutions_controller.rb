@@ -10,7 +10,7 @@ class UnitConceptExerciseSolutionsController < ApplicationController
         respond_to do |format|
             
             if @unit_concept_exercise_solution.save
-                format.html { redirect_to "/unit_concepts/#{params[:unit_concept_id]}", notice: 'Explanation was successfully created.' }
+                format.html { redirect_to "/unit_concepts/#{params[:unit_concept_id]}?desc_type=#{params[:desc_type]}", notice: 'Explanation was successfully created.' }
             else
                 format.html { redirect_to "/unit_concepts/#{params[:unit_concept_id]}?unit_concept_desc_id=#{params[:unit_concept_exercise_solution][:unit_concept_desc_id]}&solution_error=true&messages=#{@unit_concept_exercise_solution.errors.full_messages}" }
             end            
