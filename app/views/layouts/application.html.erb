@@ -51,11 +51,9 @@
 <div class="wrapper">
 
 	<!--=== Header ===-->
-    <div class="header">
+    <div class="header col-md-12">
 
-
-
-		<div class="container" style="height: 100px">
+		<div class="container" style="height: 100px;">
 
 			<!-- Logo -->
         <a class="logo" href="/">
@@ -64,15 +62,15 @@
 
       <!-- End Logo -->
             <!-- Topbar -->
-            <div class="topbar">
+            <div class="col-md-12 topbar">
                 <ul class="loginbar pull-right">
                   <% unless current_user.nil? %>
                       <li>안녕하세요. <%= current_user.user_name %>님</li>
                   <% else %>
-                      <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/t_ic1.jpg" alt="회원가입">&nbsp;<%=link_to('Sign In', new_user_registration_path )%></span></li>
+                      <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('Sign In', new_user_registration_path )%></span></li>
                   <% end %>
                   &nbsp;
-                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/t_ic2.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('Logout', destroy_user_session_path, :method => :delete) : link_to('Login', new_user_session_path) %></span></li>
+                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('Logout', destroy_user_session_path, :method => :delete) : link_to('Login', new_user_session_path) %></span></li>
                     <li></li>
                 </ul>
             </div>
