@@ -13,6 +13,9 @@
           <thead>
           <tr>
             <th>No.</th>
+            <th colspan="3">소속</th>
+            <th colspan="2">이름</th>
+            <th colspan="3">질문 시간</th>
             <th colspan="3">개 념</th>
             <th colspan="3">질문 제목</th>
             <th colspan="6">질문 내용</th>
@@ -23,8 +26,22 @@
           <% count = 0 %>
           <% if @questions.each do |question| %>
             <% count += 1 %>
+
+            <% if @type == 'school teacher'%>
+                <% @user = User.find(question.user_id) %>
+                <% @school_name = @user.school.name %>
+            <% end %>
+
+            <% if @type == 'student' %>
+                <% @user = User.find(question.to_user_id) %>
+                <% @school_name = Teacher.find_by_user_id(@user.id).school.name %>
+            <% end %>
+
             <tr>
               <td><%= count %></td>
+              <td colspan="3"><%= @school_name %></td>
+              <td colspan="2"><%= @user.user_name %></td>
+              <td colspan="3"><%= question.created_at.localtime.strftime('%Y-%m-%d %H:%M') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
               <td colspan="3" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.title %></td>
               <td colspan="6" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.content %></td>

@@ -26,6 +26,12 @@ class MypagesController < ApplicationController
 
         @click = 'question_list'
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+
+        if current_user.user_types[0].user_type == 'student'
+            @type = 'student';
+        elsif current_user.user_types[0].user_type == 'school teacher'
+            @type = 'school teacher'
+        end
     end
 
     
