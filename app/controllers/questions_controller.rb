@@ -21,7 +21,12 @@ class QuestionsController < ApplicationController
                 unless mento.phone.nil?
                     message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."                    
                     TwilioSms.sendSMS("+82"+mento.phone, message)
-                end    
+                end
+                
+                # Mail 발송
+                logger.debug "mail sending..."
+                UserMailer.noti_question(mento, current_user, @question).deliver
+                logger.debug "mail sending end..."
                 
                 format.html { redirect_to "/contents/#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
             end

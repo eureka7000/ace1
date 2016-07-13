@@ -38,7 +38,10 @@
                   <% oxCount = 0 %>
 
                   <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+
                       <% unit_concept_exercise_histories_count -= 1 %>
+                      
+                      <% unless unit_concept_exercise_history.unit_concept_desc.nil? %>
 
                       <% if concept_name != unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
                           <% oxCount = 0 %>
@@ -137,6 +140,9 @@
                             <td colspan="4"></td>
                           </tr>
                       <% end %>
+                      
+                      <% end %>
+                      
                   <% end %>
 
                   </tbody>
