@@ -3,6 +3,7 @@ class ContentsController < ApplicationController
     before_action :authenticate_user!
     
     def exercise
+        
         @unit_concept = UnitConcept.find(params[:unit_concept_id])
 
         if @unit_concept.exercise_yn == 'exercise'

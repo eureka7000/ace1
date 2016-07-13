@@ -145,93 +145,101 @@
 				</div> <!-- Tab 설명 END -->
 
 				<!-- Tab Solution -->
-        <div class="tab-pane" id="f">
+                <div class="tab-pane" id="f">
+                    
 					<div class="col-md-12 margin-bottom-20 no-padding">
-            <div class="col-md-6">
-              <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
-                <% unless unit_concept_desc.desc_type.to_i != 1 %>
-                  <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
-                <% end %>
-              <% end %>
-              <div class="margin-top-20">
-                <hr>
-                <a href="javascript:viewSolution()" class="btn btn-default" id="viewSolutionBtn">정답 보기</a>
-              </div>
-
-              <div>
-
-                <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
-                  <% if unit_concept_desc.memo.to_s.include?('a') %>
-                      <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
-                  <% end %>
-                <% end %>
-              </div>
-
-            </div>
-            <div class="col-md-6">
-              <div style="overflow-y: auto; width: 100%;">
-                <% imgCount = 1 %>
-                <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
-
-                    <% unless unit_concept_desc.desc_type.to_i != 3 %>
-                        <% if imgCount == 1 %>
-                          <div class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>">
-                            <% unless unit_concept_desc.memo.to_s.include?('a') %>
-                                <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
-                            <% else %>
-                                <img hidden src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
-                                <% imgCount -= 1 %>
+                        
+                        <div class="col-md-6">
+                            <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                                <% unless unit_concept_desc.desc_type.to_i != 1 %>
+                            <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
+                                <% end %>
                             <% end %>
-                            <% unless unit_concept_desc.link.blank?
-                                 ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
-                                <h5>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></h5>
-                            <% end %>
-                          </div>
-                        <% else %>
-                          <div hidden class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>">
+                            
+                            <hr>
+
+                            <a href="javascript:viewSolution()" class="btn btn-default" id="viewSolutionBtn">정답 보기</a>
+                            
                             <div>
-                              <% unless unit_concept_desc.memo.to_s.include?('a') %>
-                                  <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
-                              <% else %>
-                                  <img hidden src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
-                                  <% imgCount -= 1 %>
-                              <% end %>
-                              <% unless unit_concept_desc.link.blank?
-                                   ret_unit_concept = UnitConcept.find(unit_concept_desc.link)  %>
-                                  <h5>관련개념 : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></h5>
-                              <% end %>
+                                <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                                    <% if unit_concept_desc.memo.to_s.include?('a') %>
+                                <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
+                                    <% end %>
+                                <% end %>
                             </div>
-                          </div>
-                        <% end %>
-                        <% imgCount += 1 %>
-                    <% end %>
-                <% end %>
-                <% if imgCount == 1 || imgCount == 2 %>
-                    <div class="col-md-11 text-right">
-                      <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                        <li>
-                          <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
-                          <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-md-1 t text-right"></div>
-                <% else %>
-                    <div class="col-md-11 text-right">
-                      <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                        <li>
-                          <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
-                          <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-md-1"></div>
-                <% end %>
-              </div>
-            </div>
+                        </div>
+                        
+                        <!-- right lane -->
+                        <div class="col-md-6">
+                            
+                            <div style="overflow-y: auto; width: 100%;">
+                                <% 
+                                    imgCount = 1 
+    
+                                    @unit_concept.unit_concept_descs.each do | unit_concept_desc | 
+                                
+                                        unless unit_concept_desc.desc_type.to_i != 3 
+                                    
+                                %>
+                                        
+                                <div class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>" <%= "hidden" unless imgCount == 1 %> >
+                                    <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
+                                <%
+                                            unless unit_concept_desc.link.blank? 
+                                                ret_unit_concept = UnitConcept.find(unit_concept_desc.link)
+                                %>
+                                    
+                                    <div>        
+                                        
+                                        <h5 style="float:left; margin-right:20px">&#x27BF; 관련개념 : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></h5>
 
-				  </div>
-        </div> <!-- Tab Solution END -->
+                                        <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: unit_concept_desc).order(created_at: :desc) %>
+                                        <% unless recent_unit_concept_exercise_history.empty? %>
+                                        <h5 style="float:right; margin-left: 35px;">&#x27BF; 최근 : 
+                                            <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %>
+                                        </h5>
+                                        <% end %>
+                                        
+                                        <button class="btn btn-sm rounded btn-info" style="float:right; margin-left: 20px" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+                                        
+                                        <h5 style="float:right; ">&#x27BF; 이해정도 : 
+                                            <label class="radio-inline" style="margin-left: 15px; padding-bottom: 5px">
+                                                <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
+                                            </label>
+                                            <label class="radio-inline" style="padding-bottom: 5px">
+                                                <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
+                                            </label>
+                                        </h5>
+
+                                    </div>
+                                    
+                                <%          end         %>
+                                </div>
+                                
+                                <%
+                                            imgCount += 1 
+                                        end 
+                                    end
+                                %>
+                                
+                                <div class="col-md-11 text-right">
+                                    <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                                        <li>
+                                            <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
+                                            <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-1 t text-right"></div>
+                                
+                            </div>
+                            
+                        </div>
+                        <!-- right lane -->
+                        
+                    </div>
+                </div>
+                <!-- Tab Solution END -->
 
             <!-- Tab Video -->
             <div class="tab-pane" id="v">
@@ -591,10 +599,10 @@
 
   function saveOx(unit_concept_desc_id) {
 
-    if (!$('#o' + unit_concept_desc_id).is(":checked") && !$('#x' + unit_concept_desc_id).is(":checked") ) {
-      alert('맞음 혹은 틀림을 선택하세요.');
-      return false;
-    }
+      if (!$('#o' + unit_concept_desc_id).is(":checked") && !$('#x' + unit_concept_desc_id).is(":checked") ) {
+          alert('맞음 혹은 틀림을 선택하세요.');
+          return false;
+      }
 
     $('#loading').show();
     var ox = "O";
