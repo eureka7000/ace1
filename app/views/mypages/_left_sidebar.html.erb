@@ -11,6 +11,11 @@
                   <a href="/mypages/question_list"><span class="glyphicon glyphicon-list"></span>&nbsp;Question List</a>
                 </li>
               <% end %>
+              <% unless current_user.user_types[0].user_type != 'school teacher' %>
+                  <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
+                    <a href="/mypages/question_list"><span class="glyphicon glyphicon-list"></span>&nbsp;Question List</a>
+                  </li>
+              <% end %>
               <li class="list-group-item <%= 'active' if @click == 'overall'%>">
                 <a href="/mypages/overall"><i class="fa fa-bar-chart-o"></i>&nbsp;Overall</a>
               </li>
