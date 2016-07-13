@@ -45,8 +45,9 @@
               <% end %>
             </div>
             <div class="timeline-body text-justify">
-              <h3 style="font-style: italic">• <a href="#"><%= question.title %></a></h3>
+              <h3 style="font-style: italic"><a href="#"><%= question.title %></a></h3>
               <p style="width: 100%; text-overflow:ellipsis; -o-text-overow: ellipsis; word-wrap:normal; overflow: hidden; font-size: 15px; color: black;"><nobr><%= question.content %></nobr></p>
+              <p><%= question.unit_concept.name %></p>
               <div class="text-right">
                 <a class="btn-u btn-u-dark-blue" href="/questions/<%= question.id %>"> 더보기</a>
               </div>
