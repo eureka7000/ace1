@@ -15,10 +15,9 @@
             <th>No.</th>
             <th colspan="3">소속</th>
             <th colspan="2">이름</th>
-            <th colspan="3">질문 시간</th>
+            <th colspan="2">질문 시간</th>
             <th colspan="3">개 념</th>
-            <th colspan="3">질문 제목</th>
-            <th colspan="6">질문 내용</th>
+            <th colspan="5">질문 제목</th>
             <th colspan="2">options</th>
           </tr>
           </thead>
@@ -41,10 +40,9 @@
               <td><%= count %></td>
               <td colspan="3"><%= @school_name %></td>
               <td colspan="2"><%= @user.user_name %></td>
-              <td colspan="3"><%= question.created_at.localtime.strftime('%Y-%m-%d %H:%M') %></td>
+              <td colspan="2"><%= question.created_at.localtime.strftime('%m월 %d일') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
-              <td colspan="3" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.title %></td>
-              <td colspan="6" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.content %></td>
+              <td colspan="5" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.title %></td>
               <td colspan="2"><a href="/questions/<%= question.id %>">show</a>&nbsp;&nbsp;<a href="/questions/<%= question.id %>/edit">edit</a></td>
             </tr>
           <% end %>
