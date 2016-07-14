@@ -5,11 +5,7 @@
             <h2 class="sub-header"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> <%= Blog::BLOG_TYPES[@blog.blog_type] %> </h2>
         </div>
     </div>
-    
-    <% unless notice.blank? %>
-        <p class="alert alert-warning"><%= notice %></p>
-    <% end %>
-        
+
     <div class="row">
 
         <div class="col-md-12">
@@ -28,7 +24,7 @@
 
                         <tr>
                         <td style="width:15%;"><b>작성자</b></td>
-                        <td style="width:85%"><%= @user.name %><%= "(관리자)" if @blog.admin_yn == "Y" %></td>
+                        <td style="width:85%"><%= @user.user_name %><%= "(관리자)" if @blog.admin_yn == "Y" %></td>
                         </tr>
 
                         <tr>
@@ -43,7 +39,16 @@
 
                 <footer>
                     <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
-                    <%= link_to 'Back', blogs_path, :class => 'btn btn-default' %>
+                    <% unless session[:admin].nil? %>
+                      <%= link_to 'Back', blogs_path, :class => 'btn btn-default' %>
+                    <% else %>
+                      <% Blog::BLOG_NAMES.each_pair do |key, value| %>
+                          <% unless key != @blog.blog_type.to_s; %>
+                              <a class="btn btn-info" href="/blogs/<%= value %>" style="color: white;">뒤로</a>
+                          <% end %>
+                      <% end %>
+                    <% end %>
+
                 </footer>
 
             </div>

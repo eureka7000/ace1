@@ -181,20 +181,21 @@
 <script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
 <script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
 <script type="text/javascript" src="/assets/plugins/jquery.parallax.js"></script>
-<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
 <script src="/assets/plugins/animated-headline/js/modernizr.js"></script>
 <script src="/assets/plugins/animated-headline/js/animated-headline.js"></script>
 <script type="text/javascript" src="/assets/plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/circles-master/circles.js"></script>
+
 <!-- JS Customization -->
 <script type="text/javascript" src="/assets/js/custom.js"></script>
 <!-- JS Page Level -->
 <script type="text/javascript" src="/assets/js/app.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/style-switcher.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/cube-portfolio/cube-portfolio-lightbox.js"></script>
-<script type="text/javascript" src="/assets/js/plugins/circles-master.js"></script>
+
 <script type="text/javascript" src="/assets/plugins/wow-animations/js/wow.min.js"></script>
+
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
 
 <script type="text/javascript">
   WebFontConfig = {
@@ -213,21 +214,12 @@
   })();
 </script>
 
-<script type="text/javascript">
+<script>
   jQuery(document).ready(function() {
     App.init();
+    initpage();
     StyleSwitcher.initStyleSwitcher();
     new WOW().init();
-  });
-</script>
-
-<script type="text/javascript"> 
-  jQuery(document).ready(function() { 
-    App.init(); 
-    App.initCounter(); 
-    StyleSwitcher.initStyleSwitcher(); 
-    CirclesMaster.initCirclesMaster1(); 
-    CirclesMaster.initCirclesMaster2(); 
   });
 </script>
 
