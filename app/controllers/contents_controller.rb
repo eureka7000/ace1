@@ -3,7 +3,7 @@ class ContentsController < ApplicationController
     before_action :authenticate_user!
     
     def exercise
-        
+
         @unit_concept = UnitConcept.find(params[:unit_concept_id])
 
         if @unit_concept.exercise_yn == 'exercise'
@@ -109,7 +109,27 @@ class ContentsController < ApplicationController
             @mento = User.find(current_user.user_relations[0].related_user_id)
         end
         @unit_concepts_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id)
-        
+
+
+
+        query = "select row_number from (
+select id, @curRow := @curRow + 1 AS row_number
+from unit_concepts uc join (select @curRow := 0) r
+where exercise_yn = 'concept' order by code
+) k
+where id = #{params[:id]}"
+        @row_number = UnitConcept.find_by_sql(query).first
+        @row_number.row_number.to_i
+
+        @unit_concept_related = UnitConcept.find_by_sql("select * from (
+
+ select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
+ from unit_concepts uc join (select @curRow := 0) r
+ where exercise_yn = 'concept' order by code
+) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
+
+      logger.debug "notice" + @unit_concept_related.inspect
+
     end
-    
 end
+
