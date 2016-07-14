@@ -49,7 +49,8 @@ class ContentsController < ApplicationController
           
             if @step == '3'
               
-                @concepts = Concept.where('category = ? and sub_category = ?', @category, @sub_category)
+                @concepts = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "concept")
+                @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
 
                 if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
                     @student = 'middle'

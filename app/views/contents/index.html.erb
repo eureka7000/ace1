@@ -128,144 +128,47 @@
       <% elsif @step == '3' %>
 
       <% @concepts.each do | concept | %>
-
-            <!-- 하위개념인 unit_concept이 level 별로 각각 몇 개씩 있는지 확인하기 위한 부분-->
-            <% count1 = 0 %>
-            <% count2 = 0 %>
-            <% count3 = 0 %>
-            <% count4 = 0 %>
-            <% count5 = 0 %>
-            <% countP = 0 %>
-
-            <% @unit_concepts.each do |unit_concept|%>
-
-                <% if unit_concept.concept_id == concept.id %>
-                    <% if unit_concept.level == 1 %>
-                        <% count1 += 1 %>
-                    <% end %>
-                    <% if unit_concept.level == 2 %>
-                        <% count2 += 1 %>
-                    <% end %>
-                    <% if unit_concept.level == 3 %>
-                        <% count3 += 1 %>
-                    <% end %>
-                    <% if unit_concept.level == 4 %>
-                        <% count4 += 1 %>
-                    <% end %>
-                    <% if unit_concept.level == 5 %>
-                        <% count5 += 1 %>
-                    <% end %>
-                    <% if unit_concept.code.include?('p') %>
-                        <% countP += 1 %>
-                    <% end %>
-                <% end %>
-            <% end %>
+      
+          <% unit_concept_counts = UnitConcept.get_level_count(concept.id) %>
 
         <li class="col-md-4 md-margin-bottom-30">
+
             <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                
                 <i data-toggle="modal" data-target="#level<%= concept.id%>" class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                
                 <div class="content-boxes-in-v3">
+                    
+                    <div class="btn-group">
 
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#level<%=concept.id%>"><h3><%= concept.concept_name %></h3></button>
-                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                       <h3><i class="fa fa-caret-down"></i></h3>
-                    </button>
+                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#level<%=concept.id%>"><h3><%= concept.concept_name %></h3></button>
+                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                            <h3><i class="fa fa-caret-down"></i></h3>
+                        </button>
 
-                    <ul class="dropdown-menu" role="menu">
-
-                      <% if count1 != 0 %>
-                          <li>
-                              <span class="item-box">
-                                <span class="item">
-                                  &nbsp; &nbsp;
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
+                        <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
+                        <% unit_concept_counts.each do | count |  %>
+                            <li>
+                                <i class="fa <%= count.exercise_yn == 'concept' ? 'fa-book' : 'fa-jsfiddle' %>" style="color:blue; margin-left:20px;" title="<%= count.exercise_yn == 'concept' ? '개념' : '유형문제' %>"></i>
+                                <span class="item-box">
+                                    <span class="item">&nbsp; &nbsp;
+                                        <% for i in 0..(count.level-1) %>    
+                                        <i class="fa fa-star"></i>
+                                        <% end %>
+                                        <% for i in count.level..4 %>
+                                        <i class="fa fa-star-o"></i>
+                                        <% end %>
+                                    </span>
                                 </span>
-                              </span>
-                               &nbsp; &nbsp;&nbsp; &nbsp;
-                              <span class="badge rounded badge-purple"><%= count1 %></span>
-                          </li>
-                      <% end %>
-                      <% if count2 != 0 %>
-                          <li>
-                              <span class="item-box">
-                                <span class="item">
-                                  &nbsp; &nbsp;
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
-                                </span>
-                              </span>
-                            &nbsp; &nbsp;&nbsp; &nbsp;
-                            <span class="badge rounded badge-purple"><%= count2 %></span>
-                          </li>
-                      <% end %>
-                      <% if count3 != 0 %>
-                          <li>
-                              <span class="item-box">
-                                <span class="item">
-                                  &nbsp; &nbsp;
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star-o"></i>
-                                  <i class="fa fa-star-o"></i>
-                                </span>
-                              </span>
-                            &nbsp; &nbsp;&nbsp; &nbsp;
-                            <span class="badge rounded badge-purple"><%= count3 %></span>
-                          </li>
-                      <% end %>
-                      <% if count4 != 0 %>
-                          <li>
-                              <span class="item-box">
-                                <span class="item">
-                                  &nbsp; &nbsp;
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star-o"></i>
-                                </span>
-                              </span>
-                            &nbsp; &nbsp;&nbsp; &nbsp;
-                            <span class="badge rounded badge-purple"><%= count4 %></span>
-                          </li>
-                      <% end %>
-                      <% if count5 != 0 %>
-                          <li>
-                              <span class="item-box">
-                                <span class="item">
-                                  &nbsp; &nbsp;
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
-                                </span>
-                              </span>
-                            &nbsp; &nbsp;&nbsp; &nbsp;
-                            <span class="badge rounded badge-purple"><%= count5 %></span>
-                          </li>
-                      <% end %>
-                      <% if countP != 0 %>
-                          <li>
-                            <h5> &nbsp; &nbsp; 유형문제 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class="badge rounded badge-purple"><%= countP %></span></h5>
-                          </li>
-                      <% end %>
-                    </ul>
-                  </div>
-
-
+                                <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count.count %></span>
+                            </li>
+                        <% end %>
+                        </ul>
+                    </div>
+                    
                 </div>
-                  <!-- Modal -->
-
+                
+                <!-- Modal -->
                   <div class="modal fade" id="level<%= concept.id %>" role="dialog">
                   <div class="modal-dialog modal-md">
                     <div class="modal-content">
