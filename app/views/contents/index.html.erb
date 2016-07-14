@@ -141,7 +141,7 @@
                     
                     <div class="btn-group">
 
-                        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#level<%=concept.id%>"><h3><%= concept.concept_name %></h3></button>
+                        <button type="button" class="btn btn-link" onclick="loadModal(<%=concept.id%>)"><h3><%= concept.concept_name %></h3></button>
                         <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                             <h3><i class="fa fa-caret-down"></i></h3>
                         </button>
@@ -180,41 +180,6 @@
                     
                 </div>
                 
-                <!-- Modal -->
-                  <div class="modal fade" id="level<%= concept.id %>" role="dialog">
-                  <div class="modal-dialog modal-md">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <div class="modal-title text-left">
-
-                          <% if @study_level.to_i == 1 %>
-                            <% levelStr = '초급' %>
-                          <% elsif @study_level.to_i == 2 %>
-                              <% levelStr = '중급' %>
-                          <% else %>
-                              <% levelStr = '상급' %>
-                          <% end %>
-                          <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
-                        </div>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="col-md-12">
-
-                            <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
-                                <div class="col-md-4 content-boxes-v6 md">
-                                  <a href="/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student%>&concept_id=<%= concept.id %>&level=<%= @student == 'middle' ? key : key.to_i+2 %>" ><i class="rounded-x icon-rocket"></i></a>
-                                  <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
-                                </div>
-                            <% end %>
-
-                          </div><!-- /.col-lg-6 -->
-                        </div><!-- /.row -->
-                      </div>
-                    </div>
-                  </div>
-                </div> <!-- Modal END-->
             </div>
         </li>
 
@@ -382,3 +347,68 @@
 <% end %> <!-- 학년별 학습 END -->
 <% end %><!-- current_user.grade -->
 
+<!-- level_choice_modal -->
+<div class="modal fade" id="level_choice_modal" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-title text-left">
+                    <% if @study_level.to_i == 1 %>
+                        <% levelStr = '초급' %>
+                    <% elsif @study_level.to_i == 2 %>
+                        <% levelStr = '중급' %>
+                    <% else %>
+                        <% levelStr = '상급' %>
+                    <% end %>
+                    <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
+                        <div class="col-md-4 content-boxes-v6 md">
+                            <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                        </div>
+                        <% end %>
+                    </div>
+                </div><!-- /.row -->
+            </div>
+            
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+    
+    var concept_id;
+    
+    function goNext(level) {
+
+        var curLevel = level
+        
+        if ("<%= @student %>" == "high") {
+            curLevel = curLevel + 2;
+        }
+        
+        var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student%>&level=" + curLevel + "&concept_id=" + concept_id;
+        location = url;
+    }
+    
+    </script>
+    
+</div>
+<!-- Modal END-->
+
+
+<script type="text/javascript">
+
+function loadModal(new_concept_id) {
+    concept_id = new_concept_id;
+    $('#level_choice_modal').modal();
+}
+
+</script>
