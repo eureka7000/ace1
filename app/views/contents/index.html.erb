@@ -148,8 +148,20 @@
 
                         <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
                         <% unit_concept_counts.each do | count |  %>
+                            <% 
+                                icon = 'fa-book' 
+                                title = '개념'
+                                
+                                if count.exercise_yn == "exercise"
+                                    icon = 'fa-jsfiddle'
+                                    title = '유형문제'
+                                elsif count.exercise_yn == "similar exercise"    
+                                    icon = 'fa-cloud-upload'
+                                    title = '유사문제'
+                                end
+                            %>
                             <li>
-                                <i class="fa <%= count.exercise_yn == 'concept' ? 'fa-book' : 'fa-jsfiddle' %>" style="color:blue; margin-left:20px;" title="<%= count.exercise_yn == 'concept' ? '개념' : '유형문제' %>"></i>
+                                <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
                                 <span class="item-box">
                                     <span class="item">&nbsp; &nbsp;
                                         <% for i in 0..(count.level-1) %>    
