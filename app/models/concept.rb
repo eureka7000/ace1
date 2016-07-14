@@ -95,9 +95,10 @@ class Concept < ActiveRecord::Base
     DESC_TYPES = {
         1 => "Concept",
         2 => "Explanation",
-        3 => "Exercise",
+        3 => "Solution",
         4 => "Video",
-        5 => "link"
+        5 => "link",
+        7 => "Answer"
     }
     
 end

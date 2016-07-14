@@ -78,7 +78,8 @@ class ConceptsController < ApplicationController
   end
   
     def exercise
-        
+        @unit_concept = @concept
+        @origin = "concept exercise"
     end    
           
 

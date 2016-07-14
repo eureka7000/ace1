@@ -1,0 +1,218 @@
+<div class="modal fade" id="conceptSearchModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none; z-index:9999">
+	<div class="modal-dialog">
+        
+		<div class="modal-content">
+            
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myModalLabel1" class="modal-title">Concept Search</h4>
+            </div>
+
+            <div class="modal-body">
+                
+                <input type="hidden" id="whereareyoufrom" value="">
+                
+                <div class="row">
+                    <div class="col-md-3">
+                        <select id="category" class="form-control inline-block" onchange="changedCategory()">
+                            <option value="">--- Category ---</option>
+                            <% Concept::CATEGORIES.each_pair do |key, value| %>
+                            <option value="<%= key %>"><%= value %> ( <%= key %> )</option>
+                            <% end %>
+                        </select>
+                    </div>    
+                    
+                    <div class="col-md-3">
+                        <select id="sub_category" class="form-control" onchange="getConcepts()">
+                            <option value="">--- Sub Category ---</option>
+                        </select>
+                    </div>    
+                    
+                    <div class="col-md-3">
+                        <select id="concept" class="form-control" onchange="getUnitConcepts()">
+                            <option value="">--- Concept ---</option>
+                        </select>
+                    </div>
+                    
+                </div> 
+                
+                <hr>   
+                
+                <table id="unit_concepts" class="table table-bordered table-hover" style="display:none">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Code</th>
+                            <th>Unit Concept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="text-center">No Data</td>
+                        </tr>
+                    </tbody>
+                </table>                    
+                
+            </div>
+            
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+	
+	$('input:file').change(
+	    function(e){
+	    	var f = e.target.files,
+	            len = f.length;
+	        for (var i=0;i<len;i++){
+				var sname = f[i].name;
+				if ($('#unit_concept_desc_select').val() != '6') {
+					$('#memo').val(sname.replace(/\..+$/, ''));
+				}	
+	    	}
+		}
+	);	
+    
+    <% index = 0 %>
+
+    var options = [
+    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+    <%      index = index + 1  %>    
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
+    <% end %>
+    ]
+    
+    function changedCategory() {
+        
+        $('#sub_category').empty();
+        $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value','') ); 
+        
+        var cetegory_val = $('#category').val();
+        var divChar = '';
+        
+        if (cetegory_val != '') {
+            divChar = cetegory_val.substring(0,2);
+        }
+        
+        $.each(options, function(i) {
+            if (options[i].values.substring(0,2) == divChar) {
+                $('#sub_category').append( $('<option>').text(options[i].text + ' ( ' + options[i].values + ' )').attr('value',options[i].values) );                
+            }
+        });
+    
+    }    
+    
+    function getConcepts() {
+        
+        var url = "/concepts/get_concepts?category=" + $('#category').val() + "&sub_category=" + $('#sub_category').val();
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                $('#concept').empty();
+                $('#concept').append( $('<option>').text('--- Concept ---').attr('value','') );
+                
+                for (var i=0; i<data.length; i++) {
+                    $('#concept').append( $('<option>').text(data[i].concept_name + " (" + data[i].concept_code + ")").attr('value',data[i].id));
+                }
+            },
+            error : function(){
+                alert("concept을 가지고 오지 못했습니다. 시스템관리자에게 문의하세요.");
+            }
+        });                    
+    }
+    
+    function getUnitConcepts() {
+        
+        var url = "/concepts/get_unit_concepts?concept=" + $('#concept').val();
+        
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                
+                $('#unit_concepts > tbody').empty();
+                
+                for (var i=0; i< data.length; i++) {
+                    
+                    var html = $("<tr onclick='setUnitConcept(" + data[i].id  + ", \"" + data[i].name + "\")'>"
+                        + "<td>" + (i+1) + "</td>"
+                        + "<td>" + data[i].code + "</td>"
+                        + "<td>" + data[i].name + "</td>"
+                        + "</tr>");
+                        
+                    $('#unit_concepts > tbody:last').append(html);                        
+                    
+                }
+                
+                $('#unit_concepts').show();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });         
+                
+    }
+    
+    function setUnitConcept(unitConceptId, unitConceptName) {
+        if ($('#whereareyoufrom').val() == "link") {
+            $('#unit_concept_id').val(unitConceptId);
+            $('#unit_concept_desc').val(unitConceptName);
+            $('#conceptSearchModal').modal('hide');
+        } else {
+            setLink(unitConceptId, $('#whereareyoufrom').val());
+            // $('#unit_concept_exercise_solution_text').val(unitConceptName);
+            // $('#unit_concept_exercise_solution_link').val();
+        }    
+        
+    }
+    
+    function setLink(unitConceptId, unitConceptDescId) {
+        
+        <% if @origin == "concept exercise" %>
+        var url = "/concept_exercises/" + unitConceptDescId;
+        <% else %>
+	    var url = "/unit_concept_descs/" + unitConceptDescId;
+        <% end %>
+        
+        data = {
+            "<%= @origin == "concept exercise" ? "concept_exercise" : "unit_concept_desc" %>" : {
+                // "id" : unitConceptDescId,
+                "link" : unitConceptId
+            }
+        }
+    
+	    $.ajax({
+	        url: url,
+	        type: "PUT",
+	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+	        datatype: "json",
+            data: data,
+	        success : function(data) {
+				location.reload();
+	        },
+	        error : function(){
+	            alert("Link를 설정하는데 에러가 발생하였습니다.");
+	        }
+	    });          
+        
+    }
+	
+	function changeSearchCondition() {
+		location = "/unit_concepts/<%= @unit_concept.id %>?concept_page_num=<%= params[:concept_page_num]%>&desc_type=" + $('#desc_type_condition').val();
+	}
+    
+    </script>
+    
+</div>

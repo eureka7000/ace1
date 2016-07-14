@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    resources :concept_exercises
     resources :replies
     resources :questions
     resources :user_relations
@@ -15,7 +16,6 @@ Rails.application.routes.draw do
     
     get 'concepts/:id/exercise' => 'concepts#exercise'
     resources :unit_concept_descs
-    resources :concept_exercises
     resources :explanations
     resources :unit_concepts
     

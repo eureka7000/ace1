@@ -26,7 +26,15 @@ class ConceptExercisesController < ApplicationController
             format.json { head :no_content }
         end
         
-    end      
+    end
+    
+    def update 
+        ret = { status: 'ok' }
+        
+        if @concept_exercise.update(concept_exercise_params)
+            render json: ret
+        end
+    end    
 
     private
     

@@ -28,7 +28,8 @@
                         <tr>
                             <th>Type</th>
                             <th>Code</th>
-                            <th></th>
+                            <th>Images</th>
+							<th>Solutions</th>
                             <th class="col-md-2"><i class="fa fa-cog"></i></th>
                         </tr>    
                     </thead>
@@ -37,40 +38,64 @@
 						<tr>
 							<td>
                                 <% if unit_concept_desc.desc_type == '1' %>
-                                <span class="badge rounded-2x badge-u">Concept</span>
+                                <span class="badge rounded-2x badge-u">Unit Concept</span>
                                 <% elsif unit_concept_desc.desc_type == '2'  %>
                                 <span class="badge rounded-2x badge-blue">Explanation</span>
 								<% elsif unit_concept_desc.desc_type == '3'  %>
-								<span class="badge rounded-2x badge-red">Exercise</span>
+								<span class="badge rounded-2x badge-red">Solution</span>
 								<% elsif unit_concept_desc.desc_type == '4'  %>
 								<span class="badge rounded-2x badge-green">Video</span>
 								<% elsif unit_concept_desc.desc_type == '5'  %>
 								<span class="badge rounded-2x badge-sea">Link</span>
 								<% elsif unit_concept_desc.desc_type == '6'  %>
-								<span class="badge rounded-2x badge-orange">Solution</span>								
-                                <% end  %>
+								<span class="badge rounded-2x badge-orange">Solution</span>	
+                                <% elsif unit_concept_desc.desc_type == '7' %>
+                                <span class="badge rounded-2x badge-yellow">Answer</span>								
+                                <% end  %>                                
 							</td>
-							<td><% if unit_concept_desc.desc_type == '4' %>
+							<td>
+								<% if unit_concept_desc.desc_type == '4' %>
 								
 								<% elsif unit_concept_desc.desc_type == '5' %>
-									<% unit_concept = UnitConcept.find(unit_concept_desc.link) %>
-									<%= unit_concept.name %> ( <%= unit_concept.code %> )
+									<% unit_concept = UnitConcept.where('id = ?',unit_concept_desc.link) %>
+                                    <% unless unit_concept.blank? %>
+									    <%= unit_concept[0].name %> ( <%= unit_concept[0].code %> )
+                                    <% else %>
+                                        link unit concept id is not exist : <%= unit_concept_desc.link %>
+                                    <% end %>
 								<% elsif unit_concept_desc.desc_type == '6' %>
-									<% rel_unit_concept_desc = UnitConceptDesc.where('id = ?',unit_concept_desc.memo).first %>
-									<%= rel_unit_concept_desc.memo unless rel_unit_concept_desc.nil? %>
+									<%= unit_concept_desc.memo %>
 								<% else %>
 									<%= unit_concept_desc.memo %>
-								<% end %>
+								<% end %>                                
 							</td>
 							<td>
                         		<% if unit_concept_desc.desc_type == '4' %>
                         		<iframe src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="500" height="283" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         		<% elsif unit_concept_desc.desc_type == '5' %>
-                        		<a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                                
+                                    <% unit_concept = UnitConcept.where('id = ?', unit_concept_desc.link) %>
+                                    <% unless unit_concept.blank? %>
+                        		        <a href="/unit_concepts/<%= unit_concept_desc.link %>"><%= unit_concept[0].name %></a>
+                                    <% else %>
+                                        link unit concept id is not exist : <%= unit_concept_desc.link %>
+                                    <% end %>    
+                                        
                         		<% else %>
                         		<a href="<%= unit_concept_desc.file_name %>"><img src="<%= unit_concept_desc.file_name.thumb %>" alt=""></a>
                         		<% end %>
 							</td>
+                            <td>
+                                <% if unit_concept_desc.desc_type == '3' %>
+                                    <% unless unit_concept_desc.link.blank? %>
+                                        <% @link_exercise = UnitConcept.find(unit_concept_desc.link) %>
+                                        <a href="/contents/<%= @link_exercise.id %>"><%= @link_exercise.code %> : <%= @link_exercise.name %></a> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a></p>
+                                        
+                                    <% else %>    
+                                        <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>                                    
+                                    <% end %>
+                                <% end %>                                
+                            </td>    
 							<td>
 								<%= link_to 'Delete'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
 							</td>	
@@ -157,183 +182,7 @@
 
 </div>
 
-<div class="modal fade" id="conceptSearchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            
-            <div class="modal-header">
-                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-                <h4 id="myModalLabel1" class="modal-title">Concept Search</h4>
-            </div>
-
-            <div class="modal-body">
-                
-                <div class="row">
-                    <div class="col-md-3">
-                        <select id="category" class="form-control inline-block" onchange="changedCategory()">
-                            <option value="">--- Category ---</option>
-                            <% Concept::CATEGORIES.each_pair do |key, value| %>
-                            <option value="<%= key %>"><%= value %> ( <%= key %> )</option>
-                            <% end %>
-                        </select>                            
-                    </div>    
-                    
-                    <div class="col-md-3">
-                        <select id="sub_category" class="form-control" onchange="getConcepts()">
-                            <option value="">--- Sub Category ---</option>
-                        </select>
-                    </div>    
-                    
-                    <div class="col-md-3">
-                        <select id="concept" class="form-control" onchange="getUnitConcepts()">
-                            <option value="">--- Concept ---</option>
-                        </select>
-                    </div>
-                    
-                </div> 
-                
-                <hr>   
-                
-                <table id="unit_concepts" class="table table-bordered table-hover" style="display:none">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Code</th>
-                            <th>Unit Concept</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="3" class="text-center">No Data</td>
-                        </tr>
-                    </tbody>
-                </table>                    
-                
-            </div>
-            
-            <div class="modal-footer">
-                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">Close</button>
-            </div>
-        </div>
-    </div>
-    
-    <script type="text/javascript">
-	
-	$('input:file').change(
-	    function(e){
-	    	var f = e.target.files,
-	            len = f.length;
-	        for (var i=0;i<len;i++){
-				var sname = f[i].name;
-				if ($('#unit_concept_desc_select').val() != '6') {
-					$('#memo').val(sname.replace(/\..+$/, ''));
-				}	
-	    	}
-		}
-	);	
-    
-    <% index = 0 %>
-
-    var options = [
-    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-    <%      index = index + 1  %>    
-        {
-            values: '<%= key %>', text: '<%= value %>'
-        }
-        <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
-    <% end %>
-    ]
-    
-    function changedCategory() {
-        
-        $('#sub_category').empty();
-        $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value','') ); 
-        
-        var cetegory_val = $('#category').val();
-        var divChar = '';
-        
-        if (cetegory_val != '') {
-            divChar = cetegory_val.substring(0,2);
-        }
-        
-        $.each(options, function(i) {
-            if (options[i].values.substring(0,2) == divChar) {
-                $('#sub_category').append( $('<option>').text(options[i].text + ' ( ' + options[i].values + ' )').attr('value',options[i].values) );                
-            }
-        });
-    
-    }    
-    
-    function getConcepts() {
-        
-        var url = "/concepts/get_concepts?category=" + $('#category').val() + "&sub_category=" + $('#sub_category').val();
-
-        $.ajax({
-            url: url,
-            type: "GET",
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-            datatype: "json",
-            success : function(data) {
-                $('#concept').empty();
-                $('#concept').append( $('<option>').text('--- Concept ---').attr('value','') );
-                
-                for (var i=0; i<data.length; i++) {
-                    $('#concept').append( $('<option>').text(data[i].concept_name).attr('value',data[i].id));
-                }
-            },
-            error : function(){
-                alert("try to again. please.");
-            }
-        });                    
-    }
-    
-    function getUnitConcepts() {
-        
-        var url = "/concepts/get_unit_concepts?concept=" + $('#concept').val();
-        
-        $.ajax({
-            url: url,
-            type: "GET",
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-            datatype: "json",
-            success : function(data) {
-                
-                $('#unit_concepts > tbody').empty();
-                
-                for (var i=0; i< data.length; i++) {
-                    
-                    var html = $("<tr onclick='setUnitConcept(" + data[i].id  + ", \"" + data[i].name + "\")'>"
-                        + "<td>" + (i+1) + "</td>"
-                        + "<td>" + data[i].code + "</td>"
-                        + "<td>" + data[i].name + "</td>"
-                        + "</tr>");
-                        
-                    $('#unit_concepts > tbody:last').append(html);                        
-                    
-                }
-                
-                $('#unit_concepts').show();
-            },
-            error : function(){
-                alert("try to again. please.");
-            }
-        });         
-                
-    }
-    
-    function setUnitConcept(unitConceptId, unitConceptName) {
-        $('#unit_concept_id').val(unitConceptId);
-        $('#unit_concept_desc').val(unitConceptName);
-        $('#conceptSearchModal').modal('hide');
-    }
-	
-	function changeSearchCondition() {
-		location = "/concepts/<%= params[:id] %>/exercise?concept_page_num=<%= params[:concept_page_num]%>&desc_type=" + $('#desc_type_condition').val();
-	}
-    
-    </script>
-    
-</div>
+<%= render partial: 'modals/concept_search_modal' %>
 
 <script type="text/javascript">
 
@@ -375,7 +224,8 @@
 		$('#memo').val($('#exercise_choice').val());
 	}
     
-    function conceptSearch() {
+    function conceptSearch(target) {
+        $('#whereareyoufrom').val(target);
         $('#conceptSearchModal').modal();
     }
 
