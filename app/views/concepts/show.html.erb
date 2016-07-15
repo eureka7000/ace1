@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                         <% @unit_concepts.each do | unit_concept | %>
-                        <% if unit_concept.exercise_yn == 'similar exercise' && !unit_concept.related_unit_concept_id.nil
+                        <% if unit_concept.exercise_yn == 'similar exercise' && !unit_concept.related_unit_concept_id.nil?
                                related_unit_concept = UnitConcept.find(unit_concept.related_unit_concept_id)
                            end %>
                         <tr>
