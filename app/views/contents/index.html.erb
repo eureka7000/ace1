@@ -23,7 +23,7 @@
     </div> <!-- Modal END-->
 
 <% else %>
-<div class="breadcrumbs">
+<div class="breadcrumbs col-md-12">
     <div class="container">
         <h1 class="pull-left">
 			<% 
@@ -37,13 +37,21 @@
         if @step > '2'
           str += " / #{Concept::SUB_CATEGORIES[@sub_category]}"
         end
-
-        if @step > '3'
-          str += " / #{@concept.concept_name}"
-        end
         
-        if @step > '4'
-            str += " / 유형문제 "
+        if params[:exercise_type] == "concept_exercise"
+            
+            str += " / 종합문제 "
+            
+        else    
+
+            if @step > '3'
+              str += " / #{@concept.concept_name}"
+            end
+        
+            if @step > '4'
+                str += " / 유형문제 "
+            end    
+            
         end    
         
       elsif @view_type == '2'
@@ -127,21 +135,21 @@
 
       <% elsif @step == '3' %>
 
-      <% @concepts.each do | concept | %>
+          <% @concepts.each do | concept | %>
       
-          <% unit_concept_counts = UnitConcept.get_level_count(concept.id) %>
+              <% unit_concept_counts = UnitConcept.get_level_count(concept.id) %>
 
         <li class="col-md-4 md-margin-bottom-30">
 
             <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                 
-                <i data-toggle="modal" data-target="#level<%= concept.id%>" class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i>
+                <a href="javascript:loadModal(<%= concept.id %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                 
                 <div class="content-boxes-in-v3">
                     
                     <div class="btn-group">
 
-                        <button type="button" class="btn btn-link" onclick="loadModal(<%=concept.id%>)"><h3><%= concept.concept_name %></h3></button>
+                        <button type="button" class="btn btn-link" onclick="loadModal(<%= concept.id %>)"><h3><%= concept.concept_name %></h3></button>
                         <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                             <h3><i class="fa fa-caret-down"></i></h3>
                         </button>
@@ -183,9 +191,31 @@
             </div>
         </li>
 
-        <% idx += 1 %>
-        <% idx %= 12 %>
-    <% end %>
+              <% idx += 1 %>
+              <% idx %= 12 %>
+        
+          <% end %>
+          
+          <% if @concept_exercises.length > 0 %>
+          
+        <li class="col-md-4 md-margin-bottom-30">
+
+            <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                
+                <% params[:step] = 5 %>
+                <a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                
+                <div class="content-boxes-in-v3">
+                    <div class="btn-group">
+                        <h3><a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise">종합문제</a></h3>
+                    </div>
+                </div>
+                
+            </div>
+        </li>          
+          
+          <% end %>
+          
 
     <% elsif @step == '4' %>
 

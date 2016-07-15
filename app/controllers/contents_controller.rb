@@ -81,6 +81,9 @@ class ContentsController < ApplicationController
                 
             elsif @step == '5'
 
+                if params[:exercise_type] == 'concept_exercise'
+                    @unit_concept_exercises = ConceptExercise.where('')
+                end    
                 
             end
             
