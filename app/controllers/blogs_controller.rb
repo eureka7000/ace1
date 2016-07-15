@@ -6,12 +6,13 @@ class BlogsController < ApplicationController
   # GET /blogs.json
 
   def index
-    @admin = '1';
+
 
     blog_type = params[:blog_type]
 
     if blog_type.nil?
       @blogs = Blog.all.paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 30 ).order(id: :desc)
+      @admin = '1';
     else
       str = ""
       unless blog_type.blank?
