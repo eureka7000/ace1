@@ -19,8 +19,8 @@
               <i class="fa fa-calendar"></i> <%= blog.created_at.localtime.strftime('%Y-%m-%d %H:%M') %> &nbsp;
               <i class="fa fa-user"></i> <%= blog.admin_yn == "Y" ? "관리자" : blog.user.user_name %>
               </br></br>
-
-              <p><%= raw blog.content %></p>
+              
+              <p><%= ActionView::Base.full_sanitizer.sanitize(blog.content).truncate(50) %></p>
 
               <% unless current_user.nil? %>
 

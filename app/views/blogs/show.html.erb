@@ -24,7 +24,7 @@
 
                         <tr>
                         <td style="width:15%;"><b>작성자</b></td>
-                        <td style="width:85%"><%= @user.user_name %><%= "(관리자)" if @blog.admin_yn == "Y" %></td>
+                        <td style="width:85%"><%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></td>
                         </tr>
 
                         <tr>
