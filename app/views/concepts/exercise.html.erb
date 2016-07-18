@@ -169,7 +169,7 @@
                         </section>
                         <section class="col col-2">
                             <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
-                            <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>
+                            <%= link_to 'Back', concepts_path + "?" + params.to_query, :class => 'btn-u btn-primary align-right' %>
                         </section>    
                     </div>
                 </fieldset>

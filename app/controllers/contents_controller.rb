@@ -4,7 +4,13 @@ class ContentsController < ApplicationController
     
     def exercise
 
-        @unit_concept = UnitConcept.find(params[:unit_concept_id])
+        if params[:exercise_type] == "concept_exercise"
+            @unit_concept = UnitConcept.find(params[:unit_concept_id])
+        else
+            @unit_concept = Concept.find(params[:unit_concept_id])
+        end        
+
+        logger.debug "****************" + @unit_concept.inspect
 
         if @unit_concept.exercise_yn == 'exercise'
             @exercise = @unit_concept
@@ -82,7 +88,7 @@ class ContentsController < ApplicationController
             elsif @step == '5'
 
                 if params[:exercise_type] == 'concept_exercise'
-                    @unit_concept_exercises = ConceptExercise.where('')
+                    @unit_concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
                 end    
                 
             end
