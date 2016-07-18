@@ -556,7 +556,7 @@
 
     <div class="modal-content">
 
-      <form action="/questions" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+      <form action="/questions" id="new_question" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
 
         <%= token_tag nil %>
 
@@ -567,7 +567,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <div class="modal-title">
-            <span class="label rounded-2x label-aqua">질문 하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
+            <span class="label rounded-2x label-aqua">질문하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
           </div>
         </div>
 
@@ -581,16 +581,22 @@
           <div class="row" style="margin-top: 10px">
             <div class="col-md-2" style="text-align:right">내용</div>
             <div class="col-md-10">
+              <!--
               <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+              -->
+              <input type="hidden" name="question[content]" id="question_content">
+              <div id="question_post" style="font-size: 10px;"></div>
             </div>
           </div>
 
+          <!--
           <div class="row" style="margin-top: 10px">
             <div class="col-md-2" style="text-align:right">파일첨부</div>
             <div class="col-md-10">
               <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
             </div>
           </div>
+          -->
 
         </div>
 
@@ -793,5 +799,32 @@
     var iframe = $('#vimeo-player')[0];
     var player = $(iframe);
     player.api('pause');
+  }
+</script>
+
+
+<script type="text/javascript">
+  function initpage() {
+    $('#question_post').summernote({
+      height : 180,
+      lang: 'ko-KR',
+      focus : true,
+      tabsize : 2
+    });
+
+    $('#new_question').submit(function () {
+      if ($('#question_title').val() == '' ){
+        alert('제목을 입력하세요.');
+        $('#question_title').focus();
+        return false;
+      }
+
+      if ($('#question_post').summernote('isEmpty')) {
+        alert('내용을 입력하세요.');
+        $('#question_post').focus();
+        return false;
+      }
+      $('#question_content').val($('#question_post').summernote('code'));
+    });
   }
 </script>

@@ -31,41 +31,39 @@
               <img class="img-responsive" src="<%= @question.file_name %>">
             </div>
             <div class="col-md-6">
-              <p style="font-size: 17px; color: black; width: 100%; height: 100%; border-color: transparent;"><%= @question.content %></p>
+              <p style="font-size: 17px; color: black; width: 100%; height: 100%; border-color: transparent;"><%= raw @question.content %></p>
             </div>
           </div>
       </div>
       <!-- End Dark Blue Panel -->
 
       <!-- Order Form -->
-      <form action="/questions/<%= @question.id %>" method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
+      <form action="/questions/<%= @question.id %>" id="edit_question" method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
         <header>질문 수정하기</header>
 
         <fieldset>
           <section>
             <label class="input">
               <i class="icon-append fa fa-tag"></i>
-              <input type="text" name="question[title]" placeholder="제목 : <%= @question.title %>" value="<%= @question.title %>">
+              <input type="text" id="question_title" name="question[title]" placeholder="제목 : <%= @question.title %>" value="<%= @question.title %>">
             </label>
           </section>
 
           <section>
             <label class="textarea state-success">
               <i class="icon-append fa fa-comment"></i>
-              <textarea rows="5" name="question[content]" placeholder="내용 : <%= @question.content %>" class="valid"><%= @question.content %></textarea>
+              <!-- text editor -->
+              <div id="question_post" style="font-size: 10px;"><%= raw @question.content %></div>
             </label>
           </section>
 
-          <section>
-            <label for="file" class="input input-file">
-              <div class="button"><input type="file" name="question[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value">첨부</div><input type="text" placeholder="이미지 첨부" readonl="">
-            </label>
-          </section>
         </fieldset>
 
         <input hidden name="question[unit_concept_id]" value="<%= @question.unit_concept_id %>">
         <input hidden name="question[to_user_id]" value="<%= @question.to_user_id %>">
         <input hidden name="question[user_id]" value="<%= @question.user_id %>">
+        <input hidden name="question[content]" id="question_content">
+
 
         <%= form_for(@question) do |f| %>
         <footer class="text-right">
@@ -101,6 +99,34 @@
     StyleSwitcher.initStyleSwitcher();
   });
 </script>
+
+<script type="text/javascript">
+  function initpage() {
+    $('#question_post').summernote({
+      height : 180,
+      lang: 'ko-KR',
+      focus : true,
+      tabsize : 2
+    });
+
+
+    $('#edit_question').submit(function () {
+      if ($('#question_title').val() == "") {
+        alert('내용을 입력하세요.');
+        $('#question_title').focus();
+        return false;
+      }
+
+      if ($('#question_post').summernote('isEmpty')) {
+        alert('내용을 입력하세요.');
+        $('#question_post').focus();
+        return false;
+      }
+      $('#question_content').val($('#question_post').summernote('code'));
+    });
+  }
+</script>
+
 <!--[if lt IE 9]>
 <script src="/assets/plugins/respond.js"></script>
 <script src="/assets/plugins/html5shiv.js"></script>

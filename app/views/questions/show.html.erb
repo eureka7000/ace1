@@ -1,11 +1,9 @@
 <link rel="stylesheet" href="/assets/css/pages/shortcode_timeline2.css">
 
 <!--=== indicate ===-->
-<div class="breadcrumbs">
+<div class="col-md-12 breadcrumbs">
   <div class="container">
-
     <h2 class="pull-left" style="color: black">Blog / 학습문제해결</h2>
-
   </div><!--/container-->
 </div><!--/breadcrumbs-->
 <!--=== End indicate ===-->
@@ -23,11 +21,8 @@
           <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.localtime.strftime('%Y-%m-%d %H:%M') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name %></p>
         </div>
         <div class="panel-body">
-          <div class="col-md-6">
-            <img class="img-responsive" src="<%= @question.file_name %>">
-          </div>
-          <div class="col-md-6">
-            <p style="font-size: 17px; color: black;"><%= @question.content %></p>
+          <div class="col-md-12">
+            <p style="font-size: 17px; color: black;"><%= raw @question.content %></p>
           </div>
         </div>
       </div>
@@ -39,136 +34,88 @@
 
       <hr>
 
-      <% order_count = 0 %>
-      <% reply2EditorIndex = 1 %>
-      <% group_id_index = 1 %>
       <% unless @replies1.blank? %>
           <hr>
-          <% @replies1.each do |reply| %>
-              <!-- 답글이 있고 reply.depth가 1일 때...-->
-                <div class="tag-box tag-box-v3 form-page" style="background: #edfaff;">
+          <% reply1_number = 1 %>
+          <% @replies1.each do |reply1| %>
+              <% order_count = 1 %>
+              <div class="col-md-1 text-center margin-bottom-5" style="vertical-align: middle;"><h4>답변<br/><%= reply1_number %></h4></div>
+              <div class="col-md-11 no-margin bg-color-light">
+                <h4><%= raw reply1.comment %></h4>
+                <%# button_to 'delete', reply1,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
+                <div class="col-md-12 text-right margin-top-20"><p><%= reply1.created_at.localtime.strftime('%Y/%m/%d') %>&nbsp;&nbsp;<%= reply1.question.user.user_name %></p></div>
+              </div>
 
-                  <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-                  <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
-                  <input type="hidden" name="reply[depth]" value="2" />
-                  <input type="hidden" name="reply[parent_reply_id]" value="0" />
-                  <input type="hidden" name="reply[group_id]" value="<%= group_id_index %>" />
-
-                  <!--<input type="hidden" name="reply[order_no]" value="" />-->
-
-                  <div class="panel-body no-padding">
-                    <div class="col-md-12 no-padding">
-                      <div class="col-md-1 no-margin no-padding text-left">
-                        <p style="color: black; font-size: 40px;"><i class="fa fa-font"></i><br></p>
-                      </div>
-                      <div class="col-md-11 no-margin no-padding">
-                        <textarea class="form-control no-margin" readonly="" style="background: white; color: black;"><%= reply.comment %></textarea>
-                      </div>
-                      <div class="col-md-12 text-right margin-top-20">
-                        <p style="font-size: 12px; color: black;"> 등록일 : <%= reply.created_at.localtime.strftime('%Y/%m/%d %H:%M')%> &nbsp; <%= reply.question.user.user_name %></p>
-                      </div>
-
-                      <% if reply.user_id == current_user.id %>
-                          <div class="col-md 12 text-right no-margin no-padding">
-                            <%= button_to 'delete', reply,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
-                          </div>
-                      <% end %>
-
-                      <% @replies2.each do |reply2| %>
-                          <% if reply.group_id == reply2.group_id %>
-                          <!-- 댓글이 달렸을 경우 depth==2 -->
-                          <div class="col-md-1 no-margin no-padding margin-top-20"></div>
-                          <div class="col-md-11 no-margin no-padding margin-top-20">
-                            <hr class="devider devider-dashed no-margin">
-                            <textarea class="form-control no-margin" readonly="" style="background: #e3efff; color: black; border-color: #edfaff"><%= reply2.comment %></textarea>
-                            <div class="text-right">
-                              <p style="font-size: 12px;"><%= reply2.created_at.localtime.strftime('%Y/%m/%d %H:%M')%> &nbsp; <%= reply2.question.user.user_name %></p>
-                              <% if reply2.user_id == current_user.id %>
-                                  <%= button_to 'delete', reply2,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
-                              <% end %>
+              <% unless @replies2.blank? %>
+                  <% @replies2.each do |reply2| %>
+                      <% unless reply1.id != reply2.parent_reply_id %>
+                          <div class="col-md-1 no-margin"></div>
+                          <div class="col-md-11 no-margin">
+                            <div class="col-md-12">
+                              <h5><%= raw reply2.comment %> - <span style="background-color: #e9f8f8; font-size: 13px;"><%= reply2.question.user.user_name %></span> &nbsp;<span style="font-size: 12px;"><%= reply2.created_at.localtime.strftime('%Y/%m/%d') %></span></h5>
+                              <%# button_to 'delete', reply2,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
+                              <% order_count += 1 %>
+                              <hr class="no-padding no-margin">
                             </div>
                           </div>
-                          <!-- 댓글이 달렸을 경우 END-->
-                          <% end %>
                       <% end %>
+                  <% end %>
+              <% end %>
 
+              <div class="col-md-1"></div>
+              <div class="col-md-11">
+                <div class="col-md-12 no-margin no-padding margin-bottom-50 margin-top-20">
+                  <form action="/replies" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                    <%= token_tag nil %>
+                    <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
+                    <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
 
-                      <div class="col-md-1 no-margin no-padding margin-top-20"></div>
-                      <div class="col-md-10 no-margin no-padding margin-top-20">
-                      </div>
-                      <div class="col-md-1 no-margin margin-top-20">
-                        <button class="btn-u btn-u-dark-blue" onclick="viewEditBox(<%= reply2EditorIndex %>)">댓글</button>
-                      </div>
+                    <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
+                    <input type="hidden" name="reply[parent_reply_id]" value="<%= reply1.id %>" />
+                    <input type="hidden" name="reply[depth]" value="2" />
+                    <input type="hidden" name="reply[order_no]" value="<%= order_count %>" />
 
-
-                      <!-- 댓글2 달기 -->
-                      <div class="col-md-1 no-margin no-padding margin-top-20"></div>
-                      <div hidden id="reply2<%=reply2EditorIndex%>" class="col-md-11 no-margin no-padding margin-top-20">
-
-                        <form action="/replies" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-                          <%= token_tag nil %>
-                          <div class="tag-box tag-box-v3 form-page">
-                            <div class="headline"><h4>댓글 달기</h4></div>
-
-                            <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-                            <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
-                            <input type="hidden" name="reply[depth]" value="2" />
-                            <input type="hidden" name="reply[parent_reply_id]" value="0" />
-                            <input type="hidden" name="reply[group_id]" value="<%= group_id_index %>" />
-                            <input type="hidden" name="reply[order_no]" value="1" />
-
-                            <!-- textarea (text editor가 들어갈 자리)-->
-                            <textarea class="form-control" rows="7" name="reply[comment]" placeholder="Comment Here!"></textarea>
-                            <!-- textarea END -->
-                            <br>
-                            <div class="text-right">
-                              <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
-                            </div>
-                          </div>
-                        </form>
-                      </div>
-                      <!-- 댓글2 달기 END -->
-
-
+                    <div class="col-md-11">
+                      <textarea class="form-control" style="width: 100%;" name="reply[comment]" placeholder="댓글 달기"></textarea>
                     </div>
-
-                  </div>
+                    <div class="col-md-1 text-right">
+                      <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
+                    </div>
+                  </form>
                 </div>
-              <% order_count += 1 %>
-              <% reply2EditorIndex += 1 %>
-              <% group_id_index += 1 %>
+              </div>
+              <% reply1_number += 1 %>
           <% end %>
       <% end %>
 
-
       <hr>
 
+      <div class="col-md-12">
+        <!-- 답변 달기 -->
+        <hr>
+        <form action="/replies" id="new_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+          <%= token_tag nil %>
+          <div class="tag-box tag-box-v3 form-page">
+            <div class="headline"><h4>답변 달기</h4></div>
 
+            <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
+            <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
+            <input type="hidden" name="reply[comment]" id="reply_comment">
+            <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
+            <input type="hidden" name="reply[parent_reply_id]" value="0" />
+            <input type="hidden" name="reply[depth]" value="1" />
+            <input type="hidden" name="reply[order_no]" value="0" />
 
+            <!-- text editor -->
+            <div id="reply_post" style="font-size: 10px;"></div>
 
-      <!-- 답변 달기 -->
-      <form action="/replies" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-        <%= token_tag nil %>
-        <div class="tag-box tag-box-v3 form-page">
-          <div class="headline"><h4>답변 달기</h4></div>
-
-          <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-          <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
-          <input type="hidden" name="reply[depth]" value="1" />
-          <input type="hidden" name="reply[parent_reply_id]" value="0" />
-          <input type="hidden" name="reply[group_id]" value="<%= group_id_index %>" />
-
-          <!-- textarea (text editor가 들어갈 자리)-->
-          <textarea class="form-control" rows="7" name="reply[comment]" placeholder="Answer Here!"></textarea>
-          <!-- textarea END -->
-          <br>
-          <div class="text-right">
-            <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
+            <div class="text-right">
+              <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
+            </div>
           </div>
-        </div>
-      </form>
-      <!-- 답변 달기 END -->
-
+        </form>
+        <!-- 답변 달기 END -->
+      </div>
     </div>
 
     <%= render partial: 'blogs/right_sidebar' %>
@@ -190,6 +137,26 @@
       });
       toggle = 0;
     }
+  }
+</script>
 
+<script type="text/javascript">
+  function initpage() {
+    $('#reply_post').summernote({
+      height : 180,
+      lang: 'ko-KR',
+      focus : true,
+      tabsize : 2
+    });
+
+
+    $('#new_reply').submit(function () {
+      if ($('#reply_post').summernote('isEmpty')) {
+        alert('내용을 입력하세요.');
+        $('#reply_post').focus();
+        return false;
+      }
+      $('#reply_comment').val($('#reply_post').summernote('code'));
+    });
   }
 </script>
