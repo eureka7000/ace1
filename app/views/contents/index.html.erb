@@ -221,8 +221,8 @@
     <% elsif @step == '4' %>
 
 		<% @unit_concepts.each do | unit_concept | %>
-	  		
-			<% if unit_concept.level <= @level.to_i() %>
+        
+			<% if unit_concept.level <= @user.grade.to_i + @level.to_i() %>
 			
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">

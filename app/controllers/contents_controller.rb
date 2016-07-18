@@ -5,23 +5,30 @@ class ContentsController < ApplicationController
     def exercise
 
         if params[:exercise_type] == "concept_exercise"
-            @unit_concept = UnitConcept.find(params[:unit_concept_id])
+            @unit_concept = Concept.find(params[:unit_concept_id])            
         else
-            @unit_concept = Concept.find(params[:unit_concept_id])
+            @unit_concept = UnitConcept.find(params[:unit_concept_id])            
         end        
 
-        logger.debug "****************" + @unit_concept.inspect
-
         if @unit_concept.exercise_yn == 'exercise'
+            
             @exercise = @unit_concept
-            @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.id )
+            
+            # 유형문제일 경우에만 유사문제 조회, 종합문제는 유사문제가 없음.
+            unless params[:exercise_type] == "concept_exercise"
+                @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.id )
+            end 
+                
             @is_exercise = 1
+            
         elsif @unit_concept.exercise_yn == 'similar exercise'
             @is_exercise = 0
             @exercise = UnitConcept.find(@unit_concept.related_unit_concept_id)
             @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.related_unit_concept_id )
         end
-
+        
+        logger.debug "exercise : " + @exercise.inspect
+        
         link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
                      "where b.unit_concept_id = #{params[:unit_concept_id]} " +
                      "and b.desc_type = 5 and b.link = a.id "
@@ -70,20 +77,17 @@ class ContentsController < ApplicationController
             elsif @step == '4'
 
                 @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
-                
 
                 @student = params[:student]
                 @level = params[:level]
 
                 @user = User.find(current_user.id)
-                if @student == 'high'
-                    @study_level = (@level.to_i - 2).to_s
-                    @user.study_level = @study_level
-                else
-                    @study_level = @level
-                    @user.study_level = @study_level
-                end
+                @study_level = @level
+                @user.study_level = @study_level
+                
                 @user.save
+                
+                logger.debug "grade : " + @user.grade.inspect
                 
             elsif @step == '5'
 

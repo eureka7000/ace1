@@ -18,7 +18,7 @@
             <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
             <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
 
-            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
+            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= params[:exercise_type] == "concept_exercise" ? @exercise.concept_name : @exercise.name %></a></li>
             <% @similar_exercises.each do |similar_exercise| %>
                 <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
             <% end %>
