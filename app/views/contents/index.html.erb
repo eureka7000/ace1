@@ -79,7 +79,7 @@
 			<%= str %>
 		</h1>
 
-        <ul class="pull-right breadcrumb col-md-12">
+        <ul class="pull-right breadcrumb">
             <li><a href="/">Home</a></li>
             <li><a href="">Main</a></li>
             <li class="active">
@@ -221,8 +221,8 @@
     <% elsif @step == '4' %>
 
 		<% @unit_concepts.each do | unit_concept | %>
-	  		
-			<% if unit_concept.level <= @level.to_i() %>
+        
+			<% if unit_concept.level <= @user.grade.to_i + @level.to_i() %>
 			
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
@@ -280,9 +280,9 @@
         
             <li class="col-md-4 md-margin-bottom-30">
                 <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                    <a href="/contents/exercise?concept_id=<%= unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                    <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                     <div class="content-boxes-in-v3">
-                        <h3><a href="/contents/exercise?concept_id=<%= unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= unit_concept_exercise.name %></a></h3>
+                        <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
                     </div>
                 </div>
             </li>

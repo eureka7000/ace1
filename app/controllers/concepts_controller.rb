@@ -89,7 +89,7 @@ class ConceptsController < ApplicationController
 
         respond_to do |format|
             if @concept.save
-                format.html { redirect_to concepts_path, notice: 'Concept was successfully created.' }
+                format.html { redirect_to concepts_path + "?category=#{params[:concept][:category]}&sub_category=#{params[:concept][:sub_category]}", notice: 'Concept was successfully created.' }
                 format.json { render :show, status: :created, location: @concept }
             else
                 format.html { render :new }

@@ -186,9 +186,6 @@ class UsersController < ApplicationController
         end
     end     
     
-  
-    
-    
     def destroy
         
         authenticate_admin_user!

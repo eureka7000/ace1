@@ -142,7 +142,7 @@
                                 <input type="text" name="concept_exercise[video]" class="form-control" placeholder="video url" />
                             </label>
                             <label id="link_label" class="input" <% unless params[:desc_type] == '5' %>style="display:none"<% end %>>
-                                <i class="icon-append fa fa-search" onclick="conceptSearch()" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
+                                <i class="icon-append fa fa-search" onclick="conceptSearch('link')" style="cursor: pointer; background: #72c02c !important; color:white !important;"></i>
                                 <input type="text" id="unit_concept_desc" disabled class="form-control" placeholder="related concept" />
                                 <input type="hidden" id="unit_concept_id" name="concept_exercise[link]">
                             </label>
@@ -169,7 +169,7 @@
                         </section>
                         <section class="col col-2">
                             <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
-                            <%= link_to 'Back', concepts_path, :class => 'btn-u btn-primary align-right' %>
+                            <%= link_to 'Back', concepts_path + "?" + params.to_query, :class => 'btn-u btn-primary align-right' %>
                         </section>    
                     </div>
                 </fieldset>

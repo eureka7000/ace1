@@ -9,6 +9,7 @@
 			<ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
 
         <% if @is_exercise == 1 %>
+        
             <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유형문제</a></li>
             <li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
             <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
@@ -17,11 +18,13 @@
             <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
             <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
             <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
-
+            <% unless params[:exercise_type] == "concept_exercise" %>
             <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
-            <% @similar_exercises.each do |similar_exercise| %>
-                <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+                <% @similar_exercises.each do |similar_exercise| %>
+            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
+                <% end %>
             <% end %>
+                
         <% else %>
             <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유사문제</a></li>
             <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
@@ -45,7 +48,7 @@
 
 						<div style="overflow-y: auto; width: 100%;">
 							<% imgCount = 1 %>
-							<% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+							<% @unit_concept_descs.each do | unit_concept_desc | %>
 								<% unless unit_concept_desc.desc_type.to_i != 1 %>
 									<% if imgCount == 1 %>
 							<img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
@@ -92,7 +95,7 @@
 					<div class="col-md-6">
 
 						<div style="overflow-y: auto; width: 100%;">
-							<% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+							<% @unit_concept_descs.each do | unit_concept_desc | %>
 								<% unless unit_concept_desc.desc_type.to_i != 1%>
 							<img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
 								<% end %>
@@ -105,7 +108,7 @@
 						
 						<div style="overflow-y: auto; width: 100%;">
 							<% imgCount = 1 %>
-							<% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+							<% @unit_concept_descs.each do | unit_concept_desc | %>
 								<% unless unit_concept_desc.desc_type.to_i != 2 %>
 									<% if imgCount == 1 %>
 							<img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
@@ -150,7 +153,7 @@
 					<div class="col-md-12 margin-bottom-20 no-padding">
                         
                         <div class="col-md-6">
-                            <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                            <% @unit_concept_descs.each do | unit_concept_desc | %>
                                 <% unless unit_concept_desc.desc_type.to_i != 1 %>
                             <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
                                 <% end %>
@@ -161,7 +164,7 @@
                             <a href="javascript:viewSolution()" class="btn btn-default" id="viewSolutionBtn">정답 보기</a>
                             
                             <div>
-                                <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                                <% @unit_concept_descs.each do | unit_concept_desc | %>
                                     <% if unit_concept_desc.memo.to_s.include?('a') %>
                                 <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
                                     <% end %>
@@ -176,7 +179,7 @@
                                 <% 
                                     imgCount = 1 
     
-                                    @unit_concept.unit_concept_descs.each do | unit_concept_desc | 
+                                    @unit_concept_descs.each do | unit_concept_desc | 
                                 
                                         unless unit_concept_desc.desc_type.to_i != 3 
                                     
@@ -245,6 +248,7 @@
             <div class="tab-pane" id="v">
                 
                 <div class="col-md-12">
+                    <% unless params[:exercise_type] == 'concept_exercise' %>
                     <p>
                         <% unless @unit_concept.level.nil? %>
                             <% rst = 5 - @unit_concept.level %>
@@ -260,10 +264,11 @@
                         </span>
                         <% end %>
                     </p>
-                    <h3><span style="color:black"><%= @unit_concept.name %></h3>
+                    <% end %>
+                    <h3><span style="color:black"><%= @unit_concept_name %></h3>
 
                     <div style="overflow-y: auto; ">
-                        <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                        <% @unit_concept_descs.each do | unit_concept_desc | %>
                             <% unless unit_concept_desc.desc_type.to_i != 4%>
                         <div class="responsive-video margin-bottom-30">
                             <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
@@ -282,7 +287,7 @@
                 <div id="printArea"> <!-- 프린트 영역 -->
                     
                     <div class="col-xs-6">
-                        
+                        <% unless params[:exercise_type] == 'concept_exercise' %>
                         <p>
                             <% unless @unit_concept.level.nil? %>
                                 <% rst = 5 - @unit_concept.level %>
@@ -300,10 +305,11 @@
                             
                             <% end %>
                         </p>
-                        <h4 style="margin-bottom: 10px"><%= @unit_concept.name %></h4>
+                        <% end %>
+                        <h4 style="margin-bottom: 10px"><%= @unit_concept_name %></h4>
 
                         <div style="overflow-y: auto; ">
-                            <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                            <% @unit_concept_descs.each do | unit_concept_desc | %>
                                 <% unless unit_concept_desc.desc_type.to_i != 1%>
                             <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 10px;"/>
                                 <% end %>
@@ -330,7 +336,7 @@
                         <br>
 
                         <div style="overflow-y: auto; ">
-                            <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                            <% @unit_concept_descs.each do | unit_concept_desc | %>
                                 <% unless unit_concept_desc.desc_type.to_i != 2 %>
                             <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
                                 <% end %>
@@ -339,7 +345,7 @@
                             <br><br>
                             <span class="label rounded-2x label-aqua margin-bottom-30">Exercise</span>
 
-                            <% @unit_concept.unit_concept_descs.each do | unit_concept_desc | %>
+                            <% @unit_concept_descs.each do | unit_concept_desc | %>
                                 <% unless unit_concept_desc.desc_type.to_i != 3 %>
                             <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
                                 <% end %>
@@ -706,7 +712,3 @@ function saveEvaluation() {
     player.api('pause');
   }
 </script>
-
-
-
-
