@@ -3585,12 +3585,13 @@ img.image-md {
 }
 
 .content {
-  padding-top: 40px;
+  padding-top: 130px;
   padding-bottom: 40px;
 }
 
 .content-sm {
   padding-top: 60px;
+  
   padding-bottom: 60px;
 }
 

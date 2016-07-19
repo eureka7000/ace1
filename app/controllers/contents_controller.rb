@@ -5,9 +5,13 @@ class ContentsController < ApplicationController
     def exercise
 
         if params[:exercise_type] == "concept_exercise"
-            @unit_concept = Concept.find(params[:unit_concept_id])            
+            @unit_concept = Concept.find(params[:unit_concept_id])
+            @unit_concept_descs = @unit_concept.concept_exercises
+            @unit_concept_name = @unit_concept.concept_name
         else
-            @unit_concept = UnitConcept.find(params[:unit_concept_id])            
+            @unit_concept = UnitConcept.find(params[:unit_concept_id])
+            @unit_concept_descs = @unit_conept.unit_concept_descs
+            @unit_concept_name = @unit_concept.name
         end        
 
         if @unit_concept.exercise_yn == 'exercise'
@@ -26,8 +30,6 @@ class ContentsController < ApplicationController
             @exercise = UnitConcept.find(@unit_concept.related_unit_concept_id)
             @similar_exercises = UnitConcept.where('related_unit_concept_id = ?', @unit_concept.related_unit_concept_id )
         end
-        
-        logger.debug "exercise : " + @exercise.inspect
         
         link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
                      "where b.unit_concept_id = #{params[:unit_concept_id]} " +
@@ -86,8 +88,6 @@ class ContentsController < ApplicationController
                 @user.study_level = @study_level
                 
                 @user.save
-                
-                logger.debug "grade : " + @user.grade.inspect
                 
             elsif @step == '5'
 
