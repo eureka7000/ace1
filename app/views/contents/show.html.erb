@@ -1,20 +1,35 @@
-<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <div class="row" style="margin: 20px;">
 
-
-
   <div class="col-md-12">
+
+    <% type2Count = 0 %>
+    <% type3Count = 0 %>
+    <% linkCount = 0 %>
+    <% type4Count = 0 %>
+    <% @unit_concept_descs.each do |unit_concept_desc| %>
+        <% if unit_concept_desc.desc_type.to_i == 2 %>
+            <% type2Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 3 %>
+            <% type3Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 4 %>
+            <% type4Count +=1 %>
+        <% end %>
+  <% end %>
+
+    <% @links.each do |link| %>
+        <% linkCount += 1 %>
+    <% end %>
 
     <!-- tabs right -->
     <div class="tabbable">
       <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">개 념</a></li>
-        <li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
-        <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise</a></li>
-        <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
-        <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
+        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
+        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
+        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise</a></li>
+        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
+        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
-        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
+        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">질문하기</a></li>
         <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
       </ul>
 
@@ -607,11 +622,9 @@
       </form>
 
     </div>
-
   </div>
-
 </div>
-<!-- Tab 관련 개념 END-->
+
 
 </div>
 
@@ -794,10 +807,11 @@
   }
 </script>
 
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <script type="text/javascript">
   function videoPause(){
     var iframe = $('#vimeo-player')[0];
-    var player = $(iframe);
+    var player = $f(iframe);
     player.api('pause');
   }
 </script>
@@ -825,6 +839,7 @@
         return false;
       }
       $('#question_content').val($('#question_post').summernote('code'));
+      alert('질문이 전송되었습니다');
     });
   }
 </script>
