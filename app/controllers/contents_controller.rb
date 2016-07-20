@@ -58,6 +58,15 @@ class ContentsController < ApplicationController
         unless @concept_id.nil?
             @concept = Concept.find(@concept_id)
             @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+
+            # 임시 코드 - 유형문제 파일이 올려져 있지 않으면 보여지지 않는다
+            @check = 1
+            @unit_concept_exercises.each do |exec|
+                unless exec.unit_concept_descs.blank?
+                    @check = 0
+                    break
+                end
+            end
         end
 
         if @view_type == '1'

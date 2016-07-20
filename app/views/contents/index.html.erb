@@ -245,14 +245,14 @@
                   </div>
               </li>
 
-                <% idx += 1 %>
-                  <% idx %= 12 %>
+              <% idx += 1 %>
+              <% idx %= 12 %>
               <% end %>
 
           <% end %>
 		  
     	  <% if @unit_concept_exercises.length > 0 %>
-		  
+		        <% if @check == 0 %> <!-- 유형문제 파일이 올려져 있지 않으면 보여지지 않는다 -->
               <li class="col-md-4 md-margin-bottom-30">
                   <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                       <% params[:step] = 5 %>
@@ -271,7 +271,7 @@
                       </div>
                   </div>
               </li>		  
-		  
+		        <% end %>
 		  <% end %>
           
     <% elsif @step == '5'  #유형문제 %>
@@ -288,7 +288,7 @@
             </li>
             
             <% idx += 1 %>
-            
+            <% idx %= 12 %>
         <% end %>
 
     <% end %>
@@ -371,7 +371,7 @@
                     </div>
                   </li>
                   <% idx += 1 %>
-              <% idx %= 12 %>
+                  <% idx %= 12 %>
           <% end %>
     <% end %>
     </ul>
