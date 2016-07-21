@@ -4,8 +4,20 @@ class QuestionsController < ApplicationController
 
     def questions_list
         unless session[:admin].nil?
+
             @questions = Question.all.paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+
+            unless params[:student].nil?
+                @questions = Question.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            end
+
+            unless params[:code].blank?
+                @questions = Question.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            end
+
             @teachers = Teacher.all
+            @students = Question.select(:user_id).distinct.order(:user_id)
+            @codes = Question.select(:unit_concept_id).distinct.order(:unit_concept_id)
             render layout: 'admin_main'
         end
     end
