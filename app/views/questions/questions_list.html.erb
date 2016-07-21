@@ -1,0 +1,55 @@
+<div class="container-fluid" style="margin-top: 50px">
+
+  <div class="row">
+
+    <div class="col-sm-12 col-md-12 main">
+
+      <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> 질문 목록</h2>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>개념 이름</th>
+            <th>학생</th>
+            <th>선생님 / 멘토</th>
+            <th>제목</th>
+            <th>등록일</th>
+            <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+          </tr>
+          </thead>
+          <tbody>
+            <% @questions.each do |question| %>
+              <tr>
+                <td><%= question.unit_concept.name %></td>
+                <td><%= question.user.user_name %></td>
+                <% unless question.to_user_id.blank? %>
+                  <% @teachers.each do |teacher| %>
+                      <% if teacher.user_id == question.to_user_id %>
+                          <td><%= teacher.user.user_name %></td>
+                      <% end %>
+                  <% end %>
+                <% else %>
+                  <td><%= '' %></td>
+                <% end %>
+                <% unless question.title.blank? %>
+                  <td><%= question.title %></td>
+                <% else %>
+                  <td><%= '' %></td>
+                <% end %>
+                <td><%= question.created_at.localtime.strftime('%Y-%m-%d') %></td>
+                <td><%= link_to 'Show', question_path(question)%></td>
+                <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+
+          </tbody>
+        </table>
+        <%= will_paginate @questions, renderer: BootstrapPagination::Rails %>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

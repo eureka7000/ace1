@@ -1,6 +1,14 @@
 class QuestionsController < ApplicationController
-    before_action :set_question, only: [:show, :edit, :update, :destroy]
-    before_filter :authenticate_user!
+    before_action :set_question, only: [:show, :edit, :update]
+    before_filter :authenticate_user!, only: [:index, :update]
+
+    def questions_list
+        unless session[:admin].nil?
+            @questions = Question.all.paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            @teachers = Teacher.all
+            render layout: 'admin_main'
+        end
+    end
 
     def index
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
@@ -39,6 +47,9 @@ class QuestionsController < ApplicationController
     def show
         @replies1 = Reply.where('question_id = ? and depth = ?', params[:id], 1)
         @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2)
+        unless session[:admin].nil?
+            render layout: 'admin_main'
+        end
     end
 
 
@@ -51,6 +62,19 @@ class QuestionsController < ApplicationController
                 format.html { render :edit }
                 format.json { render json: @question.errors, status: :unprocessable_entity }
             end
+        end
+    end
+
+    # DELETE /questions/1
+    # DELETE /questions/1.json
+    def destroy
+        unless session[:admin].nil?
+            @question = Question.find(params[:id])
+        end
+        @question.destroy
+        respond_to do |format|
+            format.html { redirect_to '/questions/questions_list', notice: 'Question was successfully destroyed.' }
+            format.json { head :no_content }
         end
     end
 

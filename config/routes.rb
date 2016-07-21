@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
     resources :concept_exercises
     resources :replies
+    get 'questions/questions_list' => 'questions#questions_list'
     resources :questions
     resources :user_relations
     resources :unit_concept_self_evaluations

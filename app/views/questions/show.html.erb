@@ -68,7 +68,12 @@
                   <form action="/replies" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
                     <%= token_tag nil %>
                     <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-                    <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
+                    <% if session[:admin].nil? %>
+                        <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
+                    <% else %>
+                        <input type="hidden" name="reply[user_id]" value="0"/>
+                    <% end %>
+
 
                     <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
                     <input type="hidden" name="reply[parent_reply_id]" value="<%= reply1.id %>" />
@@ -76,7 +81,7 @@
                     <input type="hidden" name="reply[order_no]" value="<%= order_count %>" />
 
                     <div class="col-md-11">
-                      <textarea class="form-control" style="width: 100%;" name="reply[comment]" placeholder="댓글 달기"></textarea>
+                      <textarea class="form-control" style="width: 100%; height: 35px;" name="reply[comment]" placeholder="댓글 달기"></textarea>
                     </div>
                     <div class="col-md-1 text-right">
                       <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
@@ -99,7 +104,11 @@
             <div class="headline"><h4>답변 달기</h4></div>
 
             <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-            <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
+            <% if session[:admin].nil? %>
+                <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
+            <% else %>
+                <input type="hidden" name="reply[user_id]" value="0"/>
+            <% end %>
             <input type="hidden" name="reply[comment]" id="reply_comment">
             <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
             <input type="hidden" name="reply[parent_reply_id]" value="0" />
@@ -143,12 +152,17 @@
 <script type="text/javascript">
   function initpage() {
     $('#reply_post').summernote({
-      height : 180,
+      height : 200,
       lang: 'ko-KR',
       focus : true,
-      tabsize : 2
+      tabsize : 2,
+      onImageUpload: function () {
+        console.log('onImageUpload', arguments, $('#reply_post')[0] === this);
+      },
+      onImageUploadError: function () {
+        console.log('onImageUploadError', arguments, $('#reply_post')[0] === this);
+      }
     });
-
 
     $('#new_reply').submit(function () {
       if ($('#reply_post').summernote('isEmpty')) {
@@ -158,5 +172,6 @@
       }
       $('#reply_comment').val($('#reply_post').summernote('code'));
     });
+
   }
 </script>
