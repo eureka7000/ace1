@@ -43,7 +43,14 @@
               <div class="col-md-11 no-margin bg-color-light">
                 <h4><%= raw reply1.comment %></h4>
                 <%# button_to 'delete', reply1,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
-                <div class="col-md-12 text-right margin-top-20"><p><%= reply1.created_at.localtime.strftime('%Y/%m/%d') %>&nbsp;&nbsp;<%= reply1.question.user.user_name %></p></div>
+                <div class="col-md-12 text-right margin-top-20">
+                  <% if reply1.user_id != 0 %>
+                      <% @user = User.find(reply1.user_id) %>
+                      <p><%= reply1.created_at.localtime.strftime('%Y/%m/%d') %>&nbsp;&nbsp;<%= @user.user_name %></p>
+                  <% else %>
+                      <p><%= reply1.created_at.localtime.strftime('%Y/%m/%d') %>&nbsp;&nbsp; 유레카메스</p>
+                  <% end %>
+                </div>
               </div>
 
               <% unless @replies2.blank? %>
@@ -52,7 +59,14 @@
                           <div class="col-md-1 no-margin"></div>
                           <div class="col-md-11 no-margin">
                             <div class="col-md-12">
-                              <h5><%= raw reply2.comment %> - <span style="background-color: #e9f8f8; font-size: 13px;"><%= reply2.question.user.user_name %></span> &nbsp;<span style="font-size: 12px;"><%= reply2.created_at.localtime.strftime('%Y/%m/%d') %></span></h5>
+                              <h5><%= raw reply2.comment %> - <span style="background-color: #e9f8f8; font-size: 13px;">
+                                 <% if reply2.user_id != 0 %>
+                                   <% @user = User.find(reply2.user_id) %>
+                                    <%= @user.user_name %>
+                                 <% else %>
+                                    유레카메스
+                                 <% end %>
+                              </span> &nbsp;<span style="font-size: 12px;"><%= reply2.created_at.localtime.strftime('%Y/%m/%d') %></span></h5>
                               <%# button_to 'delete', reply2,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
                               <% order_count += 1 %>
                               <hr class="no-padding no-margin">
