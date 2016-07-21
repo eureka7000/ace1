@@ -26,13 +26,13 @@
 
 <div class="breadcrumbs col-md-12">
     <div class="container">
-        <h1 class="pull-left">
-			<% 
+      <!--<h1 class="pull-left breadcrumb">
+			<%#
 			if @view_type == '1'
 				str = "단원별 학습"
 
         if @step > '1'
-          str += " / #{Concept::CATEGORIES[@category]} "
+          str += " / #{Concept::CATEGORIES[@category]}"
         end
 
         if @step > '2'
@@ -76,20 +76,42 @@
       end
 			%>
 
-			<%= str %>
-		</h1>
+      </h1>-->
 
-        <ul class="pull-right breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li><a href="">Main</a></li>
-            <li class="active">
-              <% if @view_type == '1' %>
-                  <a href="/contents?view_type=1">단원별 학습</a>
-              <% else %>
-                  <a href="/contents?view_type=2">학년별 학습</a>
+      <h2 class="pull-left breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="active">
+          <% if @view_type == '1' %>
+              <a href="/contents?view_type=1">단원별 학습</a>
+              <% if @step > '1' %>
+                  <li><a href="/contents?view_type=1&step=2&category=<%=@category%>"><%= Concept::CATEGORIES[@category] %></a></li>
               <% end %>
-		      	</li>
-        </ul>
+              <% if @step > '2' %>
+                  <li><a href="/contents?view_type=1&step=3&category=<%=@category%>&sub_category=<%=@sub_category%>"><%=Concept::SUB_CATEGORIES[@sub_category]%></a></li>
+              <% end %>
+              <% if @step > '3' %>
+                  <li><a href="/contents?view_type=1&step=4&category=<%=@category%>&sub_category=<%=@sub_category%>&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&level=<%= current_user.study_level %>&concept_id=<%= @concept.id %>"><%= @concept.concept_name %></a></li>
+              <% end %>
+              <% if @step > '4' %>
+                  <li><a href="contents?action=index&category=<%= @category %>&concept_id=<%= @concept_id %>&controller=contents&level=<%= @level %>&step=5&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&sub_category=<%= @sub_category %>&view_type=1">유형문제</a></li>
+              <% end %>
+          <% else %>
+              <a href="/contents?view_type=2">학년별 학습</a>
+              <% if @step > '1' %>
+                  <li><a href="/contents?view_type=2&step=2&grade=<%= @grade %>"><%= UnitConcept::GRADES[@grade.to_i] %></a></li>
+              <% end %>
+              <% if @step > '2' %>
+                  <li><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= @chapter %>"><%= GradeUnitConcept::CHAPTERS[@chapter.to_i] %></a></li>
+              <% end %>
+              <% if @step > '3' %>
+                  <li><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>"><%= GradeUnitConcept::CATEGORIES[@category.to_i] %></a></li>
+              <% end %>
+              <% if @step > '4' %>
+                  <li><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>"><%= GradeUnitConcept::SUB_CATEGORIES[@sub_category.to_i] %></a></li>
+              <% end %>
+          <% end %>
+        </li>
+      </h2>
 
     </div>
 </div>
@@ -357,6 +379,7 @@
                     </div>
                   </li>
                   <% idx += 1 %>
+
                   <% idx %= 12 %>
               <% end %>
           <% end %>
@@ -366,6 +389,18 @@
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                       <a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
+                        <ul class="star-vote">
+                          <% unless grade_unit_concept.unit_concept.level.nil? %>
+                              <% rst = 5 - grade_unit_concept.unit_concept.level %>
+                              <% (1..grade_unit_concept.unit_concept.level).each do |idx| %>
+                                  <li><i class="fa fa-star"></i></li>
+                              <% end%>
+
+                              <% (1..rst).each do |idx| %>
+                                  <li><i class="fa fa-star-o"></i></li>
+                              <% end %>
+                          <% end %>
+                        </ul>
                         <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
                       </div>
                     </div>
