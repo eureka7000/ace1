@@ -29,8 +29,8 @@
             <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
             <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
             <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념(<%= linkCount %>)</a></li>
-            <li><a href="#v" data-toggle="tab" style="text-align: center">Video(<%= type4Count %>)</a></li>
-            <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
+            <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video(<%= type4Count %>)</a></li>
+            <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
             <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
             <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
             <% unless params[:exercise_type] == "concept_exercise" %>
