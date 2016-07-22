@@ -69,6 +69,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
+                    <li><a href="/teachers/students_list">학생 목록</a></li>
                     <% else %>
                     <li><a href="/concepts">단원별 관리</a></li>
 				          	<li><a href="/grade_unit_concepts">학년별 관리</a></li>

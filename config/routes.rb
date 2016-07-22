@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     resources :concepts
     resources :schools
     resources :payments
+
+    get 'teachers/students_list' => 'teachers#students_list'
     resources :teachers
   
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations"}

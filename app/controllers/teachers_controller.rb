@@ -14,6 +14,13 @@ class TeachersController < ApplicationController
           
       end
 
+      def students_list
+        schoolID = session[:admin]['school_id']
+
+        @students = User.where('school_id = ?', schoolID).order(:user_name).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:user_name)
+
+      end
+
       # GET /teachers/1
       # GET /teachers/1.json
       def show
