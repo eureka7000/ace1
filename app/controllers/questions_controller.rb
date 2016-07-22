@@ -7,7 +7,7 @@ class QuestionsController < ApplicationController
 
             @questions = Question.all.paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
 
-            unless params[:student].nil?
+            unless params[:student].blank?
                 @questions = Question.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 

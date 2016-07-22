@@ -32,6 +32,18 @@ class MypagesController < ApplicationController
         elsif current_user.user_types[0].user_type == 'school teacher'
             @type = 'school teacher'
         end
+
+        unless params[:student].blank?
+            @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
+        end
+
+        unless params[:code].blank?
+            @questions = @questions.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+        end
+
+        @students = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:user_id).distinct.order(:user_id)
+        @codes = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:unit_concept_id).distinct.order(:user_id)
+
     end
 
     
