@@ -39,8 +39,12 @@
           <% count = 0 %>
           <% @unit_concept_related.each do |related| %>
               <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                <p style="color: #898487"><%= 'prev' unless count != 0 %> <%= 'now' unless count != 1 %> <%= 'next' unless count != 2 %></p>
-                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                <% unless count != 1 %>
+                    <p style="color: black; font-weight: bold;">now</p>
+                <% else %>
+                    <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
+                <% end %>
+                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
                 <br/><br/>
               </div>
               <% count += 1 %>
