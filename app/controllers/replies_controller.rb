@@ -7,12 +7,19 @@ class RepliesController < ApplicationController
   def create
     @reply = Reply.new(reply_params)
 
+    if @reply.question.to_user_id == current_user.id
+      @question = Question.find(@reply.question_id)
+      @question.confirm_yn = 'Y'
+      @question.save
+    end
+
     respond_to do |format|
       if @reply.save
         format.html { redirect_to "/questions/#{params[:reply][:question_id]}", notice: '댓글이 성공적으로 등록되었습니다.' }
       end
     end
   end
+
 
   def show
 
@@ -22,6 +29,7 @@ class RepliesController < ApplicationController
   end
 
   def update
+
   end
 
   def destroy

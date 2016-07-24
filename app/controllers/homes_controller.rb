@@ -4,6 +4,14 @@ class HomesController < ApplicationController
 
     def index
 
+        unless current_user.nil?
+            unless current_user.user_types[0].user_type != 'school teacher'
+                @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+
+                @session_yn = 'Y'
+            end
+        end
+
         respond_to do |format|
             format.html
         end

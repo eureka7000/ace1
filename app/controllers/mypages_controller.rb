@@ -1,17 +1,6 @@
 class MypagesController < ApplicationController
     
     before_filter :authenticate_user!
-    
-    def overall
-
-        @click = 'overall';
-        @active = 'mypages'
-       
-        respond_to do |format|
-            format.html
-        end 
-        
-    end    
 
     def evaluation
 
@@ -19,6 +8,9 @@ class MypagesController < ApplicationController
 
         @unit_concept_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id).order(:unit_concept_desc_id).order(created_at: :desc)
 
+        unless current_user.user_types[0].user_type != 'school teacher'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
     end
 
 
@@ -44,6 +36,10 @@ class MypagesController < ApplicationController
         @students = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:user_id).distinct.order(:user_id)
         @codes = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:unit_concept_id).distinct.order(:user_id)
 
+
+        unless current_user.user_types[0].user_type != 'school teacher'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
     end
 
     
@@ -53,7 +49,12 @@ class MypagesController < ApplicationController
         @active_tab = params[:active_tab] || '2'
         
         @schools = School.where('is_school = ?', (current_user.user_types[0].user_type == 'school teacher' ? '1' : '0') )
-        
+
+
+        unless current_user.user_types[0].user_type != 'school teacher'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
+
         respond_to do |format|
             format.html
         end         
