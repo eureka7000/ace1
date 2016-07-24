@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+    resources :inicis_payments
+    resources :user_types
     resources :concept_exercises
     resources :replies
     get 'questions/questions_list' => 'questions#questions_list'

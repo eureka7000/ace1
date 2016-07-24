@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160722083048) do
+=======
+ActiveRecord::Schema.define(version: 20160719094833) do
+>>>>>>> a2065c095dd87721a2dedd10ef5ef86cc0f21feb
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -80,6 +84,29 @@ ActiveRecord::Schema.define(version: 20160722083048) do
     t.datetime "updated_at",                  null: false
     t.string   "name",            limit: 255
     t.integer  "unit_concept_id", limit: 4
+  end
+
+  create_table "inicis_payments", force: :cascade do |t|
+    t.string   "version",       limit: 255
+    t.string   "mid",           limit: 255
+    t.string   "oid",           limit: 255
+    t.string   "good_name",     limit: 255
+    t.decimal  "price",                     precision: 10
+    t.decimal  "tax",                       precision: 10
+    t.decimal  "tax_free",                  precision: 10
+    t.string   "currency",      limit: 255
+    t.string   "buyer_name",    limit: 255
+    t.string   "buyer_tel",     limit: 255
+    t.string   "buyer_email",   limit: 255
+    t.string   "parent_email",  limit: 255
+    t.float    "timestamp",     limit: 53
+    t.string   "signature",     limit: 255
+    t.string   "return_url",    limit: 255
+    t.string   "m_key",         limit: 255
+    t.string   "go_pay_method", limit: 255
+    t.string   "offer_period",  limit: 255
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "payments", force: :cascade do |t|
@@ -218,6 +245,9 @@ ActiveRecord::Schema.define(version: 20160722083048) do
     t.string   "relation_type",   limit: 255
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.string   "confirm_status",  limit: 255
+    t.datetime "request_date",                null: false
+    t.datetime "confirmed_at"
   end
 
   create_table "user_types", force: :cascade do |t|

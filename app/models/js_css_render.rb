@@ -33,6 +33,22 @@ class JsCssRender
                   '      }); ' +
                   '</script>'   
                   
+        elsif controller_name == 'inicis_payments' && page_name == 'new'
+            
+            ret = '<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>' +
+                  '<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>' +
+                  '<script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>' +
+                  '<script type="text/javascript" src="/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>' +
+                  '<script type="text/javascript" src="/assets/js/plugins/datepicker.js"></script>' +
+                  '<script type="text/javascript">' +
+                  '      jQuery(document).ready(function() { ' +
+                  '        	App.init(); ' +
+                  '         App.initCounter(); ' +
+                  '         App.initScrollBar(); ' +
+                  '         Datepicker.initDatepicker(); ' +
+                  '      }); ' +
+                  '</script>'                     
+                  
         else
                        
             ret = '<script type="text/javascript">' +
@@ -62,6 +78,14 @@ class JsCssRender
                   '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">' +
                   '<!-- CSS Page Style -->' +
                   '<link rel="stylesheet" href="/assets/css/pages/profile.css">'
+                  
+        elsif controller_name == 'inicis_payments' && page_name == 'new'          
+                  
+            ret = '<link rel="stylesheet" href="/assets/plugins/scrollbar/css/jquery.mCustomScrollbar.css">' +
+                  '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">' +
+                  '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">' +
+                  '<!-- CSS Page Style -->' +
+                  '<link rel="stylesheet" href="/assets/css/pages/profile.css">'                  
                   
         elsif controller_name == 'payments' && page_name == 'index'
 

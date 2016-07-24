@@ -1,0 +1,43 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  version: MyString
+  mid: MyString
+  oid: MyString
+  good_name: MyString
+  price: 9.99
+  tax: 9.99
+  tax_free: 9.99
+  currency: MyString
+  buyer_name: MyString
+  buyer_tel: MyString
+  buyer_email: MyString
+  parent_email: MyString
+  timestamp: 1
+  : 
+  signature: MyString
+  return_url: MyString
+  m_key: MyString
+  go_pay_method: MyString
+  offer_period: MyString
+
+two:
+  version: MyString
+  mid: MyString
+  oid: MyString
+  good_name: MyString
+  price: 9.99
+  tax: 9.99
+  tax_free: 9.99
+  currency: MyString
+  buyer_name: MyString
+  buyer_tel: MyString
+  buyer_email: MyString
+  parent_email: MyString
+  timestamp: 1
+  : 
+  signature: MyString
+  return_url: MyString
+  m_key: MyString
+  go_pay_method: MyString
+  offer_period: MyString
