@@ -82,7 +82,6 @@ class ContentsController < ApplicationController
                     @student = 'high'
                 end
 
-                @unit_concepts = UnitConcept.all
                 @study_level = current_user.study_level
 
             elsif @step == '4'
@@ -107,8 +106,25 @@ class ContentsController < ApplicationController
             end
             
         else
-            if @step == '5'
+            if @step == '4'
+                if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
+                    @student = 'middle'
+                elsif current_user.grade.to_i > 4 && current_user.grade.to_i < 7
+                    @student = 'high'
+                end
+
+                @study_level = current_user.study_level
+
+            elsif @step == '5'
                 @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
+
+                @level = params[:level]
+
+                @user = User.find(current_user.id)
+                @study_level = @level
+                @user.study_level = @study_level
+
+                @user.save
             end
         end
     end
@@ -143,6 +159,8 @@ where exercise_yn = 'concept' order by code
 where id = #{params[:id]}"
         @row_number = UnitConcept.find_by_sql(query).first
         @row_number.row_number.to_i
+
+
 
         @unit_concept_related = UnitConcept.find_by_sql("select * from (
 
