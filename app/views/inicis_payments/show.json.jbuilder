@@ -1,0 +1,1 @@
+json.extract! @inicis_payment, :id, :version, :mid, :oid, :good_name, :price, :tax, :tax_free, :currency, :buyer_name, :buyer_tel, :buyer_email, :parent_email, :timestamp, :, :signature, :return_url, :m_key, :go_pay_method, :offer_period, :created_at, :updated_at

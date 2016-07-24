@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Inicis Payments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Mid</th>
+      <th>Oid</th>
+      <th>Good name</th>
+      <th>Price</th>
+      <th>Tax</th>
+      <th>Tax free</th>
+      <th>Currency</th>
+      <th>Buyer name</th>
+      <th>Buyer tel</th>
+      <th>Buyer email</th>
+      <th>Parent email</th>
+      <th>Timestamp</th>
+      <th>Signature</th>
+      <th>Return url</th>
+      <th>M key</th>
+      <th>Go pay method</th>
+      <th>Offer period</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @inicis_payments.each do |inicis_payment| %>
+      <tr>
+        <td><%= inicis_payment.version %></td>
+        <td><%= inicis_payment.mid %></td>
+        <td><%= inicis_payment.oid %></td>
+        <td><%= inicis_payment.good_name %></td>
+        <td><%= inicis_payment.price %></td>
+        <td><%= inicis_payment.tax %></td>
+        <td><%= inicis_payment.tax_free %></td>
+        <td><%= inicis_payment.currency %></td>
+        <td><%= inicis_payment.buyer_name %></td>
+        <td><%= inicis_payment.buyer_tel %></td>
+        <td><%= inicis_payment.buyer_email %></td>
+        <td><%= inicis_payment.parent_email %></td>
+        <td><%= inicis_payment.timestamp %></td>
+        <td><%= inicis_payment.signature %></td>
+        <td><%= inicis_payment.return_url %></td>
+        <td><%= inicis_payment.m_key %></td>
+        <td><%= inicis_payment.go_pay_method %></td>
+        <td><%= inicis_payment.offer_period %></td>
+        <td><%= link_to 'Show', inicis_payment %></td>
+        <td><%= link_to 'Edit', edit_inicis_payment_path(inicis_payment) %></td>
+        <td><%= link_to 'Destroy', inicis_payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Inicis payment', new_inicis_payment_path %>

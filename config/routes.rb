@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+    resources :inicis_payments
+    resources :user_types
     resources :concept_exercises
     resources :replies
     resources :questions

@@ -14,6 +14,13 @@ class UserMailer < ApplicationMailer
         @unit_concept = UnitConcept.find(question.unit_concept_id)
         @question = question
         mail(to: mento.email, subject: "[Eureka Math] #{user.user_name}학생의 질문이 도착하였습니다.")
-    end    
+    end
+    
+    def request_relation(to_user, user, relation)
+        @to_user = to_user
+        @user = user
+        @relation = relation
+        mail(to: to_user.email, subject: "[Eureka Math] #{user.user_name}님이 귀하에게 #{relation.relation_type}관계를 요청하였습니다.")
+    end
     
 end

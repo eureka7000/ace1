@@ -43,5 +43,11 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     :address => "localhost", :port => 1025
   }
+  
+    # inicis 결제정보
+    config.inicis = {
+        mid: 'eurekamath',
+        sign_key: 'SEowWHFiSENnK0VJSVF1Y3llamlhZz09'
+    }  
 
 end
