@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :user_types
     resources :concept_exercises
     resources :replies
+    get 'questions/questions_list' => 'questions#questions_list'
     resources :questions
     resources :user_relations
     resources :unit_concept_self_evaluations
@@ -29,6 +30,8 @@ Rails.application.routes.draw do
     resources :concepts
     resources :schools
     resources :payments
+
+    get 'teachers/students_list' => 'teachers#students_list'
     resources :teachers
   
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations"}
@@ -50,7 +53,6 @@ Rails.application.routes.draw do
     root :to => "homes#index"
 
     # Mypages
-    get 'mypages/overall' => 'mypages#overall'
     get 'mypages/evaluation' => 'mypages#evaluation'
     get 'mypages/user_info' => 'mypages#user_info'
     get 'mypages/question_list' => 'mypages#question_list'

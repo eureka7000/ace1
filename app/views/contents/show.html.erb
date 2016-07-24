@@ -1,20 +1,35 @@
-<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <div class="row" style="margin: 20px;">
 
-
-
   <div class="col-md-12">
+
+    <% type2Count = 0 %>
+    <% type3Count = 0 %>
+    <% linkCount = 0 %>
+    <% type4Count = 0 %>
+    <% @unit_concept_descs.each do |unit_concept_desc| %>
+        <% if unit_concept_desc.desc_type.to_i == 2 %>
+            <% type2Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 3 %>
+            <% type3Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 4 %>
+            <% type4Count +=1 %>
+        <% end %>
+  <% end %>
+
+    <% @links.each do |link| %>
+        <% linkCount += 1 %>
+    <% end %>
 
     <!-- tabs right -->
     <div class="tabbable">
       <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">개 념</a></li>
-        <li><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
-        <li><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise</a></li>
-        <li><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념</a></li>
-        <li><a href="#v" data-toggle="tab" style="text-align: center">Video</a></li>
+        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
+        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
+        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise(<%= type3Count %>)</a></li>
+        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념(<%= linkCount %>)</a></li>
+        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video(<%= type4Count %>)</a></li>
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
-        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
+        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">질문하기</a></li>
         <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
       </ul>
 
@@ -24,8 +39,12 @@
           <% count = 0 %>
           <% @unit_concept_related.each do |related| %>
               <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                <p style="color: #898487"><%= 'prev' unless count != 0 %> <%= 'now' unless count != 1 %> <%= 'next' unless count != 2 %></p>
-                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                <% unless count != 1 %>
+                    <p style="color: black; font-weight: bold;">now</p>
+                <% else %>
+                    <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
+                <% end %>
+                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
                 <br/><br/>
               </div>
               <% count += 1 %>
@@ -556,7 +575,7 @@
 
     <div class="modal-content">
 
-      <form action="/questions" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+      <form action="/questions" id="new_question" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
 
         <%= token_tag nil %>
 
@@ -567,7 +586,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <div class="modal-title">
-            <span class="label rounded-2x label-aqua">질문 하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
+            <span class="label rounded-2x label-aqua">질문하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
           </div>
         </div>
 
@@ -581,16 +600,22 @@
           <div class="row" style="margin-top: 10px">
             <div class="col-md-2" style="text-align:right">내용</div>
             <div class="col-md-10">
+              <!--
               <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+              -->
+              <input type="hidden" name="question[content]" id="question_content">
+              <div id="question_post" style="font-size: 10px;"></div>
             </div>
           </div>
 
+          <!--
           <div class="row" style="margin-top: 10px">
             <div class="col-md-2" style="text-align:right">파일첨부</div>
             <div class="col-md-10">
               <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
             </div>
           </div>
+          -->
 
         </div>
 
@@ -601,11 +626,9 @@
       </form>
 
     </div>
-
   </div>
-
 </div>
-<!-- Tab 관련 개념 END-->
+
 
 </div>
 
@@ -788,10 +811,39 @@
   }
 </script>
 
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <script type="text/javascript">
   function videoPause(){
     var iframe = $('#vimeo-player')[0];
-    var player = $(iframe);
+    var player = $f(iframe);
     player.api('pause');
+  }
+</script>
+
+
+<script type="text/javascript">
+  function initpage() {
+    $('#question_post').summernote({
+      height : 180,
+      lang: 'ko-KR',
+      focus : true,
+      tabsize : 2
+    });
+
+    $('#new_question').submit(function () {
+      if ($('#question_title').val() == '' ){
+        alert('제목을 입력하세요.');
+        $('#question_title').focus();
+        return false;
+      }
+
+      if ($('#question_post').summernote('isEmpty')) {
+        alert('내용을 입력하세요.');
+        $('#question_post').focus();
+        return false;
+      }
+      $('#question_content').val($('#question_post').summernote('code'));
+      alert('질문이 전송되었습니다');
+    });
   }
 </script>

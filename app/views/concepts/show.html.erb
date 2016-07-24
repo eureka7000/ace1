@@ -7,10 +7,86 @@
     </div>
 
     <div class="row">
-        
+
         <div class="col-sm-12 col-md-12">
-        
-            <div class="table-responsive">
+
+          <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptFrm').show();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
+          <%= link_to 'Back', concepts_path + "?#{params.to_query}", :class => 'btn-u btn-primary align-right' %>
+
+          <form id="unitConceptFrm" action="unit_concepts" style="margin-top:20px; display: none" method="post"  class="sky-form" novalidate="novalidate">
+
+            <header>Unit Concept Add</header>
+
+            <input type="hidden" id="unit_concept_id" value="" />
+            <input type="hidden" id="method" value="create" />
+
+            <fieldset>
+              <div class="row">
+                <section class="col col-4">
+                  <label class="label">구분</label>
+                  <label class="select">
+                    <select id="excercise_yn" name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
+                      <option value="concept">Unit Concept</option>
+                      <option value="exercise">유형문제</option>
+                      <option value="similar exercise">유사문제</option>
+                    </select>
+                    <i></i>
+                  </label>
+                </section>
+                <section class="col col-4">
+                  <label class="label">Code</label>
+                  <input type="text" class="form-control" id="unit_concept_code" placeholder="code" />
+                </section>
+                <section class="col col-4">
+                  <label class="label">Name</label>
+                  <input type="text" class="form-control" id="unit_concept_name" placeholder="name" />
+                </section>
+              </div>
+              <div class="row">
+                <section class="col col-4">
+                  <label class="label">Grade</label>
+                  <select id="grade" class="form-control">
+                    <option value=""></option>
+                    <% UnitConcept::GRADES.each_pair do |key, value| %>
+                        <option value="<%= key %>"><%= value %></option>
+                    <% end %>
+                  </select>
+                  <i></i>
+                </section>
+                <section class="col col-4">
+                  <label class="label">Level</label>
+                  <select id="level" class="form-control">
+                    <option value=""></option>
+                    <% (1..5).each do |idx|%>
+                        <option value="<%= idx %>"><%= idx %></option>
+                    <% end %>
+                  </select>
+                  <i></i>
+                </section>
+
+                <section id="related_exercise_section" class="col col-4" style="display:none">
+                  <label class="label">유형문제</label>
+                  <select id="related_exercise" class="form-control">
+                    <option value=""></option>
+                    <% @exercises.each do |exercise| %>
+                        <option value="<%= exercise.id %>">(<%= exercise.code %>)<%= exercise.name %></option>
+                    <% end %>
+                  </select>
+                  <i></i>
+                </section>
+
+              </div>
+            </fieldset>
+
+            <footer>
+              <button type="button" class="btn-u btn-u-default" onclick="$('#unitConceptFrm').hide();">닫기</button>
+              <button id="unit_cocept_btn" type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
+            </footer>
+
+          </form>
+
+
+          <div class="table-responsive margin-top-20">
         
                 <table class="table table-hover table-bordered" >
                     <thead>
@@ -77,86 +153,15 @@
                     </tbody>    
                 </table>   
                 
-                <button type="button" class="btn-u btn-primary" onclick="$('#method').val(); $('#unitConceptFrm').show();"><i class="fa fa-plus"></i> Unit Concept 및 문제 추가</button>
-                <%= link_to 'Back', concepts_path + "?#{params.to_query}", :class => 'btn-u btn-primary align-right' %>                            
-             
+
+
             </div>    
             
         </div>    
         
     </div>
 	
-	<form id="unitConceptFrm" action="unit_concepts" style="margin-top:20px; display: none" method="post"  class="sky-form" novalidate="novalidate">
-		
-		<header>Unit Concept Add</header>
-		
-        <input type="hidden" id="unit_concept_id" value="" />
-        <input type="hidden" id="method" value="create" />		
-                    
-		<fieldset>                  
-			<div class="row">
-				<section class="col col-4">
-					<label class="label">구분</label>
-                    <label class="select">
-                    	<select id="excercise_yn" name="unit_concept[exercise_yn]" class="form-control" placeholder="구분" onchange="changedDiv(this)">
-                   		<option value="concept">Unit Concept</option>
-                   	 	<option value="exercise">유형문제</option>
-                        <option value="similar exercise">유사문제</option>
-                   		</select>
-						<i></i>
-					</label>
-                </section>
-                <section class="col col-4">
-					<label class="label">Code</label>
-					<input type="text" class="form-control" id="unit_concept_code" placeholder="code" />
-				</section>
-                <section class="col col-4">
-					<label class="label">Name</label>
-					<input type="text" class="form-control" id="unit_concept_name" placeholder="name" />
-				</section>		
-			</div>
-			<div class="row">	
-                <section class="col col-4">
-					<label class="label">Grade</label>
-	                <select id="grade" class="form-control">
-	                <option value=""></option>
-	                <% UnitConcept::GRADES.each_pair do |key, value| %>
-	                <option value="<%= key %>"><%= value %></option>
-	                <% end %>    
-	                </select> 
-					<i></i>
-				</section>	
-                <section class="col col-4">
-					<label class="label">Level</label>
-	                <select id="level" class="form-control">
-	                <option value=""></option>
-	                <% (1..5).each do |idx|%>    
-	                <option value="<%= idx %>"><%= idx %></option>
-	                <% end %>
-	                </select> 
-					<i></i>
-				</section>
-                
-                <section id="related_exercise_section" class="col col-4" style="display:none">
-					<label class="label">유형문제</label>
-	                <select id="related_exercise" class="form-control">
-	                <option value=""></option>
-                    <% @exercises.each do |exercise| %>
-	                <option value="<%= exercise.id %>">(<%= exercise.code %>)<%= exercise.name %></option>
-                    <% end %>
-                </select> 
-					<i></i>
-				</section>                
-                
-			</div>									
-        </fieldset>
-                    
-        <footer>
-			<button type="button" class="btn-u btn-u-default" onclick="$('#unitConceptFrm').hide();">닫기</button>
-            <button id="unit_cocept_btn" type="button" class="btn-u btn-u-primary" onclick="insertUnitConcept()">저장</button>
-        </footer>
 
-    </form>	
 	
 </div>
 

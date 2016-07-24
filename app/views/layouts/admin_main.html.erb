@@ -46,12 +46,12 @@
 </head>
 
 <body>
-    
+
     <div id="loading" style="display:none">
         <img src="/assets/img/Loading.gif" />
     </div>    
     
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -69,10 +69,12 @@
                 <ul class="nav navbar-nav navbar-right">
                     <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
+                    <li><a href="/teachers/students_list">학생 목록</a></li>
                     <% else %>
                     <li><a href="/concepts">단원별 관리</a></li>
-					<li><a href="/grade_unit_concepts">학년별 관리</a></li>
-                      <li><a href="/blogs">블로그 관리</a></li>
+				          	<li><a href="/grade_unit_concepts">학년별 관리</a></li>
+                    <li><a href="/blogs">블로그 관리</a></li>
+                    <li><a href="/questions/questions_list">질문 관리</a></li>
                     <li><a href="/schools">학교(학원)</a></li>
                     <li><a href="/admins">관리자</a></li>
                     <li><a href="/users">사용자 관리</a></li>
@@ -82,9 +84,9 @@
             </div>
         </div>
     </nav>
-    
-    <%= yield %>        
-        
+
+    <%= yield %>
+
     <script src="/js/libs/jquery_ujs.js"></script>
     <script src="/js/libs/jquery.form.js"></script>   
 

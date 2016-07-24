@@ -4,8 +4,40 @@
 
     <%= render :partial=>"left_sidebar"%>
 
-    <!-- Profile Content -->
     <div class="col-md-9">
+      <div class="col-md-6 col-sm-6 no-margin no-padding">
+        <div class="col-md-5">
+          <select id="codeSelect" class="form-control" >
+            <option value="">개념 선택</option>
+            <% @codes.each do |code| %>
+                <option value="<%= code.unit_concept_id %>"><%= "selected" if params[:code] == code.unit_concept_id %><%= code.unit_concept.name %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-md-1">
+          <a href="javascript:goSearch('code')" class="btn btn-info">개념 검색</a>
+        </div>
+      </div>
+
+      <% unless @type != 'school teacher' %>
+          <div class="col-md-6 col-sm-6 no-margin no-padding">
+            <div class="col-md-5">
+              <select id="studentSelect" class="form-control" >
+                <option value="">학생 선택</option>
+                <% @students.each do |student| %>
+                    <option value="<%= student.user_id %>"><%= "selected" if params[:student] == student.user_id %><%= student.user.user_name %></option>
+                <% end %>
+              </select>
+            </div>
+            <div class="col-md-1">
+              <a href="javascript:goSearch('student')" class="btn btn-success">학생 검색</a>
+            </div>
+          </div>
+      <% end %>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="col-md-9 margin-top-20">
 
       <div class="profile-body margin-bottom-20">
 
@@ -18,7 +50,6 @@
             <th colspan="2">질문 시간</th>
             <th colspan="3">개 념</th>
             <th colspan="5">질문 제목</th>
-            <th colspan="2">options</th>
           </tr>
           </thead>
           <tbody>
@@ -42,18 +73,21 @@
               <td colspan="2"><%= @user.user_name %></td>
               <td colspan="2"><%= question.created_at.localtime.strftime('%m월 %d일') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
-              <td colspan="5" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= question.title %></td>
-              <td colspan="2"><a href="/questions/<%= question.id %>">show</a>&nbsp;&nbsp;<a href="/questions/<%= question.id %>/edit">edit</a></td>
+              <td colspan="5" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title, question_path(question.id) %></td>
             </tr>
           <% end %>
           <% end %>
           </tbody>
         </table>
-
+        <%= will_paginate @questions, renderer: BootstrapPagination::Rails %>
      </div>
     </div>
     <!-- End Profile Content -->
-
-
   </div>
 </div><!--/container-->
+
+<script type="text/javascript">
+  function goSearch(value) {
+    location = "/mypages/question_list?"+value+"=" + $('#'+value+'Select').val();
+  }
+</script>

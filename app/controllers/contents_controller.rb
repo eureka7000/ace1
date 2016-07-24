@@ -10,7 +10,7 @@ class ContentsController < ApplicationController
             @unit_concept_name = @unit_concept.concept_name
         else
             @unit_concept = UnitConcept.find(params[:unit_concept_id])
-            @unit_concept_descs = @unit_conept.unit_concept_descs
+            @unit_concept_descs = @unit_concept.unit_concept_descs
             @unit_concept_name = @unit_concept.name
         end        
 
@@ -58,6 +58,15 @@ class ContentsController < ApplicationController
         unless @concept_id.nil?
             @concept = Concept.find(@concept_id)
             @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+
+            # 임시 코드 - 유형문제 파일이 올려져 있지 않으면 보여지지 않는다
+            @check = 1
+            @unit_concept_exercises.each do |exec|
+                unless exec.unit_concept_descs.blank?
+                    @check = 0
+                    break
+                end
+            end
         end
 
         if @view_type == '1'
@@ -137,12 +146,12 @@ where id = #{params[:id]}"
 
         @unit_concept_related = UnitConcept.find_by_sql("select * from (
 
- select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
- from unit_concepts uc join (select @curRow := 0) r
- where exercise_yn = 'concept' order by code
+select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
+from unit_concepts uc join (select @curRow := 0) r
+where exercise_yn = 'concept' order by code
 ) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
 
-      logger.debug "notice" + @unit_concept_related.inspect
+        logger.debug "notice" + @unit_concept_related.inspect
 
     end
 end

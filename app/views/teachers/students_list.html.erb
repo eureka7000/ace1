@@ -1,0 +1,43 @@
+<div class="container-fluid" style="margin-top: 50px">
+
+  <div class="row">
+
+    <div class="col-sm-12 col-md-12 main">
+
+      <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 학생 목록 ( <%= @students.count() %> )</h2>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>학교</th>
+            <th>ID(E-MAIL)</th>
+            <th>이름</th>
+            <th>전화번호</th>
+            <th>접속횟수</th>
+            <th>가입일</th>
+            <th colspan="2"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @students.each do |student| %>
+              <tr>
+                <td><%= student.school.name %></td>
+                <td><%= student.email %></td>
+                <td><%= student.user_name %></td>
+                <td><%= student.phone %></td>
+                <td><%= student.sign_in_count %></td>
+                <td><%= student.created_at.localtime.strftime('%Y-%m-%d') %></td>
+                <td><%= link_to 'show', user_path(student) %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+
+        <%= will_paginate @students, renderer: BootstrapPagination::Rails %>
+      </div>
+
+    </div>
+
+  </div>
+</div>
