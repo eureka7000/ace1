@@ -2,8 +2,6 @@
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
-
-
 <% if current_user.grade.nil? %>
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
@@ -312,11 +310,10 @@
                         <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
                         <h5>
                           <% if video_count > 0 %>
-                              <span class="badge rounded badge-dark-blue">Video: <%= video_count %></span>
+                              <span class="badge rounded badge-dark-blue"><i class="fa fa-caret-square-o-right"></i>Video</span>
                           <% else %>&nbsp;
                           <% end %>
                         </h5>
-
                       </div>
                     </div>
                   </li>
