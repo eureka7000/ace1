@@ -78,7 +78,7 @@ class ContentsController < ApplicationController
 
                 if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
                     @student = 'middle'
-                elsif current_user.grade.to_i > 4 && current_user.grade.to_i < 7
+                elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
                     @student = 'high'
                 end
 
@@ -109,7 +109,7 @@ class ContentsController < ApplicationController
             if @step == '4'
                 if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
                     @student = 'middle'
-                elsif current_user.grade.to_i > 4 && current_user.grade.to_i < 7
+                elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
                     @student = 'high'
                 end
 
