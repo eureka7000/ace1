@@ -24,6 +24,8 @@ class QuestionsController < ApplicationController
 
     def index
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
+
+        @latest_news = Blog.order(created_at: :desc).last(4)
     end
 
 
@@ -59,6 +61,8 @@ class QuestionsController < ApplicationController
     def show
         @replies1 = Reply.where('question_id = ? and depth = ?', params[:id], 1)
         @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2)
+
+        @latest_news = Blog.order(created_at: :desc).last(4)
 
         unless session[:admin].nil?
             render layout: 'admin_main'

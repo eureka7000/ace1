@@ -7,7 +7,6 @@ class BlogsController < ApplicationController
 
   def index
 
-
     blog_type = params[:blog_type]
 
     if blog_type.nil?
@@ -34,9 +33,8 @@ class BlogsController < ApplicationController
             @user = Admin.find(@blog.user_id)
         else
             @user = User.find(@blog.user_id)
-        end        
-        
-        
+        end
+
         unless session[:admin].nil?
             render layout: 'admin_main'
         end
@@ -108,41 +106,43 @@ class BlogsController < ApplicationController
       @blog_type = '1'
       @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
      # @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
+      @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def succession_case
       @blog_type = '2'
       @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
+      @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def math_story
     @blog_type = '3'
     @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+    @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def faq
     @blog_type = '4'
     @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+    @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def notice
     @blog_type = '5'
     @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+    @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def the_news
     @blog_type = '6'
     @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+    @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   def company_introduction
     @blog_type = '7'
     @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-
+    @latest_news = Blog.order(created_at: :desc).last(4)
   end
 
   private
