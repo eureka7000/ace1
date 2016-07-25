@@ -37,18 +37,36 @@
         <!-- 이전 다음 개념 링크 -->
         <div class="col-md-12 col-ms-12 col-xs-12 no-margin" >
           <% count = 0 %>
-          <% @unit_concept_related.each do |related| %>
-              <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                <% unless count != 1 %>
-                    <p style="color: black; font-weight: bold;">now</p>
-                <% else %>
-                    <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
-                <% end %>
-                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
-                <br/><br/>
+          <% unless params[:id].to_i() == 1 %>
+              <% @unit_concept_related.each do |related| %>
+                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
+                    <% unless count != 1 %>
+                        <p style="color: black; font-weight: bold;">now</p>
+                    <% else %>
+                        <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
+                    <% end %>
+                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                    <br/><br/>
+                  </div>
+                  <% count += 1 %>
+              <% end %>
+          <% else %>
+              <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20">
               </div>
-              <% count += 1 %>
+              <% @unit_concept_related.each do |related| %>
+                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
+                    <% unless count != 0 %>
+                        <p style="color: black; font-weight: bold;">now</p>
+                    <% else %>
+                        <p style="color: #898487"><%= 'next' %></p>
+                    <% end %>
+                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" ></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                    <br/><br/>
+                  </div>
+                  <% count += 1 %>
+              <% end %>
           <% end %>
+
         </div>
 
         <!-- Tab 개념 -->

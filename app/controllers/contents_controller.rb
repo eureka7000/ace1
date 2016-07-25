@@ -101,7 +101,7 @@ class ContentsController < ApplicationController
 
                 if params[:exercise_type] == 'concept_exercise'
                     @unit_concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
-                end    
+                end
                 
             end
             
@@ -150,26 +150,27 @@ class ContentsController < ApplicationController
         @unit_concepts_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id)
 
 
-
-        query = "select row_number from (
+        unless params[:id].to_i() == 1
+            query = "select row_number from (
 select id, @curRow := @curRow + 1 AS row_number
 from unit_concepts uc join (select @curRow := 0) r
 where exercise_yn = 'concept' order by code
 ) k
 where id = #{params[:id]}"
-        @row_number = UnitConcept.find_by_sql(query).first
-        @row_number.row_number.to_i
+            @row_number = UnitConcept.find_by_sql(query).first
+            @row_number.row_number.to_i
 
-
-
-        @unit_concept_related = UnitConcept.find_by_sql("select * from (
+            @unit_concept_related = UnitConcept.find_by_sql("select * from (
 
 select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
 from unit_concepts uc join (select @curRow := 0) r
 where exercise_yn = 'concept' order by code
 ) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
 
-        logger.debug "notice" + @unit_concept_related.inspect
+            logger.debug "notice" + @unit_concept_related.inspect
+        else
+            @unit_concept_related = UnitConcept.first(2)
+        end
 
     end
 end
