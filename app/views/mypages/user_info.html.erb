@@ -158,7 +158,7 @@
                                     <% elsif user_relation.confirm_status == 'rejected' %>
                                     <span class="badge badge-purple rounded">
                                     <% end %>
-                                    <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] %>
+                                    <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] unless user_relation.confirm_status.nil? %>
                                     </span>
                                 </td>
                                 <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
