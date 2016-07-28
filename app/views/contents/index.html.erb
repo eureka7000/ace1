@@ -88,7 +88,11 @@
                     <li><a href="/contents?view_type=1&step=3&category=<%=@category%>&sub_category=<%=@sub_category%>"><%=Concept::SUB_CATEGORIES[@sub_category]%></a></li>
                 <% end %>
                 <% if @step > '3' %>
-                    <li><a href="/contents?view_type=1&step=4&category=<%=@category%>&sub_category=<%=@sub_category%>&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&level=<%= current_user.study_level %>&concept_id=<%= @concept.id %>"><%= @concept.concept_name %></a></li>
+                    <% if params[:exercise_type] == 'concept_exercise' %>
+                        <li><a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise">종합문제</a></li>
+                    <% else %>
+                        <li><a href="/contents?view_type=1&step=4&category=<%=@category%>&sub_category=<%=@sub_category%>&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&level=<%= current_user.study_level %>&concept_id=<%= @concept.id %>"><%= @concept.concept_name %></a></li>
+                    <% end %>
                 <% end %>
                 <% if @step > '4' %>
                     <li><a href="contents?action=index&category=<%= @category %>&concept_id=<%= @concept_id %>&controller=contents&level=<%= @level %>&step=5&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&sub_category=<%= @sub_category %>&view_type=1">유형문제</a></li>
@@ -223,7 +227,7 @@
 
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
 
-                      <% params[:step] = 5 %>
+                      <% params[:step] = 4 %>
                       <a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
 
                       <div class="content-boxes-in-v3">
@@ -291,6 +295,35 @@
                           </div>
                         </div>
                       </li>
+                  <% end %>
+              <% end %>
+
+              <!-- 종합문제 -->
+              <% if params[:exercise_type] == 'concept_exercise' %>
+                  <% @unit_concept_exercises.each do |unit_concept_exercise| %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+
+                          <% @unit_concept = UnitConcept.find(unit_concept_exercise.id) %>
+                          <% @unit_concept_descs = @unit_concept.unit_concept_descs %>
+                          <% video_count = @unit_concept_descs.where('desc_type = ?', 4).count() %>
+
+                          <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>&synthesis=1"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>&synthesis=1"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
+                            <h5>
+                              <% if video_count > 0 %>
+                                  <span class="badge rounded badge-dark-blue"><i class="fa fa-caret-square-o-right"></i>Video</span>
+                              <% else %>&nbsp;
+                              <% end %>
+                            </h5>
+                          </div>
+                        </div>
+                      </li>
+
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+
                   <% end %>
               <% end %>
 

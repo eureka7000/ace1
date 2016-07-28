@@ -25,7 +25,7 @@
         <% end %>
 
         <% if @is_exercise == 1 %>
-            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유형문제</a></li>
+            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><%= params[:synthesis] == '1' ? '종합문제' : '유형문제' %></a></li>
             <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
             <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
             <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념<span class="badge rounded-2x"><%= linkCount %></span></a></li>

@@ -85,17 +85,18 @@ class ContentsController < ApplicationController
                 @study_level = current_user.study_level
 
             elsif @step == '4'
+                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
 
-                @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
+                    @student = params[:student]
+                    @level = params[:level]
 
-                @student = params[:student]
-                @level = params[:level]
+                    @user = User.find(current_user.id)
+                    @study_level = @level
+                    @user.study_level = @study_level
 
-                @user = User.find(current_user.id)
-                @study_level = @level
-                @user.study_level = @study_level
-                
-                @user.save
+                    @user.save
+
+                    @unit_concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
                 
             elsif @step == '5'
 
