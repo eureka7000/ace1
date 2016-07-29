@@ -50,6 +50,7 @@
             <th colspan="2">질문 시간</th>
             <th colspan="3">개 념</th>
             <th colspan="5">질문 제목</th>
+            <th colspan="2">답변 Y/N</th>
           </tr>
           </thead>
           <tbody>
@@ -74,6 +75,7 @@
               <td colspan="2"><%= question.created_at.localtime.strftime('%m월 %d일') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
               <td colspan="5" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title, question_path(question.id) %></td>
+              <td colspan="2" align="center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
             </tr>
           <% end %>
           <% end %>

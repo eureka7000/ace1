@@ -105,7 +105,14 @@
                       </li>
 
                       <li class="<%= 'active' if @active == 'mypage' %>">
-                          <a href="/mypages/evaluation">MY PAGE</a>
+                          <% if @session_yn == 'Y' %>
+                              <% if current_user.user_types[0].user_type == 'school teacher' %>
+                                <a href="/mypages/evaluation">MY PAGE <span class="badge rounded-2x badge-red"><%= @questions_number unless @questions_number == 0 %></span></a>
+                              <% end %>
+                          <% else %>
+                            <a href="/mypages/evaluation">MY PAGE</a>
+                          <% end %>
+
                       </li>
                       <li class="<%= 'active' if @active == 'blog' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>

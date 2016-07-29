@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
     before_action :set_question, only: [:show, :edit, :update]
-    before_filter :authenticate_user!, only: [:index, :update]
+    before_filter :authenticate_user!, only: [:index, :update, :show]
 
     def questions_list
         unless session[:admin].nil?
@@ -15,7 +15,7 @@ class QuestionsController < ApplicationController
                 @questions = Question.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 
-            @teachers = Teacher.all
+            @teachers = Teacher.all #수정 필요...
             @students = Question.select(:user_id).distinct.order(:user_id)
             @codes = Question.select(:unit_concept_id).distinct.order(:unit_concept_id)
             render layout: 'admin_main'
@@ -24,6 +24,8 @@ class QuestionsController < ApplicationController
 
     def index
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
+
+        @latest_news = Blog.order(id: :desc).first(4)
     end
 
 
@@ -59,6 +61,9 @@ class QuestionsController < ApplicationController
     def show
         @replies1 = Reply.where('question_id = ? and depth = ?', params[:id], 1)
         @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2)
+
+        @latest_news = Blog.order(id: :desc).first(4)
+
         unless session[:admin].nil?
             render layout: 'admin_main'
         end
@@ -95,7 +100,7 @@ class QuestionsController < ApplicationController
         @question = Question.find(params[:id])
     end
     def question_params
-        params.require(:question).permit(:unit_concept_id, :to_user_id, :user_id, :title, :content, :file_name)
+        params.require(:question).permit(:unit_concept_id, :to_user_id, :user_id, :title, :content, :file_name, :confirm_yn)
     end
     
 end

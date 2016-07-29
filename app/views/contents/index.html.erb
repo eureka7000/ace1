@@ -2,8 +2,6 @@
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
-
-
 <% if current_user.grade.nil? %>
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
@@ -24,9 +22,9 @@
 
 <% else %>
 
-<div class="breadcrumbs col-md-12">
-    <div class="container">
-      <!--<h1 class="pull-left breadcrumb">
+    <div class="breadcrumbs col-md-12">
+      <div class="container">
+        <!--<h1 class="pull-left breadcrumb">
 			<%#
 			if @view_type == '1'
 				str = "단원별 학습"
@@ -38,23 +36,23 @@
         if @step > '2'
           str += " / #{Concept::SUB_CATEGORIES[@sub_category]}"
         end
-        
+
         if params[:exercise_type] == "concept_exercise"
-            
+
             str += " / 종합문제 "
-            
+
         else    
 
             if @step > '3'
               str += " / #{@concept.concept_name}"
             end
-        
+
             if @step > '4'
                 str += " / 유형문제 "
             end    
-            
+
         end    
-        
+
       elsif @view_type == '2'
 				str = "학년별 학습"
 
@@ -74,212 +72,216 @@
           str += " / #{GradeUnitConcept::SUB_CATEGORIES[@sub_category.to_i]}"
         end
       end
-			%>
+      %>
 
       </h1>-->
 
-      <h2 class="pull-left breadcrumb">
-        <li><a href="/">Home</a></li>
-        <li class="active">
-          <% if @view_type == '1' %>
-              <a href="/contents?view_type=1">단원별 학습</a>
-              <% if @step > '1' %>
-                  <li><a href="/contents?view_type=1&step=2&category=<%=@category%>"><%= Concept::CATEGORIES[@category] %></a></li>
-              <% end %>
-              <% if @step > '2' %>
-                  <li><a href="/contents?view_type=1&step=3&category=<%=@category%>&sub_category=<%=@sub_category%>"><%=Concept::SUB_CATEGORIES[@sub_category]%></a></li>
-              <% end %>
-              <% if @step > '3' %>
-                  <li><a href="/contents?view_type=1&step=4&category=<%=@category%>&sub_category=<%=@sub_category%>&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&level=<%= current_user.study_level %>&concept_id=<%= @concept.id %>"><%= @concept.concept_name %></a></li>
-              <% end %>
-              <% if @step > '4' %>
-                  <li><a href="contents?action=index&category=<%= @category %>&concept_id=<%= @concept_id %>&controller=contents&level=<%= @level %>&step=5&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&sub_category=<%= @sub_category %>&view_type=1">유형문제</a></li>
-              <% end %>
-          <% else %>
-              <a href="/contents?view_type=2">학년별 학습</a>
-              <% if @step > '1' %>
-                  <li><a href="/contents?view_type=2&step=2&grade=<%= @grade %>"><%= UnitConcept::GRADES[@grade.to_i] %></a></li>
-              <% end %>
-              <% if @step > '2' %>
-                  <li><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= @chapter %>"><%= GradeUnitConcept::CHAPTERS[@chapter.to_i] %></a></li>
-              <% end %>
-              <% if @step > '3' %>
-                  <li><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>"><%= GradeUnitConcept::CATEGORIES[@category.to_i] %></a></li>
-              <% end %>
-              <% if @step > '4' %>
-                  <li><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>"><%= GradeUnitConcept::SUB_CATEGORIES[@sub_category.to_i] %></a></li>
-              <% end %>
-          <% end %>
-        </li>
-      </h2>
+        <h2 class="pull-left breadcrumb">
+          <li><a href="/">Home</a></li>
+          <li class="active">
+            <% if @view_type == '1' %>
+                <a href="/contents?view_type=1">단원별 학습</a>
+                <% if @step > '1' %>
+                    <li><a href="/contents?view_type=1&step=2&category=<%=@category%>"><%= Concept::CATEGORIES[@category] %></a></li>
+                <% end %>
+                <% if @step > '2' %>
+                    <li><a href="/contents?view_type=1&step=3&category=<%=@category%>&sub_category=<%=@sub_category%>"><%=Concept::SUB_CATEGORIES[@sub_category]%></a></li>
+                <% end %>
+                <% if @step > '3' %>
+                    <% if params[:exercise_type] == 'concept_exercise' %>
+                        <li><a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise">종합문제</a></li>
+                    <% else %>
+                        <li><a href="/contents?view_type=1&step=4&category=<%=@category%>&sub_category=<%=@sub_category%>&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&level=<%= current_user.study_level %>&concept_id=<%= @concept.id %>"><%= @concept.concept_name %></a></li>
+                    <% end %>
+                <% end %>
+                <% if @step > '4' %>
+                    <li><a href="contents?action=index&category=<%= @category %>&concept_id=<%= @concept_id %>&controller=contents&level=<%= @level %>&step=5&student=<%= 'middle' if current_user.grade.to_i <= 3 %><%= 'high' if current_user.grade.to_i >= 4 %>&sub_category=<%= @sub_category %>&view_type=1">유형문제</a></li>
+                <% end %>
+            <% else %>
+                <a href="/contents?view_type=2">학년별 학습</a>
+                <% if @step > '1' %>
+                    <li><a href="/contents?view_type=2&step=2&grade=<%= @grade %>"><%= UnitConcept::GRADES[@grade.to_i] %></a></li>
+                <% end %>
+                <% if @step > '2' %>
+                    <li><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= @chapter %>"><%= GradeUnitConcept::CHAPTERS[@chapter.to_i] %></a></li>
+                <% end %>
+                <% if @step > '3' %>
+                    <li><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>"><%= GradeUnitConcept::CATEGORIES[@category.to_i] %></a></li>
+                <% end %>
+                <% if @step > '4' %>
+                    <li><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>"><%= GradeUnitConcept::SUB_CATEGORIES[@sub_category.to_i] %></a></li>
+                <% end %>
+            <% end %>
+            </li>
+            </h2>
 
+      </div>
     </div>
-</div>
 
-<% if @view_type == '1' %> <!-- 단원별 학습 -->
-    <ul class="row list-row margin-bottom-30">
+    <% if @view_type == '1' %> <!-- 단원별 학습 -->
+        <ul class="row list-row margin-bottom-30">
 
-      <% idx = 0 %>
+          <% idx = 0 %>
 
-      <% if @step == '1' %>
-          <% Concept::CATEGORIES.each_pair do |key, value| %>
-              <li class="col-md-4 md-margin-bottom-30">
-                  <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+          <% if @step == '1' %>
+              <% Concept::CATEGORIES.each_pair do |key, value| %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                       <a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                       <div class="content-boxes-in-v3">
-                          <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value %></a></h3>
+                        <h3><a href="/contents?view_type=<%= @view_type %>&step=2&category=<%= key %>"><%= value %></a></h3>
                       </div>
-                  </div>
-              </li>
-              <% idx += 1 %>
-              <% idx %= 12 %>
-          <% end %>
-
-      <% elsif @step == '2' %>
-
-          <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-
-              <% if @category.first(2) == key.first(2) %>
-
-                  <li class="col-md-4 md-margin-bottom-30">
-                      <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                          <a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                          <div class="content-boxes-in-v3">
-                              <h3><a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><%= value  %></a></h3>
-                          </div>
-                      </div>
+                    </div>
                   </li>
-
                   <% idx += 1 %>
                   <% idx %= 12 %>
               <% end %>
 
-          <% end %>
+          <% elsif @step == '2' %>
 
-      <% elsif @step == '3' %>
+              <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
 
-          <% @concepts.each do | concept | %>
-      
-              <% unit_concept_counts = UnitConcept.get_level_count(concept.id) %>
+                  <% if @category.first(2) == key.first(2) %>
 
-        <li class="col-md-4 md-margin-bottom-30">
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents?view_type=<%= @view_type %>&step=3&category=<%= @category %>&sub_category=<%= key %>"><%= value  %></a></h3>
+                          </div>
+                        </div>
+                      </li>
 
-            <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                
-                <a href="javascript:loadModal(<%= concept.id %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                
-                <div class="content-boxes-in-v3">
-                    
-                    <div class="btn-group">
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
 
-                        <button type="button" class="btn btn-link" onclick="loadModal(<%= concept.id %>)"><h3><%= concept.concept_name %></h3></button>
-                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+              <% end %>
+
+          <% elsif @step == '3' %>
+
+              <% @concepts.each do | concept | %>
+
+                  <% unit_concept_counts = UnitConcept.get_level_count(concept.id) %>
+
+                  <li class="col-md-4 md-margin-bottom-30">
+
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+
+                      <a href="javascript:loadModal(<%= concept.id %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+
+                      <div class="content-boxes-in-v3">
+
+                        <div class="btn-group">
+
+                          <button type="button" class="btn btn-link" onclick="loadModal(<%= concept.id %>)"><h3><%= concept.concept_name %></h3></button>
+                          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                             <h3><i class="fa fa-caret-down"></i></h3>
-                        </button>
+                          </button>
 
-                        <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
-                        <% unit_concept_counts.each do | count |  %>
-                            <% 
-                                icon = 'fa-book' 
-                                title = '개념'
-                                
-                                if count.exercise_yn == "exercise"
+                          <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
+                            <% unit_concept_counts.each do | count |  %>
+                                <%
+                                  icon = 'fa-book'
+                                  title = '개념'
+
+                                  if count.exercise_yn == "exercise"
                                     icon = 'fa-jsfiddle'
                                     title = '유형문제'
-                                elsif count.exercise_yn == "similar exercise"    
+                                  elsif count.exercise_yn == "similar exercise"
                                     icon = 'fa-cloud-upload'
                                     title = '유사문제'
-                                end
-                            %>
-                            <li>
-                                <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
-                                <span class="item-box">
+                                  end
+                                %>
+                                <li>
+                                  <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
+                                  <span class="item-box">
                                     <span class="item">&nbsp; &nbsp;
-                                        <% for i in 0..(count.level-1) %>    
+                                      <% for i in 0..(count.level-1) %>
                                         <i class="fa fa-star"></i>
                                         <% end %>
-                                        <% for i in count.level..4 %>
+                                      <% for i in count.level..4 %>
                                         <i class="fa fa-star-o"></i>
                                         <% end %>
                                     </span>
                                 </span>
-                                <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count.count %></span>
-                            </li>
-                        <% end %>
-                        </ul>
-                    </div>
-                    
-                </div>
-                
-            </div>
-        </li>
+                                  <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count.count %></span>
+                                </li>
+                            <% end %>
+                          </ul>
+                        </div>
 
-              <% idx += 1 %>
-              <% idx %= 12 %>
-        
-          <% end %>
-          
-          <% if @concept_exercises.length > 0 %>
-          
-        <li class="col-md-4 md-margin-bottom-30">
-
-            <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                
-                <% params[:step] = 5 %>
-                <a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                
-                <div class="content-boxes-in-v3">
-                    <div class="btn-group">
-                        <h3><a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise">종합문제</a></h3>
-                    </div>
-                </div>
-                
-            </div>
-        </li>          
-          
-          <% end %>
-          
-
-    <% elsif @step == '4' %>
-
-		<% @unit_concepts.each do | unit_concept | %>
-        
-			<% if unit_concept.level <= @user.grade.to_i + @level.to_i() %>
-			
-              <li class="col-md-4 md-margin-bottom-30">
-                  <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <a href="/contents/<%= unit_concept.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                      <div class="content-boxes-in-v3">
-                  <ul class="star-vote">
-                    <% unless unit_concept.level.nil? %>
-                        <% rst = 5 - unit_concept.level %>
-                                <% (1..unit_concept.level).each do |idx| %>
-                                <li><i class="fa fa-star"></i></li>
-                                <% end%>
-
-                                <% (1..rst).each do |idx| %>
-                                <li><i class="fa fa-star-o"></i></li>
-                                <% end %>
-                    <% end %>
-                            </ul>
-                            <h3><a href="/contents/<%= unit_concept.id %>"><%= unit_concept.name %></a></h3>
                       </div>
-                  </div>
-              </li>
 
-              <% idx += 1 %>
-              <% idx %= 12 %>
+                    </div>
+                  </li>
+
+                  <% idx += 1 %>
+                  <% idx %= 12 %>
+
               <% end %>
 
-          <% end %>
-		  
-    	  <% if @unit_concept_exercises.length > 0 %>
-		        <% if @check == 0 %> <!-- 유형문제 파일이 올려져 있지 않으면 보여지지 않는다 -->
-              <li class="col-md-4 md-margin-bottom-30">
-                  <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <% params[:step] = 5 %>
-                      <a href="/contents?<%= params.to_query %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+              <% if @concept_exercises.length > 0 %>
+
+                  <li class="col-md-4 md-margin-bottom-30">
+
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+
+                      <% params[:step] = 4 %>
+                      <a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+
                       <div class="content-boxes-in-v3">
+                        <div class="btn-group">
+                          <h3><a href="/contents?<%= params.to_query %>&exercise_type=concept_exercise">종합문제</a></h3>
+                        </div>
+                      </div>
+
+                    </div>
+                  </li>
+
+              <% end %>
+
+
+          <% elsif @step == '4' %>
+
+              <% @unit_concepts.each do | unit_concept | %>
+
+                  <% if unit_concept.level <= @level.to_i() %>
+
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <a href="/contents/<%= unit_concept.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <ul class="star-vote">
+                              <% unless unit_concept.level.nil? %>
+                                  <% rst = 5 - unit_concept.level %>
+                                  <% (1..unit_concept.level).each do |idx| %>
+                                      <li><i class="fa fa-star"></i></li>
+                                  <% end%>
+
+                                  <% (1..rst).each do |idx| %>
+                                      <li><i class="fa fa-star-o"></i></li>
+                                  <% end %>
+                              <% end %>
+                            </ul>
+                            <h3><a href="/contents/<%= unit_concept.id %>"><%= unit_concept.name %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
+
+              <% end %>
+
+              <% if @unit_concept_exercises.length > 0 %>
+                  <% if @check == 0 %> <!-- 유형문제 파일이 올려져 있지 않으면 보여지지 않는다 -->
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <% params[:step] = 5 %>
+                          <a href="/contents?<%= params.to_query %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
                           <span class="item-box">
                               <span class="item">
                                   <i class="fa fa-star-o"></i>
@@ -289,192 +291,258 @@
                                   <i class="fa fa-star-o"></i>
                               </span>
                           </span>
-                          <h3><a href="/contents?<%= params.to_query %>">유형문제</a></h3>
-                      </div>
-                  </div>
-              </li>		  
-		        <% end %>
-		  <% end %>
-          
-    <% elsif @step == '5'  #유형문제 %>
-        
-        <% @unit_concept_exercises.each do |unit_concept_exercise| %>
-        
-            <li class="col-md-4 md-margin-bottom-30">
-                <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                    <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                    <div class="content-boxes-in-v3">
-                        <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
-                    </div>
-                </div>
-            </li>
-            
-            <% idx += 1 %>
-            <% idx %= 12 %>
-        <% end %>
-
-    <% end %>
-
-  </ul>
-  <!-- 단원별 학습 END -->
-
-<% else %>  <!-- 학년별 학습 -->
-    <ul class="row list-row margin-bottom-30">
-
-      <% idx = 0 %>
-
-      <% if @step == '1' %>
-          <% UnitConcept::GRADES.each_pair do |key, value| %>
-              <li class="col-md-4 md-margin-bottom-30">
-                <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                 <a href="/contents?view_type=2&step=2&grade=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                  <div class="content-boxes-in-v3">
-                    <h3><a href="/contents?view_type=2&step=2&grade=<%= key %>"><%= value %></a></h3>
-                  </div>
-                </div>
-              </li>
-              <% idx += 1 %>
-              <% idx %= 12 %>
-          <% end %>
-
-      <% elsif @step == '2' %>
-          <% GradeUnitConcept::CHAPTERS.each_pair do |key, value| %>
-              <% unless @grade.to_i != key/100 %>
-                  <li class="col-md-4 md-margin-bottom-30">
-                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                      <div class="content-boxes-in-v3">
-                        <h3><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><%= value %></a></h3>
-                      </div>
-                    </div>
-                  </li>
-                  <% idx += 1 %>
-                  <% idx %= 12 %>
+                            <h3><a href="/contents?<%= params.to_query %>">유형문제</a></h3>
+                          </div>
+                        </div>
+                      </li>
+                  <% end %>
               <% end %>
-          <% end %>
-      <% elsif @step == '3' %>
-          <% GradeUnitConcept::CATEGORIES.each_pair do |key, value| %>
-              <% unless @chapter.to_i != key/100 %>
-                  <li class="col-md-4 md-margin-bottom-30">
-                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                      <div class="content-boxes-in-v3">
-                        <h3><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><%= value %></a></h3>
-                      </div>
-                    </div>
-                  </li>
-                  <% idx += 1 %>
-                  <% idx %= 12 %>
-              <% end %>
-          <% end %>
-      <% elsif @step == '4' %>
-          <% GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value| %>
-              <% unless @category.to_i != key/100 %>
-                  <li class="col-md-4 md-margin-bottom-30">
-                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                      <div class="content-boxes-in-v3">
-                        <h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>
-                      </div>
-                    </div>
-                  </li>
-                  <% idx += 1 %>
 
-                  <% idx %= 12 %>
+              <!-- 종합문제 -->
+              <% if params[:exercise_type] == 'concept_exercise' %>
+                  <% @unit_concept_exercises.each do |unit_concept_exercise| %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+
+                          <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>&synthesis=1"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>&exercise_type=<%= params[:exercise_type] %>&synthesis=1"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+
+                  <% end %>
               <% end %>
-          <% end %>
-      <% elsif @step == '5' %>
-          <% @grade_unit_concepts.each do | grade_unit_concept | %>
+
+          <% elsif @step == '5'  #유형문제 %>
+
+              <% @unit_concept_exercises.each do |unit_concept_exercise| %>
+
                   <li class="col-md-4 md-margin-bottom-30">
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                      <a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                      <div class="content-boxes-in-v3">
-                        <ul class="star-vote">
-                          <% unless grade_unit_concept.unit_concept.level.nil? %>
-                              <% rst = 5 - grade_unit_concept.unit_concept.level %>
-                              <% (1..grade_unit_concept.unit_concept.level).each do |idx| %>
-                                  <li><i class="fa fa-star"></i></li>
-                              <% end%>
 
-                              <% (1..rst).each do |idx| %>
-                                  <li><i class="fa fa-star-o"></i></li>
-                              <% end %>
+                      <% @unit_concept = UnitConcept.find(unit_concept_exercise.id) %>
+                      <% @unit_concept_descs = @unit_concept.unit_concept_descs %>
+                      <% video_count = @unit_concept_descs.where('desc_type = ?', 4).count() %>
+
+                      <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
+                        <h5>
+                          <% if video_count > 0 %>
+                              <span class="badge rounded badge-dark-blue"><i class="fa fa-caret-square-o-right"></i>Video</span>
+                          <% else %>&nbsp;
                           <% end %>
-                        </ul>
-                        <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
+                        </h5>
+                      </div>
+                    </div>
+                  </li>
+
+                  <% idx += 1 %>
+                  <% idx %= 12 %>
+              <% end %>
+
+          <% end %>
+
+        </ul>
+        <!-- 단원별 학습 END -->
+
+    <% else %>  <!-- 학년별 학습 -->
+        <ul class="row list-row margin-bottom-30">
+
+          <% idx = 0 %>
+
+          <% if @step == '1' %>
+              <% UnitConcept::GRADES.each_pair do |key, value| %>
+                  <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                      <a href="/contents?view_type=2&step=2&grade=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                      <div class="content-boxes-in-v3">
+                        <h3><a href="/contents?view_type=2&step=2&grade=<%= key %>"><%= value %></a></h3>
                       </div>
                     </div>
                   </li>
                   <% idx += 1 %>
                   <% idx %= 12 %>
+              <% end %>
+
+          <% elsif @step == '2' %>
+              <% GradeUnitConcept::CHAPTERS.each_pair do |key, value| %>
+                  <% unless @grade.to_i != key/100 %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents?view_type=2&step=3&grade=<%= @grade %>&chapter=<%= key %>"><%= value %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
+              <% end %>
+          <% elsif @step == '3' %>
+              <% GradeUnitConcept::CATEGORIES.each_pair do |key, value| %>
+                  <% unless @chapter.to_i != key/100 %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents?view_type=2&step=4&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= key %>"><%= value %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
+              <% end %>
+          <% elsif @step == '4' %>
+              <% GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value| %>
+                  <% unless @category.to_i != key/100 %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <!--
+                      <a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                     -->
+                          <a href="javascript:loadModal(<%= key %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+
+
+                          <div class="content-boxes-in-v3">
+                            <h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
+              <% end %>
+          <% elsif @step == '5' %>
+              <% @grade_unit_concepts.each do | grade_unit_concept | %>
+                  <% if grade_unit_concept.unit_concept.level <= @level.to_i() %>
+                      <li class="col-md-4 md-margin-bottom-30">
+                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <div class="content-boxes-in-v3">
+                            <ul class="star-vote">
+                              <% unless grade_unit_concept.unit_concept.level.nil? %>
+                                  <% rst = 5 - grade_unit_concept.unit_concept.level %>
+                                  <% (1..grade_unit_concept.unit_concept.level).each do |idx| %>
+                                      <li><i class="fa fa-star"></i></li>
+                                  <% end%>
+
+                                  <% (1..rst).each do |idx| %>
+                                      <li><i class="fa fa-star-o"></i></li>
+                                  <% end %>
+                              <% end %>
+                            </ul>
+                            <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
+                          </div>
+                        </div>
+                      </li>
+                      <% idx += 1 %>
+                      <% idx %= 12 %>
+                  <% end %>
+              <% end %>
           <% end %>
-    <% end %>
-    </ul>
-<% end %> <!-- 학년별 학습 END -->
+        </ul>
+    <% end %> <!-- 학년별 학습 END -->
 <% end %><!-- current_user.grade -->
 
 <!-- level_choice_modal -->
 <div class="modal fade" id="level_choice_modal" role="dialog">
-    <div class="modal-dialog modal-md">
-        <div class="modal-content">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
 
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <div class="modal-title text-left">
-                    <% if @study_level.to_i == 1 %>
-                        <% levelStr = '초급' %>
-                    <% elsif @study_level.to_i == 2 %>
-                        <% levelStr = '중급' %>
-                    <% else %>
-                        <% levelStr = '상급' %>
-                    <% end %>
-                    <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
-                </div>
-            </div>
-            
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
-                        <div class="col-md-4 content-boxes-v6 md">
-                            <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
-                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
-                        </div>
-                        <% end %>
-                    </div>
-                </div><!-- /.row -->
-            </div>
-            
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-title text-left">
+
+          <% if @student  == 'middle' %>
+              <% if @study_level.to_i == 1 %>
+                  <% levelStr = '초급' %>
+              <% elsif @study_level.to_i == 2 %>
+                  <% levelStr = '중급' %>
+              <% else%>
+                  <% levelStr = '상급' %>
+              <% end %>
+          <% else %>
+              <% if @study_level.to_i == 3 %>
+                  <% levelStr = '초급' %>
+              <% elsif @study_level.to_i == 4 %>
+                  <% levelStr = '중급' %>
+              <% else%>
+                  <% levelStr = '상급' %>
+              <% end %>
+          <% end %>
+
+          <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
         </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
+                <div class="col-md-4 content-boxes-v6 md">
+                  <% unless @view_type != '1' %>
+                      <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                      <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                  <% else %>
+                      <a href="javascript:goNext2(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                      <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                  <% end %>
+
+                </div>
+            <% end %>
+          </div>
+        </div><!-- /.row -->
+      </div>
+
     </div>
-    
-    <script type="text/javascript">
-    
+  </div>
+
+  <script type="text/javascript">
+
     var concept_id;
-    
+
     function goNext(level) {
 
-        var curLevel = level
-        
-        if ("<%= @student %>" == "high") {
-            curLevel = curLevel + 2;
-        }
-        
-        var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student%>&level=" + curLevel + "&concept_id=" + concept_id;
-        location = url;
+      var curLevel = level;
+
+      if ("<%= @student %>" == "high") {
+        curLevel = curLevel + 2;
+      }
+
+      var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
+
+      location = url;
     }
-    
-    </script>
-    
+
+    function goNext2(level) {
+      var curLevel = level;
+
+      if ("<%= @student %>" == "high") {
+        curLevel = curLevel + 2;
+      }
+
+      var url = "/contents?view_type=<%= @view_type %>&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=" + concept_id + "&student=<%= @student %>&level=" + curLevel;
+      location = url;
+    }
+
+  </script>
+
 </div>
 <!-- Modal END-->
 
 
 <script type="text/javascript">
 
-function loadModal(new_concept_id) {
+  function loadModal(new_concept_id) {
     concept_id = new_concept_id;
     $('#level_choice_modal').modal();
-}
+  }
 
 </script>

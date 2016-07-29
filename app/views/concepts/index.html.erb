@@ -1,43 +1,46 @@
     <div class="container-fluid" style="margin-top: 50px">
-        
+
         <div class="row">
-            
+
             <div class="col-sm-12 col-md-12 main">
-                
+
                 <h2 class="sub-header"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Listing Concepts</h2>
-                
+
                 <div class="row">
                 </div>
-                    
+
                 <div class="table-responsive">
-                    
+
 					<div class="col-md-2">
 	                    <select id="cetegory" class="form-control" onchange="changeCategory(this.value)">
-	                    <option value="">Category</option>  
+	                    <option value="">Category</option>
 	                    <% @categorys.each do |category| %>
 	                    <option value="<%= category.category %>" <%= "selected" if params[:category] == category.category %>><%= category.category %> &nbsp; <%= Concept::CATEGORIES[category.category] %></option>
-	                    <% end %>  
+	                    <% end %>
 	                    </select>
 					</div>
-					
-					<div class="col-md-2">	
+
+					<div class="col-md-2">
 	                    <select id="sub_category" class="form-control col-md-2" >
 	                    <option value="">--- Sub Category ---</option>
-	                    </select> 					
+	                    </select>
 					</div>
-					
-					<div class="col-md-2">	
+
+					<div class="col-md-2">
 	                    <select id="exercise_yn" class="form-control col-md-2" >
-						<option value=""></option>	
+						<option value=""></option>
 	                    <option value="concept" <%= "selected" if params[:exercise_yn] == "concept" %> >Concept</option>
 						<option value="exercise" <%= "selected" if params[:exercise_yn] == "exercise" %> >Exercise</option>
 	                    </select>
 					</div>
-					
+
 					<div class="col-md-1">
-						<a href="javascript:goSearch()" class="btn btn-success">Search</a>	
-					</div>	
-                    
+						<a href="javascript:goSearch()" class="btn btn-success">Search</a>
+					</div>
+
+          <div class="col-md-12 margin-top-20 margin-bottom-20">
+            <%= link_to 'New Concept', new_concept_path, :class => 'btn btn-primary align-right' %>
+          </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -62,7 +65,7 @@
                             <% elsif concept.exercise_yn == 'exercise'  %>
                             <span class="label rounded-2x label-brown">Exercise</span>
                             <% end %>
-                        </td>    
+                        </td>
                         <td>
 							<% concept_params = "&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}"%>
 							<%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?concept_page_num=#{params[:page]||1}&#{concept_params}" : "/concepts/#{concept.id}/exercise?concept_page_num=#{params[:page]||1}&#{concept_params}"  ) %>
@@ -73,67 +76,65 @@
                         <% end %>
                         </tbody>
                     </table>
-                    
+
                     <%= will_paginate @concepts, renderer: BootstrapPagination::Rails %>
-                    
+
                 </div>
-            
-                <%= link_to 'New Concept', new_concept_path, :class => 'btn btn-primary align-right' %>
-            
+
             </div>
-            
+
         </div>
     </div>
-    
+
     <script type="text/javascript">
-	
+
     <% index = 0 %>
 
     var options = [
     <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-    <%      index = index + 1  %>    
+    <%      index = index + 1  %>
         {
             values: '<%= key %>', text: '<%= value %>'
         }
         <%= ',' unless index == Concept::SUB_CATEGORIES.count  %>
     <% end %>
-    ]	
-    
+    ]
+
     function changeCategory(t) {
-		
+
         $('#sub_category').empty();
-		
+
         var divChar = '';
-		
+
         if (t != '') {
             divChar = t.substring(0,2);
         }
-		
+
 		$('#sub_category').append( $('<option>').text("--- Sub Category ---").attr('value',''));
-        
+
         $.each(options, function(i) {
             if (options[i].values.substring(0,2) == divChar) {
                 $('#sub_category').append( $('<option>').text(options[i].values+ ' ' + options[i].text).attr('value',options[i].values) );
             }
         });
-		
+
         <% unless params[:sub_category].blank? %>
         $("#sub_category").val("<%= params[:sub_category] %>");
-        <% end %>		
-        
+        <% end %>
+
     }
-	
+
 	function goSearch() {
-		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" + 
+		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" +
 		$('#sub_category').val() + "&exercise_yn=" + $('#exercise_yn').val();
 	}
-	
+
 	<% unless params[:category].blank? %>
 	$( document ).ready(function() {
 	    changeCategory("<%= params[:category] %>")
 	});
 	<% end %>
-	
+
     </script>
     
     

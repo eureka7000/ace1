@@ -169,13 +169,7 @@
       height : 200,
       lang: 'ko-KR',
       focus : true,
-      tabsize : 2,
-      onImageUpload: function () {
-        console.log('onImageUpload', arguments, $('#reply_post')[0] === this);
-      },
-      onImageUploadError: function () {
-        console.log('onImageUploadError', arguments, $('#reply_post')[0] === this);
-      }
+      tabsize : 2
     });
 
     $('#new_reply').submit(function () {

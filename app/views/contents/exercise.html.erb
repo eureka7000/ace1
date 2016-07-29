@@ -25,11 +25,11 @@
         <% end %>
 
         <% if @is_exercise == 1 %>
-            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유형문제</a></li>
+            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><%= params[:synthesis] == '1' ? '종합문제' : '유형문제' %></a></li>
             <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
             <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
-            <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념(<%= linkCount %>)</a></li>
-            <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video(<%= type4Count %>)</a></li>
+            <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념<span class="badge rounded-2x"><%= linkCount %></span></a></li>
+            <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video <span class="badge rounded-2x"><%= type4Count %></span></a></li>
             <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
             <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
             <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>

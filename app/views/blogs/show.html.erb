@@ -38,8 +38,13 @@
                 </div>
 
                 <footer>
-                    <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
+                    <% unless current_user.nil? %>
+                      <% unless @blog.user_id != current_user.id %>
+                          <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
+                      <% end %>
+                    <% end %>
                     <% unless session[:admin].nil? %>
+                      <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
                       <%= link_to 'Back', blogs_path, :class => 'btn btn-default' %>
                     <% else %>
                       <% Blog::BLOG_NAMES.each_pair do |key, value| %>

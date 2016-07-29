@@ -25,9 +25,9 @@
       <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
         <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
         <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
-        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise(<%= type3Count %>)</a></li>
-        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념(<%= linkCount %>)</a></li>
-        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video(<%= type4Count %>)</a></li>
+        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise <span class="badge rounded-2x pull-center"><%= type3Count %></span></a></li>
+        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념 <span class="badge rounded-2x pull-center"><%= linkCount %></span></a></li>
+        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video <span class="badge rounded-2x pull-center"><%= type4Count %></span></a></li>
         <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
         <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">질문하기</a></li>
         <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
@@ -37,18 +37,36 @@
         <!-- 이전 다음 개념 링크 -->
         <div class="col-md-12 col-ms-12 col-xs-12 no-margin" >
           <% count = 0 %>
-          <% @unit_concept_related.each do |related| %>
-              <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                <% unless count != 1 %>
-                    <p style="color: black; font-weight: bold;">now</p>
-                <% else %>
-                    <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
-                <% end %>
-                <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
-                <br/><br/>
+          <% unless params[:id].to_i() == 1 %>
+              <% @unit_concept_related.each do |related| %>
+                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
+                    <% unless count != 1 %>
+                        <p style="color: black; font-weight: bold;">now</p>
+                    <% else %>
+                        <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
+                    <% end %>
+                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                    <br/><br/>
+                  </div>
+                  <% count += 1 %>
+              <% end %>
+          <% else %>
+              <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20">
               </div>
-              <% count += 1 %>
+              <% @unit_concept_related.each do |related| %>
+                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
+                    <% unless count != 0 %>
+                        <p style="color: black; font-weight: bold;">now</p>
+                    <% else %>
+                        <p style="color: #898487"><%= 'next' %></p>
+                    <% end %>
+                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" ></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                    <br/><br/>
+                  </div>
+                  <% count += 1 %>
+              <% end %>
           <% end %>
+
         </div>
 
         <!-- Tab 개념 -->
@@ -582,6 +600,7 @@
         <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
         <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
         <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
+        <input type="hidden" name="question[confirm_yn]" value="N" />
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>

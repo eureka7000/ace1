@@ -19,26 +19,9 @@
               <i class="fa fa-calendar"></i> <%= blog.created_at.localtime.strftime('%Y-%m-%d %H:%M') %> &nbsp;
               <i class="fa fa-user"></i> <%= blog.admin_yn == "Y" ? "관리자" : blog.user.user_name %>
               </br></br>
-              
+
               <p><%= ActionView::Base.full_sanitizer.sanitize(blog.content).truncate(50) %></p>
 
-              <% unless current_user.nil? %>
-
-                  <% unless blog.user_id != current_user.id %>
-
-                      <div class="col-md-12 text-right ">
-                        <hr class="devider devider-dashed no-padding no-margin">
-                        <div class="col-md-10 no-margin no-padding"></div>
-                        <div class="col-md-1 no-margin no-padding">
-                          <%= link_to 'Edit', edit_blog_path(blog, blog_type: @blog_type), :class => 'btn btn-link' %> &nbsp;
-                        </div>
-                        <div class="col-md-1">
-                          <%= button_to 'delete', blog, :method=>:delete, :class => 'btn btn-link' %>
-                        </div>
-                      </div>
-                  <% end %>
-
-              <% end %>
             </div>
           </div>
       <% end %>
