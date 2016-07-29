@@ -40,35 +40,7 @@
                             </thead>        
                             
                                 
-                            <% if current_user.user_relations.count == 0 %>
-                            <tr>
-                            <td colspan="6" class="text-center">관련된 사람이 없습니다.</td>
-                            </tr>    
-                            <% end %>
-                                
-                            <% current_user.user_relations.each do | user_relation | %>    
-							<tr>
-							<td><%= user_relation.relation_type %></td>
-                            <td><%= user_relation.get_related_user_name %></td>
-                            <td>
-                                <% if user_relation.confirm_status == 'requested' %>
-                                <span class="badge badge-yellow rounded">
-                                <% elsif user_relation.confirm_status == 'confirmed' %>
-                                <span class="badge badge-aqua rounded" >
-                                <% elsif user_relation.confirm_status == 'rejected' %>
-                                <span class="badge badge-purple rounded">
-                                <% end %>
-                                <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] %>
-                                </span>
-                            </td>
-                            <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
-                            <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
-                            <td>
-                                <!--<a href="javascript:destroyRelation(<%= user_relation.id %>)"><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o" title="관계 해제"></i></a>-->
-                            </td>
-                            </tr>
-                            <% end %>    
-							</table>
+                        </table>
 								
                         </div>
                         
