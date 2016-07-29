@@ -93,4 +93,10 @@ Rails.application.configure do
     password: 'leinhar0!'
   }
   
+  # inicis 결제정보
+  config.inicis = {
+      mid: 'eurekamath',
+      sign_key: 'SEowWHFiSENnK0VJSVF1Y3llamlhZz09'
+  }    
+  
 end

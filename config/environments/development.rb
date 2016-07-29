@@ -46,8 +46,8 @@ Rails.application.configure do
   
     # inicis 결제정보
     config.inicis = {
-        mid: 'eurekamath',
-        sign_key: 'SEowWHFiSENnK0VJSVF1Y3llamlhZz09'
+        mid: 'INIpayTest',
+        sign_key: 'SU5JTElURV9UUklQTEVERVNfS0VZU1RS'
     }  
 
 end

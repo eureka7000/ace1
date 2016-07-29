@@ -17,6 +17,7 @@ gem 'mini_magick'
 gem 'fog'
 gem 'will_paginate-bootstrap'
 gem 'twilio-ruby'
+gem 'httparty'
 
 group :development, :test do
   gem 'byebug'

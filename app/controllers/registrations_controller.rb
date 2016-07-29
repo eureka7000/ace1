@@ -7,6 +7,10 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     super
     
+    user = User.find(current_user.id)
+    user.user_auth = 'free'
+    user.save    
+        
     user_type = UserType.new
     
     logger.debug user_type

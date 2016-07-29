@@ -2,6 +2,45 @@ require 'digest'
 
 class InicisPayment < ActiveRecord::Base
     
+    GO_PAY_METHOD = {
+        'Card' => '신용카드',
+        'DirectBank' => '실시간계좌이체',
+        'HPP' => '핸드폰',
+        'OCBPoint' => 'OK Cashbag 포인트',
+        'Vbank' => '무통장입금(가상계좌)',
+        'PhoneBill' => '폰빌, 전화결제',
+        'Culture' => '문화상품권결제',
+        'DGCL' => '스마트문상 결제',
+        'TeenCash' => '틴캐시',
+        'Bcsh' => '도서문화상품권',
+        'HPMN' => '해피머니상품권',
+        'YPAY' => '엘로페이',
+        'Kpay' => '케이페이',
+        'Paypin' => '페이핀',
+        'EasyPay' => '간편결제',
+        'EWallet' => '전자지갑',
+        'POINT' => '포인트',
+        'GiftCard' => '상품권'
+    }
+    
+    CARD_CODE = {
+        '01' => '하나',
+        '03' => '롯데',
+        '04' => '현대',
+        '06' => '국민',
+        '11' => 'BC',
+        '12' => '삼성',
+        '14' => '신한',
+        '15' => '한미',
+        '16' => 'NH',
+        '17' => '하나카드',
+        '21' => '해외비자',
+        '22' => '해외마스터',
+        '23' => 'JCB',
+        '24' => '해외아멕스',
+        '25' => '해외다이너스'
+    }
+    
     def self.getTimestamp
 		
 		# # timezone 을 설정하지 않으면 getTimestamp() 실행시 오류가 발생한다.
@@ -57,7 +96,7 @@ class InicisPayment < ActiveRecord::Base
     end
 
     def self.make_hash(data)
-        Digest::SHA256.digest data
+        Digest::SHA256.hexdigest data
     end        
 
 end

@@ -1,5 +1,7 @@
 class InicisPaymentsController < ApplicationController
-  before_action :set_inicis_payment, only: [:show, :edit, :update, :destroy]
+    
+    before_filter :authenticate_user!
+    before_action :set_inicis_payment, only: [:show, :edit, :update, :destroy]
 
   # GET /inicis_payments
   # GET /inicis_payments.json
@@ -16,7 +18,7 @@ class InicisPaymentsController < ApplicationController
         @inicis_payment = InicisPayment.new
         
         @timestamp = DateTime.now.strftime('%Q')
-        @order_number = Rails.application.config.inicis[:mid] + "_" + @timestamp  # 가맹점 주문번호(가맹점에서 직접 설정)        
+        @order_number = Rails.application.config.inicis[:mid] + "_" + @timestamp  # 가맹점 주문번호(가맹점에서 직접 설정)
         @price = "1000"        # 상품가격(특수기호 제외, 가맹점에서 직접 설정)
         @card_no_interest_quota = ''  # 카드 무이자 여부 설정(가맹점에서 직접 설정) - 카드사코드-할부개월:할부개월 ex) 11-2:3:,34-5:12,14-6:12:24,12-12:36,06-9:12,01-3:4
         @card_quota_base = '2:3:4:5:6:11:12:24:36'  # 가맹점에서 사용할 할부 개월수 설정

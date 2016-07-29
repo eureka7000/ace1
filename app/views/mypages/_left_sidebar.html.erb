@@ -1,24 +1,26 @@
-        <!--Left Sidebar-->
-        <div class="col-md-3 md-margin-bottom-40">
-            <img class="img-responsive profile-img margin-bottom-20" src="/assets/img/team/img32-md.jpg" alt="">
+<!--Left Sidebar-->
+<div class="col-md-3 md-margin-bottom-40">
 
-            <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
-              <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
-                <a href="/mypages/evaluation"><i class="fa fa-cubes"></i>&nbsp;Evaluation</a>
-              </li>
-              <% unless current_user.user_types[0].user_type != 'student' %>
-                <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
-                  <a href="/mypages/question_list"><span class="glyphicon glyphicon-list"></span>&nbsp;Question List</a>
-                </li>
-              <% end %>
-              <% unless current_user.user_types[0].user_type != 'school teacher' %>
-                  <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
-                    <a href="/mypages/question_list"><span class="glyphicon glyphicon-list"></span>&nbsp;Question List</a>
-                  </li>
-              <% end %>
-              <li class="list-group-item <%= 'active' if @click == 'user_info'%>">
-                <a href="/mypages/user_info"><i class="fa fa-user"></i>&nbsp;User Info</a>
-              </li>
-            </ul>
-        </div>
-        <!--End Left Sidebar-->
+    <img class="img-responsive profile-img margin-bottom-20" src="/assets/img/team/img32-md.jpg" alt="">
+
+    <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
+        <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
+            <a href="/mypages/evaluation"><i class="fa fa-cubes"></i> 자기평가</a>
+        </li>
+        <% if current_user.user_types[0].user_type == 'student' || current_user.user_types[0].user_type == 'school teacher' %>
+        <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
+            <a href="/mypages/question_list"><i class="fa fa-question"></i> 질문/답변 리스트</a>
+        </li>
+        <% end %>
+        
+        <li class="list-group-item <%= 'active' if @click == 'user_info'%>">
+            <a href="/mypages/user_info"><i class="fa fa-user"></i> 사용자 정보</a>
+        </li>
+        
+        <li class="list-group-item <%= 'active' if @click == 'payment'%>">
+            <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결재 정보</a>
+        </li>        
+        
+    </ul>
+</div>
+<!--End Left Sidebar-->

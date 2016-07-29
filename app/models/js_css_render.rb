@@ -17,7 +17,7 @@ class JsCssRender
                   '      }); ' +
                   '</script>'
                   
-        elsif controller_name == 'mypages' && ( page_name == 'overall' || page_name == 'user_info' )
+        elsif controller_name == 'mypages' && ( page_name == 'overall' || page_name == 'user_info' || page_name == 'payment' || page_name == 'payment_return' )
                   
             ret = '<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>' +
                   '<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>' +
@@ -71,7 +71,7 @@ class JsCssRender
             ret = '<link rel="stylesheet" href="/assets/plugins/parallax-slider/css/parallax-slider.css">' +
                   '<link rel="stylesheet" href="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">' 
                   
-        elsif controller_name == 'mypages' && ( page_name == 'overall' || page_name == 'user_info' )
+        elsif controller_name == 'mypages' && ( page_name == 'overall' || page_name == 'user_info' || page_name == 'payment' || page_name == 'payment_return' )
             
             ret = '<link rel="stylesheet" href="/assets/plugins/scrollbar/css/jquery.mCustomScrollbar.css">' +
                   '<link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">' +

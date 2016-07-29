@@ -33,6 +33,11 @@ class User < ActiveRecord::Base
         "3" => "상급"
     }
     
+    USER_AUTHS = {
+        "free" => "Free",
+        "paid" => "결제완료"
+    }
+    
     def user_params
         params.require(:user).permit(:email, :name, :location, :phone, :grade)
     end    

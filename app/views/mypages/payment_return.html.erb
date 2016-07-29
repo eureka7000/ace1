@@ -1,0 +1,514 @@
+<!--=== Profile ===-->
+<div class="container content profile">
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <!-- Profile Content -->
+        <div class="col-md-9">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">결제정보</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <div id="payment" class="profile-edit tab-pane fade in active">
+                            
+                            <% if @payment_result['resultCode'] == '0000' %>
+                                <div class="alert alert-success fade in">
+                                    결제가 <strong>성공</strong>하였습니다.
+                                </div>
+                            <% else %>
+                                <div class="alert alert-danger fade in">
+                                    결제에 <strong>실패</strong>하였습니다.
+                                </div>                            
+                            <% end %>
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-credit-card"></i> 결제정보</h3>
+                            
+                            <hr>                            
+                            
+                            <dl class="dl-horizontal">
+                            <dt><strong>거래 번호 </strong></dt>
+                            <dd><%= @payment_result['tid'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>결제방법(지불수단) </strong></dt>
+                            <dd><%= InicisPayment::GO_PAY_METHOD[@payment_result['payMethod']] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>결제완료금액 </strong></dt>
+                            <dd><%= @payment_result['TotPrice'] %> 원</dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>주문 번호 </strong></dt>
+                            <dd><%= @payment_result['MOID'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>승인날짜 </strong></dt>
+                            <dd><%= @payment_result['applDate'].first(4) + "년 " + @payment_result['applDate'].at(4..5) + "월 " + @payment_result['applDate'].last(2) + "일 " + @payment_result['applTime'].first(2) + "시 " + @payment_result['applTime'].at(2..3) + "분" %></dd>
+                            </dl>
+                            
+                            <hr style="margin-bottom: 50px">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-magnifier"></i> 결제 상세정보</h3>
+                            
+                            <dl class="dl-horizontal">                                                     
+                            <% if @payment_result['payMethod'] == 'VBank'  # 가상계좌 %>
+                            <dt><strong>입금 계좌번호 </strong></dt>
+                            <dd><%= @payment_result['VACT_Num'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>입금 은행코드 </strong></dt>
+                            <dd><%= @payment_result['VACT_BankCode'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>입금 은행명 </strong></dt>
+                            <dd><%= @payment_result['vactBankName'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>예금주 명 </strong></dt>
+                            <dd><%= @payment_result['VACT_Name'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>송금자 명 </strong></dt>
+                            <dd><%= @payment_result['VACT_InputName'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>송금 일자 </strong></dt>
+                            <dd><%= @payment_result['VACT_Date'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>송금 시간 </strong></dt>
+                            <dd><%= @payment_result['VACT_Time'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'DirectBank'  # 실시간계좌이체  %>
+                        
+                            <hr>
+                        
+                            <dt><strong>은행코드 </strong></dt>
+                            <dd><%= @payment_result['ACCT_BankCode'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>은행코드 </strong></dt>
+                            <dd><%= @payment_result['ACCT_BankCode'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>현금영수증 발급결과코드 </strong></dt>
+                            <dd><%= @payment_result['CSHRResultCode'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>현금영수증 발급구분코드 </strong> <br><font color=red><b>(0 - 소득공제용, 1 - 지출증빙용)</b></font></dt>
+                            <dd><%= @payment_result['CSHR_Type'] %></dd> 
+                        
+                            <% elsif @payment_result['payMethod'] == 'HPP'  # 휴대폰  %>
+                        
+                            <hr>
+                        
+                            <dt><strong>통신사 </strong></dt>
+                            <dd><%= @payment_result['HPP_Corp'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>결제장치 </strong></dt>
+                            <dd><%= @payment_result['payDevice'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>휴대폰번호 </strong></dt>
+                            <dd><%= @payment_result['HPP_Num'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'KWPY'  # 뱅크월렛 카카오  %>
+                        
+                            <hr>
+                        
+                            <dt><strong>휴대폰번호 </strong></dt>
+                            <dd><%= @payment_result['KWPY_CellPhone'] %></dd>
+                                                
+                            <hr>
+                        
+                            <dt><strong>거래금액 </strong></dt>
+                            <dd><%= @payment_result['KWPY_SalesAmount'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>공급가액 </strong></dt>
+                            <dd><%= @payment_result['KWPY_Amount'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>부가세 </strong></dt>
+                            <dd><%= @payment_result['KWPY_Tax'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>봉사료 </strong></dt>
+                            <dd><%= @payment_result['KWPY_ServiceFee'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'Culture'  # 문화상품권  %>
+                            
+                            <hr>
+                        
+                            <dt><strong>문화상품권승인일자 </strong></dt>
+                            <dd><%= @payment_result['applDate'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>문화상품권 승인시간 </strong></dt>
+                            <dd><%= @payment_result['applTime'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>문화상품권 승인번호 </strong></dt>
+                            <dd><%= @payment_result['applNum'] %></dd>
+
+                            <% elsif @payment_result['payMethod'] == 'DGCL'  # 게임문화상품권  %>
+                        
+                            <hr>
+                        
+                            <dt><strong>게임문화상품권승인금액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_ApplPrice'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>사용한 카드수 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Cnt'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num1'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price1'] %> 원</dd>
+                                                    
+                                <% unless @payment_result['GAMG_Num2'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num2'] %></dd>
+                                                    
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price2'] %> 원</dd>
+                                <% end %>
+                            
+                                <% unless @payment_result['GAMG_Num3'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num3'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price3'] %> 원</dd>
+                                <% end %>
+                            
+                                <% unless @payment_result['GAMG_Num4'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num4'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price4'] %> 원</dd>
+                                <% end %>
+                            
+                                <% unless @payment_result['GAMG_Num5'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num5'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price5'] %> 원</dd>
+                                <% end %>
+                            
+                                <% unless @payment_result['GAMG_Num6'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>사용한 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Num6'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>카드잔액 </strong></dt>
+                            <dd><%= @payment_result['GAMG_Price6'] %> 원</dd>
+                                <% end %>
+                            
+                            <% elsif @payment_result['payMethod'] == 'OCBPoint'  # 오케이 캐쉬백  %>
+                            
+                            <hr>
+                        
+                            <dt><strong>지불구분 </strong></dt>
+                            <dd><%= @payment_result['PayOption'] %></dd>
+                                                    
+                            <hr>
+                        
+                            <dt><strong>결제완료금액 </strong></dt>
+                            <dd><%= @payment_result['applPrice'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>OCB 카드번호 </strong></dt>
+                            <dd><%= @payment_result['OCB_Num'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>적립 승인번호 </strong></dt>
+                            <dd><%= @payment_result['OCB_SaveApplNum'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>사용 승인번호 </strong></dt>
+                            <dd><%= @payment_result['OCB_PayApplNum'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>OCB 지불 금액 </strong></dt>
+                            <dd><%= @payment_result['OCB_PayPrice'] %></dd>
+
+                            <% elsif @payment_result['payMethod'] == 'GSPT'  # GSPoint  %>
+                            
+                            <hr>
+                        
+                            <dt><strong>지불구분 </strong></dt>
+                            <dd><%= @payment_result['PayOption'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>GS 포인트 승인금액 </strong></dt>
+                            <dd><%= @payment_result['GSPT_ApplPrice'] %></dd>
+                                                
+                            <hr>
+                        
+                            <dt><strong>GS 포인트 적립금액 </strong></dt>
+                            <dd><%= @payment_result['GSPT_SavePrice'] %></dd>
+                            
+                            <hr>
+                        
+                            <dt><strong>GS 포인트 지불금액 </strong></dt>
+                            <dd><%= @payment_result['GSPT_PayPrice'] %></dd>
+
+                            <% elsif @payment_result['payMethod'] == 'UPNT'  # U-포인트  %>
+
+                            <hr>
+                        
+                            <dt><strong>U포인트 카드번호 </strong></dt>
+                            <dd><%= @payment_result['UPoint_Num'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>가용포인트 </strong></dt>
+                            <dd><%= @payment_result['UPoint_usablePoint'] %></dd>
+
+                            <hr>
+                        
+                            <dt><strong>포인트지불금액 </strong></dt>
+                            <dd><%= @payment_result['UPoint_ApplPrice'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'TEEN'  # 틴캐시  %>
+                            
+                            <hr>
+                        
+                            <dt><strong>틴캐시 승인번호 </strong></dt>
+                            <dd><%= @payment_result['TEEN_ApplNum'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>틴캐시아이디 </strong></dt>
+                            <dd><%= @payment_result['TEEN_UserID'] %></dd>
+                                                
+                            <hr>
+                        
+                            <dt><strong>틴캐시승인금액 </strong></dt>
+                            <dd><%= @payment_result['TEEN_ApplPrice'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'Bookcash'  # 도서문화상품권  %>
+                        
+                            <hr>
+                        
+                            <dt><strong>도서상품권 승인번호 </strong></dt>
+                            <dd><%= @payment_result['BCSH_ApplNum'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>도서상품권 사용자ID </strong></dt>
+                            <dd><%= @payment_result['BCSH_UserID'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>도서상품권 승인금액 </strong></dt>
+                            <dd><%= @payment_result['BCSH_ApplPrice'] %></dd>
+                        
+                            <% elsif @payment_result['payMethod'] == 'PhoneBill'  # 폰빌전화결제  %>
+                            
+                            <hr>
+                        
+                            <dt><strong>승인전화번호 </strong></dt>
+                            <dd><%= @payment_result['PHNB_Num'] %></dd>                        
+                            
+                            <% elsif @payment_result['payMethod'] == 'Bill'  # 빌링결제  %>
+
+                            <hr>
+                        
+                            <dt><strong>빌링키 </strong></dt>
+                            <dd><%= @payment_result['CARD_BillKey'] %></dd>
+                        
+                            <% else # 카드 %>
+                            
+                                <% unless @payment_result['EventCode'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>이벤트 코드 </strong></dt>
+                            <dd><%= @payment_result['EventCode'] %></dd>
+                                <% end %>
+                            
+                            <hr>
+                        
+                            <dt><strong>카드번호 </strong></dt>
+                            <dd><%= @payment_result['CARD_Num'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>할부기간 </strong></dt>
+                            <dd><%= ( @payment_result['CARD_Quota'] == "00" ) ? "일시불" : @payment_result['CARD_Quota'] %></dd>
+                        
+                                <% if !@payment_result['EventCode'].blank? && !@payment_result['CARD_Interest'].blank? && ( @payment_result['CARD_Interest'] == '1' || @payment_result['EventCode'] == '1') %>
+                            <hr>
+                        
+                            <dt><strong>할부 유형 </strong></dt>
+                            <dd>무이자</dd>
+                                <% elsif @payment_result['CARD_Quota'].to_i > 0 && !@payment_result['CARD_Interest'].blank? && @payment_result['CARD_Interest'] != '1' %>
+                            <hr>
+                        
+                            <dt><strong>할부 유형 </strong></dt>
+                            <dd>유이자 <font color='red'> *유이자로 표시되더라도 EventCode 및 EDI에 따라 무이자 처리가 될 수 있습니다.</font></dd>
+                                <% end %>
+                            
+                            <hr>
+                        
+                            <dt><strong>포인트 사용 여부 </strong></dt>
+                            <dd><%= ( !@payment_result['point'].blank? && @payment_result['point'] == '1' ) ? "사용" : "미사용" %> </dd>
+
+                            <hr>
+                        
+                            <dt><strong>카드 종류 </strong></dt>
+                            <dd><%= InicisPayment::CARD_CODE[@payment_result['CARD_Code']] %></dd>
+
+                                <% unless @payment_result['CARD_BankCode'] == '00' %>
+                            <hr>
+                        
+                            <dt><strong>카드 발급사 </strong></dt>
+                            <dd><%= @payment_result['CARD_BankCode'] %></dd>
+                                <% end %>
+
+                                <% unless @payment_result['OCB_Num'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>OK CASHBAG 카드번호 </strong></dt>
+                            <dd><%= @payment_result['OCB_Num'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>OK CASHBAG 적립 승인번호 </strong></dt>
+                            <dd><%= @payment_result['OCB_SaveApplNum'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>OK CASHBAG 포인트지불금액 </strong></dt>
+                            <dd><%= @payment_result['OCB_PayPrice'] %></dd>                        
+                                <% end %>
+                            
+                                <% unless @payment_result['GSPT_Num'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>GS&Point 카드번호 </strong></dt>
+                            <dd><%= @payment_result['GSPT_Num'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>GS&Point 잔여한도 </strong></dt>
+                            <dd><%= @payment_result['GSPT_Remains'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>GS&Point 승인금액 </strong></dt>
+                            <dd><%= @payment_result['GSPT_ApplPrice'] %></dd>
+                                <% end %>
+                        
+                                <% unless @payment_result['UNPT_CardNum'].blank? %>
+                            <hr>
+                        
+                            <dt><strong>U-Point 카드번호 </strong></dt>
+                            <dd><%= @payment_result['UNPT_CardNum'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>U-Point 가용포인트 </strong></dt>
+                            <dd><%= @payment_result['UPNT_UsablePoint'] %></dd>
+                        
+                            <hr>
+                        
+                            <dt><strong>U-Point 포인트지불금액 </strong></dt>
+                            <dd><%= @payment_result['UPNT_PayPrice'] %></dd>                        
+                                <% end %>
+                            
+                            <% end  %>
+                            </dl>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>                
+
+<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+    
+function openPayment() {
+    
+    $('#payment').show();
+    
+}
+
+function pay() {
+    INIStdPay.pay('SendPayForm_id');
+}
+    
+</script>

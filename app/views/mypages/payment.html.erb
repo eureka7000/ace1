@@ -1,0 +1,217 @@
+<!--=== Profile ===-->
+<div class="container content profile">
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <!-- Profile Content -->
+        <div class="col-md-9">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">결제정보</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <% unless notice.blank? %>
+                                <p class="alert alert-warning"><%= notice %></p>
+                            <% end %>
+                            
+                            <% unless alert.blank? %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제이력</h3>
+                            
+							<table class="table">
+                            <thead>
+                            <th>관계</th>
+                            <th>이름</th>
+                            <th>상태</th>
+                            <th>요청일</th>
+                            <th>승인일</th>
+                            <th><i class="fa fa-cog"></i></th>
+                            </thead>        
+                            
+                                
+                            <% if current_user.user_relations.count == 0 %>
+                            <tr>
+                            <td colspan="6" class="text-center">관련된 사람이 없습니다.</td>
+                            </tr>    
+                            <% end %>
+                                
+                            <% current_user.user_relations.each do | user_relation | %>    
+							<tr>
+							<td><%= user_relation.relation_type %></td>
+                            <td><%= user_relation.get_related_user_name %></td>
+                            <td>
+                                <% if user_relation.confirm_status == 'requested' %>
+                                <span class="badge badge-yellow rounded">
+                                <% elsif user_relation.confirm_status == 'confirmed' %>
+                                <span class="badge badge-aqua rounded" >
+                                <% elsif user_relation.confirm_status == 'rejected' %>
+                                <span class="badge badge-purple rounded">
+                                <% end %>
+                                <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] %>
+                                </span>
+                            </td>
+                            <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
+                            <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
+                            <td>
+                                <!--<a href="javascript:destroyRelation(<%= user_relation.id %>)"><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o" title="관계 해제"></i></a>-->
+                            </td>
+                            </tr>
+                            <% end %>    
+							</table>
+								
+                        </div>
+                        
+                        <div style="margin-top: 12px; margin-bottom:12px">
+                            <a href="javascript:openPayment()" class="btn btn-success">결제하기</a>
+                        </div>    
+                        
+                        <div id="payment" class="profile-edit tab-pane fade in active">
+                            
+                            <form id="SendPayForm_id" name="" class="sky-form" method="POST">
+
+                            <dl class="dl-horizontal">
+                            <dt>version <span style="color:red">*</span></dt>
+                            <dd><section><input type="text" placeholder="성명" name="version" class="form-control" value="1.0"></section></dd>
+                            
+                            <dt>mid <span style="color:red">*</span></dt>
+                            <dd><section><input name="mid" value="<%= @mid %>" class="form-control" ></section></dd>
+                                
+                            <dt>goodname <span style="color:red">*</span></dt>
+                            <dd><section><input name="goodname" value="유레카매스 수학" class="form-control"></section></dd>
+
+                            <dt>oid <span style="color:red">*</span></dt>
+                            <dd><section><input name="oid" value="<%= @order_number %>" class="form-control"></section></dd>
+                                
+                            <dt>price <span style="color:red">*</span></dt>
+                            <dd><section><input name="price" value="<%= @price %>" class="form-control"></section></dd>
+                            
+                            <dt>currency <span style="color:red">*</span></dt>
+                            <dd><section><input name="currency" value="WON" class="form-control"></section></dd>
+
+                            <dt>buyername <span style="color:red">*</span></dt>
+                            <dd><section><input name="buyername" value="<%= current_user.user_name %>" class="form-control"></section></dd>
+                            
+                            <dt>buyertel <span style="color:red">*</span></dt>
+                            <dd><section><input name="buyertel" value="<%= current_user.phone %>" class="form-control"></section></dd>
+
+                            <dt>buyeremail <span style="color:red">*</span></dt>
+                            <dd><section><input name="buyeremail" value="<%= current_user.email %>" class="form-control"></section></dd>
+
+                            <dt>timestamp <span style="color:red">*</span></dt>
+                            <dd><section><input type="text" name="timestamp" value="<%= @timestamp %>" class="form-control"></section></dd>
+
+                            <dt>signature <span style="color:red">*</span></dt>
+                            <dd><section><input type="text" name="signature" id="signature" value='<%= @sign %>' class="form-control"></section></dd>
+
+                            <dt>returnUrl <span style="color:red">*</span></dt>
+                            <dd><section><input type="text" name="returnUrl" value="<%= root_url %>mypages/payment_return" class="form-control"></section></dd>
+                            
+                            <dt>mKey <span style="color:red">*</span></dt>
+                            <dd><section><input type="text" name="mKey" id="mKey" value='<%= @m_key %>' class="form-control"></section></dd>
+                            
+                            <dt>결제수단</dt>
+                            <dd>
+                                <section>
+                                    <select name="gopaymethod" class="form-control">
+                                    <% InicisPayment::GO_PAY_METHOD.each_pair do |key, value| %>
+                                    <option value="<%= key %>" ><%= value %></option>
+                                    <% end %>
+                                    </select>
+                                </section>
+                            </dd>
+                            
+                            <dt>제공기간</dt>
+                            <dd>
+                                <section>
+                                    <input type="text" name="offerPeriod" value="<%= Date.today.strftime('%Y%m%d') %>-<%= Date.today.next_month.strftime('%Y%m%d') %>" class="form-control" >
+                                </section>
+                            </dd>
+                            
+                            <dt>acceptmethod ( 결제수단별 추가요청 필드 pdf 참조)</dt>
+                            <dd>
+                                <section>
+                                    <input name="acceptmethod" value="HPP(1):no_receipt:va_receipt:vbanknoreg(0):vbank(20150611):below1000" class="form-control">
+                                </section>
+                            </dd>
+                            
+                            <dt>초기 표시 언어 ( default : ko)</dt>
+                            <dd><section><input type="text" name="languageView" value="ko" class="form-control"></section></dd>
+                            
+                            <dt>리턴 인코딩 ( default : UTF-8)</dt>
+                            <dd><section><input style="width:100%;" name="charset" value="UTF-8" class="form-control"></section></dd>
+                            
+                            <dt>결제창 표시방법 ( default:overlay )</dt>
+                            <dd><section><input style="width:100%;" name="payViewType" value="overlay" class="form-control"></section></dd>
+                            
+                            <dt>closeUrl</dt>
+                            <dd><section><input style="width:100%;" name="closeUrl" value="<%= root_url %>mypages/close" class="form-control"></section></dd>
+                            
+                            <dt>popupUrl</dt>
+                            <dd><section><input style="width:100%;" name="popupUrl" value="<%= root_url %>mypages/popup" class="form-control"></section></dd>
+
+                            <dt>카드(간편결제도 사용)</dt>
+                            <dd><section> 추가옵션 </section></dd>
+                            
+                            <dt>무이자 할부 개월 - 가맹점 부담</dt>
+                            <dd><section><input name="nointerest" value="11-2:3:4,04-2:3:4" class="form-control"></section></dd>
+
+                            <dt>할부 개월</dt>
+                            <dd><section><input name="quotabase" value="2:3:4" class="form-control"></section></dd>
+                            
+                            <dt>가상계좌</dt>
+                            <dd><section> 추가옵션 </section></dd>                            
+
+                            <dt>주민번호 설정 기능</dt>
+                            <dd><section><input name="vbankRegNo" value="" class="form-control"></section></dd>
+                            
+                            <dt>가맹점 관리데이터</dt>
+                            <dd><section><input name="merchantData" value="" class="form-control"></section></section></dd>                             
+                            </dl>
+
+                            <button type="button" onclick="pay()" class="btn-u btn-u-blue">결제요청</button>
+                            
+                            </form>
+
+                        </div>    
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>                
+
+<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+    
+function openPayment() {
+    
+    $('#payment').show();
+    
+}
+
+function pay() {
+    
+    INIStdPay.pay('SendPayForm_id');
+}
+
+function initpage() {}
+    
+</script>
