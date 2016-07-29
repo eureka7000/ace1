@@ -17,7 +17,7 @@
             <div class="col-sm-12">
 
               <div class="form-group">
-                <%= f.label :password, "New password", :class=>'form-control' %><br />
+                <%= f.label :password, "새 비밀번호", :class=>'form-control' %><br />
                 <% if @minimum_password_length %>
                     <em>(<%= @minimum_password_length %> characters minimum)</em><br />
                 <% end %>
@@ -25,12 +25,12 @@
               </div>
 
               <div class="form-group">
-                <%= f.label :password_confirmation, "Confirm new password" %><br />
+                <%= f.label :password_confirmation, "새 비밀번호 확인" %><br />
                 <%= f.password_field :password_confirmation, autocomplete: "off", :class =>'form-control' %>
               </div>
 
               <div class="actions">
-                <%= f.submit "Change my password", :class => 'form-control' %>
+                <%= f.submit "비밀번호 변경하기", :class => 'form-control btn btn-u btn-u-dark-blue margin-bottom-20' %>
               </div>
 
             </div>

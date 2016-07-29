@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
     before_action :set_question, only: [:show, :edit, :update]
-    before_filter :authenticate_user!, only: [:index, :update]
+    before_filter :authenticate_user!, only: [:index, :update, :show]
 
     def questions_list
         unless session[:admin].nil?

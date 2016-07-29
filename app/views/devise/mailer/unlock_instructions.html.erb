@@ -1,7 +1,121 @@
-<p>Hello <%= @resource.email %>!</p>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Welcome to Eureka Math!!</title>
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+  <style type="text/css">
+    .ReadMsgBody {width: 100%; background-color: #ffffff;}
+    .ExternalClass {width: 100%; background-color: #ffffff;}
+    body     {width: 100%; background-color: #ffffff; margin:0; padding:0; -webkit-font-smoothing: antialiased;font-family: Arial, Helvetica, sans-serif}
+    table {border-collapse: collapse;}
 
-<p>Click the link below to unlock your account:</p>
+    @media only screen and (max-width: 640px)  {
+      body[yahoo] .deviceWidth {width:440px!important; padding:0;}
+      body[yahoo] .center {text-align: center!important;}
+    }
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+    @media only screen and (max-width: 479px) {
+      body[yahoo] .deviceWidth {width:280px!important; padding:0;}
+      body[yahoo] .center {text-align: center!important;}
+    }
+  </style>
+</head>
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" yahoo="fix" style="font-family: Arial, Helvetica, sans-serif">
+
+<!-- Wrapper -->
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+  <tr>
+    <td width="100%" valign="top" bgcolor="#ffffff" style="padding-top:20px">
+
+      <!--Start Header-->
+      <table width="700" bgcolor="#fff" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
+        <tr>
+          <td style="padding: 6px 0px 0px">
+
+            <table width="680" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
+              <tr>
+                <td width="100%" >
+
+                  <!--Start logo-->
+                  <table  border="0" cellpadding="0" cellspacing="0" align="left" class="deviceWidth">
+                    <tr>
+                      <td class="center" style="padding: 10px 0px 10px 0px">
+                        <img src="<%= root_url %>assets/img/logo.jpg">
+                      </td>
+                    </tr>
+                  </table><!--End logo-->
+
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <!--End Header-->
+
+      <!-- Start Headliner-->
+      <table width="700" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
+        <tr>
+          <td valign="top" style="padding: 0px " class="center">
+            <img class="deviceWidth" src="<%= root_url %>assets/img/email_image.png">
+          </td>
+        </tr>
+      </table>
+      <!-- Start Headliner-->
+
+      <div style="height:15px">&nbsp;</div><!-- divider -->
+
+      <!--Start Two Blocks-->
+      <table width="700" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
+        <tr>
+          <td width="100%" bgcolor="#ffffff">
+
+            <!-- Left box  -->
+            <table width="100%"  border="0" cellpadding="0" cellspacing="0" align="left" class="deviceWidth">
+              <tr>
+                <td class="center">
+
+                  <table  border="0" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                      <td style="font-size: 16px; color: #303030; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 0px 10px; " >
+                        안녕하세요 <%= @email %>님!
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 10px; " >
+                        (주)유레카매스 입니다.<br>
+                        귀하의 계정 해제를 위해 아래의 링크를 클릭해 주시기 바랍니다.<br>
+                        <p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token), {:style=>'text-decoration: none; color: #27d7e7;'} %></p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+          </td>
+        </tr>
+      </table>
+      <!--End Two Blocks -->
+
+      <div style="height:15px">&nbsp;</div><!-- divider -->
+
+      <!-- Footer -->
+      <table width="700"  border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth"  >
+        <tr>
+          <td  bgcolor="#ffffff" class="center" style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 50px 0px 50px; " >
+            Copyright © Eureka Math 2015 ~ 2016
+          </td>
+        </tr>
+      </table>
+      <!--End Footer-->
+
+    </td>
+  </tr>
+</table>
+<!-- End Wrapper -->
+
+</body>
+</html>
