@@ -74,7 +74,7 @@
 						
 	                    <tr>
 	                    <td style="width:25%;"><b>가입경로</b></td>
-	                    <td style="width:75%"><%= @user.school.name %></td>
+	                    <td style="width:75%"><%= @user.school.name unless @user.school_id.nil? %></td>
 	                    </tr>
 						
 	                    <tr>

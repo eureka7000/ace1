@@ -111,18 +111,15 @@ end
                             <div class="input-group col-sm-4" style="float:left">
 								<select class="form-control" id="user_relations" name="user_relations[related_id]">
 								<option value="">---멘토---</option>
-								<% unless @teachers.nil? %>
-									<% @teachers.each do |teacher| %>
-                                        <% selected = ""
-                                            unless @user.user_relations.empty?
-                                                if @user.user_relations[0].related_user_id == teacher.id
-                                                    selected = "selected"
-                                                end        
-                                            end
-                                        %>    
-                                                
-								<option value="<%= teacher.id %>" <%= selected %> ><%= teacher.user_name %></option>
-									<% end %>
+								<% @mentos.each do |mento| %>
+                                    <% selected = ""
+                                        unless @user.user_relations.empty?
+                                            if @user.user_relations[0].related_user_id == mento.id
+                                                selected = "selected"
+                                            end        
+                                        end
+                                    %>    
+								<option value="<%= mento.id %>" <%= selected %> ><%= mento.user_name %></option>
 								<% end %>
 								</select>
                             </div>							

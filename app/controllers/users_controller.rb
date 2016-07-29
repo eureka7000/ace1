@@ -16,6 +16,9 @@ class UsersController < ApplicationController
         @user = User.new
         @schools = School.all
         @admins = Admin.all
+        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+        @mentos = UserType.select('users.id, users.user_name').joins(:user).where('user_type = ?', 'mento')
+        render :layout => 'layouts/admin_main'
     end
     
     def edit
@@ -23,6 +26,7 @@ class UsersController < ApplicationController
         @schools = School.all
         @admins = Admin.all
         @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+        @mentos = UserType.select('users.id, users.user_name').joins(:user).where('user_type = ?', 'mento')
         render :layout => 'layouts/admin_main'
     end      
     
@@ -68,46 +72,58 @@ class UsersController < ApplicationController
     end    
     
     def update_admin
+        
+        ActiveRecord::Base.transaction do
        
-        @user = User.find(params[:user_id])
-        @user.email = params[:user][:email]
-        @user.phone = params[:user][:phone]
-        @user.user_name = params[:user][:user_name]
-        @user.location = params[:user][:location]
-        @user.grade =  params[:user][:grade]
-        @user.school_id = params[:user][:school_id]
-        @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
-        @user.save 
+            @user = User.find(params[:user_id])
+            @user.email = params[:user][:email]
+            @user.phone = params[:user][:phone]
+            @user.user_name = params[:user][:user_name]
+            @user.location = params[:user][:location]
+            @user.grade =  params[:user][:grade]
+            @user.school_id = params[:user][:school_id]
+            @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
+            @user.save 
         
-        @user_type = nil
-        if @user.user_types.empty?
-            @user_type = UserType.new
-        else
-            @user_type = @user.user_types[0]    
-        end    
-        @user_type.user_id = @user.id
-        @user_type.user_type = params[:user_type][:user_type]
-        @user_type.save
+            @user_type = nil
+            if @user.user_types.empty?
+                @user_type = UserType.new
+            else
+                @user_type = @user.user_types[0]    
+            end    
+            @user_type.user_id = @user.id
+            @user_type.user_type = params[:user_type][:user_type]
+            @user_type.save
+            
+            unless params[:user_relations].blank?
+                
+                if @user.user_relations.empty?
+                    @user_relation = UserRelation.new
+                else
+                    @user_relation = @user.user_relations[0]
+                end    
         
-        @user_relation = nil
-        if @user.user_relations.empty?
-            @user_relation = UserRelation.new
-        else
-            @user_relation = @user.user_relations[0]
-        end    
+                @user_relation.user_id = @user.id
+                @user_relation.related_user_id = params[:user_relations][:related_id]
+                @user_relation.relation_type = 'mento'
+                @user_relation.confirm_status = 'confirmed'        
+                @user_relation.save
+                
+            end    
         
-        @user_relation.user_id = @user.id
-        @user_relation.related_user_id = params[:user_relations][:related_id]
-        @user_relation.relation_type = 'mento'        
-        @user_relation.save
+            @schools = School.all
+            @admins = Admin.all
+            @mentos = UserType.select('users.id, users.user_name').joins(:user).where('user_type = ?', 'mento')            
+            
+            unless @user.school_id.nil?
+                @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+            end    
         
-        @schools = School.all
-        @admins = Admin.all
-        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
-        
-        respond_to do |format|
-            format.html { render :new }
-        end        
+            respond_to do |format|
+                format.html { render :new }
+            end
+            
+        end            
         
     end    
     
