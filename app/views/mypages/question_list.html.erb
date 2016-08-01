@@ -65,12 +65,13 @@
 
             <% if @type == 'student' %>
                 <% @user = User.find(question.to_user_id) %>
-                <% @school_name = Teacher.find_by_user_id(@user.id).school.name %>
+                <% @school = School.find(question.user.school_id) %>
+                <% @school_name = @school.name %>
             <% end %>
 
             <tr>
               <td><%= count %></td>
-              <td colspan="3"><%= @school_name %></td>
+              <td colspan="3"><%= @school_name.blank? ? '' : @school_name %></td>
               <td colspan="2"><%= @user.user_name %></td>
               <td colspan="2"><%= question.created_at.localtime.strftime('%m월 %d일') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
