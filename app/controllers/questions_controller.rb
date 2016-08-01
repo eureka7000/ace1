@@ -15,7 +15,6 @@ class QuestionsController < ApplicationController
                 @questions = Question.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 
-            @teachers = Teacher.all #수정 필요...
             @students = Question.select(:user_id).distinct.order(:user_id)
             @codes = Question.select(:unit_concept_id).distinct.order(:unit_concept_id)
             render layout: 'admin_main'

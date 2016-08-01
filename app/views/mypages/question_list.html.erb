@@ -19,7 +19,7 @@
         </div>
       </div>
 
-      <% unless @type != 'school teacher' %>
+      <% if @type == 'school teacher' || 'mento' %>
           <div class="col-md-6 col-sm-6 no-margin no-padding">
             <div class="col-md-5">
               <select id="studentSelect" class="form-control" >
@@ -58,7 +58,7 @@
           <% if @questions.each do |question| %>
             <% count += 1 %>
 
-            <% if @type == 'school teacher'%>
+            <% if @type == 'school teacher' || 'mento' %>
                 <% @user = User.find(question.user_id) %>
                 <% @school_name = @user.school.name %>
             <% end %>

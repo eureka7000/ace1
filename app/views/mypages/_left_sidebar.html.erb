@@ -7,9 +7,9 @@
         <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
             <a href="/mypages/evaluation"><i class="fa fa-cubes"></i> 자기평가</a>
         </li>
-        <% if current_user.user_types[0].user_type == 'student' || current_user.user_types[0].user_type == 'school teacher' %>
+        <% if current_user.user_types[0].user_type == 'student' || 'school teacher' || 'mento' %>
         <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
-            <a href="/mypages/question_list"><i class="fa fa-question"></i> 질문/답변 리스트</a>
+          <a href="/mypages/question_list"><span class="glyphicon glyphicon-list"></span> 질문/답변 리스트  <span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
         </li>
         <% end %>
         
