@@ -3,6 +3,23 @@ class MypagesController < ApplicationController
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => :payment_return
     
+    
+    def get_signature
+        tmp = {
+            oid: params[:oid],
+            price: params[:price],
+            timestamp: params[:timestamp]
+        }
+        
+        signature = InicisPayment.make_hash(tmp.to_query)
+        
+        ret = {
+            signature: signature
+        }
+        
+        render json: ret
+    end    
+    
     def close
     end
     

@@ -51,46 +51,35 @@
                         <div id="payment" class="profile-edit tab-pane fade in active">
                             
                             <form id="SendPayForm_id" name="" class="sky-form" method="POST">
+                                
+                            <input type="hidden" name="version" value="1.0">  
+                            <input type="hidden" name="mid" value="<%= @mid %>" >
+                            <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
+                            <input type="hidden" name="currency" value="WON">
+                            <input type="hidden" name="buyername" value="<%= current_user.user_name %>">
+                            <input type="hidden" name="buyertel" value="<%= current_user.phone %>">
+                            <input type="hidden" name="buyeremail" value="<%= current_user.email %>">
+                            <input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">
+                            <input type="hidden" name="signature" id="signature" value=''>
+                            <input type="hidden" name="returnUrl" value="<%= root_url %>mypages/payment_return">
+                            <input type="hidden" name="mKey" value='<%= @m_key %>'>
+                            <input type="hidden" name="price" id="price" value='25000'>
+                            <input type="hidden" name="closeUrl" value="<%= root_url %>mypages/close">
 
                             <dl class="dl-horizontal">
-                            <dt>version <span style="color:red">*</span></dt>
-                            <dd><section><input type="text" placeholder="성명" name="version" class="form-control" value="1.0"></section></dd>
-                            
-                            <dt>mid <span style="color:red">*</span></dt>
-                            <dd><section><input name="mid" value="<%= @mid %>" class="form-control" ></section></dd>
-                                
-                            <dt>goodname <span style="color:red">*</span></dt>
-                            <dd><section><input name="goodname" value="유레카매스 수학" class="form-control"></section></dd>
-
-                            <dt>oid <span style="color:red">*</span></dt>
-                            <dd><section><input name="oid" value="<%= @order_number %>" class="form-control"></section></dd>
-                                
-                            <dt>price <span style="color:red">*</span></dt>
-                            <dd><section><input name="price" value="<%= @price %>" class="form-control"></section></dd>
-                            
-                            <dt>currency <span style="color:red">*</span></dt>
-                            <dd><section><input name="currency" value="WON" class="form-control"></section></dd>
-
-                            <dt>buyername <span style="color:red">*</span></dt>
-                            <dd><section><input name="buyername" value="<%= current_user.user_name %>" class="form-control"></section></dd>
-                            
-                            <dt>buyertel <span style="color:red">*</span></dt>
-                            <dd><section><input name="buyertel" value="<%= current_user.phone %>" class="form-control"></section></dd>
-
-                            <dt>buyeremail <span style="color:red">*</span></dt>
-                            <dd><section><input name="buyeremail" value="<%= current_user.email %>" class="form-control"></section></dd>
-
-                            <dt>timestamp <span style="color:red">*</span></dt>
-                            <dd><section><input type="text" name="timestamp" value="<%= @timestamp %>" class="form-control"></section></dd>
-
-                            <dt>signature <span style="color:red">*</span></dt>
-                            <dd><section><input type="text" name="signature" id="signature" value='<%= @sign %>' class="form-control"></section></dd>
-
-                            <dt>returnUrl <span style="color:red">*</span></dt>
-                            <dd><section><input type="text" name="returnUrl" value="<%= root_url %>mypages/payment_return" class="form-control"></section></dd>
-                            
-                            <dt>mKey <span style="color:red">*</span></dt>
-                            <dd><section><input type="text" name="mKey" id="mKey" value='<%= @m_key %>' class="form-control"></section></dd>
+                            <dt>상품</dt>
+                            <dd>
+                                <section>
+                                    <select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">
+                                    <option value="1">1개월 (25000원)</option>
+                                    <option value="2">2개월 (50000원)</option>
+                                    <option value="3">3개월 (75000원)</option>
+                                    <option value="4">4개월 (100000원)</option>
+                                    <option value="5">5개월 (125000원)</option>
+                                    <option value="6">6개월 (150000원)</option>
+                                    </select>    
+                                </section>
+                            </dd>
                             
                             <dt>결제수단</dt>
                             <dd>
@@ -102,53 +91,6 @@
                                     </select>
                                 </section>
                             </dd>
-                            
-                            <dt>제공기간</dt>
-                            <dd>
-                                <section>
-                                    <input type="text" name="offerPeriod" value="<%= Date.today.strftime('%Y%m%d') %>-<%= Date.today.next_month.strftime('%Y%m%d') %>" class="form-control" >
-                                </section>
-                            </dd>
-                            
-                            <dt>acceptmethod ( 결제수단별 추가요청 필드 pdf 참조)</dt>
-                            <dd>
-                                <section>
-                                    <input name="acceptmethod" value="HPP(1):no_receipt:va_receipt:vbanknoreg(0):vbank(20150611):below1000" class="form-control">
-                                </section>
-                            </dd>
-                            
-                            <dt>초기 표시 언어 ( default : ko)</dt>
-                            <dd><section><input type="text" name="languageView" value="ko" class="form-control"></section></dd>
-                            
-                            <dt>리턴 인코딩 ( default : UTF-8)</dt>
-                            <dd><section><input style="width:100%;" name="charset" value="UTF-8" class="form-control"></section></dd>
-                            
-                            <dt>결제창 표시방법 ( default:overlay )</dt>
-                            <dd><section><input style="width:100%;" name="payViewType" value="overlay" class="form-control"></section></dd>
-                            
-                            <dt>closeUrl</dt>
-                            <dd><section><input style="width:100%;" name="closeUrl" value="<%= root_url %>mypages/close" class="form-control"></section></dd>
-                            
-                            <dt>popupUrl</dt>
-                            <dd><section><input style="width:100%;" name="popupUrl" value="<%= root_url %>mypages/popup" class="form-control"></section></dd>
-
-                            <dt>카드(간편결제도 사용)</dt>
-                            <dd><section> 추가옵션 </section></dd>
-                            
-                            <dt>무이자 할부 개월 - 가맹점 부담</dt>
-                            <dd><section><input name="nointerest" value="11-2:3:4,04-2:3:4" class="form-control"></section></dd>
-
-                            <dt>할부 개월</dt>
-                            <dd><section><input name="quotabase" value="2:3:4" class="form-control"></section></dd>
-                            
-                            <dt>가상계좌</dt>
-                            <dd><section> 추가옵션 </section></dd>                            
-
-                            <dt>주민번호 설정 기능</dt>
-                            <dd><section><input name="vbankRegNo" value="" class="form-control"></section></dd>
-                            
-                            <dt>가맹점 관리데이터</dt>
-                            <dd><section><input name="merchantData" value="" class="form-control"></section></section></dd>                             
                             </dl>
 
                             <button type="button" onclick="pay()" class="btn-u btn-u-blue">결제요청</button>
@@ -181,9 +123,49 @@ function openPayment() {
 
 function pay() {
     
-    INIStdPay.pay('SendPayForm_id');
+    var url = "/mypages/get_signature";
+    
+    var data = {
+        oid: $('#oid').val(),
+        price: $('#price').val(),
+        timestamp: $('#timestamp').val()
+    }
+    
+    $.ajax({
+        url: url,
+        type: "POST",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        data: data,
+        success : function(data) {
+            $('#signature').val(data.signature);
+            INIStdPay.pay('SendPayForm_id');
+        },
+        error : function(){
+            alert("try to again. please.");
+        }
+    });
+    
+    
 }
 
+function savePayment() {
+
+    var url = "/payments";
+    
+    var data = {
+        
+    }
+    
+}
+
+
+
 function initpage() {}
+
+function goodChanged() {
+    var price = parseInt($('#goodname').val()) * 25000;
+    $('#price').val(price);
+}
     
 </script>

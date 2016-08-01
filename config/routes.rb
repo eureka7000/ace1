@@ -59,7 +59,7 @@ Rails.application.routes.draw do
     get 'mypages/payment' => 'mypages#payment'
     post 'mypages/payment_return' => 'mypages#payment_return'
     get 'mypages/close' => 'mypages#close'
-
+    post '/mypages/get_signature' => 'mypages#get_signature'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'
