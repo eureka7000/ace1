@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20160729064959) do
     t.string   "file_name",       limit: 255
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.string   "confirm_yn",      limit: 255
   end
 
   create_table "replies", force: :cascade do |t|
