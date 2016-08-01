@@ -85,7 +85,7 @@
 
                     <tr>
                       <td style="font-size: 12px; color: #687074; font-weight: bold; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 10px; " >
-                        <%= @user.user_name %> 선생님이 <span style="color: blue"><strong>(<%= @unit_concept.code %>)<%= @unit_concept.name %></span></strong>에서 보낸 <%= @mentee.user_name %> 학생의 질문에 답변하였습니다. <br>
+                        <%= @user.user_name %> 선생님이 <%= @mentee.user_name %> 학생의 질문에 답변하였습니다. <br>
                         <a href="<%= root_url %>questions/<%= @question.id %>">여기</a>에서 답변을 확인하세요.
                       </td>
                     </tr>

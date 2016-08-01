@@ -26,7 +26,6 @@ class UserMailer < ApplicationMailer
     def noti_reply(mentee, user, question)
         @mentee = mentee
         @user = user
-        @unit_concept = UnitConcept.find(question.unit_concept_id)
         @question = question
 
         mail(to: mentee.email, subject: "[Eureka Math] #{user.user_name} 선생님의 답변이 도착하였습니다.")
