@@ -50,15 +50,13 @@
                 <td><%= question.unit_concept.code %></td>
                 <td><%= question.unit_concept.name %></td>
                 <td><%= question.user.user_name %></td>
-                <% unless question.to_user_id.blank? %>
-                  <% @teachers.each do |teacher| %>
-                      <% if teacher.user_id == question.to_user_id %>
-                          <td><%= teacher.user.user_name %></td>
-                      <% end %>
-                  <% end %>
+                <% unless question.to_user_id.blank?%>
+                    <% @teacher_or_mento = User.find(question.to_user_id) %>
+                    <td><%= @teacher_or_mento.user_name %></td>
                 <% else %>
-                  <td><%= '' %></td>
+                    <td><%= '' %></td>
                 <% end %>
+
                 <% unless question.title.blank? %>
                   <td><%= question.title %></td>
                 <% else %>

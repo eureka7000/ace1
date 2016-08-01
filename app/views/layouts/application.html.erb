@@ -106,7 +106,7 @@
 
                       <li class="<%= 'active' if @active == 'mypage' %>">
                           <% if @session_yn == 'Y' %>
-                              <% if current_user.user_types[0].user_type == 'school teacher' %>
+                              <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
                                 <a href="/mypages/evaluation">MY PAGE <span class="badge rounded-2x badge-red"><%= @questions_number unless @questions_number == 0 %></span></a>
                               <% end %>
                           <% else %>

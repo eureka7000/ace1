@@ -249,8 +249,8 @@ ActiveRecord::Schema.define(version: 20160729064959) do
     t.integer  "user_id",         limit: 4
     t.integer  "related_user_id", limit: 4
     t.string   "relation_type",   limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.string   "confirm_status",  limit: 255
     t.datetime "request_date",                null: false
     t.datetime "confirmed_at"

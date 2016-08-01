@@ -176,7 +176,7 @@ class MypagesController < ApplicationController
 
         @unit_concept_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id).order(:unit_concept_desc_id).order(created_at: :desc)
 
-        unless current_user.user_types[0].user_type != 'school teacher'
+        if current_user.user_types[0].user_type == 'school teacher' || 'mento'
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         end
     end
@@ -191,6 +191,8 @@ class MypagesController < ApplicationController
             @type = 'student';
         elsif current_user.user_types[0].user_type == 'school teacher'
             @type = 'school teacher'
+        elsif current_user.user_types[0].user_type == 'mento'
+            @type = 'mento'
         end
 
         unless params[:student].blank?
@@ -205,7 +207,7 @@ class MypagesController < ApplicationController
         @codes = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:unit_concept_id).distinct.order(:user_id)
 
 
-        unless current_user.user_types[0].user_type != 'school teacher'
+        if current_user.user_types[0].user_type == 'school teacher' || 'mento'
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         end
     end
@@ -219,7 +221,7 @@ class MypagesController < ApplicationController
         @schools = School.where('is_school = ?', (current_user.user_types[0].user_type == 'school teacher' ? '1' : '0') )
 
 
-        unless current_user.user_types[0].user_type != 'school teacher'
+        if current_user.user_types[0].user_type == 'school teacher' || 'mento'
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         end
 
