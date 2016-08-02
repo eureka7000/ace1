@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     resources :concepts
     resources :schools
 
-    get 'mypages/close' => 'payments#close'
+    get 'payments/close' => 'payments#close'
     post 'payments/payment_return' => 'payments#payment_return'
     resources :payments
 
