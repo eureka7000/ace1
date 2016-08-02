@@ -15,6 +15,8 @@ class QuestionsController < ApplicationController
                 @questions = Question.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 
+            @teachers = Teacher.all #수정 필요...
+            @teachers_and_mentors = UserType.where('user_type = ?', 'mento' || 'teacher')
             @students = Question.select(:user_id).distinct.order(:user_id)
             @codes = Question.select(:unit_concept_id).distinct.order(:unit_concept_id)
             render layout: 'admin_main'
@@ -39,18 +41,27 @@ class QuestionsController < ApplicationController
                 # Sms 발송
                 unless params[:question][:to_user_id].blank?
                     mento = User.find(params[:question][:to_user_id])
-                
+
                     unless mento.phone.nil?
-                        message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."                    
+                        message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
                         TwilioSms.sendSMS("+82"+mento.phone, message)
                     end
-                
+
                     # Mail 발송
                     UserMailer.noti_question(mento, current_user, @question).deliver
-                    
-                end    
-                
-                format.html { redirect_to "/contents/#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
+
+                end
+
+                unless params[:concept_id].nil?
+                    unless params[:synthesis].nil?
+                        format.html { redirect_to "/contents/exercise?concept_id=#{params[:concept_id]}&unit_concept_id=#{params[:question][:unit_concept_id]}&exercise_type=concept_exercise&synthesis=1", notice: '질문하기가 성공적으로 등록되었습니다.' }
+                    else
+                        format.html { redirect_to "/contents/exercise?concept_id=#{params[:concept_id]}&unit_concept_id=#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
+                    end
+                else
+                    format.html { redirect_to "/contents/#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
+                end
+
             end
         end
         

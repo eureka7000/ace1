@@ -22,5 +22,13 @@ class UserMailer < ApplicationMailer
         @relation = relation
         mail(to: to_user.email, subject: "[Eureka Math] #{user.user_name}님이 귀하에게 #{relation.relation_type}관계를 요청하였습니다.")
     end
-    
+
+    def noti_reply(mentee, user, question)
+        @mentee = mentee
+        @user = user
+        @question = question
+
+        mail(to: mentee.email, subject: "[Eureka Math] #{user.user_name} 선생님의 답변이 도착하였습니다.")
+    end
+
 end

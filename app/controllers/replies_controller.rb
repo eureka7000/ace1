@@ -10,12 +10,17 @@ class RepliesController < ApplicationController
     if @reply.question.to_user_id == current_user.id
       @question = Question.find(@reply.question_id)
       @question.confirm_yn = 'Y'
-      @question.save
+
+      if @question.save
+        mentee = User.find(@question.user_id)
+        # Mail 발송
+        UserMailer.noti_reply(mentee, current_user, @question).deliver
+      end
     end
 
     respond_to do |format|
       if @reply.save
-        format.html { redirect_to "/questions/#{params[:reply][:question_id]}", notice: '댓글이 성공적으로 등록되었습니다.' }
+       format.html { redirect_to "/questions/#{params[:reply][:question_id]}", notice: '댓글이 성공적으로 등록되었습니다.' }
       end
     end
   end
