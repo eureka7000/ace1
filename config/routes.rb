@@ -29,6 +29,9 @@ Rails.application.routes.draw do
     get '/concepts/get_unit_concepts' => 'concepts#get_unit_concepts'
     resources :concepts
     resources :schools
+
+    get 'mypages/close' => 'mypages#close'
+    post 'payments/payment_return' => 'payments#payment_return'
     resources :payments
 
     get 'teachers/students_list' => 'teachers#students_list'
@@ -57,9 +60,6 @@ Rails.application.routes.draw do
     get 'mypages/user_info' => 'mypages#user_info'
     get 'mypages/question_list' => 'mypages#question_list'
     get 'mypages/payment' => 'mypages#payment'
-    post 'mypages/payment_return' => 'mypages#payment_return'
-    get 'mypages/close' => 'mypages#close'
-    post '/mypages/get_signature' => 'mypages#get_signature'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'
