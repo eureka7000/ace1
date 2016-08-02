@@ -123,7 +123,11 @@
     
 </div>                
 
+<% if Rails.env.production? %>
+<script language="javascript" type="text/javascript" src="http://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% else %>
 <script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% end %>
 
 <script type="text/javascript">
     
