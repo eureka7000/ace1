@@ -2,7 +2,7 @@
 <div class="container content profile">
     <div class="row">
 
-        <%= render :partial=>"left_sidebar"%>
+        <%= render :partial=>"/mypages/left_sidebar"%>
 
         <!-- Profile Content -->
         <div class="col-md-9">
@@ -55,7 +55,7 @@
                             <hr>
                         
                             <dt><strong>승인날짜 </strong></dt>
-                            <dd><%= @payment_result['applDate'].first(4) + "년 " + @payment_result['applDate'].at(4..5) + "월 " + @payment_result['applDate'].last(2) + "일 " + @payment_result['applTime'].first(2) + "시 " + @payment_result['applTime'].at(2..3) + "분" %></dd>
+                            <dd><%= @payment_result['applDate'].first(4) + "년 " + @payment_result['applDate'].at(4..5) + "월 " + @payment_result['applDate'].last(2) + "일 " + @payment_result['applTime'].first(2) + "시 " + @payment_result['applTime'].at(2..3) + "분" unless @payment_result['applDate'].nil? %></dd>
                             </dl>
                             
                             <hr style="margin-bottom: 50px">
