@@ -34,7 +34,6 @@
                             <th>결제일</th>
                             <th>서비스</th>
                             <th>결제수단</th>                            
-                            <th>만료예정일</th>
                             <th><i class="fa fa-cog"></i></th>
                             </thead>
                             
@@ -50,7 +49,6 @@
                             <td><%= payment.created_at.strftime('%Y/%m/%d %H:%M') %></td>
                             <td><%= payment.service_name %></td>
                             <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
-                            <td><%= payment.expire_date.strftime('%Y/%m/%d') %></td>
                             <td>환불요청</td>
                             <% end %>
                             </tbody>

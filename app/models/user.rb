@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :user_relations, :dependent => :delete_all
   has_many :questions
   has_many :blogs
+  has_many :payments
 
   belongs_to :school
   belongs_to :admin, :foreign_key => "join_channel_sales_id"
