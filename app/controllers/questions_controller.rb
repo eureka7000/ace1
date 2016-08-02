@@ -48,7 +48,8 @@ class QuestionsController < ApplicationController
                     end
 
                     # Mail 발송
-                    UserMailer.noti_question(mento, current_user, @question).deliver
+                    @concept = Concept.find(params[:concept_id])
+                    UserMailer.noti_question(mento, current_user, @question, @concept).deliver
 
                 end
 

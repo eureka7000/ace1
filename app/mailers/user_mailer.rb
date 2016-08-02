@@ -8,10 +8,13 @@ class UserMailer < ApplicationMailer
         mail(to: school_manager.email, subject: '교사 확인요청')
     end
     
-    def noti_question(mento, user, question)
+    def noti_question(mento, user, question, concept)
         @mento = mento
         @user = user
+        @concept = concept
+
         @unit_concept = UnitConcept.find(question.unit_concept_id)
+
         @question = question
         mail(to: mento.email, subject: "[Eureka Math] #{user.user_name}학생의 질문이 도착하였습니다.")
     end

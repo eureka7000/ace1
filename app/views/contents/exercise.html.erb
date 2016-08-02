@@ -489,12 +489,7 @@
 
       <div class="modal-content">
 
-        <% unless params[:synthesis].nil? %>
-            <form action="/questions?concept_id=<%= params[:concept_id] %>&unit_concept_id<%= params[:unit_concept_id] %>&exercise_type=concept_exercise&synthesis=1" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-        <% else %>
-            <form action="/questions?concept_id=<%= params[:concept_id] %>&unit_concept_id<%= params[:unit_concept_id] %>" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-        <% end %>
-
+          <form action="/questions?concept_id=<%= params[:concept_id] %>&unit_concept_id<%= params[:unit_concept_id] %><%= '&exercise_type=concept_exercise&synthesis=1' unless params[:synthesis].nil? %>" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
           <%= token_tag nil %>
 
           <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
