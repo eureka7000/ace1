@@ -30,7 +30,7 @@
                 <td><%= payment.service_name %></td>
                 <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
                 <td class="text-right"><%= number_with_delimiter(payment.amount, delimiter: ",") %></td>
-                <td><%= payment.created_at.localtime.strftime('%Y/%m/%d %H:%M') %></td>
+                <td><%= payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
                 <td>
                     <% if payment.payment_status == 'processing' %>
                     <span class="label rounded-2x label-yellow">Processing</span>
