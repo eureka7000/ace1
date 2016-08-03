@@ -31,6 +31,31 @@ class UnitConcept < ActiveRecord::Base
     def self.get_level_count(concept_id)
         str = "select exercise_yn, level, count(id) as count from unit_concepts where concept_id = #{concept_id} group by exercise_yn, level order by exercise_yn, level"
         UnitConcept.find_by_sql(str)
+    end
+    
+    def get_level_star
+        
+        ret = ""
+       
+        unless self.level.nil?
+            
+            ret += "<span class='item-box'><span class='item'>"
+            
+            rst = 5 - self.level
+            
+            (1..self.level).each do |idx| 
+                ret += " <i class='fa fa-star'></i> "
+            end
+            
+            (1..rst).each do |idx|
+                ret += " <i class='fa fa-star-o'></i> "
+            end
+            
+            ret += "</span></span>"
+        end
+        
+        ret
+        
     end    
     
 end
