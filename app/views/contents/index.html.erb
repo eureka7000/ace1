@@ -407,11 +407,12 @@
                           <!--
                       <a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
                      -->
-                          <a href="javascript:loadModal(<%= key %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          <a href="javascript:loadModal(<%= key %>)"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %>"></i></a>
 
 
                           <div class="content-boxes-in-v3">
-                            <h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>
+                            <h3><a href="javascript:loadModal(<%= key %>)"><%= value %></a></h3>
+                            <!--<h3><a href="/contents?view_type=2&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= key %>"><%= value %></a></h3>-->
                           </div>
                         </div>
                       </li>
