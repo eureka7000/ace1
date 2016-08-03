@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   
   validates_presence_of :email
   
-  devise :database_authenticatable, :registerable, :confirmable,
+    devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :trackable, :validatable
          
     USER_TYPES = {
@@ -41,6 +41,18 @@ class User < ActiveRecord::Base
     
     def user_params
         params.require(:user).permit(:email, :name, :location, :phone, :grade)
+    end
+    
+    def can_I_use?
+        if self.expire_date.nil?
+            false
+        else
+            if self.expire_date > Time.new
+                true
+            else
+                false
+            end        
+        end        
     end    
                 
 end

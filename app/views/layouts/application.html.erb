@@ -64,8 +64,15 @@
             <!-- Topbar -->
             <div class="col-md-12 topbar">
                 <ul class="loginbar pull-right">
-                  <% unless current_user.nil? %>
-                      <li>안녕하세요. <%= current_user.user_name %>님</li>
+                    <% unless current_user.nil? %>
+                <li>안녕하세요. <%= current_user.user_name %>님 </li>
+                <li>
+                    <% if current_user.can_I_use? %>
+                    <span class="label rounded-2x label-green" style="margin-left: 5px">member</span>
+                    <% else %>
+                    <span class="label rounded-2x label-yellow" style="margin-left: 5px">Free</span>
+                    <% end %>                              
+                </li>
                   <% else %>
                       <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('Sign In', new_user_registration_path )%></span></li>
                   <% end %>
