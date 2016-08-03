@@ -1,9 +1,5 @@
 /* Add here all your css styles (customizations) */
 
-body,input,textarea,select,button,table,p{font-family:'Nanum Gothic','dotum','Verdana','Arial','Helvetica',sans-serif,'돋움',Dotum,AppleGothic}
-h1,h2,h3,h4,h5,h6{font-family:'Nanum Gothic','dotum','Verdana','Arial','Helvetica',sans-serif,'돋움',Dotum,AppleGothic}
-@import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-
 #loading
 {
     position:fixed;
