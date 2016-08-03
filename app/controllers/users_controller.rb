@@ -194,9 +194,9 @@ class UsersController < ApplicationController
         school = params[:school]
         page = params[:page].blank? ? 1 : params[:page]
         
-        if email.nil? && user_type.nil? && school.nil?
-            @users = User.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
-        else
+        # if email.nil? && user_type.nil? && school.nil?
+        #     @users = User.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        # else
             
             str = "";
                         
@@ -226,7 +226,7 @@ class UsersController < ApplicationController
                 
             logger.debug @users.inspect
             
-        end                
+        # end
         
         render :layout => 'layouts/admin_main'
         
