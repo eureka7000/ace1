@@ -1,10 +1,37 @@
-    <div class="container-fluid" style="margin-top: 50px">
+    <div class="container-fluid">
         
         <div class="row">
             
             <div class="col-sm-12 col-md-12 main">
                 
                 <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 사용자관리</h2>
+                
+                <div class="row">
+                        
+    				<div class="col-md-2">
+                        <input type="text" id="email" placeholder="email" class="form-control" value="<%= params[:email] %>">
+    				</div>
+
+    				<div class="col-md-2">
+                        <select id="user_type" class="form-control col-md-2" >
+    					<option value="">----사용자타입----</option>
+                        <% User::USER_TYPES.each_pair do |key, value| %>
+                        <option value="<%= key %>" <%= "selected" if key == params[:user_type]%> ><%= key %></option>
+                        <% end %>
+                        </select>
+    				</div>
+
+    				<div class="col-md-2">
+                        <input type="text" id="school" placeholder="학교명/학원명" class="form-control" value="<%= params[:school] %>">
+    				</div>
+
+    				<div class="col-md-6">
+    					<a href="javascript:goSearch()" class="btn btn-success">Search</a>
+                        <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary' %>                        
+    				</div>
+                </div>
+                
+                <hr class="devider devider-dotted" style="margin:10px">
                     
                 <div class="table-responsive">
                     <table class="table table-striped">
@@ -14,8 +41,9 @@
                                 <th>이름</th>
                                 <th>전화번호</th>
                                 <th>사용자타입</th>
-                                <th>지역</th>
+                                <th>학교/학원</th>
                                 <th>접속횟수</th>
+                                <th>만료일</th>
                                 <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
                             </tr>
                         </thead>
@@ -25,9 +53,10 @@
                                 <td><%= user.email %></td>
                                 <td><%= user.user_name %></td>
                                 <td><%= user.phone %></td>
-                                <td><%= user.user_types[0].user_type %></td>
-                                <td><%= user.location %></td>
+                                <td><%= user.user_type %></td>
+                                <td><%= user.school_name %></td>
                                 <td><%= user.sign_in_count %></td>
+                                <td><%= user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') unless user.expire_date.nil? %></td>
                                 <td><%= link_to 'Show', user %></td>
                                 <td><%= link_to 'Edit', edit_user_path(user) %></td>
                                 <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -35,11 +64,20 @@
                             <% end %>
                         </tbody>
                     </table>
+                    
+                    <%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+                    
                 </div>
-            
-                <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary align-right' %>
             
             </div>
             
         </div>
     </div>
+    
+<script type="text/javascript">
+
+    function goSearch() {
+		location = "/users?user_type=" + $('#user_type').val() + "&email=" + $('#email').val() + "&school=" + $('#school').val();
+	}
+    
+</script>    
