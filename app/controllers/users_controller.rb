@@ -297,7 +297,7 @@ class UsersController < ApplicationController
             @reverse_relations.destroy_all
 
             respond_to do |format|
-                format.html { redirect_to users_url }
+                format.html { redirect_to users_url + "?#{params.to_query}" }
                 format.json { head :no_content }
             end
             
