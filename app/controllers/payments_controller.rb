@@ -79,19 +79,7 @@ class PaymentsController < ApplicationController
                     payment.save                    
                     
                     user = User.find(current_user.id)
-                    @expire_date = Time.new
-                
-                    if user.expire_date.nil?
-                        @expire_date = @expire_date + @payment_result['goodName'].to_i.months  
-                    else
-                        if user.expire_date < @expire_date
-                            @expire_date = @expire_date + @payment_result['goodName'].to_i.months
-                        else
-                            @expire_date = user.expire_date + @payment_result['goodName'].to_i.months
-                        end                    
-                    end
-                
-                    user.expire_date = @expire_date
+                    user.expire_date = user.get_expire_date(@payment_result['goodName'].to_i)
                     user.save
                 end    
                 
