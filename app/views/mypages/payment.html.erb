@@ -32,7 +32,7 @@
                             <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
                             
                             <div class="heading heading-v4">
-                                <h2><%= current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
                             </div>
                             
                         </div>    
