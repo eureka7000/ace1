@@ -26,6 +26,6 @@ production:
     adapter: mysql2
     encoding: utf8
     database: eureka_db
-    pool: 5
+    pool: 30
     username: eureka
     password: eurekaeureka
