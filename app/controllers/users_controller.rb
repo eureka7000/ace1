@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     
-    before_action :authenticate_admin_user!, only: [:new, :edit]
+    before_action :authenticate_admin_user!, only: [:new, :edit, :index]
     
     layout '/layouts/admin_main'
 
@@ -188,10 +188,50 @@ class UsersController < ApplicationController
     end    
     
     def index
-        authenticate_admin_user!
-        @users = User.all
+        
+        email = params[:email]
+        user_type = params[:user_type]
+        school = params[:school]
+        page = params[:page].blank? ? 1 : params[:page]
+        
+        # if email.nil? && user_type.nil? && school.nil?
+        #     @users = User.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        # else
+            
+            str = "";
+                        
+            unless email.blank?
+                str += " email like '#{email}%' "
+            end
+            
+            unless user_type.blank?
+                if str == ""
+                    str += " user_types.user_type = '#{user_type}' "
+                else
+                    str += " and user_types.user_type = '#{user_type}' "
+                end        
+            end
+            
+            unless school.blank?
+                if str == ""
+                    str += " schools.name like '#{school}%' "
+                else
+                    str += " and schools.name like '#{school}%' "
+                end        
+            end    
+                
+            @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+                .joins("left outer join user_types on user_types.user_id = users.id")
+                .joins("left join schools on schools.id = users.school_id").where(str).paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
+                
+            logger.debug @users.inspect
+            
+        # end
+        
         render :layout => 'layouts/admin_main'
+        
     end
+    
     
     def show
         authenticate_admin_user!

@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
 <% if current_user.grade.nil? %>
+
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
       <div class="modal-dialog modal-md">
@@ -248,29 +249,26 @@
 
                   <% if unit_concept.level <= @level.to_i() %>
 
-                      <li class="col-md-4 md-margin-bottom-30">
-                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                          <a href="/contents/<%= unit_concept.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                  <li class="col-md-4 md-margin-bottom-30">
+                      <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <% 
+                             link_str = "<a href='/contents/#{unit_concept.id}'>" 
+                             if unit_concept.level > 1 && !current_user.can_I_use? 
+                                 link_str = "<a href='#' data-toggle='modal' data-target='.user_auth_modal'>"
+                             end 
+                          %>
+                          <%= raw link_str %><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                          
                           <div class="content-boxes-in-v3">
-                            <ul class="star-vote">
-                              <% unless unit_concept.level.nil? %>
-                                  <% rst = 5 - unit_concept.level %>
-                                  <% (1..unit_concept.level).each do |idx| %>
-                                      <li><i class="fa fa-star"></i></li>
-                                  <% end%>
-
-                                  <% (1..rst).each do |idx| %>
-                                      <li><i class="fa fa-star-o"></i></li>
-                                  <% end %>
-                              <% end %>
-                            </ul>
-                            <h3><a href="/contents/<%= unit_concept.id %>"><%= unit_concept.name %></a></h3>
+                              <%= raw unit_concept.get_level_star %>
+                              <h3><%= raw link_str %><%= unit_concept.name %></a></h3>
                           </div>
-                        </div>
-                      </li>
+                      </div>
+                  </li>
 
-                      <% idx += 1 %>
-                      <% idx %= 12 %>
+                  <% idx += 1 %>
+                  <% idx %= 12 %>
+                      
                   <% end %>
 
               <% end %>
@@ -299,6 +297,7 @@
               <% end %>
 
               <!-- 종합문제 -->
+              
               <% if params[:exercise_type] == 'concept_exercise' %>
                   <% @unit_concept_exercises.each do |unit_concept_exercise| %>
                       <li class="col-md-4 md-margin-bottom-30">
@@ -327,22 +326,33 @@
                       <% @unit_concept = UnitConcept.find(unit_concept_exercise.id) %>
                       <% @unit_concept_descs = @unit_concept.unit_concept_descs %>
                       <% video_count = @unit_concept_descs.where('desc_type = ?', 4).count() %>
-
-                      <a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id %>&unit_concept_id=<%= unit_concept_exercise.id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                      
+                      <%
+                          concept_id = unit_concept_exercise.id
+                          unless params[:exercise_type] == "concept_exercise"
+                              concept_id = unit_concept_exercise.concept_id
+                          end      
+                      
+                          link_str = "<a href='/contents/exercise?concept_id=#{concept_id}&unit_concept_id=#{unit_concept_exercise.id}'>" 
+                          if unit_concept_exercise.level > 1 && !current_user.can_I_use? 
+                              link_str = "<a href='#' data-toggle='modal' data-target='.user_auth_modal'>"
+                          end 
+                      %>
+                      <%= raw link_str %><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                      
                       <div class="content-boxes-in-v3">
-                        <h3><a href="/contents/exercise?concept_id=<%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.id : unit_concept_exercise.concept_id  %>&unit_concept_id=<%= unit_concept_exercise.id %>"><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a></h3>
-                        <h5>
-                          <% if video_count > 0 %>
-                              <span class="badge rounded badge-dark-blue"><i class="fa fa-caret-square-o-right"></i>Video</span>
-                          <% else %>&nbsp;
-                          <% end %>
-                        </h5>
+                          <%= raw unit_concept_exercise.get_level_star %>                          
+                        <h3>
+                            <%= raw link_str %><%= params[:exercise_type] == "concept_exercise" ? unit_concept_exercise.concept_name : unit_concept_exercise.name %></a>
+                            <% if video_count == 0 %><i class="fa fa-caret-square-o-right tooltips color-purple" style="margin-left: -10px" data-placement="right" data-toggle="tooltip" title="video 있음"></i><% end %>
+                        </h3>
                       </div>
                     </div>
                   </li>
 
                   <% idx += 1 %>
                   <% idx %= 12 %>
+                  
               <% end %>
 
           <% end %>
@@ -420,28 +430,36 @@
                       <% idx %= 12 %>
                   <% end %>
               <% end %>
+              
           <% elsif @step == '5' %>
+          
               <% @grade_unit_concepts.each do | grade_unit_concept | %>
                   <% if grade_unit_concept.unit_concept.level <= @level.to_i() %>
                       <li class="col-md-4 md-margin-bottom-30">
-                        <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                          <a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
-                          <div class="content-boxes-in-v3">
-                            <ul class="star-vote">
-                              <% unless grade_unit_concept.unit_concept.level.nil? %>
-                                  <% rst = 5 - grade_unit_concept.unit_concept.level %>
-                                  <% (1..grade_unit_concept.unit_concept.level).each do |idx| %>
-                                      <li><i class="fa fa-star"></i></li>
-                                  <% end%>
+                          <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                          <% 
+                             link_str = "<a href='/contents/#{grade_unit_concept.unit_concept_id}'>" 
+                             if grade_unit_concept.unit_concept.level > 1 && !current_user.can_I_use? 
+                                 link_str = "<a href='#' data-toggle='modal' data-target='.user_auth_modal'>"
+                             end 
+                          %>
+                              <%= raw link_str %><i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %> "></i></a>
+                              <div class="content-boxes-in-v3">
+                                  <ul class="star-vote">
+                                      <% unless grade_unit_concept.unit_concept.level.nil? %>
+                                          <% rst = 5 - grade_unit_concept.unit_concept.level %>
+                                          <% (1..grade_unit_concept.unit_concept.level).each do |idx| %>
+                                  <li><i class="fa fa-star"></i></li>
+                                          <% end%>
 
-                                  <% (1..rst).each do |idx| %>
-                                      <li><i class="fa fa-star-o"></i></li>
-                                  <% end %>
-                              <% end %>
-                            </ul>
-                            <h3><a href="/contents/<%= grade_unit_concept.unit_concept_id %>"><%= grade_unit_concept.name %></a></h3>
+                                          <% (1..rst).each do |idx| %>
+                                  <li><i class="fa fa-star-o"></i></li>
+                                          <% end %>
+                                      <% end %>
+                                  </ul>
+                                  <h3><%= raw link_str %><%= grade_unit_concept.name %></a></h3>
+                              </div>
                           </div>
-                        </div>
                       </li>
                       <% idx += 1 %>
                       <% idx %= 12 %>
@@ -537,6 +555,21 @@
 
 </div>
 <!-- Modal END-->
+
+<!-- User Auth Modal -->
+<div class="modal fade user_auth_modal in" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="mySmallModalLabel" style="display: none; padding-right: 15px;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel3" class="modal-title"><i class="fa fa-exclamation-triangle"></i>Infomation</h4>
+            </div>
+            <div class="modal-body">
+                <p class="color-green">Level 2이상은 결제를 하셔야 이용하실 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
