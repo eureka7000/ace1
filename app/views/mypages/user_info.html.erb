@@ -17,7 +17,9 @@
                     
                     <div class="tab-content">
                         
-                        <div id="passwordTab" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '2' %>">
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
                             
                             <% unless notice.blank? %>
                                 <p class="alert alert-warning"><%= notice %></p>
@@ -118,16 +120,20 @@
                                       </section>
                                     </dd>
 
-                                    </dl>
+                                </dl>
 
-                                    <button type="button" class="btn-u btn-u-default">취소</button>
-                                    <button class="btn-u" type="submit">저장</button>
+                                <button type="button" class="btn-u btn-u-default">취소</button>
+                                <button class="btn-u" type="submit">저장</button>
                                     
-                                </form>
+                            </form>
                                 
-                                <hr>
-								
-								<h2 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-users"></i> 회원님과의 관계</h2>
+                        </div> 
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                            
+                        <div class="profile-edit tab-pane fade in active">   
+                                
+							<h2 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-users"></i> 회원님과의 관계</h2>
 								
 								<table class="table">
                                 <thead>

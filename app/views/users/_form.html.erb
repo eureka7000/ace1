@@ -1,24 +1,21 @@
 <%
-user_type = ""
+    user_type = ""
+    
 	
-	
-unless @user.user_types.empty?
-	user_type = @user.user_types[0].user_type
-end		
-	
-	
-	
+    unless @user.user_types.empty?
+	    user_type = @user.user_types[0].user_type
+    end
 %>
 
 <div class="row">
 
-    <div class="col-md-12 ">
+    <div class="col-md-12">
 
         <div class="well">
 			
-			<form role="form" class="form-horizontal" id="new_user" action="/users/<%= (action_name == "new")?'create':'update_admin' %>" accept-charset="UTF-8" method="post">
+			<form role="form" class="form-horizontal" id="new_user" action="/users/<%= action_name == "new" ? "create" : "update_admin" %>" accept-charset="UTF-8" method="post">
 				
-				<%= token_tag nil %>
+			    <%= token_tag nil %>
             
                 <input type="hidden" name="target_from" value="admin" />
                 <% unless action_name == "new" %>
@@ -97,7 +94,7 @@ end
 						<div class="form-group student">
 							<label class="col-sm-1 control-label" for="user_join_channel">가입경로</label>
                             <div class="input-group col-sm-4" style="float:left">
-								<select class="form-control" id="join_channel" name="user[school_id]" onchange="getMento()">
+								<select class="form-control" id="join_channel" name="user[school_id]">
 								<option value="">---가입경로---</option>
 								<% @schools.each do |school| %>
 								<option value="<%= school.id %>" <%= "selected" if @user.school_id == school.id %> ><%= school.name %></option>
@@ -157,31 +154,31 @@ end
 
 <script type="text/javascript">
 	
-function getMento() {
-	
-	 $('#user_relations').empty();
-	 $('#user_relations').append( $('<option>').text('---멘토---').attr('value','') ); 
-	
-	if ($('#join_channel').val() == "") return false;
-	
-	var url = "/users/get_mento?id=" + $('#join_channel').val();
-
-	$.ajax({
-	    url: url,
-	    type: "GET",
-	    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	    dataType: "JSON",
-	    success: function(data) {
-
-	        $.each(data, function(i) {
-                $('#user_relations').append( $('<option>').text(data[i].user_name).attr('value',data[i].id) );                
-	        });
-
-	    },
-	    error: function(err){}
-	});                
-        
-}
+// function getMento() {
+//
+//      $('#user_relations').empty();
+//      $('#user_relations').append( $('<option>').text('---멘토---').attr('value','') );
+//
+//     if ($('#join_channel').val() == "") return false;
+//
+//     var url = "/users/get_mento?id=" + $('#join_channel').val();
+//
+//     $.ajax({
+//         url: url,
+//         type: "GET",
+//         beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+//         dataType: "JSON",
+//         success: function(data) {
+//
+//             $.each(data, function(i) {
+//                 $('#user_relations').append( $('<option>').text(data[i].user_name).attr('value',data[i].id) );
+//             });
+//
+//         },
+//         error: function(err){}
+//     });
+//
+// }
 
 function changedUserType(t) {
     if (t.value == 'student') {

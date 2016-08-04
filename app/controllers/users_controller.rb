@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     
-    before_action :authenticate_admin_user!, only: [:new, :edit, :index, :multi_auth]
+    before_action :authenticate_admin_user!, only: [:new, :edit, :index, :multi_auth, :destroy]
     
     layout '/layouts/admin_main'
     
@@ -87,41 +87,45 @@ class UsersController < ApplicationController
         @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', params[:id])
         render json: @teachers
         
-    end    
+    end
+        
     
     def create
         
-        password = "11111111"
+        ActiveRecord::Base.transaction do 
         
-        @user = User.new(:email => params[:user][:email], :password => password, :password_confirmation => password)
-        @user.phone = params[:user][:phone]
-        @user.user_name = params[:user][:user_name]
-        @user.location = params[:user][:location]
-        @user.grade =  params[:user][:grade]
-        @user.school_id = params[:user][:school_id]
-        @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
-        @user.save
+            password = "11111111"
         
-        user_type = UserType.new
-        user_type.user_id = @user.id
-        user_type.user_type = params[:user_type][:user_type]
-        user_type.save
+            @user = User.new(:email => params[:user][:email], :password => password, :password_confirmation => password)
+            @user.phone = params[:user][:phone]
+            @user.user_name = params[:user][:user_name]
+            @user.location = params[:user][:location]
+            @user.grade =  params[:user][:grade]
+            @user.school_id = params[:user][:school_id]
+            @user.join_channel_sales_id = params[:user][:join_channel_sales_id]  
+            @user.save
         
-        user_relation = UserRelation.new
-        user_relation.user_id = @user.id
-        user_relation.related_user_id = params[:user_relations][:related_id]
-        user_relation.relation_type = 'mento'
-        user_relation.save
+            user_type = UserType.new
+            user_type.user_id = @user.id
+            user_type.user_type = params[:user_type][:user_type]
+            user_type.save
         
-        @schools = School.all
-        @admins = Admin.all
-        @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+            unless params[:user_relations].blank?
+                UserRelation.create_relation(@user.id, params[:user_relations][:related_id], 'mento')
+            end
         
-        respond_to do |format|
-            format.html { redirect_to "/users" }
+            @schools = School.all
+            @admins = Admin.all
+            @teachers = Teacher.select('users.id, users.user_name').joins(:user).where('teachers.school_id = ?', @user.school_id)
+        
+            respond_to do |format|
+                format.html { redirect_to "/users" }
+            end
+            
         end
         
-    end    
+    end
+        
     
     def update_admin
         
@@ -148,19 +152,15 @@ class UsersController < ApplicationController
             @user_type.save
             
             unless params[:user_relations].blank?
-                
                 if @user.user_relations.empty?
-                    @user_relation = UserRelation.new
+                    UserRelation.create_relation(@user.id, params[:user_relations][:related_id], 'mento')
                 else
                     @user_relation = @user.user_relations[0]
-                end    
-        
-                @user_relation.user_id = @user.id
-                @user_relation.related_user_id = params[:user_relations][:related_id]
-                @user_relation.relation_type = 'mento'
-                @user_relation.confirm_status = 'confirmed'        
-                @user_relation.save
-                
+                    unless @user_relation.related_user_id == params[:user_relations][:related_id]
+                        @user_relation.destroy
+                        UserRelation.create_relation(@user.id, params[:user_relations][:related_id], 'mento')                        
+                    end                        
+                end
             end    
         
             @schools = School.all
@@ -288,15 +288,20 @@ class UsersController < ApplicationController
     
     def destroy
         
-        authenticate_admin_user!
+        ActiveRecord::Base.transaction do    
         
-        @user = User.find(params[:id])
-        @user.destroy
+            @user = User.find(params[:id])
+            @user.destroy
+        
+            @reverse_relations = UserRelation.where('related_user_id = ?', params[:id])
+            @reverse_relations.destroy_all
 
-        respond_to do |format|
-            format.html { redirect_to users_url }
-            format.json { head :no_content }
-        end
+            respond_to do |format|
+                format.html { redirect_to users_url }
+                format.json { head :no_content }
+            end
+            
+        end    
         
     end       
 
