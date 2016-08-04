@@ -41,6 +41,9 @@
               <% order_count = 1 %>
               <div class="col-md-1 text-center margin-bottom-5" style="vertical-align: middle;"><h4>답변<br/><%= reply1_number %></h4></div>
               <div class="col-md-11 no-margin bg-color-light">
+                <% unless reply1.file_name.blank? %>
+                    <img src="<%= reply1.file_name %>" class="img-responsive center-block margin-bottom-20 margin-top-20">
+                <% end %>
                 <h4><%= raw reply1.comment %></h4>
                 <%# button_to 'delete', reply1,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
                 <div class="col-md-12 text-right margin-top-20">
@@ -129,8 +132,9 @@
             <input type="hidden" name="reply[depth]" value="1" />
             <input type="hidden" name="reply[order_no]" value="0" />
 
-            <!-- text editor -->
-            <div id="reply_post" style="font-size: 10px;"></div>
+            <textarea type="text" rows="5" class="form-control margin-bottom-20" name="reply[comment]"></textarea>
+
+            <input type="file" id="question_file" name="reply[file_name]" rows="10" class="form-control">
 
             <div class="text-right">
               <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
@@ -160,26 +164,5 @@
       });
       toggle = 0;
     }
-  }
-</script>
-
-<script type="text/javascript">
-  function initpage() {
-    $('#reply_post').summernote({
-      height : 200,
-      lang: 'ko-KR',
-      focus : true,
-      tabsize : 2
-    });
-
-    $('#new_reply').submit(function () {
-      if ($('#reply_post').summernote('isEmpty')) {
-        alert('내용을 입력하세요.');
-        $('#reply_post').focus();
-        return false;
-      }
-      $('#reply_comment').val($('#reply_post').summernote('code'));
-    });
-
   }
 </script>

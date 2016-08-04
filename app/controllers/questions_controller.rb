@@ -48,9 +48,13 @@ class QuestionsController < ApplicationController
                     end
 
                     # Mail 발송
-                    @concept = Concept.find(params[:concept_id])
+                    if params[:concept_id].nil?
+                        @unit_concept = UnitConcept.find(@question.unit_concept_id)
+                        @concept = Concept.find(@unit_concept.concept_id)
+                    else
+                        @concept = Concept.find(params[:concept_id])
+                    end
                     UserMailer.noti_question(mento, current_user, @question, @concept).deliver
-
                 end
 
                 unless params[:concept_id].nil?

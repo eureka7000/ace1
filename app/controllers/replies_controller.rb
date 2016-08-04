@@ -51,7 +51,7 @@ class RepliesController < ApplicationController
     @reply = Reply.find(params[:id])
   end
   def reply_params
-    params.require(:reply).permit(:question_id, :user_id, :comment, :group_id, :parent_reply_id, :depth, :order_no)
+    params.require(:reply).permit(:question_id, :user_id, :comment, :group_id, :parent_reply_id, :depth, :order_no, :file_name)
   end
 
 end
