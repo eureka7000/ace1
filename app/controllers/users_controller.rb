@@ -1,8 +1,60 @@
 class UsersController < ApplicationController
     
-    before_action :authenticate_admin_user!, only: [:new, :edit, :index]
+    before_action :authenticate_admin_user!, only: [:new, :edit, :index, :multi_auth]
     
     layout '/layouts/admin_main'
+    
+    def multi_auth_create
+        
+        users = params[:users]
+        month = params[:month].to_i
+        
+        users.each do |id|
+            user = User.find(id)
+            user.expire_date = user.get_expire_date(month)
+            user.save
+        end    
+        
+        respond_to do |format|
+            format.html { redirect_to "/users" }
+        end        
+        
+    end
+        
+
+    def multi_auth
+        email = params[:email]
+        user_type = params[:user_type]
+        school = params[:school]
+        
+        str = "";
+                        
+        unless email.blank?
+            str += " email like '#{email}%' "
+        end
+        
+        unless user_type.blank?
+            if str == ""
+                str += " user_types.user_type = '#{user_type}' "
+            else
+                str += " and user_types.user_type = '#{user_type}' "
+            end        
+        end
+        
+        unless school.blank?
+            if str == ""
+                str += " schools.name like '#{school}%' "
+            else
+                str += " and schools.name like '#{school}%' "
+            end        
+        end    
+            
+        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+            .joins("left outer join user_types on user_types.user_id = users.id")
+            .joins("left join schools on schools.id = users.school_id").where(str).order(id: :desc)
+        
+        render :layout => 'layouts/admin_main'        
+    end    
 
     def welcome
 
@@ -194,39 +246,31 @@ class UsersController < ApplicationController
         school = params[:school]
         page = params[:page].blank? ? 1 : params[:page]
         
-        # if email.nil? && user_type.nil? && school.nil?
-        #     @users = User.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
-        # else
-            
-            str = "";
+        str = "";
                         
-            unless email.blank?
-                str += " email like '#{email}%' "
-            end
+        unless email.blank?
+            str += " email like '#{email}%' "
+        end
+        
+        unless user_type.blank?
+            if str == ""
+                str += " user_types.user_type = '#{user_type}' "
+            else
+                str += " and user_types.user_type = '#{user_type}' "
+            end        
+        end
+        
+        unless school.blank?
+            if str == ""
+                str += " schools.name like '#{school}%' "
+            else
+                str += " and schools.name like '#{school}%' "
+            end        
+        end    
             
-            unless user_type.blank?
-                if str == ""
-                    str += " user_types.user_type = '#{user_type}' "
-                else
-                    str += " and user_types.user_type = '#{user_type}' "
-                end        
-            end
-            
-            unless school.blank?
-                if str == ""
-                    str += " schools.name like '#{school}%' "
-                else
-                    str += " and schools.name like '#{school}%' "
-                end        
-            end    
-                
-            @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
-                .joins("left outer join user_types on user_types.user_id = users.id")
-                .joins("left join schools on schools.id = users.school_id").where(str).paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
-                
-            logger.debug @users.inspect
-            
-        # end
+        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+            .joins("left outer join user_types on user_types.user_id = users.id")
+            .joins("left join schools on schools.id = users.school_id").where(str).paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
         
         render :layout => 'layouts/admin_main'
         

@@ -53,6 +53,21 @@ class User < ActiveRecord::Base
                 false
             end        
         end        
+    end
+    
+    def get_expire_date(month)
+        
+        expire_date = Time.new
+    
+        if self.expire_date.nil?
+            expire_date = expire_date + month.months  
+        else
+            if self.expire_date < expire_date
+                expire_date = expire_date + month.months
+            else
+                expire_date = self.expire_date + month.months
+            end                    
+        end
     end    
                 
 end

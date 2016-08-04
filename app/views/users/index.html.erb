@@ -26,8 +26,9 @@
     				</div>
 
     				<div class="col-md-6">
-    					<a href="javascript:goSearch()" class="btn btn-success">Search</a>
-                        <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary' %>                        
+    					<a href="javascript:goSearch()" class="btn btn-success"><i class="fa fa-search"></i> Search</a>
+                        <a href="javascript:goSearch2()" class="btn btn-warning"><i class="fa fa-search"></i> 일괄권한주기</a>                        
+                        <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary' %>
     				</div>
                 </div>
                 
@@ -80,4 +81,9 @@
 		location = "/users?user_type=" + $('#user_type').val() + "&email=" + $('#email').val() + "&school=" + $('#school').val();
 	}
     
+    function goSearch2() {
+		location = "/users/multi_auth?user_type=" + $('#user_type').val() + "&email=" + $('#email').val() + "&school=" + $('#school').val();
+	}
+    
+        
 </script>    

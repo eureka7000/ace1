@@ -72,7 +72,9 @@ Rails.application.routes.draw do
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
-    post 'users/update_admin' => 'users#update_admin'    
+    post 'users/update_admin' => 'users#update_admin'
+    get 'users/multi_auth' => 'users#multi_auth'
+    post 'users/multi_auth' => 'users#multi_auth_create'
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'
