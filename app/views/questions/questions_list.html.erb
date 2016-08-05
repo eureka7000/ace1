@@ -6,7 +6,7 @@
       <select id="studentSelect" class="form-control" >
         <option value="">학생 선택</option>
         <% @students.each do |student| %>
-            <option value="<%= student.user_id %>"><%= "selected" if params[:student] == student.user_id %><%= student.user.user_name %></option>
+            <option value="<%= student.user_id %>"><%= "selected" if params[:student] == student.user_id %><%= student.user.user_name unless student.user.user_name.nil? %></option>
         <% end %>
       </select>
     </div>
