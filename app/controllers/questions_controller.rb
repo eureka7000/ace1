@@ -15,10 +15,10 @@ class QuestionsController < ApplicationController
                 @questions = Question.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 
-            @teachers = Teacher.all #수정 필요...
             @teachers_and_mentors = UserType.where('user_type = ?', 'mento' || 'teacher')
-            @students = Question.select(:user_id).distinct.order(:user_id)
-            @codes = Question.select(:unit_concept_id).distinct.order(:unit_concept_id)
+            @students = Question.group(:user_id).distinct(:user_id)
+            @codes = Question.group(:unit_concept_id).distinct.order(:unit_concept_id)
+
             render layout: 'admin_main'
         end
     end
