@@ -1,34 +1,6 @@
 <!-- Right Sidebar -->
 <div class="col-md-3" style="border:1px solid #fff">
 
-  <!--&lt;!&ndash; Social Icons &ndash;&gt;-->
-  <!--<div class="shadow-wrapper">-->
-    <!--<div class="tag-box tag-box-v1 box-shadow shadow-effect-2">-->
-      <!--<div class="headline headline-md"><h2>소식지 신청하기</h2></div>-->
-      <!--<div id="home-1" class="tab-pane active">-->
-        <!--<p>유레카메스 소식지나 서비스업데이트에 대한 최신정보를 이메일로 받고자 하시면 신청하시기 바랍니다.</p>-->
-      <!--</div>-->
-
-      <!--<div class="clearfix">-->
-        <!--&lt;!&ndash; Basic Form &ndash;&gt;-->
-
-        <!--<form class="margin-top-30 " role="form" >-->
-          <!--<div class="form-group">-->
-            <!--<label for="exampleInputEmail1">받아보실 메일주소</label>-->
-            <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="메일주소를 입력해주세요.">-->
-          <!--</div>-->
-        <!--</form>-->
-        <!--<div>-->
-          <!--<button type="submit" class="btn-u btn-u-blue" data-toggle="modal" data-target=".bs-example-modal-sm">메일신청하기</button>-->
-        <!--</div>-->
-        <!--&lt;!&ndash; End Basic Form &ndash;&gt;-->
-      <!--</div>-->
-
-    <!--</div>-->
-  <!--</div>-->
-  <!--&lt;!&ndash; End Social Icons &ndash;&gt;-->
-
-
   <!-- Social Icons -->
   <div class="shadow-wrapper">
     <div class=" margin-bottom-30 tag-box tag-box-v1 box-shadow shadow-effect-2">
@@ -38,7 +10,7 @@
           <li>
             <h3>- <%= Blog::BLOG_TYPES[news.blog_type] %> -</h3>
             <p><a href="/blogs/<%= news.id %>"><%= news.title  %></a></p>
-            <p><%= news.created_at.localtime.strftime('%Y-%m-%d') %></p>
+            <p><%= news.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></p>
           </li>
         <% end %>
       </ul>

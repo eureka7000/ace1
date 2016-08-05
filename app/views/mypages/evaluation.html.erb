@@ -73,8 +73,7 @@
                             <% evaluation_my_comment = '' %>
                             <% unit_concept_exercise_history.unit_concept_desc.unit_concept.unit_concept_self_evaluations.each do |evaluation| %>
                                 <% evaluation_my_check = evaluation.evaluation %>
-                                <% learning_day = evaluation.created_at.localtime.to_s %>
-                                <% learning_day.slice!(-5, 5) %>
+                                <% learning_day = evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M:%S') %>
                                 <% evaluation_my_comment = evaluation.comment %>
                             <% end %>
                             <td colspan="8">느낀 수준 : <%= evaluation_my_check %></td>

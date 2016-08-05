@@ -62,7 +62,7 @@
                 <% else %>
                   <td><%= '' %></td>
                 <% end %>
-                <td><%= question.created_at.localtime.strftime('%Y-%m-%d') %></td>
+                <td><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
                 <td><%= question.replies.count() %></td>
                 <td><%= link_to 'Show', question_path(question)%></td>
                 <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>

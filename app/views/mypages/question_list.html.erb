@@ -73,7 +73,7 @@
               <td><%= count %></td>
               <td colspan="3"><%= @school_name.blank? ? '' : @school_name %></td>
               <td colspan="2"><%= @user.user_name %></td>
-              <td colspan="2"><%= question.created_at.localtime.strftime('%m월 %d일') %></td>
+              <td colspan="2"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
               <td colspan="3"><%= question.unit_concept.name %></td>
               <td colspan="5" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title, question_path(question.id) %></td>
               <td colspan="2" align="center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
