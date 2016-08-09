@@ -1,6 +1,8 @@
 class GradeUnitConcept < ActiveRecord::Base
     
-    belongs_to :unit_concept
+    # belongs_to :unit_concept
+    belongs_to :concept
+    
     validates_presence_of :grade, :chapter, :category, :sub_category, :code, :name, :unit_concept_id
     
     CHAPTERS = {

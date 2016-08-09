@@ -38,6 +38,8 @@
 						        <th>Chapter</th>
 						        <th>Category</th>
 						        <th>Sub category</th>
+                                <th>Concept link</th>
+                                <th>Unit Concepts</th>
 						        <th>Code</th>
 						        <th>Name</th>
                                 <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"/></th>
@@ -50,9 +52,19 @@
 				        <td><%= GradeUnitConcept::CHAPTERS[grade_unit_concept.chapter.to_i] %></td>
 				        <td><%= GradeUnitConcept::CATEGORIES[grade_unit_concept.category.to_i] %></td>
 				        <td><%= GradeUnitConcept::SUB_CATEGORIES[grade_unit_concept.sub_category.to_i] %></td>
+                        <td><%= grade_unit_concept.concept.concept_name unless grade_unit_concept.concept_id.nil? %></td>
+                        <td>
+                            <% unless grade_unit_concept.concept_id.nil? %>
+                                <% grade_unit_concept.concept.unit_concepts.each do | unit_concept | %>
+                                    <% if unit_concept.grade == grade_unit_concept.grade.to_i %>
+                                (<%= unit_concept.code %>) <%= unit_concept.name %><br>
+                                    <% end %>
+                                <% end %>
+                            <% end %>    
+                        </td>    
 				        <td><%= grade_unit_concept.code %></td>
 				        <td><%= grade_unit_concept.name %></td>
-                        <td><a href="/unit_concepts/<%= grade_unit_concept.unit_concept_id %>?from=grade">Show</a></td>
+                        <td><a href="/concepts/<%= grade_unit_concept.concept_id %>?from=grade">Show</a></td>
                         <td><%= link_to 'Edit', edit_grade_unit_concept_path(grade_unit_concept) %></td>
                         <td><%= link_to 'Destroy', grade_unit_concept, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                         </tr>

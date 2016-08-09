@@ -75,25 +75,22 @@
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :code, :class => 'form-control' %>
                             </div>
-                        </div>  
-						
+                        </div>
+
                         <div class="form-group">
                             <%= f.label :name, :class => 'col-sm-2 col-md-2 control-label' %>
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :name, :class => 'form-control' %>
                             </div>
-                        </div>  
+                        </div>
 						
                         <div class="form-group">
-                            <%= f.label :unit_concept_id, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-								<input type="text" id="unit_concept_code" class="form-control" style="width:20%; float:left" />
-								<button class="btn-u btn-u-red"  style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
-                                <select name="grade_unit_concept[unit_concept_id]" id="unit_concept_id" class="form-control" style="width:70%; float:left">
-                                    <option value="">--- Unit Concept ---</option>
-									<% unless @grade_unit_concept.unit_concept.nil?  %>
-									<option value="<%= @grade_unit_concept.unit_concept.id %>" selected>[<%= @grade_unit_concept.unit_concept.code %>] <%= @grade_unit_concept.unit_concept.name %></option>
-									<% end %>
+                            <%= f.label :concept_id, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-md-4">
+								<input type="text" id="concept_code" class="form-control" style="width:20%; float:left" />
+								<button class="btn-u btn-u-red" style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
+                                <select name="grade_unit_concept[concept_id]" id="concept_id" class="form-control" style="width:60%; float:left">
+                                    <option value="">--- Concept ---</option>
                                 </select>								
                             </div>
                         </div>  												
@@ -220,14 +217,16 @@ function category_change() {
 
 function search_click() {
 
-	var unit_concept_code = $('#unit_concept_code').val();
+	var concept_code = $('#concept_code').val();
 	
-    $('#unit_concept_id').empty();
-	$('#unit_concept_id').append( $('<option>').text('--- Unit Concept ---').attr('value',''));		
+    $('#concept_id').empty();
+	$('#concept_id').append( $('<option>').text('--- Concept ---').attr('value',''));		
 	
-	if (unit_concept_code != '') {
+	if (concept_code != '') {
+        
+        $('#loading').show();
 	
-	    var url = "/grade_unit_concepts/get_unit_concepts?unit_concept_code=" + unit_concept_code;
+	    var url = "/grade_unit_concepts/get_concepts?concept_code=" + concept_code;
     
 	    $.ajax({
 	        url: url,
@@ -235,18 +234,21 @@ function search_click() {
 	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
 	        datatype: "json",
 	        success : function(data) {
-        
-			        $.each(data.unit_concepts, function(i) {
-	                	$('#unit_concept_id').append( $('<option>').text('[' + data.unit_concepts[i].code + '] ' + data.unit_concepts[i].name).attr('value',data.unit_concepts[i].id) );                
-			        });				
+			        $.each(data.concepts, function(i) {
+	                	$('#concept_id').append( $('<option>').text('[' + data.concepts[i].code + '] ' + data.concepts[i].name).attr('value',data.concepts[i].id) );                
+			        });	
+                    $('#loading').hide();
 	        },
 	        error : function(){
 	            alert("try to again. please.");
+                $('#loading').hide();                
 	        }
 	    });  
 		
 	}	
 	
 }
+
+function initpage() {}
 
 </script>
