@@ -56,7 +56,7 @@
                         <td>
                             <% unless grade_unit_concept.concept_id.nil? %>
                                 <% grade_unit_concept.concept.unit_concepts.each do | unit_concept | %>
-                                    <% if unit_concept.grade == grade_unit_concept.grade.to_i %>
+                                    <% if unit_concept.grade == grade_unit_concept.grade.to_i && unit_concept.exercise_yn == 'concept' %>
                                 (<%= unit_concept.code %>) <%= unit_concept.name %><br>
                                     <% end %>
                                 <% end %>
