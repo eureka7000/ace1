@@ -117,11 +117,12 @@ class GradeUnitConceptsController < ApplicationController
         
     end    
         
-
-    # GET /grade_unit_concepts
-    # GET /grade_unit_concepts.json
     def index
-        @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+        if params[:grade].blank?
+            @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+        else
+            @grade_unit_concepts = GradeUnitConcept.where('grade = ?', params[:grade]).paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)            
+        end        
     end
 
     # GET /grade_unit_concepts/new
