@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   has_many :unit_concept_exercise_histories
   has_many :unit_concept_self_evaluations, :dependent => :delete_all
   has_many :user_relations, :dependent => :delete_all
-  has_many :questions
-  has_many :blogs
+  has_many :questions, :dependent => :delete_all
+  has_many :blogs, :dependent => :delete_all
   has_many :payments
 
   belongs_to :school

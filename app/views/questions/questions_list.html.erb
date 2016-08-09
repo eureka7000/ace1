@@ -6,7 +6,9 @@
       <select id="studentSelect" class="form-control" >
         <option value="">학생 선택</option>
         <% @students.each do |student| %>
-            <option value="<%= student.user_id %>"><%= "selected" if params[:student] == student.user_id %><%= student.user.user_name %></option>
+            <% unless student.user.nil? %>
+                <option value="<%= student.user_id %>"><%= "selected" if params[:student] == student.user_id %><%= student.user.user_name %></option>
+            <% end %>
         <% end %>
       </select>
     </div>
@@ -45,11 +47,15 @@
           </tr>
           </thead>
           <tbody>
-            <% @questions.each do |question| %>
+          <% @questions.each do |question| %>
               <tr>
                 <td><%= question.unit_concept.code %></td>
                 <td><%= question.unit_concept.name %></td>
-                <td><%= question.user.user_name %></td>
+                <% unless question.user.nil?%>
+                    <td><%= question.user.user_name %></td>
+                <% else %>
+                    <td>--- 탈퇴한 회원입니다 ---</td>
+                <% end %>
                 <% unless question.to_user_id.blank?%>
                     <% @teacher_or_mento = User.find(question.to_user_id) %>
                     <td><%= @teacher_or_mento.user_name %></td>
@@ -58,16 +64,16 @@
                 <% end %>
 
                 <% unless question.title.blank? %>
-                  <td><%= question.title %></td>
+                    <td><%= question.title %></td>
                 <% else %>
-                  <td><%= '' %></td>
+                    <td><%= '' %></td>
                 <% end %>
                 <td><%= question.created_at.localtime.strftime('%Y-%m-%d') %></td>
                 <td><%= question.replies.count() %></td>
                 <td><%= link_to 'Show', question_path(question)%></td>
                 <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
               </tr>
-            <% end %>
+          <% end %>
 
           </tbody>
         </table>

@@ -1,81 +1,87 @@
 <div class="container-fluid">
 
-    <div class="row">
-        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-credit-card" aria-hidden="true" style="top: 5px"></span> Payment </h2>
-        </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+      <h2 class="sub-header"><span class="glyphicon glyphicon-credit-card" aria-hidden="true" style="top: 5px"></span> Payment </h2>
     </div>
+  </div>
 
-    <% unless notice.blank? %>
-        <p class="alert alert-warning"><%= notice %></p>
-    <% end %>
+  <% unless notice.blank? %>
+      <p class="alert alert-warning"><%= notice %></p>
+  <% end %>
 
-    <div class="row">
+  <div class="row">
 
-        <div class="col-md-12">
+    <div class="col-md-12">
 
-            <div class="well">
+      <div class="well">
 
-                <div class="row">
+        <div class="row">
 
-                    <div class="col-md-12">
-                        
-                        <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제내역</h3>
+          <div class="col-md-12">
 
-                        <table class="table table-bordered table-striped" style="clear: both">
-                        <tr>
-                        <td style="width:25%;"><b>Order Number</b></td>
-                        <td style="width:75%"><%= @payment.oid %></td>
-                        </tr>
+            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제내역</h3>
 
-                        <tr>
-                        <td style="width:25%;"><b>User</b></td>
-                        <td style="width:75%"><%= @payment.user.user_name %></td>
-                        </tr>
-                        
-                        <tr>
-                        <td style="width:25%;"><b>Service</b></td>
-                        <td style="width:75%"><%= @payment.service_name %></td>
-                        </tr>
+            <table class="table table-bordered table-striped" style="clear: both">
+              <tr>
+                <td style="width:25%;"><b>Order Number</b></td>
+                <td style="width:75%"><%= @payment.oid %></td>
+              </tr>
 
-                        <tr>
-                        <td style="width:25%;"><b>Pay Method</b></td>
-                        <td style="width:75%"><%= InicisPayment::GO_PAY_METHOD[@payment.pay_method] %></td>
-                        </tr>
-                        
-                        <tr>
-                        <td style="width:25%;"><b>Amount</b></td>
-                        <td style="width:75%"><%= number_with_delimiter(@payment.amount, delimiter: ",") %></td>
-                        </tr>
-                        
-                        <tr>
-                        <td style="width:25%;"><b>Pay Day</b></td>
-                        <td style="width:75%"><%= @payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
-                        </tr>
+              <tr>
+                <td style="width:25%;"><b>User</b></td>
+                <td style="width:75%"><%= @payment.user.user_name %></td>
+              </tr>
 
-                        <tr>
-                        <td style="width:25%;"><b>Pay Status</b></td>
-                        <td style="width:75%">
-                            <% if @payment.payment_status == 'processing' %>
-                            <span class="label rounded-2x label-yellow">Processing</span>
-                            <% elsif @payment.payment_status == 'paid'  %>
-                            <span class="label rounded-2x label-green">Paid</span>
-                            <% end %>
-                        </td>
-                        </tr>
-                        </table>
-                        
-                        <hr>
-                        
-                        <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제전문</h3>                        
+              <tr>
+                <td style="width:25%;"><b>Service</b></td>
+                <td style="width:75%"><%= @payment.service_name %></td>
+              </tr>
 
-                        <table class="table table-bordered table-striped" style="clear: both">
-                        <% @payment_logs.each do |payment_log| %>    
-                        <tr>
-                        <td style="width:25%"><%= payment_log.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
-                        <td style="width:75%; word-break: break-all"><%= payment_log.result_detail %></td>
-                        </tr>
-                        <% end %>
-                        </table>
+              <tr>
+                <td style="width:25%;"><b>Pay Method</b></td>
+                <td style="width:75%"><%= InicisPayment::GO_PAY_METHOD[@payment.pay_method] %></td>
+              </tr>
 
-                        <%= link_to 'Back', payments_path, :class => 'btn btn-default'  %>
+              <tr>
+                <td style="width:25%;"><b>Amount</b></td>
+                <td style="width:75%"><%= number_with_delimiter(@payment.amount, delimiter: ",") %></td>
+              </tr>
+
+              <tr>
+                <td style="width:25%;"><b>Pay Day</b></td>
+                <td style="width:75%"><%= @payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
+              </tr>
+
+              <tr>
+                <td style="width:25%;"><b>Pay Status</b></td>
+                <td style="width:75%">
+                  <% if @payment.payment_status == 'processing' %>
+                      <span class="label rounded-2x label-yellow">Processing</span>
+                  <% elsif @payment.payment_status == 'paid'  %>
+                      <span class="label rounded-2x label-green">Paid</span>
+                  <% end %>
+                </td>
+              </tr>
+            </table>
+
+            <hr>
+
+            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제전문</h3>
+
+            <table class="table table-bordered table-striped" style="clear: both">
+              <% @payment_logs.each do |payment_log| %>
+                  <tr>
+                    <td style="width:25%"><%= payment_log.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
+                    <td style="width:75%; word-break: break-all"><%= payment_log.result_detail %></td>
+                  </tr>
+              <% end %>
+            </table>
+
+            <%= link_to 'Back', payments_path, :class => 'btn btn-default'  %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

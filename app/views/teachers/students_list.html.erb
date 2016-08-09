@@ -27,7 +27,7 @@
                 <td><%= student.user_name %></td>
                 <td><%= student.phone %></td>
                 <td><%= student.sign_in_count %></td>
-                <td><%= student.created_at.localtime.strftime('%Y-%m-%d') %></td>
+                <td><%= student.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
                 <td><%= link_to 'show', user_path(student) %></td>
               </tr>
           <% end %>

@@ -14,7 +14,7 @@
         <% elsif unit_concept_desc.desc_type.to_i == 4 %>
             <% type4Count +=1 %>
         <% end %>
-  <% end %>
+    <% end %>
 
     <% @links.each do |link| %>
         <% linkCount += 1 %>
@@ -82,7 +82,7 @@
                     *
                     <% end%>
                     </span>
-                    <span style="color:gray">
+                  <span style="color:gray">
                     <% (1..rst).each do |idx| %>
                     *
                     <% end %>
@@ -143,7 +143,7 @@
                                 *
                                 <% end%>
                                 </span>
-                                <span style="color:gray">
+                  <span style="color:gray">
                                 <% (1..rst).each do |idx| %>
                                 *
                                 <% end %>
@@ -213,7 +213,7 @@
                                 *
                                 <% end%>
                                 </span>
-                                <span style="color:gray">
+                  <span style="color:gray">
                                 <% (1..rst).each do |idx| %>
                                 *
                                 <% end %>
@@ -368,7 +368,7 @@
                       *
                       <% end%>
                       </span>
-                      <span style="color:gray">
+                  <span style="color:gray">
                       <% (1..rst).each do |idx| %>
                       *
                       <% end %>
@@ -404,7 +404,7 @@
                       *
                       <% end%>
                       </span>
-                      <span style="-webkit-text-fill-color: grey; font-size: large">
+                    <span style="-webkit-text-fill-color: grey; font-size: large">
                       <% (1..rst).each do |idx| %>
                       *
                       <% end %>
@@ -507,47 +507,50 @@
             </table>
           </div>
 
-          <div class="row">
-            <div class="col-md-3">
-              <strong style="color:blue">난이도</strong>
-            </div>
-            <div class="col-md-9">
-              <label class="radio-inline">
-                <input type="radio" id="evaluation_easy" name="evaluation" value="easy" > 이해됨
-              </label>
-              <label class="radio-inline">
-                <input type="radio" id="evaluation_normal" name="evaluation" value="normal" > 보통
-              </label>
-              <label class="radio-inline">
-                <input type="radio" id="evaluation_difficult" name="evaluation" value="difficult" > 어려움
-              </label>
-            </div>
-          </div>
+          <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
 
-          <div class="row" style="margin-top: 10px; ">
-            <div class="col-md-3">
-              <strong style="color:blue">Comment</strong>
-            </div>
-            <div class="col-md-9">
-              <textarea id="evaluation_comment" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
-            </div>
-          </div>
+            <%= token_tag nil %>
 
-        </div>
+            <div class="row">
+              <div class="col-md-3">
+                <strong style="color:blue">난이도</strong>
+              </div>
+              <div class="col-md-9">
+                <label class="radio-inline">
+                  <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
+                </label>
+              </div>
+            </div>
 
-        <div class="modal-footer">
-          <button class="btn rounded btn-success" type="button" onclick="saveEvaluation()">확인</button>
+            <div class="row" style="margin-top: 10px; ">
+              <div class="col-md-3">
+                <strong style="color:blue">Comment</strong>
+              </div>
+              <div class="col-md-9">
+                <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+              </div>
+            </div>
+
+            <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
+            <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
+            <input type="hidden" name="url" value="<%= request.original_url %>"/>
+            <div class="modal-footer">
+              <input type="submit" class="btn rounded btn-success" value="확인"/>
+            </div>
+          </form>
         </div>
 
       </div>
     </div>
   </div>
-
-
   <!-- Tab Self Evaluation END-->
-
 </div>
-
 <!-- Tab 관련 개념 -->
 
 <!-- Modal -->
@@ -760,53 +763,27 @@
         $('#loading').hide();
       }
     });
-
   }
 
-  function saveEvaluation() {
+</script>
 
-    if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
-      alert('난이도를 선택하세요.');
-      return false;
-    }
-
-    $('#loading').show();
-
-    var evaluation = "";
-
-    if ($('#evaluation_easy').is(":checked")) evaluation = $('#evaluation_easy').val();
-    else if ( $('#evaluation_normal').is(":checked") ) evaluation = $('#evaluation_normal').val();
-    else if ( $('#evaluation_difficult').is(":checked") ) evaluation = $('#evaluation_difficult').val();
-
-    var url = "/unit_concept_self_evaluations/";
-
-    var data = {
-      "unit_concept_self_evaluation" : {
-        "user_id" : <%= current_user.id %>,
-        "unit_concept_id" : <%= @unit_concept.id %>,
-        "evaluation" : evaluation,
-        "comment" : $('#evaluation_comment').val()
+<!-- 자기평가 data check 보내기 -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#new_unit_concept_self_evaluation').submit(function () {
+      $('#loading').show();
+      if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
+        alert('난이도를 선택하세요.');
+        $('#loading').hide();
+        return false;
       }
-    }
-
-    $.ajax({
-      url: url,
-      type: "POST",
-      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-      datatype: "json",
-      data:data,
-      success : function(data) {
+      else if ( $('#evaluation_comment').val() == ''){
+        alert('comment를 입력하세요.');
         $('#loading').hide();
-        alert('자기평가를 등록하였습니다.');
-        location.reload();
-      },
-      error : function(){
-        alert("try to again. please.");
-        $('#loading').hide();
+        return false;
       }
     });
-
-  }
+  });
 </script>
 
 <!-- Print method -->
@@ -831,8 +808,4 @@
     var player = $f(iframe);
     player.api('pause');
   }
-</script>
-
-<script type="text/javascript">
-
 </script>
