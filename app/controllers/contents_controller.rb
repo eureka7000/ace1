@@ -47,88 +47,236 @@ class ContentsController < ApplicationController
     def index
         
         @view_type = params[:view_type].blank? ? '1' : params[:view_type]
-        @step = params[:step].blank? ? '1' : params[:step]
+        @step = params[:step].blank? ? 1 : params[:step].to_i
         @category = params[:category]
-        @sub_category = params[:sub_category]
-        @concept_id = params[:concept_id]
-
         @grade = params[:grade]
+        @sub_category = params[:sub_category]
         @chapter = params[:chapter]
+        @concept_id = params[:concept_id]        
+        @level = params[:level]        
         
-        unless @concept_id.nil?
-            @concept = Concept.find(@concept_id)
-            @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
-
-            # 임시 코드 - 유형문제 파일이 올려져 있지 않으면 보여지지 않는다
-            @check = 1
-            @unit_concept_exercises.each do |exec|
-                unless exec.unit_concept_descs.blank?
-                    @check = 0
-                    break
-                end
-            end
+        @breadcrumbs = []
+        @items = []
+        
+        if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
+            @student = 'middle'
+        elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
+            @student = 'high'
         end
 
-        if @view_type == '1'
-          
-            if @step == '3'
-              
-                @concepts = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "concept")
-                @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
-
-                if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
-                    @student = 'middle'
-                elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
-                    @student = 'high'
-                end
-
-                @study_level = current_user.study_level
-
-            elsif @step == '4'
-                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
-
-                    @student = params[:student]
-                    @level = params[:level]
-
-                    @user = User.find(current_user.id)
-                    @study_level = @level
-                    @user.study_level = @study_level
-
-                    @user.save
-
-                    @unit_concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
+        @study_level = current_user.study_level
                 
-            elsif @step == '5'
-
-                if params[:exercise_type] == 'concept_exercise'
-                    @unit_concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
-                end
+        
+        if @view_type == '1'  # 단원별
+            
+            # breadcrumbs
+            if @step > 0
+                @current_page_name = '단원별 학습'
+                @breadcrumbs << { 'step1' => '단원별 학습' }
+            end
                 
+            if @step > 1
+                @current_page_name = Concept::CATEGORIES[@category]
+                @breadcrumbs << { 'step2' => @current_page_name }
             end
             
-        else
-            if @step == '4'
-                if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
-                    @student = 'middle'
-                elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
-                    @student = 'high'
-                end
-
-                @study_level = current_user.study_level
-
-            elsif @step == '5'
-                @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
-
-                @level = params[:level]
-
-                @user = User.find(current_user.id)
-                @study_level = @level
-                @user.study_level = @study_level
-
-                @user.save
+            if @step > 2
+                @current_page_name = Concept::SUB_CATEGORIES[@sub_category]
+                @breadcrumbs << { 'step3' => @current_page_name }
             end
+            
+            if @step > 3
+                if params[:exercise_type].blank?
+                    @concept = Concept.find(params[:concept_id])                
+                    @current_page_name = @concept.concept_name
+                else
+                    @current_page_name = '종합문제'
+                end        
+                @breadcrumbs << { 'step4' => @current_page_name }                
+            end
+            
+            if @step > 4
+                @current_page_name = '유형문제'
+                @breadcrumbs << { 'step5' => @current_page_name }
+            end
+            
+            # Data
+            if @step == 1
+                Concept::CATEGORIES.each_pair do |key, value|
+                    @items << {
+                        key: key,
+                        value: value
+                    }
+                end
+            elsif @step == 2   # sub category view
+                Concept::SUB_CATEGORIES.each_pair do |key, value|
+                    if @category.first(2) == key.first(2)
+                        @items << {
+                            key: key,
+                            value: value
+                        }                        
+                    end
+                end
+            elsif @step == 3   # concept view
+                @concepts = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "concept")
+                @concepts.each do |concept|
+                    @items << {
+                        key: concept.id,
+                        value: concept.concept_name,
+                        load_modal: true,        # 난이도 설정 모달.
+                        drop_down: true,
+                        unit_concept_counts: get_unit_concept_counts(concept.id)
+                    }
+                end
+                
+                @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
+                if @concept_exercises.length > 0
+                    @items << {
+                        key: '',
+                        value: '종합문제'
+                    }
+                end
+                
+            elsif @step == 4
+                
+                if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+                    @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
+                    @concept_exercises.each do |concept_exercise|
+                        @items << {
+                            key: concept_exercise.id,
+                            value: concept_exercise.concept_name,
+                            content_yn: true,
+                            level: 1,
+                            exercise_yn: true
+                        }
+                    end                    
+                else    
+                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ?', @concept_id, "concept", @level) 
+                    @unit_concepts.each do |unit_concept|
+                        @items << {
+                            key: unit_concept.id,
+                            value: unit_concept.name,
+                            content_yn: true,
+                            level: unit_concept.level,
+                            level_star_yn: true,
+                            level_star: unit_concept.get_level_star
+                        }
+                    end
+                
+                    @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")                
+                    if @unit_concept_exercises.length > 0
+                        @items << {
+                            key: '',
+                            value: '유형문제',
+                            level: 0,
+                            level_star_yn: true,
+                            level_star: UnitConcept.get_level_star_empty
+                        }                    
+                    end    
+                end 
+                
+            elsif @step == 5    
+                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+                @unit_concept_exercises.each do |unit_concept_exercise|
+                    
+                    logger.debug "unit_concept_exercise : " + unit_concept_exercise.inspect
+                    
+                    @items << {
+                        key: unit_concept_exercise.id,
+                        value: unit_concept_exercise.name,
+                        content_yn: true,
+                        level: unit_concept_exercise.level,
+                        level_star_yn: true,
+                        level_star: unit_concept_exercise.get_level_star,
+                        exercise_yn: true,
+                        video_count: unit_concept_exercise.get_video_count
+                    }
+                end                
+            end    
+            
+        elsif @view_type == '2' # 학년별
+            
+            # breadcrumbs
+            if @step > 0
+                @current_page_name = '학년별 학습'
+                @breadcrumbs << { 'step1' => '학년별 학습' }
+            end
+            
+            if @step > 1
+                @current_page_name = UnitConcept::GRADES[@grade.to_i]
+                @breadcrumbs << { 'step2' => @current_page_name }
+            end   
+            
+            if @step > 2
+                @current_page_name = GradeUnitConcept::CHAPTERS[@chapter.to_i]
+                @breadcrumbs << { 'step3' => @current_page_name }
+            end    
+            
+            if @step > 3
+                @current_page_name = GradeUnitConcept::CATEGORIES[params[:category].to_i]
+                @breadcrumbs << { 'step4' => @current_page_name }                
+            end
+            
+            if @step > 4
+                @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
+                @breadcrumbs << { 'step5' => @current_page_name }                
+            end            
+            
+            # data
+            if @step == 1
+                UnitConcept::GRADES.each_pair do |key, value|
+                    @items << {
+                        key: key,
+                        value: value
+                    }
+                end
+            elsif @step == 2    
+                GradeUnitConcept::CHAPTERS.each_pair do |key, value|
+                    unless @grade.to_i != key/100 
+                        @items << {
+                            key: key,
+                            value: value
+                        }
+                    end    
+                end
+            elsif @step == 3
+                GradeUnitConcept::CATEGORIES.each_pair do |key, value|
+                    unless @chapter.to_i != key/100
+                        @items << {
+                            key: key,
+                            value: value
+                        }
+                    end    
+                end
+            elsif @step == 4    
+                GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
+                    unless @category.to_i != key/100
+                        @items << {
+                            key: key,
+                            value: value,
+                            load_modal: true
+                        }
+                    end    
+                end
+            elsif @step == 5    
+                @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
+                @grade_unit_concepts.each do |grade_unit_concept|
+                    @items << {
+                        key: grade_unit_concept.unit_concept.id,
+                        value: grade_unit_concept.name,
+                        content_yn: true,
+                        level: grade_unit_concept.unit_concept.level,
+                        level_star_yn: true,
+                        level_star: grade_unit_concept.unit_concept.get_level_star
+                    }
+                end    
+            end
+            
+            
         end
+
     end
+    
     
     def show
         
@@ -174,5 +322,31 @@ where exercise_yn = 'concept' order by code
         end
 
     end
+    
+    
+    private
+    
+    def get_unit_concept_counts(concept_id)
+
+        ret = []
+
+        unit_concept_counts = UnitConcept.get_level_count(concept_id)
+
+        unit_concept_counts.each do |unit_concept_count|
+
+            tmp = {
+                exercise_yn: unit_concept_count.exercise_yn,
+                level: unit_concept_count.level,
+                count: unit_concept_count.count
+            }
+
+            ret << tmp
+
+        end
+
+        ret
+
+    end
+    
 end
 

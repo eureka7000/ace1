@@ -5,7 +5,7 @@ class UnitConcept < ActiveRecord::Base
     has_many :unit_concept_descs
     has_many :explanations
     has_many :unit_concept_self_evaluations
-    has_one  :grade_unit_concept
+    # has_one  :grade_unit_concept
     has_many :questions
     has_many :unit_concept_exercise_solutions
     
@@ -33,6 +33,10 @@ class UnitConcept < ActiveRecord::Base
         UnitConcept.find_by_sql(str)
     end
     
+    def get_video_count
+        self.unit_concept_descs.where('desc_type = ?', 4).count()         
+    end    
+    
     def get_level_star
         
         ret = ""
@@ -56,6 +60,15 @@ class UnitConcept < ActiveRecord::Base
         
         ret
         
-    end    
+    end   
+    
+    def self.get_level_star_empty
+        ret = "<span class='item-box'><span class='item'>"
+        (1..5).each do |idx|
+            ret += " <i class='fa fa-star-o'></i> "
+        end
+        ret += "</span></span>"
+        ret        
+    end     
     
 end

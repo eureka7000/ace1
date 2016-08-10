@@ -115,14 +115,47 @@ class GradeUnitConceptsController < ApplicationController
             end        
         end          
         
-    end    
+    end 
+    
+    
+    def get_concepts
         
-
-    # GET /grade_unit_concepts
-    # GET /grade_unit_concepts.json
-    def index
-        @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+        concept_code = params[:concept_code]
+        err = false
+        ret = {
+            concepts: []
+        }
+        
+        if concept_code.blank?
+            err = true
+        else
+            
+            concepts = Concept.where("concept_code like ?", concept_code + '%')
+            
+            concepts.each do |rs|
+                ret[:concepts] << { id: rs.id, name: rs.concept_name, code: rs.concept_code }
+            end
+        end
+        
+        respond_to do |format|
+            if err
+                format.json { render json: ret, status: :concept_code_is_blank }
+            else
+                format.json { render json: ret }
+            end        
+        end                  
+        
     end
+           
+        
+    def index
+        if params[:grade].blank?
+            @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+        else
+            @grade_unit_concepts = GradeUnitConcept.where('grade = ?', params[:grade]).paginate( :page => params[:page], :per_page => 30 ).order(:chapter, :category, :sub_category, :code)            
+        end        
+    end
+    
 
     # GET /grade_unit_concepts/new
     def new
@@ -240,6 +273,6 @@ class GradeUnitConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def grade_unit_concept_params
-      params.require(:grade_unit_concept).permit(:grade, :chapter, :category, :sub_category, :code, :name, :unit_concept_id)
+      params.require(:grade_unit_concept).permit(:grade, :chapter, :category, :sub_category, :code, :name, :unit_concept_id, :concept_id)
     end
 end

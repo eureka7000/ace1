@@ -89,8 +89,8 @@ Rails.application.configure do
     domain: 'eurekamath.co.kr',
     authentication: :login,
     enable_starttls_auto: true,
-    user_name: 'ghawk000@gmail.com',
-    password: 'leinhar0!'
+    user_name: 'info@eurekamath.co.kr',
+    password: 'dragon70'
   }
   
   # inicis 결제정보

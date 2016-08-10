@@ -2,6 +2,7 @@ class Concept < ActiveRecord::Base
     
     has_many :unit_concepts
     has_many :concept_exercises
+    has_many :grade_unit_concepts
     
     CATEGORIES = {
         "c000" => "총괄",
