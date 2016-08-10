@@ -65,8 +65,8 @@
 				        <td><%= grade_unit_concept.code %></td>
 				        <td><%= grade_unit_concept.name %></td>
                         <td><a href="/concepts/<%= grade_unit_concept.concept_id %>?from=grade">Show</a></td>
-                        <td><%= link_to 'Edit', edit_grade_unit_concept_path(grade_unit_concept) %></td>
-                        <td><%= link_to 'Destroy', grade_unit_concept, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        <td><%= link_to 'Edit', "/grade_unit_concepts/#{grade_unit_concept.id}/edit?page=#{params[:page]}" %></td>
+                        <td><%= link_to 'Destroy', "/grade_unit_concepts/#{grade_unit_concept.id}?#{params.to_query}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                         </tr>
                         <% end %>
                         </tbody>

@@ -241,12 +241,10 @@ class GradeUnitConceptsController < ApplicationController
         end
     end
 
-    # PATCH/PUT /grade_unit_concepts/1
-    # PATCH/PUT /grade_unit_concepts/1.json
     def update
         respond_to do |format|
             if @grade_unit_concept.update(grade_unit_concept_params)
-                format.html { redirect_to grade_unit_concepts_url, notice: 'Grade unit concept was successfully updated.' }
+                format.html { redirect_to "/grade_unit_concepts?page=#{params[:page]}" , notice: 'Grade unit concept was successfully updated.' }
                 format.json { render :show, status: :ok, location: @grade_unit_concept }
             else
                 format.html { render :edit }
@@ -255,15 +253,13 @@ class GradeUnitConceptsController < ApplicationController
         end
     end
 
-  # DELETE /grade_unit_concepts/1
-  # DELETE /grade_unit_concepts/1.json
-  def destroy
-    @grade_unit_concept.destroy
-    respond_to do |format|
-      format.html { redirect_to grade_unit_concepts_url, notice: 'Grade unit concept was successfully destroyed.' }
-      format.json { head :no_content }
+    def destroy
+        @grade_unit_concept.destroy
+        respond_to do |format|
+            format.html { redirect_to "/grade_unit_concepts?#{params.to_query}", notice: 'Grade unit concept was successfully destroyed.' }
+            format.json { head :no_content }
+        end
     end
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
