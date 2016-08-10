@@ -46,6 +46,7 @@
                     <% link_str += "&grade=#{@grade}" if index > 0 && params[:view_type] == '2' %>
                     <% link_str += "&chapter=#{@chapter}" if index > 1 && params[:view_type] == '2' %>
                     <% link_str += "&category=#{@category}" if index > 2 && params[:view_type] == '2' %>
+                    <% link_str += "&sub_category=#{@sub_category}" if index > 3 && params[:view_type] == '2' %>
                 <a href="<%= link_str %>"><%= value["step#{index+1}"] %></a>
                 <% end %>
             </li>
@@ -83,6 +84,8 @@
                 <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
                 <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
                 <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
+                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                
             <% end %>
         <% end %>    
         
@@ -162,86 +165,88 @@
 
 <!-- level_choice_modal -->
 <div class="modal fade" id="level_choice_modal" role="dialog">
-  <div class="modal-dialog modal-md">
-    <div class="modal-content">
+    
+    <div class="modal-dialog modal-md">
+        
+        <div class="modal-content">
 
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <div class="modal-title text-left">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-title text-left">
 
-          <% if @student  == 'middle' %>
-              <% if @study_level.to_i == 1 %>
-                  <% levelStr = '초급' %>
-              <% elsif @study_level.to_i == 2 %>
-                  <% levelStr = '중급' %>
-              <% else%>
-                  <% levelStr = '상급' %>
-              <% end %>
-          <% else %>
-              <% if @study_level.to_i == 3 %>
-                  <% levelStr = '초급' %>
-              <% elsif @study_level.to_i == 4 %>
-                  <% levelStr = '중급' %>
-              <% else%>
-                  <% levelStr = '상급' %>
-              <% end %>
-          <% end %>
+                    <% if @student  == 'middle' %>
+                        <% if @study_level.to_i == 1 %>
+                            <% levelStr = '초급' %>
+                        <% elsif @study_level.to_i == 2 %>
+                            <% levelStr = '중급' %>
+                        <% else %>
+                            <% levelStr = '상급' %>
+                        <% end %>
+                    <% else %>
+                        <% if @study_level.to_i == 3 %>
+                            <% levelStr = '초급' %>
+                        <% elsif @study_level.to_i == 4 %>
+                            <% levelStr = '중급' %>
+                        <% else %>
+                            <% levelStr = '상급' %>
+                        <% end %>
+                    <% end %>
 
-          <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
-        </div>
-      </div>
-
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-12">
-            <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
-                <div class="col-md-4 content-boxes-v6 md">
-                  <% unless @view_type != '1' %>
-                      <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
-                      <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
-                  <% else %>
-                      <a href="javascript:goNext2(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
-                      <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
-                  <% end %>
-
+                    <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
                 </div>
-            <% end %>
-          </div>
-        </div><!-- /.row -->
-      </div>
+            </div>
 
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
+                        <div class="col-md-4 content-boxes-v6 md">
+                            <% unless @view_type != '1' %>
+                            <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                            <% else %>
+                            <a href="javascript:goNext2(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                            <% end %>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-  </div>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
 
-    var concept_id;
+        var concept_id;
 
-    function goNext(level) {
+        function goNext(level) {
 
-      var curLevel = level;
+            var curLevel = level;
 
-      if ("<%= @student %>" == "high") {
-        curLevel = curLevel + 2;
-      }
+            if ("<%= @student %>" == "high") {
+                curLevel = curLevel + 2;
+            }
 
-      var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
+            var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
 
-      location = url;
-    }
+            location = url;
+        }
 
-    function goNext2(level) {
-      var curLevel = level;
+        function goNext2(level) {
+            
+            var curLevel = level;
 
-      if ("<%= @student %>" == "high") {
-        curLevel = curLevel + 2;
-      }
+            if ("<%= @student %>" == "high") {
+                curLevel = curLevel + 2;
+            }
 
-      var url = "/contents?view_type=<%= @view_type %>&step=5&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=" + concept_id + "&student=<%= @student %>&level=" + curLevel;
-      location = url;
-    }
+            var url = "/contents?view_type=<%= @view_type %>&step=<%= @step+1 %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=" + concept_id + "&student=<%= @student %>&level=" + curLevel;
+            location = url;
+        }
 
-  </script>
+    </script>
 
 </div>
 <!-- Modal END-->
