@@ -47,6 +47,7 @@
                     <% link_str += "&chapter=#{@chapter}" if index > 1 && params[:view_type] == '2' %>
                     <% link_str += "&category=#{@category}" if index > 2 && params[:view_type] == '2' %>
                     <% link_str += "&sub_category=#{@sub_category}" if index > 3 && params[:view_type] == '2' %>
+                    <% link_str += "&concept_id=#{@concept_id}&student=#{@student}&level=#{@level}" if index > 4 && params[:view_type] == '2' %>
                 <a href="<%= link_str %>"><%= value["step#{index+1}"] %></a>
                 <% end %>
             </li>
@@ -85,7 +86,8 @@
                 <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
                 <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
                 <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
-                
+                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{item[:key]}&level=#{@level}" if @step == 5 && params[:view_type] == '2' %>
+                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{@level}" if @step == 6 && params[:view_type] == '2' %>
             <% end %>
         <% end %>    
         

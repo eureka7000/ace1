@@ -175,11 +175,10 @@ class ContentsController < ApplicationController
                     end    
                 end 
                 
-            elsif @step == 5    
+            elsif @step == 5
+                
                 @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
                 @unit_concept_exercises.each do |unit_concept_exercise|
-                    
-                    logger.debug "unit_concept_exercise : " + unit_concept_exercise.inspect
                     
                     @items << {
                         key: unit_concept_exercise.id,
@@ -191,7 +190,8 @@ class ContentsController < ApplicationController
                         exercise_yn: true,
                         video_count: unit_concept_exercise.get_video_count
                     }
-                end                
+                end
+                
             end    
             
         elsif @view_type == '2' # 학년별
@@ -223,8 +223,13 @@ class ContentsController < ApplicationController
             end
             
             if @step > 5
-                @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
+                @current_page_name = Concept.find(@concept_id).concept_name
                 @breadcrumbs << { 'step6' => @current_page_name }
+            end
+            
+            if @step > 6
+                @current_page_name = '유형문제'
+                @breadcrumbs << { 'step7' => @current_page_name }
             end    
             
             # data
@@ -273,7 +278,9 @@ class ContentsController < ApplicationController
                         unit_concept_counts: get_unit_concept_counts(grade_unit_concept.concept_id)                        
                     }
                 end
+                
             elsif @step == 6
+                
                 @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ? and grade = ?', @concept_id, "concept", @level, @grade) 
                 @unit_concepts.each do |unit_concept|
                     @items << {
@@ -295,7 +302,29 @@ class ContentsController < ApplicationController
                         level_star_yn: true,
                         level_star: UnitConcept.get_level_star_empty
                     }                    
-                end    
+                end
+                
+            elsif @step == 7
+                
+                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade = ?', @concept_id, "exercise", @grade)
+                
+                
+                
+                @unit_concept_exercises.each do |unit_concept_exercise|
+                    
+                    @items << {
+                        key: unit_concept_exercise.id,
+                        value: unit_concept_exercise.name,
+                        content_yn: true,
+                        level: unit_concept_exercise.level,
+                        level_star_yn: true,
+                        level_star: unit_concept_exercise.get_level_star,
+                        exercise_yn: true,
+                        video_count: unit_concept_exercise.get_video_count
+                    }
+                end
+                
+                
                     
             end
             
@@ -326,21 +355,20 @@ class ContentsController < ApplicationController
 
 
         unless params[:id].to_i() == 1
-            query = "select row_number from (
-select id, @curRow := @curRow + 1 AS row_number
-from unit_concepts uc join (select @curRow := 0) r
-where exercise_yn = 'concept' order by code
-) k
-where id = #{params[:id]}"
+            query = "select row_number from ( 
+                        select id, @curRow := @curRow + 1 AS row_number
+                        from unit_concepts uc join (select @curRow := 0) r
+                        where exercise_yn = 'concept' order by code
+                        ) k
+                        where id = #{params[:id]}"
             @row_number = UnitConcept.find_by_sql(query).first
             @row_number.row_number.to_i
 
             @unit_concept_related = UnitConcept.find_by_sql("select * from (
-
-select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
-from unit_concepts uc join (select @curRow := 0) r
-where exercise_yn = 'concept' order by code
-) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
+                select id, code, name, level, created_at, updated_at, concept_id, grade, exercise_yn, related_unit_concept_id, @curRow := @curRow + 1 AS row_number
+                from unit_concepts uc join (select @curRow := 0) r
+                where exercise_yn = 'concept' order by code
+                ) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
 
             logger.debug "notice" + @unit_concept_related.inspect
         else
