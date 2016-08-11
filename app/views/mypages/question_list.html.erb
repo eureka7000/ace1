@@ -26,7 +26,7 @@
                 <dt><strong><span aria-hidden="true" class="icon-education-007"></span>&nbsp;&nbsp;학생 검색</strong></dt>
                 <dd class="margin-top-20">
                   <div class="col-md-8 col-sm-8 col-xs-8 margin-left-10">
-                    <select id="studentSelect" class="form-control" >
+                    <select id="studentSelect" class="form-control margin-bottom-20" >
                       <option value="">학생 선택</option>
                       <% @students.each do |student| %>
                           <option value="<%= student.user_id %>"<%= "selected" if params[:student] == student.user_id.to_s %>><%= student.user.user_name %></option>
@@ -34,23 +34,23 @@
                     </select>
                   </div>
                   <div class="col-md-3 col-sm-3 col-xs-3">
-                    <a href="javascript:goSearch('student')" class="btn-u rounded btn-u-info">학생검색</a>
+                    <a href="javascript:goSearch('student')" class="btn-u rounded btn-u-info margin-bottom-20">학생검색</a>
                   </div>
                 </dd>
                 <hr>
                 <% end %>
                 <dt class="margin-top-20"><strong><span aria-hidden="true" class="icon-education-102"></span>&nbsp;&nbsp;개념 검색</strong></dt>
-                <dd class="margin-top-20">
+                <dd>
                   <div class="col-md-8 col-sm-8 col-xs-8 margin-left-10">
-                    <select id="codeSelect" class="form-control" >
+                    <select id="codeSelect" class="form-control margin-top-20" >
                       <option value="">개념 선택</option>
                       <% @codes.each do |code| %>
                           <option value="<%= code.unit_concept_id %>" <%= "selected" if params[:code] == code.unit_concept_id.to_s %>><%= code.unit_concept.name %></option>
                       <% end %>
                     </select>
                   </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <a href="javascript:goSearch('code')" class="btn-u rounded btn-u-info">개념검색</a>
+                  <div class="col-md-3 col-sm-3 col-xs-3 ">
+                    <a href="javascript:goSearch('code')" class="btn-u rounded btn-u-info margin-top-20">개념검색</a>
                   </div>
                 </dd>
 
