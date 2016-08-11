@@ -31,7 +31,7 @@
         <!--Start Header-->
         <table width="700" bgcolor="#fff" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
         <tr>
-        <td style="padding: 6px 0px 0px">
+        <td>
         
             <table width="680" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
             <tr>
@@ -57,7 +57,7 @@
         <!-- Start Headliner-->
         <table width="700" border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
         <tr>
-        <td valign="top" style="padding: 0px " class="center">
+        <td valign="top" class="center">
             <a href="#"><img class="deviceWidth" src="<%= root_url %>assets/img/email_image.png"></a>
         </td>
         </tr>
@@ -72,25 +72,25 @@
         <td width="100%" bgcolor="#ffffff">
             
             <!-- Left box  -->
-            <table width="100%"  border="0" cellpadding="0" cellspacing="0" align="left" class="deviceWidth">
+            <table width="100%"  border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth">
             <tr>
             <td class="center">
                 
                 <table  border="0" cellpadding="0" cellspacing="0" align="center"> 
                 <tr>
-                <td style="font-size: 16px; color: #303030; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 0px 10px; " >
+                <td style="font-size: 16px; color: #303030; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle;" >
                     안녕하세요 관리자(<%= @school_manager.name %>)님!
                 </td>
                 </tr>
                 
                 <tr>
-                <td style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 10px; " >
+                <td style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle;" >
                     귀하의 <%= @school_manager.org_name %>의 교사인 <%= @user.user_name %>님께서<br>
                     교사임을 확인하고자 합니다.<br>
                     
                     <%= @user.user_name %>님이 <%= @school_manager.org_name %>의 교사입니까?
                     
-                    <a href="<%= root_url %>/teachers/">확인하러가기</a>
+                    <a href="<%= root_url %>teachers/">확인하러가기</a>
                     
                 </td>
                 </tr>
@@ -109,7 +109,7 @@
         <!-- Footer -->
         <table width="700"  border="0" cellpadding="0" cellspacing="0" align="center" class="deviceWidth"  > 
         <tr>
-        <td  bgcolor="#ffffff" class="center" style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 50px 0px 50px; " >
+        <td  bgcolor="#ffffff" class="center" style="font-size: 12px; color: #687074; font-weight: bold; text-align: center; font-family: Arial, Helvetica, sans-serif; line-height: 25px; vertical-align: middle; padding: 20px 0px 10px 0px; " >
             Copyright © Eureka Math 2015 ~ 2016                            
         </td>
         </tr>
