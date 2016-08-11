@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
 
   belongs_to :school
   belongs_to :admin, :foreign_key => "join_channel_sales_id"
+
+  mount_uploader :user_img, ImageUploader
   
   validates_presence_of :email
   

@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     get 'mypages/user_info' => 'mypages#user_info'
     get 'mypages/question_list' => 'mypages#question_list'
     get 'mypages/payment' => 'mypages#payment'
+    post 'mypages/user_image_upload' => 'mypages#user_image_upload'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'
