@@ -22,25 +22,44 @@ class MypagesController < ApplicationController
         
         # 결제이력
         @payments = Payment.where('user_id = ? and payment_status = ?',current_user.id, 'paid').order(id: :desc)
-        
-    end
-    
-    def overall
 
-        @click = 'overall'
-        @active = 'mypages'
-       
-        respond_to do |format|
-            format.html
-        end 
-        
-    end    
+
+        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
+    end
 
     def evaluation
 
         @click = 'evaluation'
 
-        @unit_concept_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id).order(:unit_concept_desc_id).order(created_at: :desc)
+        link_query = "select id, name, user_id, memo, evaluation, comment, created_at, history, what from (
+
+	select a.id, a.name, b.user_id, '' as memo, b.evaluation, b.comment, b.created_at, '' as history, 'evaluation' as what
+    from unit_concepts a, (
+		select ori.user_id, ori.unit_concept_id, ori.evaluation, ori.comment, ori.created_at from unit_concept_self_evaluations ori, (
+				SELECT user_id, unit_concept_id, max(created_at) creat FROM unit_concept_self_evaluations
+				where user_id = #{current_user.id}
+				group by user_id, unit_concept_id
+		) last_eval
+		where ori.created_at = last_eval.creat
+	) b
+	where a.id = b.unit_concept_id
+
+	union all
+
+	select c.id, c.name, e.user_id, e.memo, '' as evaluation, '' as comment, '' as created_at, GROUP_CONCAT(e.ox SEPARATOR ' ') as history, 'exercise' as what
+    from unit_concepts c, (
+		select a.id, a.unit_concept_id, a.memo, b.ox, b.user_id from unit_concept_descs a, unit_concept_exercise_histories b
+		where a.id = b.unit_concept_desc_id and b.user_id = #{current_user.id}
+	) e
+	where c.id = e.unit_concept_id
+    group by c.id, c.name, e.user_id, e.memo
+
+) d
+order by id, what, memo;"
+
+        @evaluations = UnitConcept.find_by_sql(link_query)
 
         if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
@@ -53,13 +72,6 @@ class MypagesController < ApplicationController
         @click = 'question_list'
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
 
-        if current_user.user_types[0].user_type == 'student'
-            @type = 'student';
-        elsif current_user.user_types[0].user_type == 'school teacher'
-            @type = 'school teacher'
-        elsif current_user.user_types[0].user_type == 'mento'
-            @type = 'mento'
-        end
 
         unless params[:student].blank?
             @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
@@ -78,6 +90,7 @@ class MypagesController < ApplicationController
         end
     end
 
+
     
     def user_info
 
@@ -93,7 +106,24 @@ class MypagesController < ApplicationController
 
         respond_to do |format|
             format.html
-        end         
-    end    
-    
+        end
+
+        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
+    end
+
+    def user_image_upload
+
+        @user = User.find(params[:user_id])
+        @user.user_img = params[:user_img]
+
+        url = params[:url]
+
+        respond_to do |format|
+            if @user.save
+                format.html { redirect_to url, notice: 'user profile image was successfully uploaded.' }
+            end
+        end
+    end
 end

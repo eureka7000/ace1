@@ -6,155 +6,150 @@
 
     <!-- Profile Content -->
     <div class="col-md-9">
-
       <div class="profile-body margin-bottom-20">
+        <div class="tab-v1">
+          <ul class="nav nav-justified nav-tabs">
+            <li class="active"><a data-toggle="tab">개념별 exercise 평가 및 자기평가</a></li>
+          </ul>
 
-        <% if current_user.user_types[0].user_type == 'student' %>
+          <div class="tab-content">
 
-            <!-- 테스트 작업 테이블 시작 -->
-            <div class="panel panel-default-dark margin-bottom-40">
-              <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-user"></i> 개념별 exercise 평가 및 자기평가</h3>
-              </div>
-              <div class="panel-body">
-                <table class="table table-striped">
-                  <thead style="color: black;">
-                  <tr>
-                    <td colspan="4">단위 개념</td>
-                    <td colspan="6">개념레벨</td>
-                    <td colspan="8">학습레벨</td>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <% unit_concept_exercise_histories_count = 0 %>
-                  <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
-                      <% unit_concept_exercise_histories_count += 1 %>
-                  <% end %>
+            <hr class="devider devider-dotted" style="margin:10px">
 
-                  <% concept_name = '' %>
-                  <% previous_unit_concept_desc_memo = '' %>
-                  <% unit_concept_desc_id = '' %>
-                  <% unit_concept_desc_ox = '' %>
-                  <% oxCount = 0 %>
+            <% unless @evaluations.blank? %>
+            <% pre_id  = 0 %>
+            <% check = 0 %>
+            <% @evaluations.each do |evaluation| %>
+                <% if pre_id != 0 && pre_id != evaluation.id %>
+                    <% check = 0 %>
+                    <hr class="devider devider-dotted" style="margin:10px">
+                    <% if evaluation.created_at.nil? %>
+                        <div class="profile-edit tab-pane fade in active">
+                          <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= evaluation.name %></h3>
+                        </div>
+                        <% pre_id = evaluation.id %>
+                    <% end %>
+                <% end %>
+                <% unless evaluation.what != 'evaluation' %>
+                    <% pre_id = evaluation.id %>
+                    <div class="profile-edit tab-pane fade in active">
+                      <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= evaluation.name %></h3>
+                      <div class="profile-event">
+                        <div class="date-formats">
+                          <span><%= evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
+                          <small><%= evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%Y, %m') %></small>
+                        </div>
+                        <div class="overflow-h">
+                          <h3 class="heading-xs"><span style="color: darkblue">자기평가</span></h3>
+                          <p><span style="color: #000;">● 느낀 수준 :</span> <span style="color: <%= 'green' unless evaluation.evaluation != 'easy' %><%= 'orange' unless evaluation.evaluation != 'normal' %><%= 'darkred' unless evaluation.evaluation != 'difficult' %>"><%= evaluation.evaluation %></span> <br/>
+                            <span style="color:#000;">● comment :</span> <span style="color: #545454 "><%= evaluation.comment %></span></p>
+                        </div>
+                      </div>
+                    </div>
+                <% else %>
+                    <% weather = '' %>
+                    <% if evaluation.history.to_s.length < 5 %>
+                        <% o_num = evaluation.history.to_s.count('O') %>
+                        <% x_num = evaluation.history.to_s.count('X') %>
+                    <% else %>
+                        <% o_num = evaluation.history.to_s.slice(-5, 5).count('O') %>
+                        <% x_num = evaluation.history.to_s.slice(-5, 5).count('X') %>
+                    <% end %>
 
-                  <% @unit_concept_exercise_histories.each do |unit_concept_exercise_history| %>
+                    <% ox_sum = o_num + x_num %>
 
-                      <% unit_concept_exercise_histories_count -= 1 %>
-                      
-                      <% unless unit_concept_exercise_history.unit_concept_desc.nil? %>
+                    <% if ox_sum == o_num
+                         weather = 'sun'
+                       elsif ox_sum - 1 == o_num
+                         weather = 'cloud'
+                       elsif ox_sum - 2 == o_num
+                         weather = 'rain'
+                       end %>
+                    <% if o_num == 0
+                         weather = 'thunder' end %>
 
-                      <% if concept_name != unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
-                          <% oxCount = 0 %>
-                          <% if concept_name != '' %>
-                              <% memoStr = 'exercise '%>
-                              <tr>
-                                <td colspan="4"></td>
-                                <td colspan="4"><%= memoStr + previous_unit_concept_desc_memo.slice(-2, 2) %></td>
-                                <td colspan="4"><%= unit_concept_desc_ox %></td>
-                                <td colspan="4"></td>
-                              </tr>
-                          <% end %>
-                          <tr>
-                            <td colspan="16"></td>
-                          </tr>
-                          <tr style="background-color: #9cbdff; font-style: italic; font-family: bold; font-size: 15px;">
-                            <td colspan="4"><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.name %></td>
-                            <td colspan="4"><%= unit_concept_exercise_history.unit_concept_desc.unit_concept.level %> Lv</td>
-                            <td colspan="2"></td>
-                            <td colspan="8"><%= unit_concept_exercise_history.user.study_level %> Lv</td>
-                          </tr>
+                    <% if check == 0 %>
+                        <div class="funny-boxes bg-color-white">
+                          <div class="col-md-12 text-center">
+                            <h5 class="margin-bottom-20"><span style="color: darkblue;">- Exercise 평가 -</span></h5>
+                          </div>
+                          <div class="row no-margin margin-bottom-20 text-center">
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin">개념 이름</h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin">맞음/틀림</h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin">상태</h6>
+                            </div>
+                          </div>
+                          <hr class="no-margin margin-bottom-20">
+                          <div class="row no-margin text-center">
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin"><%= evaluation.history %></h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
 
-                          <tr style="background-color: #bed5ff" class="text-center">
-                            <td colspan="16" style="font-size: 15px; font-style: italic;">- 자기평가 -</td>
-                          </tr>
-                          <tr>
-                            <% evaluation_my_check = '' %>
-                            <% learning_day = '' %>
-                            <% evaluation_my_comment = '' %>
-                            <% unit_concept_exercise_history.unit_concept_desc.unit_concept.unit_concept_self_evaluations.each do |evaluation| %>
-                                <% evaluation_my_check = evaluation.evaluation %>
-                                <% learning_day = evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M:%S') %>
-                                <% evaluation_my_comment = evaluation.comment %>
-                            <% end %>
-                            <td colspan="8">느낀 수준 : <%= evaluation_my_check %></td>
-                            <td colspan="8">최근 학습일: <%= learning_day %></td>
-                          </tr>
-                          <tr>
-                            <td colspan="4">Comment:</td>
-                            <td colspan="4"></td>
-                            <td colspan="8"></td>
-                          </tr>
-                          <tr>
-                            <td colspan="16"><%= evaluation_my_comment %></td>
-                          </tr>
+                              <h4 class="no-margin">
+                                <% if weather == 'sun' %>
+                                    <span style="color:red;" aria-hidden="true" class="icon-weather-023"></span>
+                                <% elsif weather == 'cloud' %>
+                                    <span style="color: grey;" aria-hidden="true" class="icon-weather-003"></span>
+                                <% elsif weather == 'rain' %>
+                                    <span style="color: deepskyblue" aria-hidden="true" class="icon-weather-007"></span>
+                                <% elsif weather == 'thunder' %>
+                                    <span style="color: orange" aria-hidden="true" class="icon-weather-006"></span>
+                                <% end %>
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                        <% check = 1 %>
+                    <% else %>
+                        <div class="funny-boxes bg-color-white">
+                          <div class="row no-margin text-center">
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+                              <h6 class="no-margin"><%= evaluation.history %></h6>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
 
-                          <tr style="background-color: #f1eaff" class="text-center">
-                            <td colspan="16" style="font-size: 15px; font-style: italic;">- Exercise 평가 -</td>
-                          </tr>
-
-                          <tr>
-                            <td colspan="4"></td>
-                            <td colspan="4">문제 번호</td>
-                            <td colspan="4">맞음/틀림 확인</td>
-                            <td colspan="4"></td>
-                          </tr>
-
-                          <% unit_concept_desc_id = unit_concept_exercise_history.unit_concept_desc_id %>
-                          <% unit_concept_desc_ox = unit_concept_exercise_history.ox %>
-                          <% oxCount += 1 %>
-                          <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
-
-                      <% else %>
-                          <!-- o, x string 으로 표시-->
-                          <% if unit_concept_desc_id == unit_concept_exercise_history.unit_concept_desc_id %>
-                            <% if oxCount < 3 %>
-                              <% unit_concept_desc_ox += unit_concept_exercise_history.ox %>
-                            <% end %>
-                              <% oxCount += 1 %>
-                              <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
-                          <% else %>
-                              <% memoStr = 'exercise '%>
-                              <tr>
-                                <td colspan="4"></td>
-                                <td colspan="4"><%= memoStr + previous_unit_concept_desc_memo.to_s.slice(-2, 2) %></td>
-                                <td colspan="4"><%= unit_concept_desc_ox %></td>
-                                <td colspan="4"></td>
-                              </tr>
-                              <% unit_concept_desc_ox = unit_concept_exercise_history.ox %>
-                              <% previous_unit_concept_desc_memo = unit_concept_exercise_history.unit_concept_desc.memo %>
-                              <% oxCount = 1 %>
-                          <% end %>
-                      <% end %>
-
-                      <% concept_name = unit_concept_exercise_history.unit_concept_desc.unit_concept.name %>
-
-                      <% unit_concept_desc_id = unit_concept_exercise_history.unit_concept_desc_id %>
-
-                      <% if unit_concept_exercise_histories_count == 0 %>
-                          <% memoStr = 'exercise '%>
-                          <tr>
-                            <td colspan="4"></td>
-                            <td colspan="4"><%= memoStr + unit_concept_exercise_history.unit_concept_desc.memo.to_s.slice(-2, 2) %></td>
-                            <td colspan="4"><%= unit_concept_desc_ox %></td>
-                            <td colspan="4"></td>
-                          </tr>
-                      <% end %>
-                      
-                      <% end %>
-                      
-                  <% end %>
-
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- 테스트 작업 테이블 끝 -->
-        <% end %>
-
+                              <h4 class="no-margin">
+                                <% if weather == 'sun' %>
+                                    <span style="color:red;" aria-hidden="true" class="icon-weather-023"></span>
+                                <% elsif weather == 'cloud' %>
+                                    <span style="color: grey;" aria-hidden="true" class="icon-weather-003"></span>
+                                <% elsif weather == 'rain' %>
+                                    <span style="color: deepskyblue" aria-hidden="true" class="icon-weather-007"></span>
+                                <% elsif weather == 'thunder' %>
+                                    <span style="color: orange" aria-hidden="true" class="icon-weather-006"></span>
+                                <% end %>
+                              </h4>
+                            </div>
+                          </div>
+                        </div>
+                    <% end %>
+                <% end %>
+            <% end %>
+            <% else %>
+                <div class="profile-edit tab-pane fade in active">
+                  <h3 class="heading-md"><i aria-hidden="true" class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-education-119"></i> Exercise 평가 &amp; 자기평가</h3>
+                  <div class="heading heading-v4">
+                    <h2>아직 평가하지 않았습니다.</h2>
+                  </div>
+                </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-    <!-- End Profile Content -->
-
-
   </div>
+  <!-- End Profile Content -->
+</div>
 </div><!--/container-->
