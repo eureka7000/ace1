@@ -244,6 +244,7 @@ class UsersController < ApplicationController
         email = params[:email]
         user_type = params[:user_type]
         school = params[:school]
+        user_name = params[:user_name]
         page = params[:page].blank? ? 1 : params[:page]
         
         str = "";
@@ -266,7 +267,16 @@ class UsersController < ApplicationController
             else
                 str += " and schools.name like '#{school}%' "
             end        
-        end    
+        end
+        
+        unless user_name.blank?
+            if str == ""
+                str += " users.user_name like '#{user_name}%' "
+            else
+                str += " and users.user_name like '#{user_name}%' "
+            end        
+        end        
+            
             
         @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
             .joins("left outer join user_types on user_types.user_id = users.id")
