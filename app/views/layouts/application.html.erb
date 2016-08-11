@@ -71,7 +71,7 @@
             <div class="col-md-12 topbar">
                 <ul class="loginbar pull-right">
                     <% unless current_user.nil? %>
-                <li>안녕하세요. <%= current_user.user_name %>님 </li>
+                <li>안녕하세요. <%= current_user.user_name.nil? ? "회원" : current_user.user_name %>님 </li>
                 <li>
                     <% if current_user.can_I_use? %>
                     <span class="label rounded-2x label-green" style="margin-left: 5px">member</span>
