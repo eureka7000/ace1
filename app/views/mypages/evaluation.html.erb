@@ -14,24 +14,30 @@
 
           <div class="tab-content">
 
-            <hr class="devider devider-dotted" style="margin:10px">
+
 
             <% unless @evaluations.blank? %>
-            <% pre_id  = 0 %>
-            <% check = 0 %>
+            <% pre_id  = 0 %> <!-- 현재의 evaluation의 id와 이전의 실행한 evaluation의 id를 비교하는 변수 -->
+            <% check = 0 %> <!-- exercise 평가테이블의 중복을 피하기 위한 변수 -->
             <% @evaluations.each do |evaluation| %>
-                <% if pre_id != 0 && pre_id != evaluation.id %>
+                <% if pre_id != evaluation.id %>
                     <% check = 0 %>
                     <hr class="devider devider-dotted" style="margin:10px">
                     <% if evaluation.created_at.nil? %>
+                        <!-- unit_concept name -->
+                            <% unit_concept_name = evaluation.name %>
+                            <% if unit_concept_name.to_s.include?('유형문제') %>
+                              <% unit_concept_name =  evaluation.concept.concept_name + ' / ' + evaluation.name %>
+                            <% end %>
                         <div class="profile-edit tab-pane fade in active">
-                          <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= evaluation.name %></h3>
+                          <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= unit_concept_name %></h3>
                         </div>
                         <% pre_id = evaluation.id %>
                     <% end %>
                 <% end %>
                 <% unless evaluation.what != 'evaluation' %>
                     <% pre_id = evaluation.id %>
+                    <!-- self evaluation -->
                     <div class="profile-edit tab-pane fade in active">
                       <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= evaluation.name %></h3>
                       <div class="profile-event">
@@ -47,26 +53,41 @@
                       </div>
                     </div>
                 <% else %>
-                    <% weather = '' %>
+
                     <% if evaluation.history.to_s.length < 5 %>
                         <% o_num = evaluation.history.to_s.count('O') %>
                         <% x_num = evaluation.history.to_s.count('X') %>
+                        <% ox_history = evaluation.history %>
                     <% else %>
                         <% o_num = evaluation.history.to_s.slice(-5, 5).count('O') %>
                         <% x_num = evaluation.history.to_s.slice(-5, 5).count('X') %>
+                        <% ox_history = evaluation.history.to_s.slice(-5, 5) %>
                     <% end %>
 
                     <% ox_sum = o_num + x_num %>
 
                     <% if ox_sum == o_num
-                         weather = 'sun'
+                         #weather = 'sun'
+                         weather_color = 'red'
+                         weather_icon_number = '023'
+                         weather_tooltips_msg = 'Excellent!'
                        elsif ox_sum - 1 == o_num
-                         weather = 'cloud'
+                         #weather = 'cloud'
+                         weather_color = 'grey'
+                         weather_icon_number = '003'
+                         weather_tooltips_msg = 'Good!'
                        elsif ox_sum - 2 == o_num
-                         weather = 'rain'
+                         #weather = 'rain'
+                         weather_color = 'deepskyblue'
+                         weather_icon_number = '007'
+                         weather_tooltips_msg = 'Cheer up!'
                        end %>
                     <% if o_num == 0
-                         weather = 'thunder' end %>
+                         #weather = 'thunder'
+                         weather_color = 'orange'
+                         weather_icon_number = '006'
+                         weather_tooltips_msg = 'Cheer up!'
+                       end %>
 
                     <% if check == 0 %>
                         <div class="funny-boxes bg-color-white">
@@ -90,20 +111,11 @@
                               <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin"><%= evaluation.history %></h6>
+                              <h6 class="no-margin"><%= ox_history %></h6>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-
                               <h4 class="no-margin">
-                                <% if weather == 'sun' %>
-                                    <span style="color:red;" aria-hidden="true" class="icon-weather-023"></span>
-                                <% elsif weather == 'cloud' %>
-                                    <span style="color: grey;" aria-hidden="true" class="icon-weather-003"></span>
-                                <% elsif weather == 'rain' %>
-                                    <span style="color: deepskyblue" aria-hidden="true" class="icon-weather-007"></span>
-                                <% elsif weather == 'thunder' %>
-                                    <span style="color: orange" aria-hidden="true" class="icon-weather-006"></span>
-                                <% end %>
+                                <span style="color:<%= weather_color %>;" aria-hidden="true" class="icon-weather-<%= weather_icon_number %> tooltips" data-toggle="tooltips" data-placement="top" data-original-title="<%= weather_tooltips_msg %>"></span>
                               </h4>
                             </div>
                           </div>
@@ -116,20 +128,11 @@
                               <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin"><%= evaluation.history %></h6>
+                              <h6 class="no-margin"><%= ox_history %></h6>
                             </div>
                             <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-
                               <h4 class="no-margin">
-                                <% if weather == 'sun' %>
-                                    <span style="color:red;" aria-hidden="true" class="icon-weather-023"></span>
-                                <% elsif weather == 'cloud' %>
-                                    <span style="color: grey;" aria-hidden="true" class="icon-weather-003"></span>
-                                <% elsif weather == 'rain' %>
-                                    <span style="color: deepskyblue" aria-hidden="true" class="icon-weather-007"></span>
-                                <% elsif weather == 'thunder' %>
-                                    <span style="color: orange" aria-hidden="true" class="icon-weather-006"></span>
-                                <% end %>
+                                <span style="color:<%= weather_color %>;" aria-hidden="true" class="icon-weather-<%= weather_icon_number %> tooltips" data-toggle="tooltips" data-placement="top" data-original-title="<%= weather_tooltips_msg %>"></span>
                               </h4>
                             </div>
                           </div>
