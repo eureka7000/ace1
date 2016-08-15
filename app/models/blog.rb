@@ -1,6 +1,8 @@
 class Blog < ActiveRecord::Base
     
     belongs_to :user
+
+    mount_uploader :file_name, ImageUploader
     
     validates_presence_of :blog_type, :title, :content, :user_id
 

@@ -1,112 +1,80 @@
+<hr>
+<h3 class="margin-bottom-20"><span style="color: #00a2ed;"><i class="fa fa-pencil"></i></span> 블로그 등록하기</h3>
+
 <%= form_for(@blog) do |f| %>
-    <% if @blog.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
-          <ul>
-            <% @blog.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
+    <div class="tab-content">
+    <div class="profile-edit">
+      <dl class="dl-horizontal">
+        <% if @blog.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
+              <ul>
+                <% @blog.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+        <% end %>
 
-    <input type="hidden" name="blog[content]" id="blog_content">
-    <input type="hidden" name="blog[user_id]" value="<%= session[:admin].nil? ? current_user.id : session[:admin]['id'] %>">
-    <input type="hidden" name="blog[admin_yn]" value="<%= session[:admin].nil? ? 'N' : 'Y' %>">
+        <input type="hidden" name="blog[content]" id="blog_content">
+        <input type="hidden" name="blog[user_id]" value="<%= session[:admin].nil? ? current_user.id : session[:admin]['id'] %>">
+        <input type="hidden" name="blog[admin_yn]" value="<%= session[:admin].nil? ? 'N' : 'Y' %>">
 
-    <!-- Form Controls -->
-    <div class="tag-box tag-box-v3 form-page boMot">
+        <!--Inputs-->
+        <% unless @admin.blank? %>
+            <dt class="margin-top-20"><strong>블로그 타입 선택</strong></dt>
+        <% end %>
 
-      <!--Inputs-->
-      <% unless @admin.blank? %>
-          <h4>- 블로그 타입 선택 -</h4>
-      <% end %>
-
-      <% unless session[:admin].nil? %>
-          <label class="select">
-            <select class="form-control" id="blog_type" name="blog[blog_type]">
-              <option value="">--블로그 선택하기--</option>
-              <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-                  <option value="<%= key %>" <%= "selected" if key == @blog.blog_type %> ><%= value %></option>
-              <% end %>
-            </select>
-          </label>
-      <% end %>
-
-      <% if session[:admin].nil? %>
-          <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-              <% if @blog_type == key %>
-                  <input hidden name="blog[blog_type]" value="<%= key %>">
-                  <h4>- <%= value %> -</h4>
-              <% end %>
-          <% end %>
-      <% end %>
-
-      <h4>- 제 목 -</h4>
-      <input type="text" class="form-control" id="blog_title" name="blog[title]" placeholder="" value="<%= @blog.title %>">
-      <!--End Inputs-->
-
-      <!--내용입력-->
-      <h4>- 내 용 -</h4>
-      <div id="blog_post" style="font-size: 10px;"><%= raw @blog.content %></div>
-
-      <div class="col-md-2">
-        <button type="submit" class="btn btn-success">저장</button>
         <% unless session[:admin].nil? %>
-            <button class="btn btn-info"><a href="/blogs" style="color: white;">뒤로</a></button>
-        <% else %>
-            <% Blog::BLOG_NAMES.each_pair do |key, value| %>
-                <% unless key != params[:blog_type] %>
-                    <a class="btn btn-info" href="/blogs/<%= value %>" style="color: white;">뒤로</a>
+            <dd>
+            <label class="select">
+              <select class="form-control margin-top-20" id="blog_type" name="blog[blog_type]">
+                <option value="">&nbsp; 선택하기</option>
+                <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
+                    <option value="<%= key %>" <%= "selected" if key == @blog.blog_type %> ><%= value %></option>
+                <% end %>
+              </select>
+            </label>
+            </dd>
+        <% end %>
+
+        <% if session[:admin].nil? %>
+            <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
+                <% if @blog_type == key %>
+                    <input hidden name="blog[blog_type]" value="<%= key %>">
+                    <h4>- <%= value %> -</h4>
                 <% end %>
             <% end %>
         <% end %>
 
-      </div>
+        <dt class="margin-top-20"><strong>제 목</strong></dt>
+        <dd class="margin-top-20">
+          <input type="text" class="form-control" id="blog_title" name="blog[title]" placeholder="" value="<%= @blog.title %>">
+        </dd>
+        <!--End Inputs-->
 
-      <div class="margin-bottom-20"></div>
+        <!--내용입력-->
+        <dt class="margin-top-20"><strong>내 용</strong></dt>
 
+        <dd class="margin-top-20">
+          <textarea class="form-control" name="blog[content]" rows="10"><%= raw @blog.content %></textarea>
+        </dd>
+
+        <dt class="margin-top-20"><strong>파일첨부</strong></dt>
+        <dd class="margin-top-20">
+          <%= f.file_field :file_name, size: 20, maxlength: 25, readonly:true, :class => 'form-control' %>
+        </dd>
+
+        <div class="col-md-12 text-right margin-top-20">
+          <% unless session[:admin].nil? %>
+              <a href="/blogs" class="btn-u rounded btn-u-yellow">뒤로</a>
+          <% end %>
+          <% unless current_user.blank? %>
+              <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
+          <% end %>
+          <button type="submit" class="btn-u rounded btn-u-dark-blue">저장</button>
+        </div>
+      </dl>
     </div>
-    <!-- End Form Controls  -->
+    </div>
 <% end %>
-
-
-<script type="text/javascript">
-
-  function initpage() {
-
-    $('#blog_post').summernote({
-      height : 180,
-      lang: 'ko-KR',
-      focus : true,
-      tabsize : 2
-    });
-
-    $('#<%= action_name %>_blog<%= "_#{@blog.id}" if action_name == "edit" %>').submit(function() {
-
-      <% unless @admin.blank? %>
-      if ($('#blog_type').val() == "") {
-        alert('Blog Type를 선택하세요.');
-        $('#blog_type').focus();
-        return false;
-      }
-      <% end %>
-
-      if ($('#blog_title').val() == "") {
-        alert('Title을 입력하세요.');
-        $('#blog_title').focus();
-        return false;
-      }
-
-      if ($('#blog_post').summernote('isEmpty')) {
-        alert('내용을 입력하세요.');
-        $('#blog_post').focus();
-        return false;
-      }
-
-      $('#blog_content').val($('#blog_post').summernote('code'));
-    });
-
-  }
-
-</script>

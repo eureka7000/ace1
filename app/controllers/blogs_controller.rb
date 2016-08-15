@@ -104,45 +104,45 @@ class BlogsController < ApplicationController
 
   def learning_problem_solution
       @blog_type = '1'
-      @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
+      @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
      # @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
-      @latest_news = Blog.order(id: :desc).first(4)
+      @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def succession_case
       @blog_type = '2'
-      @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-      @latest_news = Blog.order(id: :desc).first(4)
+      @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+      @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def math_story
     @blog_type = '3'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-    @latest_news = Blog.order(id: :desc).first(4)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+    @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def faq
     @blog_type = '4'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-    @latest_news = Blog.order(id: :desc).first(4)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+    @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def notice
     @blog_type = '5'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-    @latest_news = Blog.order(id: :desc).first(4)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+    @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def the_news
     @blog_type = '6'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-    @latest_news = Blog.order(id: :desc).first(4)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+    @latest_news = Blog.order(id: :desc).first(5)
   end
 
   def company_introduction
     @blog_type = '7'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
-    @latest_news = Blog.order(id: :desc).first(4)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(id: :desc)
+    @latest_news = Blog.order(id: :desc).first(5)
   end
 
   private
@@ -153,6 +153,6 @@ class BlogsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def blog_params
-      params.require(:blog).permit(:blog_type, :title, :content, :user_id, :admin_yn)
+      params.require(:blog).permit(:blog_type, :title, :content, :user_id, :admin_yn, :file_name)
     end
 end
