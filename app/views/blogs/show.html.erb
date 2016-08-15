@@ -38,8 +38,7 @@
           <div class="col-md-12 text-right margin-top-20">
             <% unless session[:admin].nil? %>
                 <a href="/blogs" class="btn-u rounded btn-u-yellow">확인</a>
-            <% end %>
-            <% unless current_user.blank? %>
+            <% else %>
                <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
             <% end %>
           </div>
