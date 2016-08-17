@@ -287,10 +287,15 @@ class ContentsController < ApplicationController
                 end
                 
                 unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
-                    @items << {
-                        key: '',
-                        value: '종합문제'
-                    }
+                    
+                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                    
+                    if @concept_exercises.count > 0
+                        @items << {
+                            key: '',
+                            value: '종합문제'
+                        }
+                    end    
                 end    
                 
             elsif @step == 6
