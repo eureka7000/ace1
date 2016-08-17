@@ -375,7 +375,9 @@
                   </span>
               <% end %>
             </p>
-            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+                <a href="javascript:speedup()">2x</a> 
+            </h3>
 
             <div style="overflow-y: auto; ">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -802,10 +804,15 @@
 </script>
 
 <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
+
 <script type="text/javascript">
-  function videoPause(){
+
     var iframe = $('#vimeo-player')[0];
     var player = $f(iframe);
-    player.api('pause');
-  }
+
+    function videoPause(){
+        player.api('pause');
+    }
+    
 </script>
+    

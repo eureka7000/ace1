@@ -4,6 +4,8 @@ class Concept < ActiveRecord::Base
     has_many :concept_exercises
     has_many :grade_unit_concepts
     
+    validates_presence_of :category, :sub_category, :concept_name, :exercise_yn
+    
     CATEGORIES = {
         "c000" => "총괄",
         "c100" => "집합과 명제",
