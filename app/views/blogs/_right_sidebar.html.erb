@@ -1,26 +1,18 @@
 <!-- Right Sidebar -->
-<div class="col-md-3" style="border:1px solid #fff">
+<div class="col-md-3 margin-top-20">
 
-  <!-- Social Icons -->
-  <div class="shadow-wrapper">
-    <div class=" margin-bottom-30 tag-box tag-box-v1 box-shadow shadow-effect-2">
-      <div class="headline headline-md"><h2>최근소식</h2></div>
-      <ul class="list-unstyled blog-trending margin-bottom-50">
-        <% @latest_news.each do |news|%>
-          <li>
-            <h3>- <%= Blog::BLOG_TYPES[news.blog_type] %> -</h3>
-            <p><a href="/blogs/<%= news.id %>"><%= news.title  %></a></p>
-            <p><%= news.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></p>
-          </li>
-        <% end %>
-      </ul>
-      <div class="clearfix"></div>
-    </div>
-  </div>
-  <!-- End Social Icons -->
-
+  <div class="headline-v2 bg-color-light"><h2>최근 소식</h2></div>
+  <!-- Trending -->
+  <ul class="list-unstyled blog-trending margin-bottom-50">
+    <% @latest_news.each do |news|%>
+        <li>
+          <h5><span style="color: darkgreen"><i class="fa fa-bullhorn"></i></span><a href="/blogs/<%= news.id %>"><%= news.title  %></a></h5>
+          <small><%= news.created_at.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %> / <a href="/blogs/<%= Blog::BLOG_NAMES[news.blog_type] %>"><%= Blog::BLOG_TYPES[news.blog_type] %></a></small>
+        </li>
+    <% end %>
+  </ul>
+  <!-- End Trending -->
 </div>
+
+<div class="col-md-3"></div>
 <!-- End Right Sidebar -->
-
-</div>
-</div>

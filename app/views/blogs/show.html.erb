@@ -1,63 +1,51 @@
-<div class="container-fluid" style="margin-top: 50px">
-    
-    <div class="row">
-        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-bullhorn" aria-hidden="true"></span> <%= Blog::BLOG_TYPES[@blog.blog_type] %> </h2>
-        </div>
+<div class="wrapper">
+  <div class="col-md-2"></div>
+  <div class="col-md-8 col-xs-12 tag-box box-shadow shadow-effect-1 margin-top-20">
+
+    <div class="tab-content">
+      <div class="profile-edit">
+        <dl class="dl-horizontal">
+          <% if @blog.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
+                <ul>
+                  <% @blog.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+          <% end %>
+
+          <h2 class="heading-md margin-bottom-40"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= Blog::BLOG_TYPES[@blog.blog_type] %></h2>
+
+          <dt><p>작성자</p></dt>
+          <dd><p><%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></p></dd>
+          <br>
+
+          <dt><strong>제 목</strong></dt>
+          <dd><%= @blog.title %></dd>
+          <br>
+
+          <dt><strong>내 용</strong></dt>
+          <dd><%= raw @blog.content %></dd>
+          <br>
+
+          <% unless @blog.file_name.blank? %>
+              <dt>사진</dt>
+              <dd><img src="<%= @blog.file_name %>" style="width: 80%;" class="img-responsive"></dd>
+          <% end %>
+
+          <div class="col-md-12 text-right margin-top-20">
+            <% unless session[:admin].nil? %>
+                <a href="/blogs" class="btn-u rounded btn-u-yellow">확인</a>
+            <% else %>
+               <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
+            <% end %>
+          </div>
+        </dl>
+      </div>
     </div>
 
-    <div class="row">
-
-        <div class="col-md-12">
-
-            <div class="well">
-
-                <div class="row">
-
-                    <div class="col-md-12">
-
-                        <table class="table table-bordered table-striped" style="clear: both">
-                        <tr>
-                        <td style="width:15%;"><b>제목</b></td>
-                        <td style="width:85%"><%= @blog.title %></td>
-                        </tr>
-
-                        <tr>
-                        <td style="width:15%;"><b>작성자</b></td>
-                        <td style="width:85%"><%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></td>
-                        </tr>
-
-                        <tr>
-                        <td style="width:15%;"><b>내용</b></td>
-                        <td style="width:85%;"><%= raw @blog.content %></td>
-                        </tr>
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <footer>
-                    <% unless current_user.nil? %>
-                      <% unless @blog.user_id != current_user.id %>
-                          <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
-                      <% end %>
-                    <% end %>
-                    <% unless session[:admin].nil? %>
-                      <%= link_to 'Edit', edit_blog_path(@blog), :class => 'btn btn-primary' %>
-                      <%= link_to 'Back', blogs_path, :class => 'btn btn-default' %>
-                    <% else %>
-                      <% Blog::BLOG_NAMES.each_pair do |key, value| %>
-                          <% unless key != @blog.blog_type.to_s; %>
-                              <a class="btn btn-info" href="/blogs/<%= value %>" style="color: white;">뒤로</a>
-                          <% end %>
-                      <% end %>
-                    <% end %>
-
-                </footer>
-
-            </div>
-        </div>
-    </div>
-    
+  </div>
+  <div class="col-md-2"></div>
 </div>
