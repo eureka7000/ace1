@@ -1,0 +1,57 @@
+<div class="container profile">
+
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <div class="col-md-9 margin-top-20">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">학습진도</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <% unless notice.blank? %>
+                                <p class="alert alert-warning"><%= notice %></p>
+                            <% end %>
+                            
+                            <% unless alert.blank? %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
+                            
+                            <div class="heading heading-v4">
+                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                            </div>
+                            
+                        </div>    
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>                
+
+<script type="text/javascript">
+
+function initpage() {}
+    
+</script>

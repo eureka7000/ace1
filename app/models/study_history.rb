@@ -1,5 +1,8 @@
 class StudyHistory < ActiveRecord::Base
     
+    belongs_to :user
+    belongs_to :unit_concept
+    
     SEGMENTS = {
         "concept" => "개념",
         "concept explanation" => "개념설명",

@@ -659,14 +659,17 @@
 
   $(document).ready(function(){
       
+      concept_index = 2;
+      concept_explanation_index = 2;
+      exercise_index = 2;
+      
       $("#btn1").click(function(){
           
-          var index = 2;          
-
-          $("#ucd1"+index).show();
-          index++;
+          $("#ucd1"+concept_index).show();
+          concept_index++;
 
           var count = Number($("#badge1").text());
+          
           if (count == -1) {
               count = 0;
           }
@@ -681,10 +684,9 @@
       });
       
       $("#btn2").click(function(){
-          var index = 2;          
           
-          $("#ucd2"+index).show();
-          index++;
+          $("#ucd2"+concept_explanation_index).show();
+          concept_explanation_index++;
 
           var count = Number($("#badge2").text());
           if (count > 0 ){
@@ -699,10 +701,8 @@
           
       $("#btn3").click(function(){
           
-          var index = 2;
-          
-          $("#exercise1"+index).show();
-          index++;
+          $("#exercise1"+exercise_index).show();
+          exercise_index++;
 
           var count = Number($("#badge3").text());
           if (count == -1) {

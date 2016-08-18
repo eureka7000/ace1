@@ -1,33 +1,40 @@
-<p id="notice"><%= notice %></p>
+<div class="container-fluid">
 
-<h1>Listing Study Histories</h1>
+    <div class="row">
 
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Unit concept</th>
-      <th>Segment</th>
-      <th>Status</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        <div class="col-sm-12 col-md-12 main">
 
-  <tbody>
-    <% @study_histories.each do |study_history| %>
-      <tr>
-        <td><%= study_history.user_id %></td>
-        <td><%= study_history.unit_concept_id %></td>
-        <td><%= study_history.segment %></td>
-        <td><%= study_history.status %></td>
-        <td><%= link_to 'Show', study_history %></td>
-        <td><%= link_to 'Edit', edit_study_history_path(study_history) %></td>
-        <td><%= link_to 'Destroy', study_history, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+            <h2 class="sub-header"><span class="fa fa-header" aria-hidden="true" style="top: 5px"></span> Listing Study Histories</h2>
 
-<br>
+            <div class="table-responsive">
 
-<%= link_to 'New Study history', new_study_history_path %>
+                <table class="table table-striped">
+                <thead>
+                <tr>
+                <th>User</th>    
+                <th>Unit concept</th>
+                <th>Segment</th>
+                <th>Status</th>
+                <th>Study Count</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% @study_histories.each do |study_history| %>
+                <tr>
+                <td><%= study_history.user.user_name %></td>
+                <td><%= study_history.unit_concept.name %></td>
+                <td><%= study_history.segment %></td>
+                <td><%= study_history.status %></td>
+                <td><%= study_history.study_count %></td>
+                </tr>
+                <% end %>
+                </tbody>
+                </table>
+                
+                <%= will_paginate @study_histories, renderer: BootstrapPagination::Rails %>
+
+            </div>
+        </div>
+    </div>                    
+</div>

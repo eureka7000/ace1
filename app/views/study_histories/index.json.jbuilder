@@ -1,1 +1,0 @@
-json.array! @study_histories, partial: 'study_histories/study_history', as: :study_history

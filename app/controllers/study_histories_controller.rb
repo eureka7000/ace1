@@ -1,6 +1,7 @@
 class StudyHistoriesController < ApplicationController
     
-    before_filter :authenticate_user!
+    before_filter :authenticate_user!, only: [:create]
+    before_action :authenticate_admin_user!, only: [:index]
     before_action :set_study_history, only: [:show, :edit, :update, :destroy]
     
     def create
@@ -17,59 +18,10 @@ class StudyHistoriesController < ApplicationController
 
     end
     
-
-  # GET /study_histories
-  # GET /study_histories.json
-  def index
-    @study_histories = StudyHistory.all
-  end
-
-  # GET /study_histories/1
-  # GET /study_histories/1.json
-  def show
-  end
-
-  # GET /study_histories/new
-  def new
-    @study_history = StudyHistory.new
-  end
-
-  # GET /study_histories/1/edit
-  def edit
-  end
-
-  # PATCH/PUT /study_histories/1
-  # PATCH/PUT /study_histories/1.json
-  def update
-    respond_to do |format|
-      if @study_history.update(study_history_params)
-        format.html { redirect_to @study_history, notice: 'Study history was successfully updated.' }
-        format.json { render :show, status: :ok, location: @study_history }
-      else
-        format.html { render :edit }
-        format.json { render json: @study_history.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /study_histories/1
-  # DELETE /study_histories/1.json
-  def destroy
-    @study_history.destroy
-    respond_to do |format|
-      format.html { redirect_to study_histories_url, notice: 'Study history was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_study_history
-      @study_history = StudyHistory.find(params[:id])
+    def index
+        page = params[:page].blank? ? 1 : params[:page]
+        @study_histories = StudyHistory.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        render :layout => 'layouts/admin_main'
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def study_history_params
-      params.require(:study_history).permit(:user_id, :unit_concept_id, :segment, :status)
-    end
 end
