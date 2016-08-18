@@ -4,7 +4,17 @@ class StudyHistoriesController < ApplicationController
     before_action :set_study_history, only: [:show, :edit, :update, :destroy]
     
     def create
-        StudyHistory.update_study_history(params)
+        
+        ret = {} 
+        
+        if StudyHistory.update_study_history(params[:study_history])
+            ret = { status: 'ok' }            
+        else 
+            ret = { status: 'fail' }
+        end    
+        
+        render json: ret            
+
     end
     
 

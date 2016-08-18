@@ -659,9 +659,9 @@
 
   $(document).ready(function(){
       
-      var index = 2;
-
       $("#btn1").click(function(){
+          
+          var index = 2;          
 
           $("#ucd1"+index).show();
           index++;
@@ -676,86 +676,102 @@
           if (count == 1) {
               $("#btn1").hide();
               $("#badge1").hide();
+              update_study_history('concept', 'finish');
           }
       });
+      
+      $("#btn2").click(function(){
+          var index = 2;          
+          
+          $("#ucd2"+index).show();
+          index++;
+
+          var count = Number($("#badge2").text());
+          if (count > 0 ){
+              $("#badge2").text(count-1);
+          }
+          if (count == 1){
+              $("#btn2").hide();
+              $("#badge2").hide();
+              update_study_history('concept explanation', 'finish');
+          }
+      });
+          
+      $("#btn3").click(function(){
+          
+          var index = 2;
+          
+          $("#exercise1"+index).show();
+          index++;
+
+          var count = Number($("#badge3").text());
+          if (count == -1) {
+              count = 0;
+          }
+          if (count > 0){
+              $("#badge3").text(count-1);
+          }
+          if (count == 1){
+              $("#btn3").hide();
+              $("#badge3").hide();
+              update_study_history('exercise', 'finish');
+          }
+          
+      });
+      
+      $('#new_unit_concept_self_evaluation').submit(function () {
+          
+          $('#loading').show();
+          
+          if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
+              alert('난이도를 선택하세요.');
+              $('#loading').hide();
+              return false;
+          } else if ( $('#evaluation_comment').val() == ''){
+              alert('comment를 입력하세요.');
+              $('#loading').hide();
+              return false;
+          }
+          
+      });
+      
     
       $('.study_segment').click(function() {
-          
-          $('#loading').show();          
-          
-          var url = "/study_histories/";
-
-          var data = {
-              "study_history" : {
-                  "user_id" : <%= current_user.id %>,
-                  "unit_concept_id" : <%= @unit_concept.id %>,
-                  "segment" : $(this).attr("id"),
-                  "status" : "start"
-              }
-          }
-
-          $.ajax({
-            url: url,
-            type: "POST",
-            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-            datatype: "json",
-            data:data,
-            success : function(data) {
-              $('#loading').hide();
-            },
-            error : function(){
-              $('#loading').hide();
-            }
-          });          
-
+          update_study_history($(this).attr("id"), "start");
       })
     
   });
+  
+  function update_study_history(segment, status) {
+      
+      $('#loading').show();          
+      
+      var url = "/study_histories/";
 
-</script>
-
-
-<script type="text/javascript">
-  $(document).ready(function(){
-    var index = 2;
-    $("#btn2").click(function(){
-      $("#ucd2"+index).show();
-      index++;
-
-      var count = Number($("#badge2").text());
-
-      if (count > 0 ){
-        $("#badge2").text(count-1);
+      var data = {
+          "study_history" : {
+              "user_id" : <%= current_user.id %>,
+              "unit_concept_id" : <%= @unit_concept.id %>,
+              "segment" : segment,
+              "status" : status
+          }
       }
-      if (count == 1){
-        $("#btn2").hide();
-        $("#badge2").hide();
-      }
-    });
-  });
-</script>
 
-<script type="text/javascript">
-  $(document).ready(function(){
-    var index = 2;
-
-    $("#btn3").click(function(){
-      $("#exercise1"+index).show();
-      index++;
-
-      var count = Number($("#badge3").text());
-      if(count == -1){
-        count = 0;
-      }
-      if (count > 0){
-        $("#badge3").text(count-1);
-      }
-      if (count == 1){
-        $("#btn3").hide();
-        $("#badge3").hide();
-      }
-    });
-  });
+      $.ajax({
+        url: url,
+        type: "POST",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        data:data,
+        success : function(data) {
+          $('#loading').hide();
+        },
+        error : function(){
+          $('#loading').hide();
+        }
+      });          
+  }
+  
   function viewSolution(imgCount) {
     $('#solution'+imgCount).slideDown( "slow", function() {});
     $('#selectSolution'+imgCount).slideDown("slow", function() {});
@@ -799,41 +815,20 @@
       }
     });
   }
-
-</script>
-
-<!-- 자기평가 data check 보내기 -->
-<script type="text/javascript">
-  $(document).ready(function(){
-    $('#new_unit_concept_self_evaluation').submit(function () {
-      $('#loading').show();
-      if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
-        alert('난이도를 선택하세요.');
-        $('#loading').hide();
-        return false;
-      }
-      else if ( $('#evaluation_comment').val() == ''){
-        alert('comment를 입력하세요.');
-        $('#loading').hide();
-        return false;
-      }
-    });
-  });
-</script>
-
-<!-- Print method -->
-<script type="text/javascript">
+  
   function printing(printId) {
-    var printElements = document.getElementById(printId).innerHTML;
-    var allPage = document.body.innerHTML;
+      
+      var printElements = document.getElementById(printId).innerHTML;
+      var allPage = document.body.innerHTML;
 
-    document.body.innerHTML = printElements;
-    $("#printBtn").hide();
-    window.print();
+      document.body.innerHTML = printElements;
+      $("#printBtn").hide();
+      window.print();
 
-    document.body.innerHTML = allPage;
-    location.reload();
-  }
+      document.body.innerHTML = allPage;
+      location.reload();
+  }  
+
 </script>
 
 <script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>

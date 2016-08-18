@@ -10,7 +10,7 @@ class StudyHistory < ActiveRecord::Base
     
     def self.update_study_history(params)
         
-        study_history = StudyHistory.where('user_id = ? and unit_concept_id = ? and segment = ?', params[:user_id], params[:unit_concept_id], params[:segment])
+        study_history = StudyHistory.where('user_id = ? and unit_concept_id = ? and segment = ? and status = ?', params[:user_id], params[:unit_concept_id], params[:segment], params[:status])
         
         if study_history.count > 0
             study_history[0].study_count = study_history[0].study_count + 1
@@ -20,7 +20,7 @@ class StudyHistory < ActiveRecord::Base
             study_history.user_id = params[:user_id]
             study_history.unit_concept_id = params[:unit_concept_id]
             study_history.segment = params[:segment]
-            study_history.status = 'start'
+            study_history.status = params[:status]
             study_history.save
         end        
         
