@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :study_histories
     resources :inicis_payments
     resources :user_types
     resources :concept_exercises

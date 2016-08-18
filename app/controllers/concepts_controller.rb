@@ -79,6 +79,7 @@ class ConceptsController < ApplicationController
   
     def exercise
         @unit_concept = @concept
+        @concept_exercises = @concept.concept_exercises.order(:desc_type, :memo)
         @origin = "concept exercise"
     end    
           

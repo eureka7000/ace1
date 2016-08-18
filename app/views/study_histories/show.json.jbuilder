@@ -1,0 +1,1 @@
+json.partial! "study_histories/study_history", study_history: @study_history

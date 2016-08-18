@@ -23,12 +23,12 @@
     <!-- tabs right -->
     <div class="tabbable">
       <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
-        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
-        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise <span class="badge rounded-2x pull-center"><%= type3Count %></span></a></li>
+        <li class="active"><a href="#d" id="concept" data-toggle="tab" style="text-align: center" class="study_segment">개 념</a></li>
+        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" id="concept_explanation" data-toggle="tab" style="text-align: center" class="study_segment" onclick="videoPause()">개념 설명</a></li>
+        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" id="exercise" data-toggle="tab" style="text-align: center" class="study_segment" onclick="videoPause()">Exercise <span class="badge rounded-2x pull-center"><%= type3Count %></span></a></li>
         <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념 <span class="badge rounded-2x pull-center"><%= linkCount %></span></a></li>
-        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video <span class="badge rounded-2x pull-center"><%= type4Count %></span></a></li>
-        <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
+        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" id="video" data-toggle="tab" class="study_segment" style="text-align: center">Video <span class="badge rounded-2x pull-center"><%= type4Count %></span></a></li>
+        <li><a href="#s" id="self_evaluation" data-toggle="modal" data-target="#s" style="text-align: center" class="study_segment" onclick="videoPause()">Self Evaluation</a></li>
         <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">질문하기</a></li>
         <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
       </ul>
@@ -658,25 +658,59 @@
 <script type="text/javascript">
 
   $(document).ready(function(){
-    var index = 2;
+      
+      var index = 2;
 
-    $("#btn1").click(function(){
+      $("#btn1").click(function(){
 
-      $("#ucd1"+index).show();
-      index++;
+          $("#ucd1"+index).show();
+          index++;
 
-      var count = Number($("#badge1").text());
-      if (count == -1) {
-        count = 0;
-      }
-      if (count > 0) {
-        $("#badge1").text(count-1);
-      }
-      if (count == 1) {
-        $("#btn1").hide();
-        $("#badge1").hide();
-      }
-    });
+          var count = Number($("#badge1").text());
+          if (count == -1) {
+              count = 0;
+          }
+          if (count > 0) {
+              $("#badge1").text(count-1);
+          }
+          if (count == 1) {
+              $("#btn1").hide();
+              $("#badge1").hide();
+          }
+      });
+    
+      $('.study_segment').click(function() {
+          
+          $('#loading').show();          
+          
+          var url = "/study_histories/";
+
+          var data = {
+              "study_history" : {
+                  "user_id" : <%= current_user.id %>,
+                  "unit_concept_id" : <%= @unit_concept.id %>,
+                  "segment" : $(this).attr("id"),
+                  "status" : "start"
+              }
+          }
+
+          $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data:data,
+            success : function(data) {
+              $('#loading').hide();
+            },
+            error : function(){
+              alert("try to again. please.");
+              $('#loading').hide();
+            }
+          });          
+
+      })
+    
   });
 
 </script>

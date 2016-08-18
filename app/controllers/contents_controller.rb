@@ -406,11 +406,26 @@ class ContentsController < ApplicationController
                 where exercise_yn = 'concept' order by code
                 ) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
 
-            logger.debug "notice" + @unit_concept_related.inspect
         else
             @unit_concept_related = UnitConcept.first(2)
         end
-
+        
+        # 학습이력 저장.
+        study_history = StudyHistory.where('user_id = ? and unit_concept_id = ? and segment = ?', current_user.id, @unit_concept.id, 'concept')
+        
+        if study_history.count > 0
+            study_history[0].study_count = study_history[0].study_count + 1
+            study_history[0].save
+        else
+            study_history = StudyHistory.new
+            study_history.user_id = current_user.id
+            study_history.unit_concept_id = @unit_concept.id
+            study_history.segment = 'concept'
+            study_history.status = 'start'
+            study_history.save
+        end        
+        # 학습이력 저장 끝.
+        
     end
     
     
