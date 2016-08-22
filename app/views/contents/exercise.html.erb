@@ -265,77 +265,67 @@
 
           <div id="printArea"> <!-- 프린트 영역 -->
 
-            <div class="col-xs-6">
+            <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
               <% unless params[:exercise_type] == 'concept_exercise' %>
-                  <p>
+                  <h6>
                     <% unless @unit_concept.level.nil? %>
                         <% rst = 5 - @unit_concept.level %>
-                        <span style="-webkit-text-fill-color: red; font-size: large">
-                            <% (1..@unit_concept.level).each do |idx| %>
-                            *
-                            <% end %>
-                            </span>
-
-                        <span style="-webkit-text-fill-color: grey; font-size: large">
-                            <% (1..rst).each do |idx| %>
-                            *
-                            <% end %>
-                        </span>
+                        <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                        <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
                     <% end %>
-                  </p>
+                    </span>
+                    <% end %>
+                  </h6>
               <% end %>
-              <h4 style="margin-bottom: 10px"><%= @unit_concept_name %></h4>
 
-              <div style="overflow-y: auto; ">
-                <% @unit_concept_descs.each do | unit_concept_desc | %>
-                    <% unless unit_concept_desc.desc_type.to_i != 1%>
-                        <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 10px;"/>
-                    <% end %>
-                <% end %>
-                <br><br>
+              <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h5>
 
-                <span class="label rounded-2x label-aqua">관련 개념</span><br>
+              <% @unit_concept_descs.each do | unit_concept_desc | %>
+                  <% unless unit_concept_desc.desc_type.to_i != 1%>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 10px;"/>
+                      <%  %>
+                  <% end %>
+              <% end %>
 
-                <% @links.each do | link | %>
-                    <span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
-                    <i class="fa fa-circle"></i>&nbsp;
-                    <span style="-webkit-text-fill-color: #fc4674"><%= link.code %> </span>
-                    <span style="-webkit-text-fill-color: #020202"> : <%= link.name %> </span>
-                    </span><br>
-                <% end %>
-              </div>
-
+              <br/>
+              <% @links.each do | link | %>
+                  &nbsp;&nbsp;<span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
+                         <i class="fa fa-circle"></i>
+                        &nbsp;
+                        <span style="-webkit-text-fill-color: #fc4674"><%= link.code %> </span>
+                        <span style="-webkit-text-fill-color: #020202"> : <%= link.name %> </span>
+                      </span>
+                  <br>
+              <% end %>
+              <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
             </div>
 
-            <div class="col-xs-6">
-              <br><br>
-              <span class="label rounded-2x label-aqua">개념보충설명</span>
-              <br>
+            <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
+              <% @unit_concept_descs.each do | unit_concept_desc | %>
+                  <% unless unit_concept_desc.desc_type.to_i != 2 %>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
+                  <% end %>
+              <% end %>
 
-              <div style="overflow-y: auto; ">
-                <% @unit_concept_descs.each do | unit_concept_desc | %>
-                    <% unless unit_concept_desc.desc_type.to_i != 2 %>
-                        <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
-                    <% end %>
-                <% end %>
-
-                <br><br>
-                <span class="label rounded-2x label-aqua margin-bottom-30">Exercise</span>
-
-                <% @unit_concept_descs.each do | unit_concept_desc | %>
-                    <% unless unit_concept_desc.desc_type.to_i != 3 %>
-                        <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
-                    <% end %>
-                <% end %>
-              </div>
-
+              <% @unit_concept_descs.each do | unit_concept_desc | %>
+                  <% unless unit_concept_desc.desc_type.to_i != 3 %>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
+                  <% end %>
+              <% end %>
+              <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
+            </div>
+            <div class="col-md-12 text-right margin-top-20">
+              <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn-u rounded btn-u-orange"/>
             </div>
 
           </div> <!-- 프린트 영역 END-->
 
-          <div class="col-md-12 text-right margin-top-20">
-            <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
-          </div>
         </div> <!-- Tab 프린트 END -->
 
       </div>
@@ -649,6 +639,7 @@
       }
     });
   });
+
   function viewSolution() {
     $('#viewSolutionBtn').slideUp( "slow", function() {});
     $('#solution').slideDown("slow", function() {});
@@ -736,4 +727,22 @@
     var player = $(iframe);
     player.api('pause');
   }
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#new_question').submit(function () {
+      $('#loading').show();
+      if ( $('#question_title').val() == ''){
+        alert('질문 제목을 입력하세요.');
+        $('#loading').hide();
+        return false;
+      }
+      else if ( $('#question_content').val() == ''){
+        alert('질문할 내용을 입력하세요.');
+        $('#loading').hide();
+        return false;
+      }
+    });
+  });
 </script>
