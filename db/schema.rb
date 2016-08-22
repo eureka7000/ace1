@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160810045411) do
+ActiveRecord::Schema.define(version: 20160817081356) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20160810045411) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "admin_yn",   limit: 255
+    t.string   "file_name",  limit: 255
   end
 
   create_table "categories", force: :cascade do |t|
@@ -60,6 +61,8 @@ ActiveRecord::Schema.define(version: 20160810045411) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.string   "exercise_yn",  limit: 255
+    t.integer  "grade",        limit: 4
+    t.integer  "level",        limit: 4
   end
 
   create_table "explanations", force: :cascade do |t|
@@ -161,6 +164,16 @@ ActiveRecord::Schema.define(version: 20160810045411) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
     t.string   "is_school",  limit: 255
+  end
+
+  create_table "study_histories", force: :cascade do |t|
+    t.integer  "user_id",         limit: 4
+    t.integer  "unit_concept_id", limit: 4
+    t.string   "segment",         limit: 255
+    t.string   "status",          limit: 255
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+    t.integer  "study_count",     limit: 4,   default: 1
   end
 
   create_table "sub_categories", force: :cascade do |t|

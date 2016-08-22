@@ -8,6 +8,7 @@ class UnitConcept < ActiveRecord::Base
     # has_one  :grade_unit_concept
     has_many :questions
     has_many :unit_concept_exercise_solutions
+    has_many :study_histories
     
     DESC_TYPES = {
         1 => "Unit Concept",

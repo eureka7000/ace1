@@ -3,6 +3,10 @@ class MypagesController < ApplicationController
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => :payment_return
     
+    def study_progress_check
+        @click = 'study_progress'
+    end    
+
     def payment
         
         @click = 'payment'

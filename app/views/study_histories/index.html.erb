@@ -1,0 +1,40 @@
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 main">
+
+            <h2 class="sub-header"><span class="fa fa-header" aria-hidden="true" style="top: 5px"></span> Listing Study Histories</h2>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped">
+                <thead>
+                <tr>
+                <th>User</th>    
+                <th>Unit concept</th>
+                <th>Segment</th>
+                <th>Status</th>
+                <th>Study Count</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% @study_histories.each do |study_history| %>
+                <tr>
+                <td><%= study_history.user.user_name %></td>
+                <td><%= study_history.unit_concept.name %></td>
+                <td><%= study_history.segment %></td>
+                <td><%= study_history.status %></td>
+                <td><%= study_history.study_count %></td>
+                </tr>
+                <% end %>
+                </tbody>
+                </table>
+                
+                <%= will_paginate @study_histories, renderer: BootstrapPagination::Rails %>
+
+            </div>
+        </div>
+    </div>                    
+</div>

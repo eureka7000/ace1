@@ -24,24 +24,34 @@
   </form>
 
   <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
+    
     <% if current_user.user_types[0].user_type == 'student' %>
+    
         <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
           <a href="/mypages/evaluation"><i class="fa fa-cubes"></i> 자기평가</a>
         </li>
+        
+        <li class="list-group-item <%= 'active' if @click == 'payment'%>">
+            <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결재 정보</a>
+        </li>        
+        
     <% end %>
-    <% if current_user.user_types[0].user_type == 'student' || current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>
-        <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
-          <a href="/mypages/question_list"><i class="fa fa-list"></i> 질문/답변 리스트  <span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
-        </li>
+    
+    <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>
+        <li class="list-group-item <%= 'active' if @click == 'study_progress'%>">
+            <a href="/mypages/study_progress_check"><i class="fa fa-header"></i> 학습진도확인</a>
+        </li>    
     <% end %>
+    
+    <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
+        <a href="/mypages/question_list"><i class="fa fa-list"></i> 질문/답변 리스트  <span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
+    </li>
+    
 
     <li class="list-group-item <%= 'active' if @click == 'user_info'%>">
       <a href="/mypages/user_info"><i class="fa fa-user"></i> 사용자 정보</a>
     </li>
 
-    <li class="list-group-item <%= 'active' if @click == 'payment'%>">
-      <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결재 정보</a>
-    </li>
   </ul>
 </div>
 <!--End Left Sidebar-->

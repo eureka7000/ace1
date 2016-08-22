@@ -55,7 +55,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                         
                         <div class="form-group">
                             <%= f.label :concept_code, :class => 'col-sm-2 col-md-2 control-label' %>
@@ -69,7 +69,31 @@
                             <div class="input-group col-sm-4">
                                 <%= f.text_field :concept_name, :class => 'form-control' %>
                             </div>
-                        </div>   
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :grade, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="concept[grade]" class="form-control">
+                                    <option value="">--- Grade ---</option>
+                                    <% UnitConcept::GRADES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" <%= "selected" if @concept.grade == key %> ><%= value %></option>
+                                    <% end %>
+                                </select>
+                            </div>
+                        </div>                        
+                        
+                        <div class="form-group">
+                            <%= f.label :level, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4">
+                                <select name="concept[level]" class="form-control">
+                                    <option value="">--- Level ---</option>
+                                    <% (1..5).each do |idx| %>
+                                    <option value="<%= idx %>" <%= "selected" if @concept.level == idx %> ><%= idx %></option>
+                                    <% end %>
+                                </select>
+                            </div>    
+                        </div>                        
 
                     </div>
 
@@ -77,7 +101,7 @@
 
                 <footer>
                     <%= f.submit '저장', :class => 'btn btn-success' %>
-                    <%= link_to '뒤로', "/concepts?page=#{params[:concept_page_num]}", :class => 'btn btn-info' %>
+                    <%= link_to '뒤로', "/concepts?page=#{params[:concept_page_num]}&#{params.to_query}", :class => 'btn btn-info' %>
                 </footer>
 
             <% end %>

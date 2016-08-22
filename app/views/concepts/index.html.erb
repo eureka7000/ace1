@@ -49,6 +49,8 @@
                                 <th>Sub category</th>
                                 <th>Concept code</th>
                                 <th>Concept name</th>
+                                <th>Grade</th>
+                                <th>Level</th>
                                 <th>Type</th>
                                 <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
                             </tr>
@@ -60,6 +62,8 @@
                         <td><%= Concept::SUB_CATEGORIES[concept.sub_category] %></td>
                         <td><%= concept.concept_code %></td>
                         <td><%= concept.concept_name %></td>
+                        <td><%= UnitConcept::GRADES[concept.grade] %></td>
+                        <td><%= concept.level %></td>
                         <td>
                             <% if concept.exercise_yn == 'concept' %>
                             <span class="label rounded-2x label-purple">Concept</span>
@@ -71,8 +75,8 @@
 							<% concept_params = "&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}"%>
 							<%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?concept_page_num=#{params[:page]||1}&#{concept_params}" : "/concepts/#{concept.id}/exercise?concept_page_num=#{params[:page]||1}&#{concept_params}"  ) %>
 						</td>
-                        <td><%= link_to 'Edit', "/concepts/#{concept.id}/edit?concept_page_num=#{params[:page]||1}" %></td>
-                        <td><%= link_to 'Destroy', concept, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                        <td><%= link_to 'Edit', "/concepts/#{concept.id}/edit?concept_page_num=#{params[:page]||1}&#{params.to_query}" %></td>
+                        <td><%= link_to 'Destroy', "/concepts/#{concept.id}?#{params.to_query}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
                         </tr>
                         <% end %>
                         </tbody>

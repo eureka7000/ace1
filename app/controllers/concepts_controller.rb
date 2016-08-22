@@ -79,6 +79,7 @@ class ConceptsController < ApplicationController
   
     def exercise
         @unit_concept = @concept
+        @concept_exercises = @concept.concept_exercises.order(:desc_type, :memo)
         @origin = "concept exercise"
     end    
           
@@ -114,15 +115,15 @@ class ConceptsController < ApplicationController
         
     end
 
-  # DELETE /concepts/1
-  # DELETE /concepts/1.json
-  def destroy
-    @concept.destroy
-    respond_to do |format|
-      format.html { redirect_to concepts_url, notice: 'Concept was successfully destroyed.' }
-      format.json { head :no_content }
+    
+    def destroy
+        @concept.destroy
+        respond_to do |format|
+            format.html { redirect_to "/concepts?#{params.to_query}", notice: 'Concept was successfully destroyed.' }
+            format.json { head :no_content }
+        end
     end
-  end
+    
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -132,6 +133,6 @@ class ConceptsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def concept_params
-      params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn)
+      params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn, :grade, :level)
     end
 end

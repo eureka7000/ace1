@@ -223,7 +223,11 @@ class ContentsController < ApplicationController
             end
             
             if @step > 5
-                @current_page_name = Concept.find(@concept_id).concept_name
+                if params[:exercise_type].blank?
+                    @current_page_name = Concept.find(@concept_id).concept_name
+                else
+                    @current_page_name = '종합문제'
+                end                        
                 @breadcrumbs << { 'step6' => @current_page_name }
             end
             
@@ -259,6 +263,7 @@ class ContentsController < ApplicationController
                     end    
                 end
             elsif @step == 4    
+                
                 GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
                     unless @category.to_i != key/100
                         @items << {
@@ -267,7 +272,9 @@ class ContentsController < ApplicationController
                         }
                     end    
                 end
+                
             elsif @step == 5    
+                
                 @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
                 @grade_unit_concepts.each do |grade_unit_concept|
                     @items << {
@@ -279,30 +286,59 @@ class ContentsController < ApplicationController
                     }
                 end
                 
+                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+                    
+                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                    
+                    if @concept_exercises.count > 0
+                        @items << {
+                            key: '',
+                            value: '종합문제'
+                        }
+                    end    
+                end    
+                
             elsif @step == 6
                 
-                @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ? and grade = ?', @concept_id, "concept", @level, @grade) 
-                @unit_concepts.each do |unit_concept|
-                    @items << {
-                        key: unit_concept.id,
-                        value: unit_concept.name,
-                        content_yn: true,
-                        level: unit_concept.level,
-                        level_star_yn: true,
-                        level_star: unit_concept.get_level_star
-                    }
-                end
+                if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+                    
+                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                    @concept_exercises.each do |concept_exercise|
+                        @items << {
+                            key: concept_exercise.id,
+                            value: concept_exercise.concept_name,
+                            content_yn: true,
+                            level: 1,
+                            exercise_yn: true
+                        }
+                    end                                        
+                    
+                else    
+                
+                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ? and grade = ?', @concept_id, "concept", @level, @grade) 
+                    @unit_concepts.each do |unit_concept|
+                        @items << {
+                            key: unit_concept.id,
+                            value: unit_concept.name,
+                            content_yn: true,
+                            level: unit_concept.level,
+                            level_star_yn: true,
+                            level_star: unit_concept.get_level_star
+                        }
+                    end
             
-                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")                
-                if @unit_concept_exercises.length > 0
-                    @items << {
-                        key: '',
-                        value: '유형문제',
-                        level: 0,
-                        level_star_yn: true,
-                        level_star: UnitConcept.get_level_star_empty
-                    }                    
-                end
+                    @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")                
+                    if @unit_concept_exercises.length > 0
+                        @items << {
+                            key: '',
+                            value: '유형문제',
+                            level: 0,
+                            level_star_yn: true,
+                            level_star: UnitConcept.get_level_star_empty
+                        }                    
+                    end
+                    
+                end    
                 
             elsif @step == 7
                 
@@ -370,11 +406,26 @@ class ContentsController < ApplicationController
                 where exercise_yn = 'concept' order by code
                 ) uc limit 3 offset #{ (@row_number.row_number.to_i)-2 } ")
 
-            logger.debug "notice" + @unit_concept_related.inspect
         else
             @unit_concept_related = UnitConcept.first(2)
         end
-
+        
+        # 학습이력 저장.
+        study_history = StudyHistory.where('user_id = ? and unit_concept_id = ? and segment = ?', current_user.id, @unit_concept.id, 'concept')
+        
+        if study_history.count > 0
+            study_history[0].study_count = study_history[0].study_count + 1
+            study_history[0].save
+        else
+            study_history = StudyHistory.new
+            study_history.user_id = current_user.id
+            study_history.unit_concept_id = @unit_concept.id
+            study_history.segment = 'concept'
+            study_history.status = 'start'
+            study_history.save
+        end        
+        # 학습이력 저장 끝.
+        
     end
     
     
