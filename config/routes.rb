@@ -71,6 +71,8 @@ Rails.application.routes.draw do
     get 'blogs/notice' => 'blogs#notice'
     get 'blogs/the_news' => 'blogs#the_news'
     get 'blogs/company_introduction' => 'blogs#company_introduction'
+    get 'blogs/video_function_extension' => 'blogs#video_function_extension'
+    get 'blogs/studying_screen_explanation' => 'blogs#studying_screen_explanation'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'

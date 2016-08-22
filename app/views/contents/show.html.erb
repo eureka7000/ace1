@@ -1,18 +1,21 @@
-<div class="row" style="margin: 20px;">
+<div class="row no-margin">
 
-  <div class="col-md-12">
+  <div class="col-md-12 no-margin">
 
+    <% type1count = 0 %>
     <% type2Count = 0 %>
     <% type3Count = 0 %>
     <% linkCount = 0 %>
     <% type4Count = 0 %>
     <% @unit_concept_descs.each do |unit_concept_desc| %>
-        <% if unit_concept_desc.desc_type.to_i == 2 %>
-            <% type2Count +=1 %>
+        <% if unit_concept_desc.desc_type.to_i == 1 %>
+            <% type1count += 1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 2 %>
+            <% type2Count += 1 %>
         <% elsif unit_concept_desc.desc_type.to_i == 3 %>
-            <% type3Count +=1 %>
+            <% type3Count += 1 %>
         <% elsif unit_concept_desc.desc_type.to_i == 4 %>
-            <% type4Count +=1 %>
+            <% type4Count += 1 %>
         <% end %>
     <% end %>
 
@@ -21,75 +24,62 @@
     <% end %>
 
     <!-- tabs right -->
-    <div class="tabbable">
-      <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
-        <li class="active"><a href="#d" data-toggle="tab" style="text-align: center">개 념</a></li>
-        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">개념 설명</a></li>
-        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Exercise <span class="badge rounded-2x pull-center"><%= type3Count %></span></a></li>
-        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념 <span class="badge rounded-2x pull-center"><%= linkCount %></span></a></li>
-        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video <span class="badge rounded-2x pull-center"><%= type4Count %></span></a></li>
-        <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
-        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">질문하기</a></li>
-        <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
-      </ul>
+    <div class="tabbable bg-color-light" xmlns="http://www.w3.org/1999/html">
 
-      <div class="tab-content col-sm-11 col-sm-pull-1">
+
+      <div class="tab-content">
         <!-- 이전 다음 개념 링크 -->
-        <div class="col-md-12 col-ms-12 col-xs-12 no-margin" >
-          <% count = 0 %>
-          <% unless params[:id].to_i() == 1 %>
-              <% @unit_concept_related.each do |related| %>
-                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                    <% unless count != 1 %>
-                        <p style="color: black; font-weight: bold;">now</p>
-                    <% else %>
-                        <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
-                    <% end %>
-                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
-                    <br/><br/>
-                  </div>
-                  <% count += 1 %>
-              <% end %>
-          <% else %>
-              <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20">
-              </div>
-              <% @unit_concept_related.each do |related| %>
-                  <div class="col-md-4 col-ms-4 col-xs-4 no-padding no-margin margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
-                    <% unless count != 0 %>
-                        <p style="color: black; font-weight: bold;">now</p>
-                    <% else %>
-                        <p style="color: #898487"><%= 'next' %></p>
-                    <% end %>
-                    <a href="/contents/<%= related.id %>"><i style="color: darkblue;" ></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
-                    <br/><br/>
-                  </div>
-                  <% count += 1 %>
-              <% end %>
-          <% end %>
 
-        </div>
+        <% count = 0 %>
+        <% unless params[:id].to_i() == 1 %>
+            <% @unit_concept_related.each do |related| %>
+                <div class="col-md-4 col-ms-4 col-xs-4 margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
+                  <% unless count != 1 %>
+                      <p style="color: black; font-weight: bold;">now</p>
+                  <% else %>
+                      <p style="color: #898487"><%= 'prev' unless count != 0 %><%= 'next' unless count != 2 %></p>
+                  <% end %>
+                  <a href="/contents/<%= related.id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                </div>
+                <% count += 1 %>
+            <% end %>
+        <% else %>
+            <div class="col-md-4 col-ms-4 col-xs-4 margin-top-20">
+            </div>
+            <% @unit_concept_related.each do |related| %>
+                <div class="col-md-4 col-ms-4 col-xs-4 margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
+                  <% unless count != 0 %>
+                      <p style="color: black; font-weight: bold;">now</p>
+                  <% else %>
+                      <p style="color: #898487"><%= 'next' %></p>
+                  <% end %>
+                  <a href="/contents/<%= related.id %>"><i style="color: darkblue;" ></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                </div>
+                <% count += 1 %>
+            <% end %>
+        <% end %>
 
         <!-- Tab 개념 -->
         <div class="tab-pane active" id="d">
 
-          <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
-            <p>
+            <h6>
               <% unless @unit_concept.level.nil? %>
                   <% rst = 5 - @unit_concept.level %>
-                  <span style="color:red">
+                  <span style="color:orangered">
                     <% (1..@unit_concept.level).each do |idx| %>
-                    *
+                    <i class="fa fa-star"></i>
                     <% end%>
                     </span>
-                  <span style="color:gray">
+                  <span style="color:orangered">
                     <% (1..rst).each do |idx| %>
-                    *
+                    <i class="fa fa-star-o"></i>
                     <% end %>
                     </span>
               <% end %>
-            </p>
-            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+            </h6>
+            <h4><span style="color:darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
 
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
@@ -103,25 +93,22 @@
                       <% imgCount += 1 %>
                   <% end %>
               <% end %>
+
               <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-9">
-                  </div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
               <% else %>
-                  <div class="col-md-9">
-                  </div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
@@ -133,24 +120,23 @@
 
         <!-- Tab 개념 설명 -->
         <div class="tab-pane" id="e">
-          <div class="col-md-6">
-
-            <p>
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
+            <h6>
               <% unless @unit_concept.level.nil? %>
                   <% rst = 5 - @unit_concept.level %>
-                  <span style="color:red">
-                                <% (1..@unit_concept.level).each do |idx| %>
-                                *
-                                <% end%>
-                                </span>
-                  <span style="color:gray">
-                                <% (1..rst).each do |idx| %>
-                                *
-                                <% end %>
-                                </span>
+                  <span style="color:orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="color:orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
               <% end %>
-            </p>
-            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+            </h6>
+            <h4><span style="color:darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
 
             <div style="overflow-y: auto; width: 100%;">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -161,7 +147,7 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -175,24 +161,20 @@
                   <% end %>
               <% end %>
               <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-9">
-                  </div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
               <% else %>
-                  <div class="col-md-9">
-                  </div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
@@ -204,106 +186,100 @@
 
         <!-- Tab Exercise -->
         <div class="tab-pane" id="f">
-          <div class="col-md-12 margin-bottom-20">
-            <p>
+          <div class="col-md-12 col-ms-12 col-xs-12 margin-bottom-20 margin-top-20 no-padding no-margin">
+            <h6>
               <% unless @unit_concept.level.nil? %>
                   <% rst = 5 - @unit_concept.level %>
-                  <span style="color:red">
-                                <% (1..@unit_concept.level).each do |idx| %>
-                                *
-                                <% end%>
-                                </span>
-                  <span style="color:gray">
-                                <% (1..rst).each do |idx| %>
-                                *
-                                <% end %>
-                                </span>
+                  <span style="color:orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="color:orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
               <% end %>
-            </p>
-
-            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+            </h6>
+            <h4><span style="color:darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
 
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 3 %>
                       <% if imgCount == 1 %>
-                          <div class="col-md-12 margin-bottom-20" id="exercise1<%=imgCount%>">
-                            <div class="col-md-6">
+                          <div class="col-md-12 margin-bottom-20 no-padding no-margin" id="exercise1<%=imgCount%>">
+                            <div class="col-md-6 no-padding no-margin">
                               <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                             </div>
 
                             <div class="col-md-6 text-left">
-                              <a href="javascript:viewSolution(<%= imgCount %>)" class="btn btn-success" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
+                              <a href="javascript:viewSolution(<%= imgCount %>)" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
 
                               <!-- OX 이미지 출력 부분 -->
                               <% unit_concept_desc.unit_concept_exercise_solutions.order(:code).each do |solution| %>
-                                  <% if solution.file_name.blank? %>
-                                      <div class="row" hidden id="solution<%=imgCount%>"><img src="/images/<%= solution.ox %>.png"></div>
-                                  <%  else %>
-                                      <div class="row" hidden id="solution<%=imgCount%>"><img src="<%= solution.file_name %>"></div>
-                                  <% end %>
+                                  <h4>
+                                    <% if solution.file_name.blank? %>
+                                        <div hidden id="solution<%=imgCount%>">
+                                          <img src="/images/<%= solution.ox %>.png" class="img-responsive">
+                                        </div>
+                                    <%  else %>
+                                        <div hidden id="solution<%=imgCount%>">
+                                          <img src="<%= solution.file_name %>" class="img-responsive">
+                                        </div>
+                                    <% end %>
+                                  </h4>
                               <% end %>
 
                               <!-- 맞음 틀림 선택(라디오버튼) 부분 -->
-                              <div class="solution" id="selectSolution<%=imgCount%>" hidden>
-                                <label class="radio-inline">
+                              <div class="solution margin-left-10" id="selectSolution<%=imgCount%>" hidden>
+                                <label class="radio-inline margin-right-10">
                                   <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
                                 </label>
-                                &nbsp; &nbsp;
-                                <label class="radio-inline">
+                                <label class="radio-inline margin-right-10">
                                   <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
                                 </label>
-                                &nbsp; &nbsp; &nbsp; &nbsp;
-                                <button class="btn rounded btn-info" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
-                                &nbsp; &nbsp;
+                                <button class="btn-u rounded btn-u-orange btn-u-sm margin-left-10 margin-right-10" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+
                                 <% hOX = '' %>
                                 <% @unit_concepts_exercise_histories.each do |history| %>
                                     <% if history.unit_concept_desc_id == unit_concept_desc.id %>
                                         <% hOX = history.ox %>
                                     <% end %>
                                 <% end %>
-                                <% unless hOX == '' %>
-                                    <% if hOX == 'O'%>
-                                        <label>최근 학습 이력: 정답</label>
-                                    <% else %>
-                                        <label>최근 학습 이력: 오답</label>
-                                    <% end %>
-                                <% else %>
-                                    <label>최근 학습 이력: 없음</label>
-                                <% end %>
+
+                                <label class="margin-left-10">최근 학습 이력: <%= '정답' unless hOX != 'O' %><%= '오답' unless hOX != 'X' %><%= '없음' unless hOX != '' %></label>
+
                               </div>
                             </div>
                           </div>
                       <% else %>
-                          <div hidden class="col-md-12 margin-bottom-20" id="exercise1<%=imgCount%>">
-                            <div class="col-md-6">
+                          <div hidden class="col-md-12 margin-bottom-20 no-padding no-margin" id="exercise1<%=imgCount%>">
+                            <div class="col-md-6 no-padding no-margin">
                               <img src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 10px;"/>
                             </div>
 
                             <div class="col-md-6 text-left">
-                              <a href="javascript:viewSolution(<%= imgCount %>)" class="btn btn-success" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
+                              <a href="javascript:viewSolution(<%= imgCount %>)" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn<%=imgCount%>">View Solution</a>
                               <!-- OX 이미지 출력 부분 -->
                               <% unit_concept_desc.unit_concept_exercise_solutions.order(:code).each do |solution| %>
                                   <% if solution.file_name.blank? %>
-                                      <div class="row" hidden id="solution<%=imgCount%>"><img src="/images/<%= solution.ox %>.png"></div>
+                                      <div hidden id="solution<%=imgCount%>"><img src="/images/<%= solution.ox %>.png" class="img-responsive"></div>
                                   <%  else %>
-                                      <div class="row" hidden id="solution<%=imgCount%>"><img src="<%= solution.file_name %>"></div>
+                                      <div hidden id="solution<%=imgCount%>"><img src="<%= solution.file_name %>" class="img-responsive"></div>
                                   <% end %>
                               <% end %>
 
                               <!-- 맞음 틀림 선택(라디오버튼) 부분 -->
-                              <div class="solution" id="selectSolution<%=imgCount%>" hidden>
-                                <label class="radio-inline">
+                              <div class="solution margin-left-10" id="selectSolution<%=imgCount%>" hidden>
+                                <label class="radio-inline margin-right-10">
                                   <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
                                 </label>
-                                &nbsp; &nbsp;
-                                <label class="radio-inline">
+                                <label class="radio-inline margin-right-10">
                                   <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
                                 </label>
-                                &nbsp; &nbsp; &nbsp; &nbsp;
-                                <button class="btn rounded btn-info" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
-                                &nbsp; &nbsp;
+                                <button class="btn-u rounded btn-u-orange btn-u-sm margin-left-10 margin-right-10" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
 
                                 <% hOX = '' %>
                                 <% @unit_concepts_exercise_histories.each do |history| %>
@@ -311,15 +287,9 @@
                                         <% hOX = history.ox %>
                                     <% end %>
                                 <% end %>
-                                <% unless hOX == '' %>
-                                    <% if hOX == 'O'%>
-                                        <label>최근 학습 이력: 정답</label>
-                                    <% else %>
-                                        <label>최근 학습 이력: 오답</label>
-                                    <% end %>
-                                <% else %>
-                                    <label>최근 학습 이력: 없음</label>
-                                <% end %>
+
+                                <label class="margin-left-10">최근 학습 이력: <%= '정답' unless hOX != 'O' %><%= '오답' unless hOX != 'X' %><%= '없음' unless hOX != '' %></label>
+
                               </div>
                             </div>
                           </div>
@@ -328,58 +298,52 @@
                   <% end %>
               <% end %>
               <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-11 text-right">
+                  <div class="col-md-12 text-right">
                     <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
-                  </div>
-                  <div class="col-md-1 t text-right">
-
                   </div>
               <% else %>
-                  <div class="col-md-11 text-right">
+                  <div class="col-md-12 text-right">
                     <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
-                  </div>
-                  <div class="col-md-1">
                   </div>
               <% end %>
             </div>
           </div>
 
-
         </div> <!-- Tab Exercise END -->
 
         <!-- Tab Video -->
         <div class="tab-pane" id="v">
-          <div class="col-md-12">
-            <p>
+          <div class="col-md-12 col-ms-12 col-xs-12 margin-bottom-20 margin-top-20 no-padding no-margin">
+            <h6>
               <% unless @unit_concept.level.nil? %>
                   <% rst = 5 - @unit_concept.level %>
-                  <span style="color:red">
-                      <% (1..@unit_concept.level).each do |idx| %>
-                      *
-                      <% end%>
-                      </span>
-                  <span style="color:gray">
-                      <% (1..rst).each do |idx| %>
-                      *
-                      <% end %>
-                  </span>
+                  <span style="color:orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="color:orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
               <% end %>
-            </p>
-            <h3><span style="color:red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h3>
+            </h6>
+            <h4><span style="color:darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
 
             <div style="overflow-y: auto; ">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <% unless unit_concept_desc.desc_type.to_i != 4%>
+                  <% unless unit_concept_desc.desc_type.to_i != 4 %>
                       <div class="responsive-video margin-bottom-30">
                         <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
                         <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
@@ -395,33 +359,30 @@
         <!-- Tab 프린트 -->
         <div class="tab-pane" id="p">
           <div id="printArea"> <!-- 프린트 영역 -->
-            <div class="col-xs-6">
-              <p>
+            <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
+              <h6>
                 <% unless @unit_concept.level.nil? %>
                     <% rst = 5 - @unit_concept.level %>
-                    <span style="-webkit-text-fill-color: red; font-size: large">
-                      <% (1..@unit_concept.level).each do |idx| %>
-                      *
-                      <% end%>
-                      </span>
-                    <span style="-webkit-text-fill-color: grey; font-size: large">
-                      <% (1..rst).each do |idx| %>
-                      *
-                      <% end %>
-                  </span>
+                    <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                    <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
                 <% end %>
-              </p>
-              <h4 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: red"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h4>
+              </h6>
+              <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h5>
 
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1%>
-                      <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 10px;"/>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 10px;"/>
                       <%  %>
                   <% end %>
               <% end %>
-              <br><br>
-              <span class="label rounded-2x label-aqua">관련 개념</span>
-              <br>
 
               <% @links.each do | link | %>
                       <span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
@@ -432,32 +393,25 @@
                       </span>
                   <br>
               <% end %>
-              <img class="watermark" src="/assets/img/logo_watermark.png">
+              <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
             </div>
 
-            <div class="col-xs-6">
-              <br><br>
-              <span class="label rounded-2x label-aqua">개념보충설명</span>
-              <br>
-
-
+            <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 2 %>
-                      <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
                   <% end %>
               <% end %>
-              <br><br>
-              <span class="label rounded-2x label-aqua margin-bottom-30">Exercise</span>
 
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 3 %>
-                      <img src="<%= unit_concept_desc.file_name %>" style="width:100%; height:100%; margin-top: 5px;"/>
+                      <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
                   <% end %>
               <% end %>
-              <img class="watermark" src="/assets/img/logo_watermark.png">
+              <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
             </div>
             <div class="col-md-12 text-right margin-top-20">
-              <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn rounded btn-success"/>
+              <input type="button" id="printBtn" onclick="printing('printArea')" value="프린트하기" class="btn-u rounded btn-u-orange"/>
             </div>
 
           </div> <!-- 프린트 영역 END-->
@@ -466,93 +420,117 @@
       </div>
     </div>
   </div>
-  <!-- /tabs -->
+</div>
+<!-- /tabs -->
 
-  <!-- Tab Self Evaluation -->
+<link href="/assets/css/footers/sticky-footer.css" rel="stylesheet">
+<footer class="sticky-footer">
+  <div class="container">
+    <ul class="nav nav-pills list-inline badge-lists badge-icons" id="nav-pills">
+      <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type1count %></span></i>&nbsp;</a></li>
+      <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i>&nbsp;</a></li>
+      <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i>&nbsp;</a></li>
+      <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i>&nbsp;</a></li>
+      <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">&nbsp;<i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i>&nbsp;</a></li>
+      <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i>&nbsp;</a></li>
+      <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i>&nbsp;</a></li>
+      <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i>&nbsp;</a></li>
+    </ul>
+  </div>
+</footer>
 
-  <!-- Modal -->
-  <div class="modal fade" id="s" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
 
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <div class="modal-title">
-            <span class="label rounded-2x label-aqua">SELF EVALUATION</span>
-          </div>
+<!-- Tab Self Evaluation -->
+
+<!-- Modal -->
+<div class="modal fade" id="s" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-title">
+          <h4><span style="color: darkgreen"><i class="fa fa-pencil-square-o"></i></span> 자기평가</h4>
         </div>
-
-        <div class="modal-body">
-
-          <div class="row" style="margin-left: 5px; margin-right: 5px">
-
-            <strong style="color:blue">자기평가 이력</strong>
-
-            <table class="table">
-              <thead>
-              <th>날짜</th>
-              <th>난이도</th>
-              <th>Comment</th>
-              </thead>
-
-              <tbody>
-              <% @self_evaluations.each do |eval| %>
-                  <tr>
-                    <td><%= eval.created_at.strftime("%Y/%m/%d %H:%M") %></td>
-                    <td><%= eval.evaluation %></td>
-                    <td><%= eval.comment %></td>
-                  </tr>
-              <% end %>
-              </tbody>
-            </table>
-          </div>
-
-          <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-
-            <%= token_tag nil %>
-
-            <div class="row">
-              <div class="col-md-3">
-                <strong style="color:blue">난이도</strong>
-              </div>
-              <div class="col-md-9">
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
-                </label>
-              </div>
-            </div>
-
-            <div class="row" style="margin-top: 10px; ">
-              <div class="col-md-3">
-                <strong style="color:blue">Comment</strong>
-              </div>
-              <div class="col-md-9">
-                <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
-              </div>
-            </div>
-
-            <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
-            <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
-            <input type="hidden" name="url" value="<%= request.original_url %>"/>
-            <div class="modal-footer">
-              <input type="submit" class="btn rounded btn-success" value="확인"/>
-            </div>
-          </form>
-        </div>
-
       </div>
+
+      <div class="modal-body">
+
+        <div class="row" style="margin-left: 5px; margin-right: 5px">
+
+          <h5><strong style="color:darkblue">자기평가 이력</strong></h5>
+
+          <table class="table">
+            <thead>
+            <th class="text-center">날짜</th>
+            <th class="text-center">난이도</th>
+            <th class="text-center">Comment</th>
+            </thead>
+
+            <tbody>
+            <% unless @self_evaluations.blank? %>
+                <% @self_evaluations.each do |eval| %>
+                    <tr>
+                      <td class="text-center"><%= eval.created_at.in_time_zone("Asia/Seoul").strftime("%Y/%m/%d %H:%M") %></td>
+                      <td class="text-center"><%= eval.evaluation %></td>
+                      <td><%= eval.comment %></td>
+                    </tr>
+                <% end %>
+            <% else %>
+                <tr>
+                  <td colspan="3" class="text-center"> - 평가 이력이 없습니다 - </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+
+          <%= token_tag nil %>
+
+          <div class="row">
+            <div class="col-md-3">
+              <h5><strong style="color:darkblue">&nbsp; &nbsp; 난이도</strong></h5>
+            </div>
+            <div class="col-md-9">
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
+              </label>
+            </div>
+          </div>
+
+          <div class="row margin-top-20 margin-bottom-10">
+            <div class="col-md-3">
+              <strong style="color:darkblue">&nbsp; &nbsp; Comment</strong>
+            </div>
+            <div class="col-md-9">
+              <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+            </div>
+          </div>
+
+          <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
+          <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
+          <input type="hidden" name="url" value="<%= request.original_url %>"/>
+          <div class="modal-footer">
+            <input type="submit" class="btn-u rounded btn-u-blue" value="보내기"/>
+          </div>
+        </form>
+      </div>
+
     </div>
   </div>
-  <!-- Tab Self Evaluation END-->
 </div>
-<!-- Tab 관련 개념 -->
+<!-- Tab Self Evaluation END-->
 
+
+<!-- Tab 관련 개념 -->
 <!-- Modal -->
 <div class="modal fade" id="g" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -560,7 +538,7 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <div class="modal-title">
-          <span class="label rounded-2x label-aqua">관련 개념</span>
+          <h4><span style="color: green"><i class="fa fa-link"></i></span> 관련개념</h4>
         </div>
       </div>
       <div class="modal-body">
@@ -570,7 +548,7 @@
 
             <% @links.each do | link | %>
 
-                <div class="col-md-4 content-boxes-v6 md">
+                <div class="col-md-4 col-xs-6 content-boxes-v6 md">
                   <a href="/contents/<%= link.id %>" target="_blank"><i class="rounded-x icon-link"></i></a>
                   <h1 class="title-v3-md text-uppercase margin-bottom-10"><p> <%= link.name %></p></h1>
                 </div>
@@ -581,7 +559,7 @@
 
       </div>
       <div class="modal-footer">
-        <button data-dismiss="modal" class="btn rounded btn-success" type="button" >확인</button>
+        <button data-dismiss="modal" class="btn-u rounded btn-u-blue" type="button" >닫기</button>
       </div>
     </div>
   </div>
@@ -589,6 +567,7 @@
 
 <!-- Tab 관련 개념 END-->
 
+<!-- 질문하기 -->
 <!-- Modal -->
 <div class="modal fade" id="question" role="dialog">
 
@@ -604,11 +583,12 @@
         <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
         <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
         <input type="hidden" name="question[confirm_yn]" value="N" />
+        <input type="hidden" name="url" value="<%= request.original_url %>"/>
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <div class="modal-title">
-            <span class="label rounded-2x label-aqua">질문하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
+            <h4><span style="color: green"><i class="fa fa-comments-o"></i></span> 질문하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</h4>
           </div>
         </div>
 
@@ -636,7 +616,7 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn rounded btn-success" type="submit">확인</button>
+          <button class="btn-u rounded btn-u-blue" type="submit">보내기</button>
         </div>
 
       </form>
@@ -721,6 +701,7 @@
       }
     });
   });
+
   function viewSolution(imgCount) {
     $('#solution'+imgCount).slideDown( "slow", function() {});
     $('#selectSolution'+imgCount).slideDown("slow", function() {});
@@ -808,4 +789,22 @@
     var player = $f(iframe);
     player.api('pause');
   }
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#new_question').submit(function () {
+      $('#loading').show();
+      if ( $('#question_title').val() == ''){
+        alert('질문 제목을 입력하세요.');
+        $('#loading').hide();
+        return false;
+      }
+      else if ( $('#question_content').val() == ''){
+        alert('질문할 내용을 입력하세요.');
+        $('#loading').hide();
+        return false;
+      }
+    });
+  });
 </script>

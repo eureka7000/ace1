@@ -26,7 +26,7 @@ class UnitConceptSelfEvaluationsController < ApplicationController
   def create
     @unit_concept_self_evaluation = UnitConceptSelfEvaluation.new(unit_concept_self_evaluation_params)
 
-    #데이터를 보낸 url 주소를 받는다, 질문하기가 이용되는 곳이 여러곳이므로 보낸 주소를 받아 리턴해준다.
+    #데이터를 보낸 url 주소를 받는다, 자기평가가 이용되는 곳이 여러곳이므로 보낸 주소를 받아 리턴해준다.
     url = params[:url]
 
     respond_to do |format|

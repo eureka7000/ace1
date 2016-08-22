@@ -1,64 +1,35 @@
-<div class="row" style="margin: 20px;">
+<div class="row no-margin">
 
-  <div class="col-md-12">
+  <div class="col-md-12 no-margin margin-bottom-20">
+
+    <% type2Count = 0 %>
+    <% type3Count = 0 %>
+    <% linkCount = 0 %>
+    <% type4Count = 0 %>
+    <% @unit_concept_descs.each do |unit_concept_desc| %>
+        <% if unit_concept_desc.desc_type.to_i == 2 %>
+            <% type2Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 3 %>
+            <% type3Count +=1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 4 %>
+            <% type4Count +=1 %>
+        <% end %>
+    <% end %>
+
+    <% @links.each do |link| %>
+        <% linkCount += 1 %>
+    <% end %>
 
     <!-- tabs right -->
     <div class="tabbable">
-      <ul class="nav nav-pills nav-stacked col-sm-1 col-sm-push-11" id="nav-pills">
 
-        <% type2Count = 0 %>
-        <% type3Count = 0 %>
-        <% linkCount = 0 %>
-        <% type4Count = 0 %>
-        <% @unit_concept_descs.each do |unit_concept_desc| %>
-            <% if unit_concept_desc.desc_type.to_i == 2 %>
-                <% type2Count +=1 %>
-            <% elsif unit_concept_desc.desc_type.to_i == 3 %>
-                <% type3Count +=1 %>
-            <% elsif unit_concept_desc.desc_type.to_i == 4 %>
-                <% type4Count +=1 %>
-            <% end %>
-        <% end %>
 
-        <% @links.each do |link| %>
-            <% linkCount += 1 %>
-        <% end %>
-
-        <% if @is_exercise == 1 %>
-            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><%= params[:synthesis] == '1' ? '종합문제' : '유형문제' %></a></li>
-            <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">해 설</a></li>
-            <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
-            <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">관련 개념<span class="badge rounded-2x"><%= linkCount %></span></a></li>
-            <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">Video <span class="badge rounded-2x"><%= type4Count %></span></a></li>
-            <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">Self Evaluation</a></li>
-            <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
-            <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
-            <% unless params[:exercise_type] == "concept_exercise" %>
-                <% @similar_exercises.each do |similar_exercise| %>
-                    <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
-                <% end %>
-            <% end %>
-
-        <% else %>
-            <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()">유사문제</a></li>
-            <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">Solution</a></li>
-            <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">질문하기</a></li>
-            <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">프린트</a></li>
-
-            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><%= @exercise.name %></a></li>
-            <% @similar_exercises.each do |similar_exercise| %>
-                <li class="<%= 'hidden' unless similar_exercise.id.to_i != params[:unit_concept_id].to_i %>"><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><%= similar_exercise.name %></a></li>
-            <% end %>
-        <% end %>
-
-      </ul>
-
-      <div class="tab-content col-sm-11 col-sm-pull-1">
+      <div class="tab-content">
 
         <!-- Tab 문제 -->
         <div class="tab-pane active" id="d">
 
-          <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
@@ -75,24 +46,22 @@
 
               <% if imgCount == 1 || imgCount == 2 %>
 
-                  <div class="col-md-9"></div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
 
               <% else %>
 
-                  <div class="col-md-9"></div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn1" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
@@ -106,7 +75,7 @@
         <!-- Tab 설명 -->
         <div class="tab-pane" id="e">
 
-          <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
             <div style="overflow-y: auto; width: 100%;">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -118,7 +87,7 @@
 
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
@@ -164,30 +133,26 @@
         <!-- Tab Solution -->
         <div class="tab-pane" id="f">
 
-          <div class="col-md-12 margin-bottom-20 no-padding">
-
-            <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
                   <% unless unit_concept_desc.desc_type.to_i != 1 %>
                       <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
                   <% end %>
               <% end %>
 
-              <hr>
-
-              <a href="javascript:viewSolution()" class="btn btn-default" id="viewSolutionBtn">정답 보기</a>
+              <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
 
               <div>
                 <% @unit_concept_descs.each do | unit_concept_desc | %>
                     <% unless unit_concept_desc.desc_type.to_i != 7 %>
-                        <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
+                        <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 20px;"/>
                     <% end %>
                 <% end %>
               </div>
             </div>
 
             <!-- right lane -->
-            <div class="col-md-6">
+          <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
               <div style="overflow-y: auto; width: 100%;">
                 <%
@@ -199,36 +164,39 @@
 
                 %>
 
-                        <div class="margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>" <%= "hidden" unless imgCount == 1 %> >
-                          <img src="<%= unit_concept_desc.file_name %>" style="width:100%;"/>
+                        <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>" <%= "hidden" unless imgCount == 1 %> >
+                          <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%;"/>
                           <%
                             unless unit_concept_desc.link.blank?
                               ret_unit_concept = UnitConcept.find(unit_concept_desc.link)
                           %>
 
-                              <div>
 
-                                <h5 style="float:left; margin-right:20px">&#x27BF; 관련개념 : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></h5>
-
-                                <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: unit_concept_desc).order(created_at: :desc) %>
-                                <% unless recent_unit_concept_exercise_history.empty? %>
-                                    <h5 style="float:right; margin-left: 35px;">&#x27BF; 최근 :
-                                      <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %>
-                                    </h5>
-                                <% end %>
-
-                                <button class="btn btn-sm rounded btn-info" style="float:right; margin-left: 20px" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
-
-                                <h5 style="float:right; ">&#x27BF; 이해정도 :
-                                  <label class="radio-inline" style="margin-left: 15px; padding-bottom: 5px">
-                                    <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
+                                  <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
+                                    <label class="radio-inline">
+                                      <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
+                                    </label>
+                                    <label class="radio-inline">
+                                      <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
+                                    </label>
                                   </label>
-                                  <label class="radio-inline" style="padding-bottom: 5px">
-                                    <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
-                                  </label>
-                                </h5>
 
-                              </div>
+
+                                <button class="btn-u btn-u-sm rounded btn-u-orange margin-top-20 margin-left-10" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+
+
+
+                              <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: unit_concept_desc).order(created_at: :desc) %>
+                              <% unless recent_unit_concept_exercise_history.empty? %>
+                                  <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해:
+                                    <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %>
+                                  </label>
+                              <% end %>
+
+                              <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></label>
+
+
+                              <hr class="no-margin margin-top-20 devider devider-dotted">
 
                           <% end %>
                         </div>
@@ -239,22 +207,19 @@
                       end
                     %>
 
-                <div class="col-md-11 text-right">
-                  <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                <div class="col-md-12 margin-bottom-20 text-right">
+                  <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-50 margin-top-20">
                     <li>
-                      <button id="btn3" class="btn rounded btn-success" type="button" >다음</button>
-                      <span id="badge3" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                      <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                      <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                     </li>
                   </ul>
                 </div>
-                <div class="col-md-1 t text-right"></div>
-
               </div>
 
             </div>
             <!-- right lane -->
 
-          </div>
         </div>
         <!-- Tab Solution END -->
 
@@ -379,171 +344,240 @@
 
   </div>
   <!-- /tabs -->
+</div>
+<!-- Tab 관련 개념 END-->
 
-  <!-- Tab Self Evaluation -->
-  <div class="modal fade" id="s" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <div class="modal-title">
-            <span class="label rounded-2x label-aqua">SELF EVALUATION</span>
-          </div>
-        </div>
 
-        <div class="modal-body">
-          <div class="row" style="margin-left: 5px; margin-right: 5px">
-            <strong style="color:blue">자기평가 이력</strong>
-            <table class="table">
-              <thead>
-              <th>날짜</th>
-              <th>난이도</th>
-              <th>Comment</th>
-              </thead>
 
-              <tbody>
-              <% @self_evaluations.each do |eval| %>
-                  <tr>
-                    <td><%= eval.created_at.strftime("%Y/%m/%d %H:%M") %></td>
-                    <td><%= eval.evaluation %></td>
-                    <td><%= eval.comment %></td>
-                  </tr>
-              <% end %>
-              </tbody>
-            </table>
-          </div>
 
-          <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+<link href="/assets/css/footers/sticky-footer.css" rel="stylesheet">
+<footer class="sticky-footer">
+  <div class="container">
+    <ul class="nav nav-pills list-inline badge-lists badge-icons btn-group dropup" id="nav-pills">
+      <% if @is_exercise == 1 %>
+          <li class="active dropdown-toggle" data-toggle="dropdown"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i> </a></li>
+          <ul class="dropdown-menu rounded" role="menu">
+            <% unless params[:exercise_type] == "concept_exercise" %>
+                <% @similar_exercises.each do |similar_exercise| %>
+                    <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
+                <% end %>
+            <% end %>
+          </ul>
+          <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
+          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i>&nbsp;</a></li>
+          <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i>&nbsp;</a></li>
+          <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">&nbsp;<i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i>&nbsp;</a></li>
+          <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i>&nbsp;</a></li>
+          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">&nbsp;<i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i>&nbsp;</a></li>
+          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i>&nbsp;</a></li>
 
-            <%= token_tag nil %>
+      <% else %>
+          <li class="active dropdown-toggle" data-toggle="dropdown"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-file tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i></a></li>
+          <ul class="dropdown-menu rounded" role="menu">
+            <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><i class="fa fa-book" style="color: purple"></i><%= @exercise.name %></a></li>
+            <% unless params[:exercise_type] == "concept_exercise" %>
+                <% @similar_exercises.each do |similar_exercise| %>
+                    <li class="<%= 'hidden' unless similar_exercise.id.to_i != params[:unit_concept_id].to_i %>"><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
+                <% end %>
+            <% end %>
+          </ul>
 
-            <div class="row">
-              <div class="col-md-3">
-                <strong style="color:blue">난이도</strong>
-              </div>
-              <div class="col-md-9">
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
-                </label>
-                <label class="radio-inline">
-                  <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
-                </label>
-              </div>
-            </div>
+          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-cogs tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"></i>&nbsp;</a></li>
+          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">&nbsp;<i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i>&nbsp;</a></li>
+          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i>&nbsp;</a></li>
+      <% end %>
 
-            <div class="row" style="margin-top: 10px; ">
-              <div class="col-md-3">
-                <strong style="color:blue">Comment</strong>
-              </div>
-              <div class="col-md-9">
-                <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
-              </div>
-            </div>
+    </ul>
+  </div>
+</footer>
 
-            <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
-            <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
-            <input type="hidden" name="url" value="<%= request.original_url %>"/>
-            <div class="modal-footer">
-              <input type="submit" class="btn rounded btn-success" value="확인"/>
-            </div>
-          </form>
+
+<!-- Tab Self Evaluation -->
+
+<!-- Modal -->
+<div class="modal fade" id="s" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-title">
+          <h4><span style="color: darkgreen"><i class="fa fa-pencil-square-o"></i></span> 자기평가</h4>
         </div>
       </div>
-    </div>
-  </div>
-  <!-- Tab Self Evaluation END-->
 
-  <!-- Tab 관련 개념 -->
-  <div class="modal fade" id="g" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <div class="modal-title">
-            <span class="label rounded-2x label-aqua">관련 개념</span>
-          </div>
+      <div class="modal-body">
+
+        <div class="row" style="margin-left: 5px; margin-right: 5px">
+
+          <h5><strong style="color:darkblue">자기평가 이력</strong></h5>
+
+          <table class="table">
+            <thead>
+            <th class="text-center">날짜</th>
+            <th class="text-center">난이도</th>
+            <th class="text-center">Comment</th>
+            </thead>
+
+            <tbody>
+            <% unless @self_evaluations.blank? %>
+                <% @self_evaluations.each do |eval| %>
+                    <tr>
+                      <td class="text-center"><%= eval.created_at.in_time_zone("Asia/Seoul").strftime("%Y/%m/%d %H:%M") %></td>
+                      <td class="text-center"><%= eval.evaluation %></td>
+                      <td><%= eval.comment %></td>
+                    </tr>
+                <% end %>
+            <% else %>
+                <tr>
+                  <td colspan="3" class="text-center"> - 평가 이력이 없습니다 - </td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
         </div>
 
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-6">
-              <% @links.each do | link | %>
-                  <div class="col-md-4 content-boxes-v6 md">
-                    <a href="/contents/<%= link.id %>" target="_blank"><i class="rounded-x icon-link"></i></a>
-                    <h1 class="title-v3-md text-uppercase margin-bottom-10"><p> <%= link.name %></p></h1>
-                  </div>
-              <% end %>
-            </div><!-- /.col-lg-6 -->
-          </div><!-- /.row -->
-        </div>
+        <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
 
-        <div class="modal-footer">
-          <button data-dismiss="modal" class="btn rounded btn-success" type="button" >확인</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Tab 관련 개념 END-->
-
-  <!-- 질문하기 -->
-  <div class="modal fade" id="question" role="dialog">
-
-    <div class="modal-dialog">
-
-      <div class="modal-content">
-
-        <form action="/questions?concept_id=<%= params[:concept_id] %>&unit_concept_id<%= params[:unit_concept_id] %><%= '&exercise_type=concept_exercise&synthesis=1' unless params[:synthesis].nil? %>" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
           <%= token_tag nil %>
 
-          <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
-          <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
-          <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
-          <input type="hidden" name="question[confirm_yn]" value="N">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <div class="modal-title">
-              <span class="label rounded-2x label-aqua">질문 하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</span>
+          <div class="row">
+            <div class="col-md-3">
+              <h5><strong style="color:darkblue">&nbsp; &nbsp; 난이도</strong></h5>
+            </div>
+            <div class="col-md-9">
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
+              </label>
+              <label class="radio-inline">
+                <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
+              </label>
             </div>
           </div>
 
-          <div class="modal-body">
-
-            <div class="row">
-              <div class="col-md-2" style="text-align:right">제목</div>
-              <div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
+          <div class="row margin-top-20 margin-bottom-10">
+            <div class="col-md-3">
+              <strong style="color:darkblue">&nbsp; &nbsp; Comment</strong>
             </div>
-
-            <div class="row" style="margin-top: 10px">
-              <div class="col-md-2" style="text-align:right">내용</div>
-              <div class="col-md-10">
-                <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
-              </div>
+            <div class="col-md-9">
+              <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
             </div>
-
-            <div class="row" style="margin-top: 10px">
-              <div class="col-md-2" style="text-align:right">파일첨부</div>
-              <div class="col-md-10">
-                <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
-              </div>
-            </div>
-
           </div>
 
+          <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
+          <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
+          <input type="hidden" name="url" value="<%= request.original_url %>"/>
           <div class="modal-footer">
-            <button class="btn rounded btn-success" type="submit">확인</button>
+            <input type="submit" class="btn-u rounded btn-u-blue" value="보내기"/>
           </div>
-
         </form>
-
       </div>
 
     </div>
   </div>
 </div>
+<!-- Tab Self Evaluation END-->
+
+<!-- Tab 관련 개념 -->
+<div class="modal fade" id="g" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-title">
+          <h4><span style="color: green"><i class="fa fa-link"></i></span> 관련개념</h4>
+        </div>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-lg-12">
+
+            <% @links.each do | link | %>
+
+                <div class="col-md-4 col-xs-6 content-boxes-v6 md">
+                  <a href="/contents/<%= link.id %>" target="_blank"><i class="rounded-x icon-link"></i></a>
+                  <h1 class="title-v3-md text-uppercase margin-bottom-10"><p> <%= link.name %></p></h1>
+                </div>
+            <% end %>
+
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+
+      </div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn-u rounded btn-u-blue" type="button" >닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Tab 관련 개념 END-->
+
+<!-- 질문하기 -->
+
+<div class="modal fade" id="question" role="dialog">
+
+  <div class="modal-dialog">
+
+    <div class="modal-content">
+
+      <form action="/questions" id="new_question" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+
+        <%= token_tag nil %>
+
+        <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
+        <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
+        <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
+        <input type="hidden" name="question[confirm_yn]" value="N" />
+        <input type="hidden" name="url" value="<%= request.original_url %>"/>
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <div class="modal-title">
+            <h4><span style="color: green"><i class="fa fa-comments-o"></i></span> 질문하기 : to <%= @mento.user_name unless @mento.nil? %> 선생님.</h4>
+          </div>
+        </div>
+
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-2" style="text-align:right">제목</div>
+            <div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
+          </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div class="col-md-2" style="text-align:right">내용</div>
+            <div class="col-md-10">
+              <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div class="col-md-2" style="text-align:right">파일첨부</div>
+            <div class="col-md-10">
+              <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-u rounded btn-u-blue" type="submit">보내기</button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
