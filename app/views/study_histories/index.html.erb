@@ -11,22 +11,26 @@
                 <table class="table table-striped">
                 <thead>
                 <tr>
-                <th>User</th>    
-                <th>Unit concept</th>
-                <th>Segment</th>
-                <th>Status</th>
-                <th>Study Count</th>
+                <th>User</th>
+                <th>School</th>
+                <th>Grade</th>
+                <th>Studied Concept</th>
+                <th>Last Studied</th>
+                <th>Last Studied at</th>
                 </tr>
                 </thead>
+                
+                <!-- history.last_study, users.last_sign_in_at -->
 
                 <tbody>
                 <% @study_histories.each do |study_history| %>
                 <tr>
-                <td><%= study_history.user.user_name %></td>
-                <td><%= study_history.unit_concept.name %></td>
-                <td><%= study_history.segment %></td>
-                <td><%= study_history.status %></td>
-                <td><%= study_history.study_count %></td>
+                <td><%= study_history.user_name %></td>
+                <td><%= study_history.name %></td>
+                <td><%= UnitConcept::GRADES[study_history.grade.to_i] %></td>
+                <td><%= study_history.concept_count %></td>
+                <td><%= study_history.last_study %></td>
+                <td><%= study_history.last_sign_in_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M') %></td>
                 </tr>
                 <% end %>
                 </tbody>

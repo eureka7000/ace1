@@ -20,7 +20,40 @@ class StudyHistoriesController < ApplicationController
     
     def index
         page = params[:page].blank? ? 1 : params[:page]
-        @study_histories = StudyHistory.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        @study_histories = StudyHistory.paginate_by_sql(
+            "select history.user_id, users.user_name, users.grade, schools.name, history.concept_count, history.last_study, users.last_sign_in_at from (
+                select t.user_id, sum(t.concept_count) concept_count, max(t.concept_studying) last_study from (
+	                select d.user_id, count(d.concept_name) as concept_count, '' as concept_studying from (
+		                select a.user_id, c.concept_name from (
+			                select user_id, unit_concept_id 
+			                from study_histories
+			                where status = 'finish'
+			                group by user_id, unit_concept_id
+		                ) a, unit_concepts b, concepts c
+		                where a.unit_concept_id = b.id
+		                and b.concept_id = c.id
+		                group by a.user_id, c.concept_name
+	                ) d
+	            group by d.user_id
+
+	            union all
+	 
+	            select a.user_id, 0 as concept_count, d.concept_name
+	            from study_histories a, 
+		        (
+			        select user_id, max(created_at) created_at
+			        from study_histories 
+			        group by user_id 
+		         ) b, unit_concepts c, concepts d
+		         where a.created_at = b.created_at
+		         and a.unit_concept_id = c.id
+		         and c.concept_id = d.id    
+                 ) t
+            group by t.user_id
+            ) history, users
+            left outer join schools on users.school_id = schools.id
+            where history.user_id = users.id", :page => page, :per_page => 30)
+        
         render :layout => 'layouts/admin_main'
     end
 
