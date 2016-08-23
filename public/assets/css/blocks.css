@@ -2886,10 +2886,10 @@
 ------------------------------------*/
 .interactive-slider-v2 {
   z-index: 1;
-  padding: 200px 0;
+  padding: 100px 0;
   position: relative;
   text-align: center;
-  background: url(../img/bg/18.jpg) no-repeat;
+  background: url(../img/bg/7.jpg) no-repeat;
   background-size: cover;
   background-position: center center;
 }
@@ -2919,10 +2919,11 @@
 
 .interactive-slider-v2 h1 {
   color: #fff;
-  font-size: 70px;
+  font-size: 50px;
   font-weight: 600;
   line-height: 80px;
   text-transform: uppercase;
+  margin-top: 70px;
 }
 
 .interactive-slider-v2 p {
@@ -2934,9 +2935,13 @@
 
 @media (max-width: 768px) {
   .interactive-slider-v2 h1 {
-    font-size: 50px;
+    font-size: 30px;
     line-height: 60px;
-    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  .interactive-slider-v2 p {
+    font-size: 20px;
+    line-height: 60px;
   }
 }
 

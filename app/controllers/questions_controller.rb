@@ -33,7 +33,10 @@ class QuestionsController < ApplicationController
     def create
         
         @question = Question.new(question_params)
-        
+
+        #데이터를 보낸 url 주소를 받는다, 질문하기가 이용되는 곳이 여러곳이므로 보낸 주소를 받아 리턴해준다.
+        url = params[:url]
+
         respond_to do |format|
             
             if @question.save
@@ -57,15 +60,8 @@ class QuestionsController < ApplicationController
                     UserMailer.noti_question(mento, current_user, @question, @concept).deliver
                 end
 
-                unless params[:concept_id].nil?
-                    unless params[:synthesis].nil?
-                        format.html { redirect_to "/contents/exercise?concept_id=#{params[:concept_id]}&unit_concept_id=#{params[:question][:unit_concept_id]}&exercise_type=concept_exercise&synthesis=1", notice: '질문하기가 성공적으로 등록되었습니다.' }
-                    else
-                        format.html { redirect_to "/contents/exercise?concept_id=#{params[:concept_id]}&unit_concept_id=#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
-                    end
-                else
-                    format.html { redirect_to "/contents/#{params[:question][:unit_concept_id]}", notice: '질문하기가 성공적으로 등록되었습니다.' }
-                end
+
+                format.html { redirect_to url, notice: '질문하기가 성공적으로 등록되었습니다.' }
 
             end
         end
