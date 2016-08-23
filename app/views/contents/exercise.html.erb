@@ -103,22 +103,20 @@
               <% end %>
 
               <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-9"></div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
               <% else %>
-                  <div class="col-md-9"></div>
-                  <div class="col-md-3">
+                  <div class="col-md-12 text-right">
                     <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
                       <li>
-                        <button id="btn2" class="btn rounded btn-success" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-red rounded-2x" ><%= imgCount-2 %></span>
+                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
+                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                       </li>
                     </ul>
                   </div>
@@ -208,7 +206,7 @@
                     %>
 
                 <div class="col-md-12 margin-bottom-20 text-right">
-                  <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-50 margin-top-20">
+                  <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-20 margin-top-20">
                     <li>
                       <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
                       <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
@@ -346,30 +344,34 @@
 
 <link href="/assets/css/footers/sticky-footer.css" rel="stylesheet">
 <footer class="sticky-footer">
-  <div class="container">
-    <ul class="nav nav-pills list-inline badge-lists badge-icons btn-group dropup" id="nav-pills">
+  <div class="container text-center">
+    <ul class="list-inline badge-lists badge-icons btn-group dropup">
       <% if @is_exercise == 1 %>
           <% unless params[:exercise_type] == "concept_exercise" %>
-          <li class="dropdown-toggle" data-toggle="dropdown"><a style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-folder-open-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제폴더" style="color: purple"> <span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span>&nbsp;</i></a></li>
+              <li class="dropdown-toggle" data-toggle="dropdown"><a style="text-align: center" onclick="videoPause()"><i class="fa fa-folder-open-o" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i></a></li>
           <ul class="dropdown-menu rounded" role="menu">
-
+            <li class="text-center">문제폴더</li>
+            <li class="divider"></li>
                 <% @similar_exercises.each do |similar_exercise| %>
-                    <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
+                <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
                 <% end %>
           </ul>
           <% end %>
 
-          <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"></i> </a></li>
-          <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
-          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i>&nbsp;</a></li>
-          <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i>&nbsp;</a></li>
-          <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center">&nbsp;<i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i>&nbsp;</a></li>
-          <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i>&nbsp;</a></li>
-          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">&nbsp;<i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i>&nbsp;</a></li>
-          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i>&nbsp;</a></li>
+          <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"></i></a></li>
+          <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
+          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i></a></li>
+          <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i></a></li>
+          <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" data-toggle="tab" style="text-align: center"><i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i></a></li>
+          <li><a href="#s" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i></a></li>
+          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
+          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
+
       <% else %>
-          <li class="dropdown-toggle" data-toggle="dropdown"><a style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-folder-open-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제폴더" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i>&nbsp;</a></li>
+          <li class="dropdown-toggle" data-toggle="dropdown"><a style="text-align: center" onclick="videoPause()"><i class="fa fa-folder-open-o" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i></a></li>
           <ul class="dropdown-menu rounded" role="menu">
+            <li class="text-center">문제폴더</li>
+            <li class="divider"></li>
             <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= @exercise.id %>"><i class="fa fa-book" style="color: purple"></i><%= @exercise.name %></a></li>
             <% unless params[:exercise_type] == "concept_exercise" %>
                 <% @similar_exercises.each do |similar_exercise| %>
@@ -379,9 +381,9 @@
           </ul>
 
           <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-file tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"></i></a></li>
-          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-cogs tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"></i>&nbsp;</a></li>
-          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center">&nbsp;<i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i>&nbsp;</a></li>
-          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()">&nbsp;<i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i>&nbsp;</a></li>
+          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-cogs tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"></i></a></li>
+          <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
+          <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
       <% end %>
 
     </ul>
@@ -542,19 +544,19 @@
         <div class="modal-body">
 
           <div class="row">
-            <div class="col-md-2" style="text-align:right">제목</div>
+            <div class="col-md-2" style="text-align:left">제목</div>
             <div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
           </div>
 
           <div class="row" style="margin-top: 10px">
-            <div class="col-md-2" style="text-align:right">내용</div>
+            <div class="col-md-2" style="text-align:left">내용</div>
             <div class="col-md-10">
               <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
             </div>
           </div>
 
           <div class="row" style="margin-top: 10px">
-            <div class="col-md-2" style="text-align:right">파일첨부</div>
+            <div class="col-md-2" style="text-align:left">파일첨부</div>
             <div class="col-md-10">
               <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
             </div>
