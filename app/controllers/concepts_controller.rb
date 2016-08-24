@@ -79,7 +79,13 @@ class ConceptsController < ApplicationController
   
     def exercise
         @unit_concept = @concept
-        @concept_exercises = @concept.concept_exercises.order(:desc_type, :memo)
+        @desc_type = params[:desc_type]
+        
+        if @desc_type.nil?
+            @concept_exercises = @concept.concept_exercises.order(:desc_type, :memo)
+        else
+            @concept_exercises = @concept.concept_exercises.where('desc_type = ?',@desc_type).order(:desc_type, :memo)
+        end        
         @origin = "concept exercise"
     end    
           
