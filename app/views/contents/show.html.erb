@@ -474,7 +474,7 @@
                     <tr>
                       <td class="text-center"><%= eval.created_at.in_time_zone("Asia/Seoul").strftime("%Y/%m/%d %H:%M") %></td>
                       <td class="text-center"><%= eval.evaluation %></td>
-                      <td><%= eval.comment %></td>
+                      <td><%= simple_format(eval.comment) %></td>
                     </tr>
                 <% end %>
             <% else %>
