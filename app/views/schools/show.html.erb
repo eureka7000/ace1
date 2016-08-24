@@ -95,6 +95,35 @@
         </table>
     </div>
     
-    <%= link_to '관리자 등록', new_admin_path + "?school_id=#{@school.id}", :class => 'btn btn-primary align-right' %>     
+    <%= link_to '관리자 등록', new_admin_path + "?school_id=#{@school.id}", :class => 'btn btn-primary align-right' %> 
+    
+    <hr>
+    
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h4 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> 학교/학원 교사</h4>
+        </div>
+    </div>   
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>전자우편</th>
+                    <th>학생수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @school.teachers.each do |teacher| %>
+                <tr>
+                    <td><%= teacher.user.user_name %></td>
+                    <td><%= teacher.user.email %></td>
+                    <td><%= teacher.user.user_relations.count %></td>
+                </tr>
+                <% end %>
+            </tbody>
+        </table>
+    </div>    
     
 </div>
