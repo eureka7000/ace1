@@ -6,7 +6,7 @@ class ConceptsController < ApplicationController
 
     def get_concepts
        
-        concepts = Concept.where('category = ? and sub_category = ?',params[:category], params[:sub_category])
+        concepts = Concept.where('category = ? and sub_category = ? and exercise_yn = ?',params[:category], params[:sub_category], 'concept')
         render :json => concepts
         
     end    
