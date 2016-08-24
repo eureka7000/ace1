@@ -17,6 +17,7 @@
                 <th>Studied Concept</th>
                 <th>Last Studied</th>
                 <th>Last Studied at</th>
+                <th><i class="fa fa-cog"></i></th>
                 </tr>
                 </thead>
                 
@@ -31,6 +32,7 @@
                 <td><%= study_history.concept_count %></td>
                 <td><%= study_history.last_study %></td>
                 <td><%= study_history.last_sign_in_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M') %></td>
+                <td><%= link_to 'Show', "/study_histories/detail?user_id=#{study_history.user_id}" %></td>
                 </tr>
                 <% end %>
                 </tbody>

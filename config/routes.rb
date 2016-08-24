@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
+    get '/study_histories/detail' => 'study_histories#detail'
     resources :study_histories
+    
+    
     resources :inicis_payments
     resources :user_types
     resources :concept_exercises
