@@ -1,79 +1,78 @@
-<hr>
-<h3 class="margin-bottom-20"><span style="color: #00a2ed;"><i class="fa fa-pencil"></i></span> 블로그 등록하기</h3>
-
 <%= form_for(@blog) do |f| %>
-    <div class="tab-content">
-    <div class="profile-edit">
-      <dl class="dl-horizontal">
-        <% if @blog.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
-              <ul>
-                <% @blog.errors.full_messages.each do |message| %>
-                    <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-        <% end %>
 
-        <input type="hidden" name="blog[content]" id="blog_content">
-        <input type="hidden" name="blog[user_id]" value="<%= session[:admin].nil? ? current_user.id : session[:admin]['id'] %>">
-        <input type="hidden" name="blog[admin_yn]" value="<%= session[:admin].nil? ? 'N' : 'Y' %>">
+    <% if @blog.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
+          <ul>
+            <% @blog.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+    <input type="hidden" name="blog[content]" id="blog_content">
+    <input type="hidden" name="blog[user_id]" value="<%= session[:admin].nil? ? current_user.id : session[:admin]['id'] %>">
+    <input type="hidden" name="blog[admin_yn]" value="<%= session[:admin].nil? ? 'N' : 'Y' %>">
 
-        <!--Inputs-->
-        <% unless session[:admin].nil? %>
-            <dt class="margin-top-20"><strong>블로그 타입 선택</strong></dt>
-        <% end %>
+    <!--Inputs-->
+    <% unless session[:admin].nil? %>
+        <section>
+          <label class="margin-top-20"><strong>블로그 타입 선택</strong></label>
+        </section>
+    <% end %>
 
-        <% unless session[:admin].nil? %>
-            <dd>
-            <label class="select">
-              <select class="form-control margin-top-20" id="blog_type" name="blog[blog_type]">
-                <option value="">&nbsp; 선택하기</option>
-                <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-                    <option value="<%= key %>" <%= "selected" if key == @blog.blog_type %> ><%= value %></option>
-                <% end %>
-              </select>
-            </label>
-            </dd>
-        <% end %>
-
-        <% if session[:admin].nil? %>
+    <% unless session[:admin].nil? %>
+        <section>
+        <label class="label select">
+          <select class="form-control" id="blog_type" name="blog[blog_type]">
+            <option value="">&nbsp; 선택하기</option>
             <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
-                <% if @blog_type == key %>
-                    <input hidden name="blog[blog_type]" value="<%= key %>">
-                    <h4>- <%= value %> -</h4>
-                <% end %>
+                <option value="<%= key %>" <%= "selected" if key == @blog.blog_type %> ><%= value %></option>
+            <% end %>
+          </select>
+        </label>
+        </section>
+    <% end %>
+
+    <% if session[:admin].nil? %>
+        <% Blog::BLOG_TYPES.each_pair() do |key, value| %>
+            <% if @blog_type == key %>
+                <input hidden name="blog[blog_type]" value="<%= key %>">
+                <label>- <%= value %> -</label>
             <% end %>
         <% end %>
+    <% end %>
 
-        <dt class="margin-top-20"><strong>제 목</strong></dt>
-        <dd class="margin-top-20">
-          <input type="text" class="form-control" id="blog_title" name="blog[title]" placeholder="" value="<%= @blog.title %>">
-        </dd>
-        <!--End Inputs-->
+    <section>
+    <label class="margin-top-20">제 목</label>
+    <label class="label">
+      <input type="text" class="form-control" id="blog_title" name="blog[title]" placeholder="" value="<%= @blog.title %>">
+    </label>
+    </section>
+    <!--End Inputs-->
 
-        <!--내용입력-->
-        <dt class="margin-top-20"><strong>내 용</strong></dt>
+    <!--내용입력-->
+    <section>
+    <label class="margin-top-20">내 용</label>
+      <textarea class="form-control" name="blog[content]" rows="10"><%= raw @blog.content %></textarea>
+    </section>
 
-        <dd class="margin-top-20">
-          <textarea class="form-control" name="blog[content]" rows="10"><%= raw @blog.content %></textarea>
-        </dd>
+    <section>
+    <label class="margin-top-20">파일첨부</label>
+    <%= f.file_field :file_name, size: 20, maxlength: 25, readonly:true, :class => 'form-control' %>
+    </section>
 
-        <dt class="margin-top-20"><strong>파일첨부</strong></dt>
-        <dd class="margin-top-20">
-          <%= f.file_field :file_name, size: 20, maxlength: 25, readonly:true, :class => 'form-control' %>
-        </dd>
+    <hr>
 
-        <div class="col-md-12 text-right margin-top-20">
-          <% unless session[:admin].nil? %>
-              <a href="/blogs" class="btn-u rounded btn-u-yellow">뒤로</a>
-          <% else %>
-              <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
-          <% end %>
-          <button type="submit" class="btn-u rounded btn-u-dark-blue">저장</button>
-        </div>
-      </dl>
+    <div class="col-md-12 text-right margin-bottom-20">
+      <% unless session[:admin].nil? %>
+          <a href="/blogs" class="btn-u rounded btn-u-yellow">뒤로</a>
+      <% else %>
+          <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
+      <% end %>
+      <button type="submit" class="btn-u rounded btn-u-dark-blue margin-left-10">저장</button>
     </div>
-    </div>
+
+    </form>
+
 <% end %>
