@@ -75,6 +75,7 @@ Rails.application.routes.draw do
     get 'blogs/company_introduction' => 'blogs#company_introduction'
     get 'blogs/video_function_extension' => 'blogs#video_function_extension'
     get 'blogs/studying_screen_explanation' => 'blogs#studying_screen_explanation'
+    get 'blogs/contact_us' => 'blogs#contact_us'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
