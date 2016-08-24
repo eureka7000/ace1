@@ -14,9 +14,7 @@ class SchoolsController < ApplicationController
     # GET /schools/1
     # GET /schools/1.json
     def show
-        
         @admins = @school.admins
-        
     end
 
     # GET /schools/new
