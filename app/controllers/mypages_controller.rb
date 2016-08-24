@@ -39,29 +39,29 @@ class MypagesController < ApplicationController
 
         link_query = "select id, name, user_id, concept_id, memo, evaluation, comment, created_at, history, what from (
 
-	select a.id, a.name, b.user_id, a.concept_id, '' as memo, b.evaluation, b.comment, b.created_at, '' as history, 'evaluation' as what
-    from unit_concepts a, (
-		select ori.user_id, ori.unit_concept_id, ori.evaluation, ori.comment, ori.created_at from unit_concept_self_evaluations ori, (
-				SELECT user_id, unit_concept_id, max(created_at) creat FROM unit_concept_self_evaluations
-				where user_id = 8
-				group by user_id, unit_concept_id
-		) last_eval
-		where ori.created_at = last_eval.creat
-	) b
-	where a.id = b.unit_concept_id
+	            select a.id, a.name, b.user_id, a.concept_id, '' as memo, b.evaluation, b.comment, b.created_at, '' as history, 'evaluation' as what
+                    from unit_concepts a, (
+		                select ori.user_id, ori.unit_concept_id, ori.evaluation, ori.comment, ori.created_at from unit_concept_self_evaluations ori, (
+				        SELECT user_id, unit_concept_id, max(created_at) creat FROM unit_concept_self_evaluations
+				        where user_id = 8
+				        group by user_id, unit_concept_id
+		             ) last_eval
+		             where ori.created_at = last_eval.creat
+	                 ) b
+	                 where a.id = b.unit_concept_id
 
-	union all
+	                 union all
 
-	select c.id, c.name, e.user_id, c.concept_id, e.memo, '' as evaluation, '' as comment, '' as created_at, GROUP_CONCAT(e.ox SEPARATOR ' ') as history, 'exercise' as what
-    from unit_concepts c, (
-		select a.id, a.unit_concept_id, a.memo, b.ox, b.user_id from unit_concept_descs a, unit_concept_exercise_histories b
-		where a.id = b.unit_concept_desc_id and b.user_id = 8
-	) e
-	where c.id = e.unit_concept_id
-    group by c.id, c.name, e.user_id, e.memo
+	                 select c.id, c.name, e.user_id, c.concept_id, e.memo, '' as evaluation, '' as comment, '' as created_at, GROUP_CONCAT(e.ox SEPARATOR ' ') as history, 'exercise' as what
+                     from unit_concepts c, (
+		                 select a.id, a.unit_concept_id, a.memo, b.ox, b.user_id from unit_concept_descs a, unit_concept_exercise_histories b
+		                 where a.id = b.unit_concept_desc_id and b.user_id = 8
+	                 ) e
+	                 where c.id = e.unit_concept_id
+                     group by c.id, c.name, e.user_id, e.memo
 
-) d
-order by id, what, memo;"
+                     ) d
+                     order by id, what, memo;"
 
         @evaluations = UnitConcept.find_by_sql(link_query)
 
