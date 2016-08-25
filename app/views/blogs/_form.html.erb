@@ -10,7 +10,6 @@
           </ul>
         </div>
     <% end %>
-    <input type="hidden" name="blog[content]" id="blog_content">
     <input type="hidden" name="blog[user_id]" value="<%= session[:admin].nil? ? current_user.id : session[:admin]['id'] %>">
     <input type="hidden" name="blog[admin_yn]" value="<%= session[:admin].nil? ? 'N' : 'Y' %>">
 

@@ -1,0 +1,68 @@
+<div class="breadcrumbs col-md-12 margin-bottom-30">
+  <div class="container">
+    <h1 class="pull-left">Contacts us</h1>
+    <ul class="pull-right breadcrumb">
+      <li><a href="/">Home</a></li>
+      <!--<li>About</li>-->
+      <li class="active"><a href="/blogs/contact_us">Contact us</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="container content">
+  <div class="row margin-bottom-30">
+    <div class="col-md-8 mb-margin-bottom-30">
+
+      <form method="post" id="sky-form3" class="sky-form contact-style" novalidate="novalidate">
+        <fieldset class="no-padding">
+
+          <label>Message <span class="color-red">*</span></label>
+          <div class="row sky-space-20">
+            <div class="col-md-11 col-md-offset-0">
+              <div>
+                <textarea rows="8" name="message" id="message" class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <p><button type="submit" class="btn-u rounded btn-u-yellow">문의하기</button></p>
+        </fieldset>
+
+        <div class="message">
+          <i class="rounded-x fa fa-check"></i>
+          <p>Your message was successfully sent!</p>
+        </div>
+      </form>
+    </div><!--/col-md-9-->
+
+    <div class="col-md-4">
+      <!-- Contacts -->
+      <div class="headline"><h2>Contacts</h2></div>
+      <ul class="list-unstyled who margin-bottom-30">
+        <li><a href="#"><i class="fa fa-home"></i>경기도 성남시 분당구 매화로 50 송림프라자 303호</a></li>
+        <li><a href="#"><i class="fa fa-envelope"></i>info@eurekamath.co.kr</a></li>
+        <li><a href="#"><i class="fa fa-phone"></i>(사무실) 031-708-2400</a></li>
+        <li><a href="#"><i class="fa fa-fax tooltips"></i>(FAX) 031-708-0057</a></li>
+      </ul>
+
+      <!-- Business Hours -->
+      <div class="headline"><h2>근무시간</h2></div>
+      <ul class="list-unstyled margin-bottom-30">
+        <li><strong>월요일-금요일:</strong> 9:30am to 6:30pm</li>
+        <!--<li><strong>Saturday, Sunday:</strong> Closed</li>-->
+      </ul>
+
+      <!-- Why we are? -->
+      <div class="headline"><h2>Why we are?</h2></div>
+      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
+      <ul class="list-unstyled">
+        <li><i class="fa fa-check color-green"></i> Odio dignissimos ducimus</li>
+        <li><i class="fa fa-check color-green"></i> Blanditiis praesentium volup</li>
+        <li><i class="fa fa-check color-green"></i> Eos et accusamus</li>
+      </ul>
+    </div><!--/col-md-3-->
+  </div><!--/row-->
+
+</div>
+
+<%= render 'homes/footer' %>

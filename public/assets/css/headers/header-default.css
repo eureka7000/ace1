@@ -481,7 +481,7 @@
 /*Dropdown Submenu for BS3
 ------------------------------------*/
 .header .dropdown-submenu { 
-   position: relative; 
+   position: relative;
 }
 
 .header .dropdown > a:after,
@@ -510,9 +510,9 @@
 
 .header .dropdown-submenu > .dropdown-menu { 
 	top: 3px; 
-	left: 100%; 
+	left: 100%;
 	margin-top: -5px; 
-	margin-left: 0px; 
+	margin-left: 0px;
 }
 
 /*Submenu comes from LEFT side*/
@@ -538,6 +538,19 @@
 .header .dropdown-submenu.pull-left > .dropdown-menu {
 	left: -100%;
 	margin-left: 10px;
+}
+
+.header .dropdown-menu > .dropdown-submenu > a:after {
+	top: 5px;
+	left: 15px;
+	content: "\f104";
+}
+
+@media (max-width: 991px) {
+	.header .dropdown-menu > .dropdown-submenu > a:after {
+		right: 15px;
+		content: "\f107";
+	}
 }
 
 /*Dropdow Mmenu Icons (Font Awesome)*/
