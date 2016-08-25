@@ -45,10 +45,10 @@ class QuestionsController < ApplicationController
                 unless params[:question][:to_user_id].blank?
                     mento = User.find(params[:question][:to_user_id])
 
-                    unless mento.phone.nil?
-                        message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
-                        TwilioSms.sendSMS("+82"+mento.phone, message)
-                    end
+                    # unless mento.phone.nil?
+                    #     message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
+                    #     TwilioSms.sendSMS("+82"+mento.phone, message)
+                    # end
 
                     # Mail 발송
                     if params[:concept_id].nil?
@@ -57,9 +57,8 @@ class QuestionsController < ApplicationController
                     else
                         @concept = Concept.find(params[:concept_id])
                     end
-                    UserMailer.noti_question(mento, current_user, @question, @concept).deliver
+                    UserMailer.noti_question(mento, current_user, @question, @concept).deliver_later!
                 end
-
 
                 format.html { redirect_to url, notice: '질문하기가 성공적으로 등록되었습니다.' }
 

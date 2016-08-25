@@ -14,7 +14,7 @@ class RepliesController < ApplicationController
       if @question.save
         mentee = User.find(@question.user_id)
         # Mail 발송
-        UserMailer.noti_reply(mentee, current_user, @question).deliver
+        UserMailer.noti_reply(mentee, current_user, @question).deliver_later
       end
     end
 

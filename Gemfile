@@ -18,6 +18,8 @@ gem 'fog'
 gem 'will_paginate-bootstrap'
 gem 'twilio-ruby'
 gem 'httparty'
+gem 'sidekiq'
+gem 'redis-rails'
 
 group :development, :test do
   gem 'byebug'

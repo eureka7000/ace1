@@ -231,7 +231,7 @@ class UsersController < ApplicationController
             ret = { :error => '해당 정보로 학교(학원)관리자를 찾을 수 없습니다.' }
         end
         
-        UserMailer.cert_teacher(manager.first, current_user).deliver
+        UserMailer.cert_teacher(manager.first, current_user).deliver_later
         
         respond_to do |format|
             format.json { render :json => ret }

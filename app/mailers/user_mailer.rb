@@ -33,5 +33,5 @@ class UserMailer < ApplicationMailer
 
         mail(to: mentee.email, subject: "[Eureka Math] #{user.user_name} 선생님의 답변이 도착하였습니다.")
     end
-
+    
 end

@@ -55,7 +55,7 @@ class UserRelationsController < ApplicationController
             @to_user = User.find(@user_relation.related_user_id)
             
             # Mail 발송
-            UserMailer.request_relation(@to_user, current_user, @user_relation).deliver 
+            UserMailer.request_relation(@to_user, current_user, @user_relation).deliver_later
             
             flash[:notice] = "회원님과의 #{@user_relation.relation_type}관계를 #{@to_user.user_name}님에게 요청하였습니다."
         end        

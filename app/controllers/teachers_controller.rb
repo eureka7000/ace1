@@ -77,7 +77,7 @@ class TeachersController < ApplicationController
                   end
               else      
                   
-                  UserMailer.cert_teacher(school_manager.first, current_user).deliver
+                  UserMailer.cert_teacher(school_manager.first, current_user).deliver_later
               
                   @teacher = Teacher.new
                   @teacher.user_id = params[:user_id]
