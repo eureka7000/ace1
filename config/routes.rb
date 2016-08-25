@@ -3,7 +3,6 @@ Rails.application.routes.draw do
     get '/study_histories/detail' => 'study_histories#detail'
     resources :study_histories
     
-    
     resources :inicis_payments
     resources :user_types
     resources :concept_exercises
@@ -67,6 +66,7 @@ Rails.application.routes.draw do
     get 'mypages/payment' => 'mypages#payment'
     post 'mypages/user_image_upload' => 'mypages#user_image_upload'
     get 'mypages/study_progress_check' => 'mypages#study_progress_check'
+    get 'mypages/study_progress_detail' => 'mypages#study_progress_detail'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'

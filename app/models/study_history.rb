@@ -25,15 +25,34 @@ class StudyHistory < ActiveRecord::Base
             study_history.segment = params[:segment]
             study_history.status = params[:status]
             study_history.save
-        end        
+        end
         
     end
     
+    def self.get_study_history_detail(user_id)
+        
+        str = "select a.unit_concept_id, b.name as unit_concept_name, b.id, c.concept_name, c.id,
+                    sum(case when a.segment = 'concept' and a.status = 'start' then 1 else 0 end) as concept_start,
+                    sum(case when a.segment = 'concept' and a.status = 'finish' then 1 else 0 end) as concept_finish,
+                    sum(case when a.segment = 'concept_explanation' and a.status = 'start' then 1 else 0 end) as concept_explanation_start,
+        	        sum(case when a.segment = 'concept_explanation' and a.status = 'finish' then 1 else 0 end) as concept_explanation_finish,
+                    sum(case when a.segment = 'exercise' and a.status = 'start' then 1 else 0 end) as exercise_start,
+        	        sum(case when a.segment = 'exercise' and a.status = 'finish' then 1 else 0 end) as exercise_finish,
+                    sum(case when a.segment = 'video' and a.status = 'start' then 1 else 0 end) as video,
+        	        sum(case when a.segment = 'self_evaluation' and a.status = 'start' then 1 else 0 end) as self_evaluation   
+                from study_histories a, unit_concepts b, concepts c
+                where a.user_id = #{user_id}
+                and a.unit_concept_id = b.id
+                and b.concept_id = c.id
+                group by a.unit_concept_id
+                order by c.id, b.id"
+                
+        StudyHistory.find_by_sql(str)        
+        
+    end    
     
     def self.get_study_history(user_id, page)
         
-        mento_query = ""
-       
         str = "select history.user_id, users.user_name, users.grade, schools.name, history.concept_count, history.last_study, users.last_sign_in_at from (
             select t.user_id, sum(t.concept_count) concept_count, max(t.concept_studying) last_study from (
                 select d.user_id, count(d.concept_name) as concept_count, '' as concept_studying from (
@@ -42,8 +61,8 @@ class StudyHistory < ActiveRecord::Base
 		                from study_histories
 		                where status = 'finish' "
         
-        if user_id.nil?
-            str += "and user_id in ( select related_user_id from user_relations where user_id = #{user_id} )"
+        unless user_id.nil?
+            str += " and user_id in ( select related_user_id from user_relations where user_id = #{user_id} )"
         end    
         
         str += " group by user_id, unit_concept_id
@@ -65,8 +84,8 @@ class StudyHistory < ActiveRecord::Base
 	         ) b, unit_concepts c, concepts d
 	         where a.created_at = b.created_at "
              
-        if user_id.nil?
-            str += "and a.user_id in ( select related_user_id from user_relations where user_id = #{user_id} )"
+        unless user_id.nil?
+            str += " and a.user_id in ( select related_user_id from user_relations where user_id = #{user_id} )"
         end    
                  
         str += "        and a.unit_concept_id = c.id

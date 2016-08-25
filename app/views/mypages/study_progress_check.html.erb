@@ -28,10 +28,46 @@
                                 <p class="alert alert-danger"><%= alert %></p>
                             <% end %>
                             
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 학습진도확인</h3>
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-header"></i> 학습진도확인</h3>
                             
-                            <div class="heading heading-v4">
-                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                            <div class="table-search-v1 margin-bottom-20">
+
+                                <div class="table-responsive">
+                                    
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                    <th class="text-center">이름</th>
+                                    <th class="text-center">학년</th>
+                                    <th class="text-center">학습개념</th>
+                                    <th class="text-center">최근학습</th>
+                                    <th class="text-center">최근학습시간</th>
+                                    <th><i class="fa fa-cog"></i></th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <% if @study_histories.count == 0 %>
+                                    <tr>
+                                    <td colspan="6" class="text-center">담당 학생이 없거나 학습한 학생이 없습니다.</td>
+                                    </tr>
+                                    <% end %>
+                                    
+                                    <% @study_histories.each do | study_history | %>
+                                    <tr>
+                                    <td class="text-center"><%= study_history.user_name %></td>
+                                    <td class="text-center"><%= UnitConcept::GRADES[study_history.grade.to_i] %></td>
+                                    <td class="text-center"><%= study_history.concept_count %></td>
+                                    <td class="text-center"><%= study_history.last_study %></td>
+                                    <td class="text-center"><%= study_history.last_sign_in_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M') %></td>
+                                    <td><%= link_to 'Show', "/mypages/study_progress_detail?user_id=#{study_history.user_id}" %></td>
+                                    </tr>
+                                    <% end %>
+                                    </tbody>
+                                    </table>
+                                    
+                                </div>
+
                             </div>
                             
                         </div>    
