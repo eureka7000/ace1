@@ -3,8 +3,16 @@ class MypagesController < ApplicationController
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => :payment_return
     
+    def study_progress_detail
+        @click = 'study_progress'
+        @study_histories = StudyHistory.get_study_history_detail(params[:user_id])
+        @student = User.find(params[:user_id])
+    end    
+
     def study_progress_check
         @click = 'study_progress'
+        page = params[:page].blank? ? 1 : params[:page]
+        @study_histories = StudyHistory.get_study_history(current_user.id, page)
     end    
 
     def payment
