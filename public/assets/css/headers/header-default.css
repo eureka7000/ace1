@@ -541,7 +541,7 @@
 }
 
 .header .dropdown-menu > .dropdown-submenu > a:after {
-	top: 5px;
+	top: 7px;
 	left: 15px;
 	content: "\f104";
 }
