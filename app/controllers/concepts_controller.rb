@@ -1,7 +1,7 @@
 class ConceptsController < ApplicationController
 
     before_action :authenticate_admin_user!
-    before_action :set_concept, only: [:show, :edit, :update, :destroy, :exercise]
+    before_action :set_concept, only: [:edit, :update, :destroy, :exercise]
     layout '/layouts/admin_main'
 
     def get_concepts
@@ -61,9 +61,8 @@ class ConceptsController < ApplicationController
         
     end
 
-    # GET /concepts/1
-    # GET /concepts/1.json
     def show
+        @concept = Concept.where('id = ?',params[:id]).first
         @unit_concepts = UnitConcept.where('concept_id=?',params[:id]).order(:code)
         @exercises = UnitConcept.where('concept_id=? and exercise_yn = ?', params[:id], 'exercise').order(:code)
     end
