@@ -141,3 +141,6 @@ body {
     font-size: 14px;
 }
 
+.table-gray {
+    border: 1px solid gray !important;
+}

@@ -45,16 +45,29 @@ class UnitConceptsController < ApplicationController
     def edit
     end
 
+
     def create
-        @unit_concept = UnitConcept.new(unit_concept_params)
-        @unit_concept.save
         
-        ret = {
-            status: 'success'
-        }
+        # Duplicate entry Search
+        @unit_concept = UnitConcept.where('code = ?', params[:unit_concept][:code])
+        if @unit_concept.count > 0
+            @ret = {
+                status: 'fail',
+                message: 'Duplicated Code',
+                unit_concept: @unit_concept.first
+            }
+        else
+            @unit_concept = UnitConcept.new(unit_concept_params)
+            @unit_concept.save
         
-        render json: ret
+            @ret = {
+                status: 'success'
+            }
+        end        
+        
+        render json: @ret
     end
+
 
     def update
         @unit_concept.update(unit_concept_params)
