@@ -80,6 +80,7 @@ Rails.application.routes.draw do
     get 'blogs/studying_screen_explanation' => 'blogs#studying_screen_explanation'
     get 'blogs/contact_us' => 'blogs#contact_us'
     get 'blogs/recommendation' => 'blogs#recommendation'
+    get 'blogs/sign_in_process' => 'blogs#sign_in_process'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
