@@ -3,7 +3,21 @@ class UsersController < ApplicationController
     before_action :authenticate_admin_user!, only: [:new, :edit, :index, :multi_auth, :destroy]
     
     layout '/layouts/admin_main'
-    
+
+    def resend_mail
+        
+        if current_user.nil?
+            @ret = { status: 'fail' }
+        else
+            current_user.send_confirmation_instructions
+            @ret = { status: 'success' }    
+        end 
+        
+        render :json => @ret
+        
+    end 
+       
+
     def multi_auth_create
         
         users = params[:users]

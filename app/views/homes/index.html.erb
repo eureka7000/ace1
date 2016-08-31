@@ -260,3 +260,9 @@
   <%= render 'homes/footer' %>
 
 </div>
+
+<% unless current_user.nil? %>
+    <% if current_user.confirmed_at.nil? %>
+        <%= render partial: 'modals/notice_email_confirm' %>
+    <% end %>
+<% end %>
