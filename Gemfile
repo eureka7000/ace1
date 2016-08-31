@@ -20,6 +20,7 @@ gem 'twilio-ruby'
 gem 'httparty'
 gem 'sidekiq'
 gem 'redis-rails'
+gem 'exception_notification'
 
 group :development, :test do
   gem 'byebug'

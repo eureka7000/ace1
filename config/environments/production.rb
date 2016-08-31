@@ -79,8 +79,8 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => 'eurekamath.co.kr' }
   config.action_mailer.delivery_method = :smtp
-  #config.action_mailer.perform_deliveryies = true
-  #config.action_mailer.rais_delivery_errors = false
+  config.action_mailer.perform_deliveryies = true
+  config.action_mailer.rais_delivery_errors = true
   config.action_mailer.default :charset => "utf-8"
   
   config.action_mailer.smtp_settings = {
@@ -97,6 +97,16 @@ Rails.application.configure do
   config.inicis = {
       mid: 'eurekamath',
       sign_key: 'SEowWHFiSENnK0VJSVF1Y3llamlhZz09'
-  }    
+  } 
+  
+  # Exception Notification
+  config.middleware.use ExceptionNotification::Rack, 
+      :email => {
+          :email_prefix => "[PREFIX] ",
+          :sender_address => %{"notifier" <info@eurekamath.co.kr>},
+          :exception_recipients => %w{mcjung@eurekamath.co.kr}
+      }
   
 end
+
+
