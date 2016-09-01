@@ -1,6 +1,6 @@
 # Additional translations at https://github.com/plataformatec/devise/wiki/I18n
 
-en:
+ko:
   devise:
     confirmations:
       confirmed: "회원님의 Email이 성공적으로 인증되었습니다."

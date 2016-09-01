@@ -97,7 +97,7 @@
                       <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('회원가입', new_user_registration_path )%></span></li>
                   <% end %>
                   &nbsp;
-                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('로그아웃', destroy_user_session_path, :method => :delete) : link_to('로그인', new_user_session_path) %></span></li>
+                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('로그아웃', destroy_user_session_path, :method => :delete) : link_to( t(:log_in) , new_user_session_path) %></span></li>
                     <li></li>
                 </ul>
             </div>
