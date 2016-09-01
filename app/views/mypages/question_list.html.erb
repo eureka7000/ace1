@@ -81,7 +81,12 @@
 
                 <% @questions.each do |question| %>
 
-                    <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>
+                    <% if current_user.user_types[0].user_type == 'mento' %>
+                        <% @user = User.find(question.user_id) %>
+                        <% @school_name = '유레카매스' %><!-- 멘토 소속설정 -->
+                    <% end %>
+
+                    <% if current_user.user_types[0].user_type == 'school teacher' %>
                         <% @user = User.find(question.user_id) %>
                         <% @school_name = @user.school.name %>
                     <% end %>
