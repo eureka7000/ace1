@@ -223,26 +223,29 @@
 
         <!-- Tab Video -->
         <div class="tab-pane" id="v">
-
-          <div class="col-md-12">
+          <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20 no-margin no-padding"></div>
+          <div class="col-md-2"></div>
+          <div class="col-md-8 col-sm-12 col-xs-12 no-margin no-padding">
             <% unless params[:exercise_type] == 'concept_exercise' %>
-                <p>
+                <h5>
                   <% unless @unit_concept.level.nil? %>
                       <% rst = 5 - @unit_concept.level %>
-                      <span style="color:red">
-                          <% (1..@unit_concept.level).each do |idx| %>
-                          *
-                          <% end %>
-                          </span>
-                      <span style="color:gray">
-                          <% (1..rst).each do |idx| %>
-                          *
-                          <% end %>
-                      </span>
+                      <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                      <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
                   <% end %>
-                </p>
+                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+                </h5>
+            <% else %>
+                <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %></h5>
             <% end %>
-            <h3><span style="color:black"><%= @unit_concept_name %></h3>
 
             <div style="overflow-y: auto; ">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -255,7 +258,7 @@
               <% end %>
             </div>
           </div>
-
+          <div class="col-md-2"></div>
         </div> <!-- Tab Video END -->
 
         <!-- Tab 프린트 -->
@@ -265,7 +268,7 @@
 
             <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
               <% unless params[:exercise_type] == 'concept_exercise' %>
-                  <h6>
+                  <h5>
                     <% unless @unit_concept.level.nil? %>
                         <% rst = 5 - @unit_concept.level %>
                         <span style="-webkit-text-fill-color: orangered">
@@ -279,11 +282,8 @@
                     <% end %>
                     </span>
                     <% end %>
-                  </h6>
-              <% end %>
-
-              <% unless params[:exercise_type] == 'concept_exercise' %>
-                <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %></h5>
+                    <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+                  </h5>
               <% else %>
                   <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %></h5>
               <% end %>
