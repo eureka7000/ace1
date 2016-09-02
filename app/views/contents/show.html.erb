@@ -45,12 +45,12 @@
             <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20"></div>
             <% @unit_concept_related.each do |related| %>
                 <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
-                  <% unless count != 0 %>
-                      <p style="color: black; font-weight: bold;">now</p>
-                  <% else %>
-                      <p style="color: #898487"><%= 'next' %></p>
+                  <% if count == 0 %>
+                    <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/>개념화면 이동</a>
                   <% end %>
-                  <a href="/contents/<%= related.id %>"><i style="color: darkblue;" ></i>&nbsp;<span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                  <% if count == 1 %>
+                    <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" ></i><span style="color:black;"/> <%= related.name %> <i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                  <% end %>
                 </div>
                 <% count += 1 %>
             <% end %>
@@ -92,7 +92,7 @@
               <% end %>
 
               <div class="col-md-12 text-right">
-                <ul <% 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
                   <li>
                     <button id="btn1" class="btn-u rounded btn-u-blue" type="button" onclick="btn1(<%= type2Count %>)">다음</button>
                     <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
