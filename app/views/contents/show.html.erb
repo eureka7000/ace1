@@ -91,25 +91,15 @@
                   <% end %>
               <% end %>
 
-              <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-12 text-right">
-                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% else %>
-                  <div class="col-md-12 text-right">
-                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% end %>
+              <div class="col-md-12 text-right">
+                <ul <% 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                  <li>
+                    <button id="btn1" class="btn-u rounded btn-u-blue" type="button" onclick="btn1(<%= type2Count %>)">다음</button>
+                    <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
+                <a hidden id="go_e" href="#e" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념해설</button></a>
+              </div>
 
             </div>
           </div>
@@ -157,25 +147,16 @@
                       <% imgCount += 1 %>
                   <% end %>
               <% end %>
-              <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-12 margin-bottom-50 text-right">
-                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% else %>
-                  <div class="col-md-12 margin-bottom-50 text-right">
-                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% end %>
+
+              <div class="col-md-12 margin-bottom-50 text-right">
+                <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                  <li>
+                    <button id="btn2" class="btn-u rounded btn-u-blue" type="button" onclick="btn2(<%= type3Count %>)" >다음</button>
+                    <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
+                <a hidden id="go_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념문제</button></a>
+              </div>
             </div>
           </div>
         </div> <!-- Tab 개념 설명 END -->
@@ -294,28 +275,18 @@
                       <% imgCount += 1 %>
                   <% end %>
               <% end %>
-              <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-12 text-right">
-                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% else %>
-                  <div class="col-md-12 text-right">
-                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% end %>
+
+              <div class="col-md-12 text-right">
+                <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                  <li>
+                    <button id="btn3" class="btn-u rounded btn-u-blue" type="button" onclick="btn3(<%= type4Count %>)" >다음</button>
+                    <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
+                <a hidden id="go_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+              </div>
             </div>
           </div>
-
         </div> <!-- Tab Exercise END -->
 
         <!-- Tab Video -->
@@ -350,7 +321,9 @@
               <% end %>
           </div>
           <div class="col-md-2"></div>
-
+          <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20 text-center">
+            <a href="#s" data-toggle="modal" onclick="videoPause()"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
+          </div>
         </div> <!-- Tab Video END -->
 
         <!-- Tab 프린트 -->
@@ -426,13 +399,13 @@
   <div class="container text-center">
     <ul class="list-inline badge-lists badge-icons">
       <li class="active"><a href="#d" id="concept" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type1count %></span></i></a></li>
-      &nbsp;<li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" id="concept_explanation" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
-      &nbsp;<li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" id="exercise" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i></a></li>
-      &nbsp;<li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i></a></li>
-      &nbsp;<li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" id="video" data-toggle="tab" style="text-align: center"><i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i></a></li>
-      &nbsp;<li><a href="#s" id="self_evaluation" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i></a></li>
-      &nbsp;<li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
-      &nbsp;<li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
+      <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" id="concept_explanation" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
+      <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" id="exercise" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i></a></li>
+      <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i></a></li>
+      <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" id="video" data-toggle="tab" style="text-align: center"><i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i></a></li>
+      <li><a href="#s" id="self_evaluation" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i></a></li>
+      <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
+      <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
     </ul>
   </div>
 </footer>
@@ -637,59 +610,100 @@
   concept_explanation_index = 2;
   exercise_index = 2;
 
+  function btn1(type2count) {
+
+    $("#ucd1"+concept_index).show();
+    concept_index++;
+
+    var count = Number($("#badge1").text());
+    if (count == -1) {
+      count = 0;
+    }
+    if (count > 0) {
+      $("#badge1").text(count-1);
+    }
+    if (count == 1) {
+      $("#btn1").hide();
+      $("#badge1").hide();
+
+      update_study_history('concept', 'finish');
+
+      if (type2count != 0){
+        $("#go_e").show();
+      }
+    }
+  }
+
+  function btn2(type3count) {
+    $("#ucd2"+concept_explanation_index).show();
+    concept_explanation_index++;
+
+    var count = Number($("#badge2").text());
+    if (count > 0 ){
+      $("#badge2").text(count-1);
+    }
+    if (count == 1){
+      $("#btn2").hide();
+      $("#badge2").hide();
+      update_study_history('concept explanation', 'finish');
+
+      if (type3count != 0){
+        $("#go_f").show();
+      }
+    }
+  }
+
+  function btn3(type4count) {
+    $("#exercise1" + exercise_index).show();
+    exercise_index++;
+
+    var count = Number($("#badge3").text());
+    if (count == -1) {
+      count = 0;
+    }
+    if (count > 0) {
+      $("#badge3").text(count - 1);
+    }
+    if (count == 1) {
+      $("#btn3").hide();
+      $("#badge3").hide();
+
+      if (type4count != 0) {
+        $("#go_v").show();
+      }
+    }
+  }
+
+  function update_study_history(segment, status) {
+
+    $('#loading').show();
+
+    var url = "/study_histories/";
+
+    var data = {
+      "study_history" : {
+        "user_id" : <%= current_user.id %>,
+        "unit_concept_id" : <%= @unit_concept.id %>,
+        "segment" : segment,
+        "status" : status
+      }
+    }
+    $.ajax({
+      url: url,
+      type: "POST",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      datatype: "json",
+      data:data,
+      success : function(data) {
+        $('#loading').hide();
+      },
+      error : function(){
+        $('#loading').hide();
+      }
+    });
+  }
+
   $(document).ready(function(){
-
-    $("#btn1").click(function(){
-
-      $("#ucd1"+concept_index).show();
-      concept_index++;
-
-      var count = Number($("#badge1").text());
-      if (count == -1) {
-        count = 0;
-      }
-      if (count > 0) {
-        $("#badge1").text(count-1);
-      }
-      if (count == 1) {
-        $("#btn1").hide();
-        $("#badge1").hide();
-        update_study_history('concept', 'finish');
-
-      }
-    });
-
-    $("#btn2").click(function(){
-      $("#ucd2"+concept_explanation_index).show();
-      concept_explanation_index++;
-
-      var count = Number($("#badge2").text());
-      if (count > 0 ){
-        $("#badge2").text(count-1);
-      }
-      if (count == 1){
-        $("#btn2").hide();
-        $("#badge2").hide();
-        update_study_history('concept explanation', 'finish');
-      }
-    });
-
-    $("#btn3").click(function(){
-      $("#exercise1"+exercise_index).show();
-      exercise_index++;
-
-      var count = Number($("#badge3").text());
-      if(count == -1){
-        count = 0;
-      }
-      if (count > 0){
-        $("#badge3").text(count-1);
-      }
-      if (count == 1){
-        $("#btn3").hide();
-        $("#badge3").hide();
-      }
-    });
 
     <!-- 자기평가 data check 보내기 -->
     $('#new_unit_concept_self_evaluation').submit(function () {
@@ -710,34 +724,7 @@
       update_study_history($(this).attr("id"), "start");
     });
 
-    function update_study_history(segment, status) {
 
-      $('#loading').show();
-
-      var url = "/study_histories/";
-
-      var data = {
-        "study_history" : {
-          "user_id" : <%= current_user.id %>,
-          "unit_concept_id" : <%= @unit_concept.id %>,
-          "segment" : segment,
-          "status" : status
-        }
-      }
-      $.ajax({
-        url: url,
-        type: "POST",
-        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-        datatype: "json",
-        data:data,
-        success : function(data) {
-          $('#loading').hide();
-        },
-        error : function(){
-          $('#loading').hide();
-        }
-      });
-    }
     });
 
   function viewSolution(imgCount) {
@@ -785,7 +772,6 @@
   }
 
 </script>
-
 
 
 <!-- Print method -->
