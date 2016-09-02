@@ -2,7 +2,7 @@
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
-<% if current_user.grade.nil? %>
+<% if current_user.user_types[0].user_type == 'student' && current_user.grade.nil? %>
 
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
