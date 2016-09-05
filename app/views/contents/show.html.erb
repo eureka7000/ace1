@@ -33,9 +33,9 @@
             <% @unit_concept_related.each do |related| %>
                 <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
                   <% if count == 0 || count == 2 %>
-                    <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
+                      <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
                   <% else %>
-                    <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/>개념화면 이동</a>
+                      <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/>개념화면 이동</a>
                   <% end %>
                 </div>
                 <% count += 1 %>
@@ -46,15 +46,43 @@
             <% @unit_concept_related.each do |related| %>
                 <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
                   <% if count == 0 %>
-                    <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/>개념화면 이동</a>
+                      <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/>개념화면 이동</a>
                   <% end %>
                   <% if count == 1 %>
-                    <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" ></i><span style="color:black;"/> <%= related.name %> <i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
+                      <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" ></i><span style="color:black;"/> <%= related.name %> <i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
                   <% end %>
                 </div>
                 <% count += 1 %>
             <% end %>
         <% end %>
+
+        <!-- 권한 검사 -->
+        <% if @unit_concept.level > 1 && !current_user.can_I_use? %>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20 no-margin no-padding text-center">
+              <h5 class="margin-top-20">
+                <% unless @unit_concept.level.nil? %>
+                    <% rst = 5 - @unit_concept.level %>
+                    <span style="color:orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                    <span style="color:orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
+                <% end %>
+                &nbsp;&nbsp;<span style="color:darkblue;"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+              </h5>
+
+              <h1 class="margin-top-20"><i style="color: red" class="fa fa-exclamation-triangle"></i></h1>
+
+              <h2>Level 2 이상은 결제를 하셔야 이용하실 수 있습니다.</h2>
+            </div>
+
+        <% else %>
 
         <!-- Tab 개념 -->
         <div class="tab-pane active" id="d">
@@ -311,14 +339,14 @@
               &nbsp;&nbsp;<span style="color:darkblue;"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
               &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
             </h5>
-              <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <% unless unit_concept_desc.desc_type.to_i != 4 %>
-                      <div class="responsive-video">
-                        <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
-                        <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-                      </div>
-                  <% end %>
-              <% end %>
+            <% @unit_concept_descs.each do | unit_concept_desc | %>
+                <% unless unit_concept_desc.desc_type.to_i != 4 %>
+                    <div class="responsive-video">
+                      <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                      <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                    </div>
+                <% end %>
+            <% end %>
           </div>
           <div class="col-md-2"></div>
           <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20 text-center">
@@ -388,27 +416,31 @@
           </div> <!-- 프린트 영역 END-->
         </div> <!-- Tab 프린트 END -->
 
+        <% end %>
+
       </div>
     </div>
   </div>
 </div>
 <!-- /tabs -->
 
-<link href="/assets/css/footers/sticky-footer.css" rel="stylesheet">
-<footer class="sticky-footer">
-  <div class="container text-center">
-    <ul class="list-inline badge-lists badge-icons">
-      <li class="active"><a href="#d" id="concept" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type1count %></span></i></a></li>
-      <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" id="concept_explanation" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
-      <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" id="exercise" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i></a></li>
-      <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i></a></li>
-      <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" id="video" data-toggle="tab" style="text-align: center"><i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i></a></li>
-      <li><a href="#s" id="self_evaluation" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i></a></li>
-      <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
-      <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
-    </ul>
-  </div>
-</footer>
+<% unless @unit_concept.level > 1 && !current_user.can_I_use? %>
+  <link href="/assets/css/footers/sticky-footer.css" rel="stylesheet">
+  <footer class="sticky-footer">
+    <div class="container text-center">
+      <ul class="list-inline badge-lists badge-icons">
+        <li class="active"><a href="#d" id="concept" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type1count %></span></i></a></li>
+        <li class="<%= 'hidden' unless type2Count != 0 %>"><a href="#e" id="concept_explanation" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-tasks tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념해설" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type2Count %></span></i></a></li>
+        <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" id="exercise" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="개념문제" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type3Count %></span></i></a></li>
+        <li class="<%= 'hidden' unless linkCount != 0 %>"><a href="#g" data-toggle="modal" data-target="#g" style="text-align: center" onclick="videoPause()"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="top" data-original-title="관련개념" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= linkCount %></span></i></a></li>
+        <li class="<%= 'hidden' unless type4Count != 0 %>"><a href="#v" id="video" data-toggle="tab" style="text-align: center"><i class="fa fa-film tooltips" data-toggle="tooltips" data-placement="top" data-original-title="동영상" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= type4Count %></span></i></a></li>
+        <li><a href="#s" id="self_evaluation" data-toggle="modal" data-target="#s" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil-square-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="자기평가" style="color: purple"></i></a></li>
+        <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center" onclick="videoPause()"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
+        <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
+      </ul>
+    </div>
+  </footer>
+<% end %>
 
 
 <!-- Tab Self Evaluation -->
@@ -594,11 +626,6 @@
 
     </div>
   </div>
-</div>
-
-
-</div>
-
 </div>
 <!-- /row -->
 
