@@ -2,7 +2,7 @@
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
-<% if current_user.grade.nil? %>
+<% if current_user.user_types[0].user_type == 'student' && current_user.grade.nil? %>
 
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
@@ -68,7 +68,7 @@
             <% if item[:exercise_yn] %>
                 <% item_link_str = "/contents/exercise?unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
             <% else %>
-                <% item_link_str = "/contents/#{item[:key]}" %>            
+                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
             <% end %>
             
             <% if item[:level] > 1 && !current_user.can_I_use? %>
@@ -107,7 +107,7 @@
                             <%= item[:value] %>
                             <% unless item[:video_count].nil? %>
                                 <% unless item[:video_count] == 0 %>
-                            <i class="fa fa-caret-square-o-right tooltips color-purple" data-placement="right" data-toggle="tooltip" title="video 있음"></i>
+                            <i class="fa fa-film tooltips color-brown" data-placement="right" data-toggle="tooltip" title="video 있음"></i>
                                 <% end %>
                             <% end %>
                         </a>

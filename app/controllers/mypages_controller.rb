@@ -13,6 +13,9 @@ class MypagesController < ApplicationController
         @click = 'study_progress'
         page = params[:page].blank? ? 1 : params[:page]
         @study_histories = StudyHistory.get_study_history(current_user.id, page)
+        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        end
     end    
 
     def payment

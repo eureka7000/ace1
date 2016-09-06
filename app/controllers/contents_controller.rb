@@ -431,7 +431,18 @@ class ContentsController < ApplicationController
             study_history.save
         end        
         # 학습이력 저장 끝.
-        
+
+        # 개념화면 url
+        @view_type = params[:view_type]
+        @step = params[:step]
+        @category = params[:category]
+        @grade = params[:grade]
+        @sub_category = params[:sub_category]
+        @chapter = params[:chapter]
+        @concept_id = params[:concept_id]
+        @level = params[:level]
+        @student = params[:@student]
+
     end
     
     

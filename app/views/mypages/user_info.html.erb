@@ -109,6 +109,8 @@
                                                 <% else %>
                                                     <option selected="selected" value="<%= current_user.grade %>">현재 : 고<%= current_user.grade.to_i - 3 %></option>
                                                 <% end %>
+                                            <% else %>
+                                                <option selected="selected">학년 선택</option>
                                             <% end %>
 
                                             <% UnitConcept::GRADES.each_pair() do |key, value| %>
