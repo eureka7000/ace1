@@ -73,7 +73,7 @@
                         </td>
                         <td>
 							<% concept_params = "&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}"%>
-							<%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?page_num=#{params[:page]||1}&#{concept_params}" : "/concepts/#{concept.id}/exercise?concept_page_num=#{params[:page]||1}&#{concept_params}"  ) %>
+							<%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?page=#{params[:page]||1}&#{concept_params}" : "/concepts/#{concept.id}/exercise?page=#{params[:page]||1}&#{concept_params}"  ) %>
 						</td>
                         <td><%= link_to 'Edit', "/concepts/#{concept.id}/edit?concept_page_num=#{params[:page]||1}&#{params.to_query}" %></td>
                         <td><%= link_to 'Destroy', "/concepts/#{concept.id}?#{params.to_query}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
