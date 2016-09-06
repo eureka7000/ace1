@@ -161,11 +161,14 @@
                             <td>
                                 <% if unit_concept_desc.desc_type == '3' %>
                                     <% unless unit_concept_desc.link.blank? %>
-                                        <% @link_exercise = UnitConcept.find(unit_concept_desc.link) %>
+                                        <% @link_exercise = UnitConcept.where('id = ?',unit_concept_desc.link) %>
+                                        <% unless @link_exercise.blank? %>
                                         <a href="/contents/<%= @link_exercise.id %>"><%= @link_exercise.code %> : <%= @link_exercise.name %></a> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a></p>
-                                        
+                                        <% else %>
+                                        exercise is not exist : <%= unit_concept_desc.link %> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a>
+                                        <% end %>
                                     <% else %>    
-                                        <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>                                    
+                                        <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>
                                     <% end %>
                                 <% end %>                                
                             </td>    
