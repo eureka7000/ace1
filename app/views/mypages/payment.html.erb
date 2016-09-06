@@ -119,9 +119,25 @@
                             </dd>
                             </dl>
 
-                            <button type="button" onclick="pay()" class="btn-u btn-u-blue">결제요청</button>
-                            
                             </form>
+                            
+                            <div >
+                                <button type="button" onclick="pay()" class="btn-u btn-u-blue" style="float:left">결제요청</button>
+
+<!--                                <span class="color-blue" style="float:left; margin-left: 10px; margin-right: 10px"> - or - </span>
+
+                                <form id="myContainer" method="post" action="/checkout" style="float:left"></form>
+                                <script>
+                                window.paypalCheckoutReady = function() {
+                                    paypal.checkout.setup('UYLV5U5RAXA7A', {
+                                        environment: 'sandbox',
+                                        container: 'myContainer'
+                                    });
+                                };
+                                </script>
+                                <script src="//www.paypalobjects.com/api/checkout.js" async></script> -->
+                            </div>    
+                            
 
                         </div>    
                         
@@ -143,7 +159,10 @@
 <script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
 <% end %>
 
+
 <script type="text/javascript">
+
+
 
 function pay() {
     
@@ -185,3 +204,5 @@ function goodChanged() {
 }
     
 </script>
+
+<script src="http://www.paypalobjects.com/api/checkout.js" async></script>
