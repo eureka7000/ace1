@@ -174,7 +174,7 @@
                                 <% end %>                                
                             </td>    
 							<td>
-								<%= link_to 'Delete'.html_safe, unit_concept_desc, method: :delete, data: { confirm: 'Are you sure?' } %>
+								<%= link_to 'Delete'.html_safe, "/concept_exercises/#{unit_concept_desc.id}?#{params.to_query}", method: :delete, data: { confirm: 'Are you sure?' } %>
 							</td>	
 						</tr>
 						<% end %>

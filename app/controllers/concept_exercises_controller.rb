@@ -22,7 +22,7 @@ class ConceptExercisesController < ApplicationController
         @concept_exercise.destroy
         
         respond_to do |format|
-            format.html { redirect_to "/concepts/#{concept.id}/exercise" , notice: 'successfully destroyed.' }
+            format.html { redirect_to "/concepts/#{concept.id}/exercise?#{params.to_query}" , notice: 'successfully destroyed.' }
             format.json { head :no_content }
         end
         
