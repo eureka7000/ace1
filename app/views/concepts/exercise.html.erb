@@ -15,6 +15,7 @@
         <%= token_tag nil %>
 
         <input type="hidden" name="concept_exercise[concept_id]" value="<%= @concept.id %>" />
+        <input type="hidden" name="params" value="<%= params.to_query %>">
 
         <fieldset>
           <div class="row">

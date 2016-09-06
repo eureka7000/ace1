@@ -11,7 +11,7 @@ class ConceptExercisesController < ApplicationController
         @concept = Concept.find(params[:concept_exercise][:concept_id])
 
         respond_to do |format|
-            format.html { redirect_to "/concepts/#{@concept.id}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}", notice: 'Explanation Desc was successfully created.' }
+            format.html { redirect_to "/concepts/#{@concept.id}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}&#{params[:params]}", notice: 'Explanation Desc was successfully created.' }
         end
         
     end
