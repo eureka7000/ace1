@@ -2,17 +2,20 @@
 
   <div class="col-md-12 no-margin margin-bottom-20">
 
+    <% type1count = 0 %>
     <% type2Count = 0 %>
     <% type3Count = 0 %>
     <% linkCount = 0 %>
     <% type4Count = 0 %>
     <% @unit_concept_descs.each do |unit_concept_desc| %>
-        <% if unit_concept_desc.desc_type.to_i == 2 %>
-            <% type2Count +=1 %>
+        <% if unit_concept_desc.desc_type.to_i == 1 %>
+            <% type1count += 1 %>
+        <% elsif unit_concept_desc.desc_type.to_i == 2 %>
+            <% type2Count += 1 %>
         <% elsif unit_concept_desc.desc_type.to_i == 3 %>
-            <% type3Count +=1 %>
+            <% type3Count += 1 %>
         <% elsif unit_concept_desc.desc_type.to_i == 4 %>
-            <% type4Count +=1 %>
+            <% type4Count += 1 %>
         <% end %>
     <% end %>
 
@@ -23,8 +26,40 @@
     <!-- tabs right -->
     <div class="tabbable">
 
-
       <div class="tab-content">
+
+        <!-- 권한 검사 -->
+        <% if @unit_concept.level > 1 && !current_user.can_I_use? %>
+
+            <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20 no-margin no-padding text-center">
+                <% unless params[:exercise_type] == 'concept_exercise' %>
+                    <h5>
+                      <% unless @unit_concept.level.nil? %>
+                          <% rst = 5 - @unit_concept.level %>
+                          <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                          <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
+                      <% end %>
+                      <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+                    </h5>
+                <% else %>
+                    <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %>
+                    </h5>
+                <% end %>
+
+              <h1 class="margin-top-20"><i style="color: red" class="fa fa-exclamation-triangle"></i></h1>
+
+              <h2>Level 2 이상은 결제를 하셔야 이용하실 수 있습니다.</h2>
+            </div>
+
+        <% else %>
 
         <!-- Tab 문제 -->
         <div class="tab-pane active" id="d">
@@ -44,35 +79,26 @@
                   <% end %>
               <% end %>
 
-              <% if imgCount == 1 || imgCount == 2 %>
+              <div class="col-md-12 text-right">
+                <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                  <li>
+                    <button id="btn1" class="btn-u rounded btn-u-blue" type="button" onclick="btn1(<%= type2Count %>, <%= type3Count %>, <%= type4Count %>)" >다음</button>
+                    <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
 
-                  <div class="col-md-12 text-right">
-                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-
-              <% else %>
-
-                  <div class="col-md-12 text-right">
-                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn1" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-
-              <% end %>
+                <!-- 유형문제일 경우 해설이 존재, 유사문제에도 존재...문제는 전부 1개의 이미지 -->
+                <a <%= 'hidden' unless type1count == 1 && type2Count > 0 %> id="go_e" href="#e" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 해설</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count > 0 %> id="go_e_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 문제풀이</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count == 0 && type4Count > 0 %> id="go_e_f_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count == 0 && type4Count == 0 %> id="go_e_f_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
+              </div>
 
             </div>
           </div>
         </div> <!-- Tab 문제 END-->
 
-        <!-- Tab 설명 -->
+        <!-- Tab 해설 -->
         <div class="tab-pane" id="e">
 
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
@@ -102,130 +128,120 @@
                   <% end %>
               <% end %>
 
-              <% if imgCount == 1 || imgCount == 2 %>
-                  <div class="col-md-12 text-right">
-                    <ul hidden class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% else %>
-                  <div class="col-md-12 text-right">
-                    <ul class="list-inline badge-lists margin-bottom-30 margin-top-20">
-                      <li>
-                        <button id="btn2" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                        <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                      </li>
-                    </ul>
-                  </div>
-              <% end %>
-
+              <div class="col-md-12 text-right">
+                <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
+                  <li>
+                    <button id="btn2" class="btn-u rounded btn-u-blue" type="button" onclick="btn2(<%= type3Count %>, <%= type4Count %>)">다음</button>
+                    <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count > 0 %> id="go_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 문제풀이</button></a>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count == 0 && type4Count > 0 %> id="go_f_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count == 0 && type4Count == 0 %> id="go_f_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
+              </div>
             </div>
-
           </div>
 
-        </div> <!-- Tab 설명 END -->
+        </div> <!-- Tab 해설 END -->
 
-        <!-- Tab Solution -->
+        <!-- Tab 문제풀이 -->
         <div class="tab-pane" id="f">
 
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
+            <% @unit_concept_descs.each do | unit_concept_desc | %>
+                <% unless unit_concept_desc.desc_type.to_i != 1 %>
+                    <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
+                <% end %>
+            <% end %>
+
+            <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
+
+            <div>
               <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <% unless unit_concept_desc.desc_type.to_i != 1 %>
-                      <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
+                  <% unless unit_concept_desc.desc_type.to_i != 7 %>
+                      <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 20px;"/>
                   <% end %>
               <% end %>
-
-              <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
-
-              <div>
-                <% @unit_concept_descs.each do | unit_concept_desc | %>
-                    <% unless unit_concept_desc.desc_type.to_i != 7 %>
-                        <img hidden id="solution" src="<%= unit_concept_desc.file_name %>" style="width:100%; margin-top: 20px;"/>
-                    <% end %>
-                <% end %>
-              </div>
             </div>
+          </div>
 
-            <!-- right lane -->
+          <!-- right lane -->
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
 
-              <div style="overflow-y: auto; width: 100%;">
-                <%
-                  imgCount = 1
+            <div style="overflow-y: auto; width: 100%;">
+              <%
+                imgCount = 1
 
-                  @unit_concept_descs.each do | unit_concept_desc |
+                @unit_concept_descs.each do | unit_concept_desc |
 
-                    unless unit_concept_desc.desc_type.to_i != 3
+                  unless unit_concept_desc.desc_type.to_i != 3
 
-                %>
+              %>
 
-                        <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>" <%= "hidden" unless imgCount == 1 %> >
-                          <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%;"/>
-                          <%
-                            unless unit_concept_desc.link.blank?
-                              ret_unit_concept = UnitConcept.find(unit_concept_desc.link)
-                          %>
-
-
-                                  <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
-                                    <label class="radio-inline">
-                                      <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
-                                    </label>
-                                    <label class="radio-inline">
-                                      <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
-                                    </label>
-                                  </label>
+                      <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="exercise1<%=imgCount%>" <%= "hidden" unless imgCount == 1 %> >
+                        <img src="<%= unit_concept_desc.file_name %>" class="img-responsive" style="width:100%;"/>
+                        <%
+                          unless unit_concept_desc.link.blank?
+                            ret_unit_concept = UnitConcept.find(unit_concept_desc.link)
+                        %>
 
 
-                                <button class="btn-u btn-u-sm rounded btn-u-orange margin-top-20 margin-left-10" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
+                            <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
+                              <label class="radio-inline">
+                                <input type="radio" id="o<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">맞음
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" id="x<%= unit_concept_desc.id %>" name="exe<%=unit_concept_desc.memo%>">틀림
+                              </label>
+                            </label>
+
+
+                            <button class="btn-u btn-u-sm rounded btn-u-orange margin-top-20 margin-left-10" type="button" onclick="saveOx(<%= unit_concept_desc.id %>)">저장</button>
 
 
 
-                              <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: unit_concept_desc).order(created_at: :desc) %>
-                              <% unless recent_unit_concept_exercise_history.empty? %>
-                                  <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해:
-                                    <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %>
-                                  </label>
-                              <% end %>
+                            <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: unit_concept_desc).order(created_at: :desc) %>
+                            <% unless recent_unit_concept_exercise_history.empty? %>
+                                <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해:
+                                  <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %>
+                                </label>
+                            <% end %>
 
-                              <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></label>
+                            <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></label>
 
 
-                              <hr class="no-margin margin-top-20 devider devider-dotted">
+                            <hr class="no-margin margin-top-20 devider devider-dotted">
 
-                          <% end %>
-                        </div>
+                        <% end %>
+                      </div>
 
-                    <%
-                      imgCount += 1
-                      end
-                      end
-                    %>
+                  <%
+                    imgCount += 1
+                    end
+                    end
+                  %>
 
-                <div class="col-md-12 margin-bottom-20 text-right">
-                  <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-20 margin-top-20">
-                    <li>
-                      <button id="btn3" class="btn-u rounded btn-u-blue" type="button" >다음</button>
-                      <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
-                    </li>
-                  </ul>
-                </div>
+              <div class="col-md-12 margin-bottom-20 text-right">
+                <ul <%= "hidden" if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-20 margin-top-20">
+                  <li>
+                    <button id="btn3" class="btn-u rounded btn-u-blue" type="button" onclick="btn3(<%= type4Count %>)" >다음</button>
+                    <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
+                  </li>
+                </ul>
+                <a <%= 'hidden' unless type3Count == 0 && type4Count > 0 %> id="go_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type3Count == 0 && type4Count == 0 %> id="go_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
               </div>
-
             </div>
-            <!-- right lane -->
-
+          </div>
+          <!-- right lane -->
         </div>
-        <!-- Tab Solution END -->
+        <!-- Tab 문제풀이 END -->
 
         <!-- Tab Video -->
         <div class="tab-pane" id="v">
-          <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20 no-margin no-padding"></div>
+          <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20"></div>
           <div class="col-md-2"></div>
-          <div class="col-md-8 col-sm-12 col-xs-12 no-margin no-padding">
+          <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
             <% unless params[:exercise_type] == 'concept_exercise' %>
                 <h5>
                   <% unless @unit_concept.level.nil? %>
@@ -242,23 +258,27 @@
                     </span>
                   <% end %>
                   <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
+                  &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
                 </h5>
             <% else %>
-                <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %></h5>
+                <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %>
+                  &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
+                </h5>
             <% end %>
 
-            <div style="overflow-y: auto; ">
-              <% @unit_concept_descs.each do | unit_concept_desc | %>
-                  <% unless unit_concept_desc.desc_type.to_i != 4 %>
-                      <div class="responsive-video margin-bottom-30">
-                        <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
-                        <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-                      </div>
-                  <% end %>
-              <% end %>
-            </div>
+            <% @unit_concept_descs.each do | unit_concept_desc | %>
+                <% unless unit_concept_desc.desc_type.to_i != 4 %>
+                    <div class="responsive-video">
+                      <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= unit_concept_desc.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                      <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+                    </div>
+                <% end %>
+            <% end %>
           </div>
           <div class="col-md-2"></div>
+          <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20 text-center margin-bottom-20">
+            <a href="#s" data-toggle="modal" onclick="videoPause()"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
+          </div>
         </div> <!-- Tab Video END -->
 
         <!-- Tab 프린트 -->
@@ -329,7 +349,7 @@
           </div> <!-- 프린트 영역 END-->
 
         </div> <!-- Tab 프린트 END -->
-
+        <% end %>
       </div>
 
     </div>
@@ -349,13 +369,13 @@
       <% if @is_exercise == 1 %>
           <% unless params[:exercise_type] == "concept_exercise" %>
               <li class="dropdown-toggle" data-toggle="dropdown"><a style="text-align: center" onclick="videoPause()"><i class="fa fa-folder-open-o" style="color: purple"><span class="badge pull-right rounded-2x badge-yellow"><%= @similar_exercises.count %></span></i></a></li>
-          <ul class="dropdown-menu rounded" role="menu">
-            <li class="text-center">문제폴더</li>
-            <li class="divider"></li>
+              <ul class="dropdown-menu rounded" role="menu">
+                <li class="text-center">문제폴더</li>
+                <li class="divider"></li>
                 <% @similar_exercises.each do |similar_exercise| %>
-                <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
+                    <li><a href="/contents/exercise?concept_id=<%= params[:concept_id] %>&unit_concept_id=<%= similar_exercise.id %>"><i class="fa fa-file" style="color: purple"></i><%= similar_exercise.name %></a></li>
                 <% end %>
-          </ul>
+              </ul>
           <% end %>
 
           <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-book tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"></i></a></li>
@@ -381,7 +401,7 @@
           </ul>
 
           <li class="active"><a href="#d" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-file tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제" style="color: purple"></i></a></li>
-          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-cogs tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"></i></a></li>
+          <li class="<%= 'hidden' unless type3Count != 0 %>"><a href="#f" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="문제풀이" style="color: purple"></i></a></li>
           <li><a href="#m" data-toggle="modal" data-target="#question" style="text-align: center"><i class="fa fa-comments-o tooltips" data-toggle="tooltips" data-placement="top" data-original-title="질문하기" style="color: purple;"></i></a></li>
           <li><a href="#p" data-toggle="tab" style="text-align: center" onclick="videoPause()"><i class="fa fa-print tooltips" data-toggle="tooltips" data-placement="top" data-original-title="프린트" style="color: purple"></i></a></li>
       <% end %>
@@ -581,73 +601,101 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
 <script type="text/javascript">
+  concept_index = 2;
+  concept_explanation_index = 2;
+  exercise_index = 2;
 
-  $(document).ready(function(){
-    var index = 2;
+  function btn1(type2count, type3count, type4count) {
 
-    $("#btn1").click(function(){
+    $("#ucd1"+concept_index).show();
+    concept_index++;
 
-      $("#ucd1"+index).show();
-      index++;
+    var count = Number($("#badge1").text());
+    if (count == -1) {
+      count = 0;
+    }
+    if (count > 0) {
+      $("#badge1").text(count-1);
+    }
+    if (count == 1) {
+      $("#btn1").hide();
+      $("#badge1").hide();
 
-      var count = Number($("#badge1").text());
-      if (count == -1) {
-        count = 0;
+      update_study_history('concept', 'finish');
+
+      if (type2count != 0){
+        $("#go_e").show();
       }
-      if (count > 0) {
-        $("#badge1").text(count-1);
+      else{
+        if (type3count != 0){
+          $("#go_e_f").show();
+        }
+        else {
+          if (type4count != 0){
+            $("#go_e_f_v").show();
+          }
+          else {
+            $("#go_e_f_v_s").show();
+          }
+        }
       }
-      if (count == 1) {
-        $("#btn1").hide();
-        $("#badge1").hide();
+    }
+  }
+
+  function btn2(type3count, type4count) {
+    $("#ucd2"+concept_explanation_index).show();
+    concept_explanation_index++;
+
+    var count = Number($("#badge2").text());
+    if (count > 0 ){
+      $("#badge2").text(count-1);
+    }
+    if (count == 1){
+      $("#btn2").hide();
+      $("#badge2").hide();
+      update_study_history('concept explanation', 'finish');
+
+      if (type3count != 0){
+        $("#go_f").show();
       }
-    });
-  });
+      else{
+        if (type4count != 0){
+          $("#go_f_v").show();
+        }
+        else{
+          $("#go_f_v_s").show();
+        }
+      }
+    }
+  }
+
+  function btn3(type4count) {
+    $("#exercise1" + exercise_index).show();
+    exercise_index++;
+
+    var count = Number($("#badge3").text());
+    if (count == -1) {
+      count = 0;
+    }
+    if (count > 0) {
+      $("#badge3").text(count - 1);
+    }
+    if (count == 1) {
+      $("#btn3").hide();
+      $("#badge3").hide();
+
+      if (type4count != 0) {
+        $("#go_v").show();
+      }
+      else {
+        $("#go_v_s").show();
+      }
+    }
+  }
 
 </script>
 
-
 <script type="text/javascript">
-  $(document).ready(function(){
-    var index = 2;
-    $("#btn2").click(function(){
-      $("#ucd2"+index).show();
-      index++;
-
-      var count = Number($("#badge2").text());
-
-      if (count > 0 ){
-        $("#badge2").text(count-1);
-      }
-      if (count == 1){
-        $("#btn2").hide();
-        $("#badge2").hide();
-      }
-    });
-  });
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function(){
-    var index = 2;
-
-    $("#btn3").click(function(){
-      $("#exercise1"+index).show();
-      index++;
-
-      var count = Number($("#badge3").text());
-      if(count == -1){
-        count = 0;
-      }
-      if (count > 0){
-        $("#badge3").text(count-1);
-      }
-      if (count == 1){
-        $("#btn3").hide();
-        $("#badge3").hide();
-      }
-    });
-  });
 
   function viewSolution() {
     $('#viewSolutionBtn').slideUp( "slow", function() {});
