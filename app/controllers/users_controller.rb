@@ -4,6 +4,21 @@ class UsersController < ApplicationController
     
     layout '/layouts/admin_main'
 
+    def user_exist
+        email = params[:email]
+        @user = User.find_by_email(email)
+
+
+        respond_to do |format|
+            unless @user.nil?
+                ret = { ret: 'impossible' }
+            else
+                ret = { ret: 'possible'}
+            end
+            format.json { render json: ret }
+        end
+    end
+
     def resend_mail
         
         if current_user.nil?

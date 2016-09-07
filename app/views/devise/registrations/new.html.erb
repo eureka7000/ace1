@@ -1,65 +1,132 @@
 <!--=== Content Part ===-->
 <div class="container content">
 
-    <div class="row">
-	    
-		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			
-			<%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html=>{:class=>'reg-page'} ) do |f| %>
-				
-            <div class="reg-header">
-				<h2>회원가입</h2>
-                <p>이미 가입하셨습니까? <%= link_to('여기', new_user_session_path, :class=>"color-green") %> 에서 로그인하세요.</p>
+  <div class="row">
+
+    <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html=>{:class=>'reg-page'}) do |f| %>
+
+          <div class="reg-header">
+            <h2>회원가입</h2>
+            <p>이미 가입하셨습니까? <%= link_to('여기', new_user_session_path, :class=>"color-green") %> 에서 로그인하세요.</p>
+          </div>
+
+          <%= devise_error_messages! %>
+
+          <div hidden id="impossible_message" class="alert alert-danger fade in">
+            <ul><li>중복된 이메일 입니다. &nbsp;&nbsp;<a href="/users/sign_in"><i class="fa fa-hand-o-right"></i> 로그인하러 가기</a></li></ul>
+          </div>
+
+          <div class="row margin-bottom-20">
+            <div class="col-sm-12">
+              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>">Email Address <span class="color-red">*</span>
+                <input autofocus="autofocus" type="text" value="<%= params[:email] %>" name="user[email]" id="new_user_email" class="form-control">
+              </label>
             </div>
-			
-			<%= devise_error_messages! %>			
+          </div>
 
-			<div class="row">
-				<div class="col-sm-12">
-					<label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>">Email Address <span class="color-red">*</span>
-						<input autofocus="autofocus" type="text" value="" name="user[email]" id="user_email" class="form-control margin-bottom-20">
-					</label>
-				</div>	
-			</div>
-
-            <div class="row">
-            	<div class="col-sm-6">
-					<label style="width:100%" class="<%= 'state-error' unless resource.errors[:password].blank? %>">Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%>
-    				<input autocomplete="off" type="password" name="user[password]" id="user_password" class="form-control margin-bottom-20">
-					</label>
-                </div>
-                <div class="col-sm-6">
-                    <label style="width:100%">Confirm Password <span class="color-red">*</span>
-					<input autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" class="form-control margin-bottom-20">							
-					</label>
-                </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:password].blank? %>">Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%>
+                <input autocomplete="off" type="password" name="user[password]" id="user_password" class="form-control margin-bottom-20">
+              </label>
             </div>
-			
-			<div class="row" style="padding-left:20px">
-				<% User::USER_TYPES.each_pair do |key, value| %>
-					<% unless key == "school manager" || key == "institute manager" || key == "mento"  %>
-                <label class="radio-inline"><input type="radio" name="user_type[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
-				    <% end %>
-				<% end %>
-			</div>	  
-
-
-
-            <hr>
-
-            <div class="row">
-				<div class="col-lg-6 checkbox">
-                    <label>
-                        <input type="checkbox">
-                        나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.</a>
-                    </label>
-                </div>
-                <div class="col-lg-6 text-right">
-                    <button class="btn-u" type="submit">가입</button>
-                </div>
+            <div class="col-sm-6">
+              <label style="width:100%">Confirm Password <span class="color-red">*</span>
+                <input autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" class="form-control margin-bottom-20">
+              </label>
             </div>
+          </div>
+
+          <div class="row" style="padding-left:20px">
+            <% User::USER_TYPES.each_pair do |key, value| %>
+                <% unless key == "school manager" || key == "institute manager" || key == "mento"  %>
+                    <label class="radio-inline"><input type="radio" name="user_type[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
+                <% end %>
             <% end %>
-        </div>
+          </div>
+
+          <hr>
+
+          <div class="row">
+            <div class="col-lg-6 checkbox">
+              <label>
+                <input type="checkbox" id="term_check">
+                나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.</a>
+              </label>
+            </div>
+            <div class="col-lg-6 text-right">
+              <input class="btn-u rounded btn-u-info" type="button" onclick="newUserSend()" value="가입">
+            </div>
+          </div>
+      <% end %>
     </div>
+  </div>
 </div><!--/container-->
 <!--=== End Content Part ===-->
+
+<script type="text/javascript">
+  function newUserSend() {
+    if($('#new_user_email').val() == ''){
+      alert('이메일 주소를 입력하세요');
+      return false;
+    }
+
+    if($('#user_password').val() == ''){
+      alert('패스워드를 입력하세요');
+      return false;
+    }
+
+    if($('#user_password_confirmation').val() == ''){
+      alert('패스워드를 한번 더 입력하세요');
+      return false;
+    }
+
+    if($('#user_password').val() != $('#user_password_confirmation').val() ){
+      alert('패스워드가 같지 않습니다. 다시 입력해주세요.');
+      return false;
+    }
+
+    if(!$('#term_check').is(":checked")){
+      alert('이용약관에 체크해 주시기 바랍니다');
+      return false;
+    }
+    user_exist();
+  }
+
+  function user_exist() {
+
+    $('#loading').show();
+
+    var url = "/users/user_exist";
+
+    $.ajax({
+      url: url,
+      type: "POST",
+      beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+      datatype: "json",
+      data: {
+        email: $('#new_user_email').val()
+      },
+      success : function(data) {
+        $('#loading').hide();
+        showMessage(data.ret);
+      },
+      error : function(){
+        alert("try to again. please.");
+        $('#loading').hide();
+      }
+    });
+  }
+
+  function showMessage(data) {
+    if (data == 'impossible'){
+      $('#impossible_message').show();
+      return false;
+    }
+    else{
+      $('#new_user').submit();
+    }
+  }
+</script>

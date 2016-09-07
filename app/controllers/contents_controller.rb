@@ -435,7 +435,7 @@ class ContentsController < ApplicationController
         @chapter = params[:chapter]
         @concept_id = params[:concept_id]
         @level = params[:level]
-        @student = params[:@student]
+        @student = params[:student]
 
     end
     
