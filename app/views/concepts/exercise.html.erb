@@ -1,3 +1,5 @@
+<% return_param = "&page=#{params[:page]}&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}" %>
+
 <div class="container-fluid" style="margin-top: 50px">
 
     <div class="row">
@@ -15,7 +17,13 @@
         <%= token_tag nil %>
 
         <input type="hidden" name="concept_exercise[concept_id]" value="<%= @concept.id %>" />
-        <input type="hidden" name="params" value="<%= params.to_query %>">
+        
+        <!-- index page params info -->
+        <input type="hidden" name="page" value="<%= params[:page] %>" />
+        <input type="hidden" name="category" value="<%= params[:category] %>" />
+        <input type="hidden" name="sub_category" value="<%= params[:sub_category] %>" />
+        <input type="hidden" name="exercise_yn" value="<%= params[:exercise_yn] %>" />
+        <!-- index page params info End -->
 
         <fieldset>
           <div class="row">
@@ -69,7 +77,7 @@
             </section>
             <section class="col col-2">
               <button type="submit" class="btn-u" onclick="$('#loading').show();">저장</button>
-              <%= link_to 'Back', "/concepts?#{params.to_query}", :class => 'btn-u btn-primary align-right' %>
+              <%= link_to 'Back', "/concepts?#{return_param}", :class => 'btn-u btn-primary align-right' %>
             </section>
           </div>
         </fieldset>
@@ -82,12 +90,12 @@
 
 	<div class="row" style="margin-bottom: 20px;">
 		<div class="col-md-2">	
-	        <select id="desc_type_condition" class='form-control' onchange="changeSearchCondition()">
+	        <select id="desc_type_condition" class='form-control' onchange="search()">
 	        <option value="">ALL</option>
 	        <% Concept::DESC_TYPES.each_pair do |key, value| %>
             <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
 	        <% end %>
-	        </select>    
+	        </select>
 		</div>	
 	</div>	
 	
@@ -174,7 +182,7 @@
                                 <% end %>                                
                             </td>    
 							<td>
-								<%= link_to 'Delete'.html_safe, "/concept_exercises/#{unit_concept_desc.id}?#{params.to_query}", method: :delete, data: { confirm: 'Are you sure?' } %>
+								<%= link_to 'Delete'.html_safe, "/concept_exercises/#{unit_concept_desc.id}?#{return_param}", method: :delete, data: { confirm: 'Are you sure?' } %>
 							</td>	
 						</tr>
 						<% end %>
@@ -229,6 +237,10 @@
     function conceptSearch(target) {
         $('#whereareyoufrom').val(target);
         $('#conceptSearchModal').modal();
+    }
+    
+    function search() {
+        location = "/concepts/<%= params[:id] %>/exercise?desc_type=" + $('#desc_type_condition').val() + "<%= return_param %>";
     }
 
 </script>
