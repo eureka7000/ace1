@@ -21,6 +21,7 @@ gem 'httparty'
 gem 'sidekiq'
 gem 'redis-rails'
 gem 'exception_notification'
+gem 'activemerchant'
 
 group :development, :test do
   gem 'byebug'
