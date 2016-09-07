@@ -2,6 +2,7 @@ class ConceptExercisesController < ApplicationController
 
     before_action :authenticate_admin_user!
     before_action :set_concept_exercise, only: [:show, :edit, :update, :destroy]
+    before_action :set_return_param, only: [:create, :destroy]
 
     def create
         
@@ -11,7 +12,7 @@ class ConceptExercisesController < ApplicationController
         @concept = Concept.find(params[:concept_exercise][:concept_id])
 
         respond_to do |format|
-            format.html { redirect_to "/concepts/#{@concept.id}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}", notice: 'Explanation Desc was successfully created.' }
+            format.html { redirect_to "/concepts/#{@concept.id}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}&#{@return_param}", notice: 'Explanation Desc was successfully created.' }
         end
         
     end
@@ -22,7 +23,7 @@ class ConceptExercisesController < ApplicationController
         @concept_exercise.destroy
         
         respond_to do |format|
-            format.html { redirect_to "/concepts/#{concept.id}/exercise" , notice: 'successfully destroyed.' }
+            format.html { redirect_to "/concepts/#{concept.id}/exercise?#{@return_param}" , notice: 'successfully destroyed.' }
             format.json { head :no_content }
         end
         
@@ -45,5 +46,9 @@ class ConceptExercisesController < ApplicationController
     def concept_exercise_params
         params.require(:concept_exercise).permit(:memo, :file_name, :concept_id, :desc_type, :video, :link)
     end
+    
+    def set_return_param
+        @return_param = "page=#{params[:page]}&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}"
+    end    
     
 end

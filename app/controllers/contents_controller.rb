@@ -109,6 +109,12 @@ class ContentsController < ApplicationController
                     }
                 end
             elsif @step == 2   # sub category view
+                
+                if @category.nil?
+                    redirect_to "/contents?view_type=1&step=1"
+                    return
+                end    
+                
                 Concept::SUB_CATEGORIES.each_pair do |key, value|
                     if @category.first(2) == key.first(2)
                         @items << {

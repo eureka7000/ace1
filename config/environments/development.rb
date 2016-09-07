@@ -54,11 +54,21 @@ Rails.application.configure do
   #   password: 'dragon70'
   # }
   
-  
     # inicis 결제정보
     config.inicis = {
         mid: 'INIpayTest',
         sign_key: 'SU5JTElURV9UUklQTEVERVNfS0VZU1RS'
     }  
+    
+    # Setup ActiveMerchant
+    config.after_initialize do
+        ActiveMerchant::Billing::Base.mode = :test
+        paypal_options = {
+            login: "admin_api1.eurekamath.co.kr",
+            password: "D79JW3MUYSBYZ9MD",
+            signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31A411C90dE2o-Dy3ZVV35TGy6vstD"
+        }
+        ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
+    end    
 
 end
