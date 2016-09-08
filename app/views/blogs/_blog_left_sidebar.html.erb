@@ -20,12 +20,11 @@
         <% end %>
       </div>
 
-      <div class="text-center bg-color-white">
+      <div class="text-center bg-color-light">
         <ul class="pagination">
           <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
         </ul>
       </div>
-      <div class="col-md-12 margin-top-20"></div>
   <% else %>
       <hr class="no-margin margin-bottom-20">
       <div class="tag-box box-shadow shadow-effect-1">
@@ -53,7 +52,7 @@
         </div>
         <div class="margin-bottom-20"></div>
       </div>
-      
+
     </div>
   </div>
 </div>
