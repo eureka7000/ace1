@@ -1,6 +1,12 @@
+<div class="col-md-12 breadcrumbs">
+  <div class="container">
+    <h2 class="pull-left" style="color: black">About / <%= Blog::BLOG_TYPES[@blog.blog_type] %></h2>
+  </div><!--/container-->
+</div><!--/breadcrumbs-->
+
 <div class="wrapper">
   <div class="col-md-2"></div>
-  <div class="col-md-8 col-xs-12 margin-top-20">
+  <div class="col-md-8 col-xs-12 margin-top-20 bg-color-light">
 
     <div class="container-fluid margin-top-20">
 
@@ -15,46 +21,27 @@
           </div>
       <% end %>
 
-      <form class="sky-form">
-        <header class="heading-md"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span>&nbsp; <%= Blog::BLOG_TYPES[@blog.blog_type] %></header>
+      <div class="news-v3 bg-color-white margin-bottom-30">
+        <img class="img-responsive full-width rounded <%= 'hidden' if @blog.file_name.blank? %>" src="<%= @blog.file_name %>" alt="">
+        <div class="news-v3-in">
+          <ul class="list-inline posted-info">
+            <li>By <%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></li>
+            <li>Posted <%= @blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
+          </ul>
+          <h2><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= @blog.title %></h2>
+          <p><%= simple_format(@blog.content) %></p>
 
-        <fieldset>
-          <section>
-            <label class="label"><strong>작성자 :</strong>&nbsp;<%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></label>
-          </section>
-
-          <section>
-            <label class="label"><strong>제 목 :</strong>&nbsp; <%= @blog.title %></label>
-          </section>
-
-          <section>
-            <label>내 용 :</label>
-            <label class="label"><%= simple_format(@blog.content) %></label>
-          </section>
-
-
-          <% unless @blog.file_name.blank? %>
-              <section>
-                <label>사진</label><br>
-                <label><img src="<%= @blog.file_name %>" style="width: 80%;" class="img-responsive"></label>
-              </section>
-          <% end %>
-
-        </fieldset>
-      </form>
-
-
-      <div class="col-md-12 text-right margin-top-20 margin-bottom-30">
-        <% unless session[:admin].nil? %>
-            <a href="/blogs" class="btn-u rounded btn-u-yellow">확인</a>
-        <% else %>
-            <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
-        <% end %>
+          <div class="text-right">
+            <% unless session[:admin].nil? %>
+                <a href="/blogs" class="btn-u rounded btn-u-yellow">확인</a>
+            <% else %>
+                <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
+            <% end %>
+          </div>
+        </div>
       </div>
-
-
     </div>
-
   </div>
   <div class="col-md-2"></div>
+  <div class="col-md-12 margin-bottom-20 margin-top-20"></div>
 </div>

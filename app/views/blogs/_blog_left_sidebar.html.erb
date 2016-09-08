@@ -1,32 +1,31 @@
-<div class="col-md-9 margin-top-20">
+<div class="col-md-9 margin-top-20 bg-color-light rounded">
 
   <% unless @blogs.blank? %>
-      <% @blogs.each do |blog| %>
-          <hr class="no-margin margin-bottom-20">
-          <div class="tag-box box-shadow shadow-effect-1">
-            <h4><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <a href="/blogs/<%= blog.id %>"><span style="color: black"><%= blog.title %></span></a></h4>
 
-            <h6>
-              <ul class="list-unstyled list-inline blog-info text-right">
-                <li><span style="color: #1e347b"><i class="fa fa-calendar tooltips" data-toggle="tooltips" data-placement="top" data-original-title="등록일"></i></span> <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></li>
-                <li><span style="color: darkred"><i class="fa fa-pencil tooltips" data-toggle="tooltips" data-placement="top" data-original-title="작성자"></i></span> <%= blog.admin_yn == 'Y' ? '관리자' : blog.user.user_name %></li>
-                <% unless blog.file_name.blank? %>
-                    <li><i class="fa fa-camera-retro tooltips" data-toggle="tooltips" data-placement="top" data-original-title="사진 있음"></i></li>
-                <% end %>
-                <%# unless current_user.nil? %>
-                    <!--<li><a href="/blogs/<%#= blog.id %>"><span style="color: orange"><i class="fa fa-search"></i></span>&nbsp;더보기</a></li>-->
-                <%# end %>
-              </ul>
-            </h6>
-          </div>
+      <div class="row">
+        <div class="col-md-12 margin-top-20"></div>
+        <% @blogs.each do |blog| %>
+            <div class="col-md-12">
+              <div class="news-v3 bg-color-white margin-bottom-30">
+                <img class="img-responsive full-width rounded <%= 'hidden' if blog.file_name.blank? %>" src="<%= blog.file_name %>" alt="">
+                <div class="news-v3-in">
+                  <ul class="list-inline posted-info">
+                    <li>By <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></li>
+                    <li>Posted <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
+                  </ul>
+                  <h2><a href="/blogs/<%= blog.id %>"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= blog.title %></a></h2>
+                </div>
+              </div>
+            </div>
+        <% end %>
+      </div>
 
-      <% end %>
-      <div class="text-center">
+      <div class="text-center bg-color-white">
         <ul class="pagination">
           <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
         </ul>
       </div>
-
+      <div class="col-md-12 margin-top-20"></div>
   <% else %>
       <hr class="no-margin margin-bottom-20">
       <div class="tag-box box-shadow shadow-effect-1">
@@ -50,11 +49,11 @@
           <ul>
             <li><%=link_to '로그인',  new_user_session_path, :class => 'btn btn-link' %></li>
             <li><%=link_to '회원가입', new_user_registration_path, :class => 'btn btn-link' %></li>
-
           </ul>
         </div>
         <div class="margin-bottom-20"></div>
       </div>
+      
     </div>
   </div>
 </div>
