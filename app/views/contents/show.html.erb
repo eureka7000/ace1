@@ -119,14 +119,18 @@
                   <% end %>
               <% end %>
 
+              <!-- '다음'버튼 & 'tab 이동 버튼' -->
               <div class="col-md-12 text-right">
                 <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
                   <li>
-                    <button id="btn1" class="btn-u rounded btn-u-blue" type="button" onclick="btn1(<%= type2Count %>)">다음</button>
+                    <button id="btn1" class="btn-u rounded btn-u-blue" type="button" onclick="btn1(<%= type2Count %>, <%= type3Count %>, <%= type4Count %>)">다음</button>
                     <span id="badge1" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                   </li>
                 </ul>
-                <a hidden id="go_e" href="#e" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념해설</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count > 0 %> id="go_e" href="#e" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념해설</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count > 0 %> id="go_e_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념문제</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count == 0 && type4Count > 0 %> id="go_e_f_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type1count == 1 && type2Count == 0 && type3Count == 0 && type4Count == 0 %> id="go_e_f_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
               </div>
 
             </div>
@@ -179,18 +183,20 @@
               <div class="col-md-12 margin-bottom-50 text-right">
                 <ul <%= 'hidden' if imgCount == 1 || imgCount == 2 %> class="list-inline badge-lists margin-bottom-30 margin-top-20">
                   <li>
-                    <button id="btn2" class="btn-u rounded btn-u-blue" type="button" onclick="btn2(<%= type3Count %>)" >다음</button>
+                    <button id="btn2" class="btn-u rounded btn-u-blue" type="button" onclick="btn2(<%= type3Count %>, <%= type4Count %>)" >다음</button>
                     <span id="badge2" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                   </li>
                 </ul>
-                <a hidden id="go_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념문제</button></a>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count > 0 %> id="go_f" href="#f" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 개념문제</button></a>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count == 0 && type4Count > 0 %> id="go_f_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type2Count == 1 && type3Count == 0 && type4Count == 0 %> id="go_f_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
               </div>
             </div>
           </div>
         </div> <!-- Tab 개념 설명 END -->
 
 
-        <!-- Tab Exercise -->
+        <!-- Tab 개념문제 -->
         <div class="tab-pane" id="f">
           <div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20 margin-top-20 no-padding no-margin">
             <h5>
@@ -311,11 +317,12 @@
                     <span id="badge3" class="badge badge-dark-blue rounded-2x" ><%= imgCount-2 %></span>
                   </li>
                 </ul>
-                <a hidden id="go_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type3Count == 1 && type4Count > 0 %> id="go_v" href="#v" data-toggle="tab"><button class="btn-u rounded btn-u-red">GO! 강의동영상</button></a>
+                <a <%= 'hidden' unless type3Count == 1 && type4Count == 0 %> id="go_v_s" href="#s" data-toggle="modal"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
               </div>
             </div>
           </div>
-        </div> <!-- Tab Exercise END -->
+        </div> <!-- Tab 개념문제 END -->
 
         <!-- Tab Video -->
         <div class="tab-pane" id="v">
@@ -349,7 +356,7 @@
             <% end %>
           </div>
           <div class="col-md-2"></div>
-          <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20 text-center">
+          <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20 text-center margin-bottom-20">
             <a href="#s" data-toggle="modal" onclick="videoPause()"><button class="btn-u rounded btn-u-red">GO! 자기평가</button></a>
           </div>
         </div> <!-- Tab Video END -->
@@ -637,7 +644,7 @@
   concept_explanation_index = 2;
   exercise_index = 2;
 
-  function btn1(type2count) {
+  function btn1(type2count, type3count, type4count) {
 
     $("#ucd1"+concept_index).show();
     concept_index++;
@@ -658,10 +665,23 @@
       if (type2count != 0){
         $("#go_e").show();
       }
+      else{
+        if (type3count != 0){
+          $("#go_e_f").show();
+        }
+        else {
+          if (type4count != 0){
+            $("#go_e_f_v").show();
+          }
+          else {
+            $("#go_e_f_v_s").show();
+          }
+        }
+      }
     }
   }
 
-  function btn2(type3count) {
+  function btn2(type3count, type4count) {
     $("#ucd2"+concept_explanation_index).show();
     concept_explanation_index++;
 
@@ -676,6 +696,14 @@
 
       if (type3count != 0){
         $("#go_f").show();
+      }
+      else{
+        if (type4count != 0){
+          $("#go_f_v").show();
+        }
+        else{
+          $("#go_f_v_s").show();
+        }
       }
     }
   }
@@ -697,6 +725,9 @@
 
       if (type4count != 0) {
         $("#go_v").show();
+      }
+      else {
+        $("#go_v_s").show();
       }
     }
   }

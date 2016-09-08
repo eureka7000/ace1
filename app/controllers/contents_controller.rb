@@ -5,12 +5,13 @@ class ContentsController < ApplicationController
     def exercise
 
         if params[:exercise_type] == "concept_exercise"
+            #종합문제일 때
             @unit_concept = Concept.find(params[:unit_concept_id])
-            @unit_concept_descs = @unit_concept.concept_exercises
+            @unit_concept_descs = @unit_concept.concept_exercises.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.concept_name
         else
             @unit_concept = UnitConcept.find(params[:unit_concept_id])
-            @unit_concept_descs = @unit_concept.unit_concept_descs
+            @unit_concept_descs = @unit_concept.unit_concept_descs.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.name
         end        
 
@@ -441,7 +442,7 @@ class ContentsController < ApplicationController
         @chapter = params[:chapter]
         @concept_id = params[:concept_id]
         @level = params[:level]
-        @student = params[:@student]
+        @student = params[:student]
 
     end
     

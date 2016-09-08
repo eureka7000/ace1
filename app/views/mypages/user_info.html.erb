@@ -98,6 +98,7 @@
                                         </section>
                                     </dd>
 
+                                  <% unless current_user.user_types[0].user_type != 'student' %>
                                     <dt>학년</dt>
                                     <dd>
                                       <section>
@@ -121,7 +122,7 @@
                                         </label>
                                       </section>
                                     </dd>
-
+                                  <% end %>
                                 </dl>
 
                                 <button type="button" class="btn-u btn-u-default">취소</button>

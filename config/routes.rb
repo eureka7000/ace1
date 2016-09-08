@@ -90,10 +90,10 @@ Rails.application.routes.draw do
     get 'users/multi_auth' => 'users#multi_auth'
     post 'users/multi_auth' => 'users#multi_auth_create'
     get  'users/resend_mail' => 'users#resend_mail'
+    post 'users/user_exist' => 'users#user_exist'
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'
-
     
     get 'admins/login' => 'admins#login'
     get 'admins/logout' => 'admins#logout'
