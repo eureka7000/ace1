@@ -15,116 +15,97 @@
           </ul>
 
           <div class="tab-content">
-            <hr class="devider devider-dotted" style="margin:10px">
-
-            <div class="profile-edit tab-pane fade in active">
-              <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-magnifier"></i>검색</h3>
-
-              <dl class="dl-horizontal margin-top-20">
-
-                <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>
-                <dt><strong><span aria-hidden="true" class="icon-education-007"></span>&nbsp;&nbsp;학생 검색</strong></dt>
-                <dd class="margin-top-20">
-                  <div class="col-md-8 col-sm-8 col-xs-8 margin-left-10">
-                    <select id="studentSelect" class="form-control margin-bottom-20" >
-                      <option value="">학생 선택</option>
-                      <% @students.each do |student| %>
-                          <% unless student.user.nil? %>
-                              <% user_name = student.user.user_name %>
-                            <option value="<%= student.user_id %>"<%= "selected" if params[:student] == student.user_id.to_s %>><%= user_name %></option>
-                          <% end %>
-                      <% end %>
-                    </select>
-                  </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3">
-                    <a href="javascript:goSearch('student')" class="btn-u rounded btn-u-info margin-bottom-20">학생검색</a>
-                  </div>
-                </dd>
-                <hr>
-                <% end %>
-                <dt class="margin-top-20"><strong><span aria-hidden="true" class="icon-education-102"></span>&nbsp;&nbsp;개념 검색</strong></dt>
-                <dd>
-                  <div class="col-md-8 col-sm-8 col-xs-8 margin-left-10">
-                    <select id="codeSelect" class="form-control margin-top-20" >
-                      <option value="">개념 선택</option>
-                      <% @codes.each do |code| %>
-                          <option value="<%= code.unit_concept_id %>" <%= "selected" if params[:code] == code.unit_concept_id.to_s %>><%= code.unit_concept.name %></option>
-                      <% end %>
-                    </select>
-                  </div>
-                  <div class="col-md-3 col-sm-3 col-xs-3 ">
-                    <a href="javascript:goSearch('code')" class="btn-u rounded btn-u-info margin-top-20">개념검색</a>
-                  </div>
-                </dd>
-
-              </dl>
-            </div>
 
             <hr class="devider devider-dotted" style="margin:10px">
 
             <div class="profile-edit tab-pane fade in active">
-              <% unless @questions.blank? %>
               <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-list"></i> 질문 목록</h3>
 
-              <div class="table-search-v1 margin-bottom-20">
-                <div class="table-responsive">
-              <table class="table table-hover tavle-bordered table-striped">
-                <thead>
-                <tr>
-                  <th class="text-center">소속</th>
-                  <th class="text-center">이름</th>
-                  <th class="text-center">질문 시간</th>
-                  <th class="text-center">개 념</th>
-                  <th class="text-center">질문 제목</th>
-                  <th class="text-center">답변 Y/N</th>
-                </tr>
-                </thead>
+              <div class="col-md-5 col-sm-5 col-xs-5 text-center">
 
-                <tbody>
+                <select id="studentSelect" class="form-control <%= 'hidden' if current_user.user_types[0].user_type == 'student' %>" >
+                  <option value="">학생 선택</option>
+                  <% @students.each do |student| %>
+                      <% unless student.user.nil? %>
+                          <% user_name = student.user.user_name %>
+                          <option value="<%= student.user_id %>"<%= "selected" if params[:student] == student.user_id.to_s %>><%= user_name %></option>
+                      <% end %>
+                  <% end %>
+                </select>
+                
+              </div>
+              <div class="<%= 'col-md-10 col-sm-10 col-xs-10' if current_user.user_types[0].user_type == 'student' %> <%= 'col-md-5 col-sm-5 col-xs-5' if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>">
+                <select id="codeSelect" class="form-control" >
+                  <option value="">개념 선택</option>
+                  <% @codes.each do |code| %>
+                      <option value="<%= code.unit_concept_id %>" <%= "selected" if params[:code] == code.unit_concept_id.to_s %>><%= code.unit_concept.name %></option>
+                  <% end %>
+                </select>
+              </div>
+              <div class="col-md-2 col-sm-2 col-xs-2 text-right">
+                <a href="javascript:goSearch()" class="btn-u rounded btn-u-info margin-bottom-20">검색</a>
+              </div>
 
-                <% @questions.each do |question| %>
+              <% unless @questions.blank? %>
+                  <div class="table-search-v1 margin-bottom-20">
+                    <div class="table-responsive">
+                      <table class="table table-hover tavle-bordered table-striped">
+                        <thead>
+                        <tr>
+                          <th class="text-center">소속</th>
+                          <th class="text-center">이름</th>
+                          <th class="text-center">질문 시간</th>
+                          <th class="text-center">개 념</th>
+                          <th class="text-center">질문 제목</th>
+                          <th class="text-center">답변 Y/N</th>
+                        </tr>
+                        </thead>
 
-                    <!-- 공통으로 필요 -->
-                    <% unless question.user.nil? %>
-                        <% @user = User.find(question.user_id) %>
-                    <% else %>
-                        <% @user = nil %>
-                    <% end %>
+                        <tbody>
 
-                    <% if current_user.user_types[0].user_type == 'mento' %>
-                        <% @school_name = '유레카매스' %><!-- 멘토 소속설정 -->
-                    <% end %>
+                        <% @questions.each do |question| %>
 
-                    <% if current_user.user_types[0].user_type == 'school teacher' %>
-                        <% @school_name = @user.school.name %>
-                    <% end %>
+                            <!-- 공통으로 필요 -->
+                            <% unless question.user.nil? %>
+                                <% @user = User.find(question.user_id) %>
+                            <% else %>
+                                <% @user = nil %>
+                            <% end %>
 
-                    <% if current_user.user_types[0].user_type == 'student' %>
-                        <% @school = School.find(question.user.school_id) %>
-                        <% @school_name = @school.name %>
-                    <% end %>
+                            <% if current_user.user_types[0].user_type == 'mento' %>
+                                <% @school_name = '유레카매스' %><!-- 멘토 소속설정 -->
+                            <% end %>
 
-                    <tr>
-                      <td class="text-center"><%= @school_name.blank? ? '' : @school_name %></td>
-                      <td class="text-center"><%= @user.user_name unless @user.nil? %><%= '탈퇴한 회원' if @user.nil? %></td>
-                      <td class="text-center"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
-                      <td class="text-center"><%= question.unit_concept.name %></td>
-                      <td class="text-center" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title.blank? ? '제목없음' : question.title , question_path(question.id) %></td>
-                      <td class="text-center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
-                    </tr>
-                <% end %>
-                </tbody>
-              </table>
+                            <% if current_user.user_types[0].user_type == 'school teacher' %>
+                                <% @school_name = @user.school.name %>
+                            <% end %>
 
+                            <% if current_user.user_types[0].user_type == 'student' %>
+                                <% @school = School.find(question.user.school_id) %>
+                                <% @school_name = @school.name %>
+                            <% end %>
+
+                            <tr>
+                              <td class="text-center"><%= @school_name.blank? ? '' : @school_name %></td>
+                              <td class="text-center"><%= @user.user_name unless @user.nil? %><%= '탈퇴한 회원' if @user.nil? %></td>
+                              <td class="text-center"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
+                              <td class="text-center"><%= question.unit_concept.name %></td>
+                              <td class="text-center" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title.blank? ? '제목없음' : question.title , question_path(question.id) %></td>
+                              <td class="text-center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+
+                    </div>
                   </div>
-                </div>
-              <%= will_paginate @questions, renderer: BootstrapPagination::Rails %>
+                  <%= will_paginate @questions, renderer: BootstrapPagination::Rails %>
 
               <% else %>
-                    <h3 class="heading-md"><i aria-hidden="true" class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-education-119"></i> 질문 목록</h3>
-                    <div class="heading heading-v4">
-                      <h2>질문이 없습니다.</h2>
-                    </div>
+                  <h3 class="heading-md"><i aria-hidden="true" class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-education-119"></i> 질문 목록</h3>
+                  <div class="heading heading-v4">
+                    <h2>질문이 없습니다.</h2>
+                  </div>
               <% end %>
             </div>
           </div>
@@ -132,23 +113,14 @@
       </div>
     </div>
 
-        <table class="table" style="table-layout: fixed;">
-          <thead>
-
-          </thead>
-          <tbody>
-
-          </tbody>
-        </table>
-
-     </div>
-    </div>
-    <!-- End Profile Content -->
   </div>
+</div>
+<!-- End Profile Content -->
+</div>
 </div><!--/container-->
 
 <script type="text/javascript">
-  function goSearch(value) {
-    location = "/mypages/question_list?"+value+"=" + $('#'+value+'Select').val();
+  function goSearch() {
+    location = "/mypages/question_list?code=" + $('#codeSelect').val() + "&student=" + $('#studentSelect').val() ;
   }
 </script>
