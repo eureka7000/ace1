@@ -80,7 +80,7 @@ class ConceptsController < ApplicationController
         @unit_concept = @concept
         @desc_type = params[:desc_type]
         
-        if @desc_type.nil?
+        if @desc_type.blank?
             @concept_exercises = @concept.concept_exercises.order(:desc_type, :memo)
         else
             @concept_exercises = @concept.concept_exercises.where('desc_type = ?',@desc_type).order(:desc_type, :memo)

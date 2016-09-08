@@ -34,8 +34,10 @@ Rails.application.routes.draw do
     resources :concepts
     resources :schools
 
-    get 'payments/close' => 'payments#close'
+    get  'payments/close' => 'payments#close'
     post 'payments/payment_return' => 'payments#payment_return'
+    post 'payments/paypal' => 'payments#paypal'
+    get  'payments/paypal_payment_return' => 'payments#paypal_payment_return'
     resources :payments
 
     get 'teachers/students_list' => 'teachers#students_list'
@@ -60,13 +62,13 @@ Rails.application.routes.draw do
     root :to => "homes#index"
 
     # Mypages
-    get 'mypages/evaluation' => 'mypages#evaluation'
-    get 'mypages/user_info' => 'mypages#user_info'
-    get 'mypages/question_list' => 'mypages#question_list'
-    get 'mypages/payment' => 'mypages#payment'
+    get  'mypages/evaluation' => 'mypages#evaluation'
+    get  'mypages/user_info' => 'mypages#user_info'
+    get  'mypages/question_list' => 'mypages#question_list'
+    get  'mypages/payment' => 'mypages#payment'
     post 'mypages/user_image_upload' => 'mypages#user_image_upload'
-    get 'mypages/study_progress_check' => 'mypages#study_progress_check'
-    get 'mypages/study_progress_detail' => 'mypages#study_progress_detail'
+    get  'mypages/study_progress_check' => 'mypages#study_progress_check'
+    get  'mypages/study_progress_detail' => 'mypages#study_progress_detail'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160817081356) do
+ActiveRecord::Schema.define(version: 20160907104640) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -121,14 +121,18 @@ ActiveRecord::Schema.define(version: 20160817081356) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "amount",         limit: 4
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.integer  "user_id",        limit: 4
-    t.string   "service_name",   limit: 255
-    t.string   "payment_status", limit: 255
-    t.string   "oid",            limit: 255
-    t.string   "pay_method",     limit: 255
+    t.integer  "amount",          limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "user_id",         limit: 4
+    t.string   "service_name",    limit: 255
+    t.string   "payment_status",  limit: 255
+    t.string   "oid",             limit: 255
+    t.string   "pay_method",      limit: 255
+    t.string   "paypal_token",    limit: 255
+    t.string   "paypal_payer_id", limit: 255
+    t.string   "pay_gateway",     limit: 255
+    t.string   "currency",        limit: 255
   end
 
   create_table "questions", force: :cascade do |t|

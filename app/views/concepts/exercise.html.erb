@@ -240,7 +240,7 @@
     }
     
     function search() {
-        location = "/concepts/<%= params[:id] %>/exercise?desc_type=" + $('#desc_type_condition').val() + "<%= return_param %>";
+        location = "/concepts/<%= params[:id] %>/exercise?desc_type=" + $('#desc_type_condition').val() + "<%= raw return_param %>";
     }
 
 </script>

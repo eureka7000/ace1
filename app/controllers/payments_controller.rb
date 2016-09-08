@@ -8,6 +8,41 @@ class PaymentsController < ApplicationController
     def close
     end
     
+    def paypal
+        
+        response = EXPRESS_GATEWAY.setup_purchase(
+            params[:price].to_i/10,
+            ip: request.remote_ip,
+            return_url: "#{root_url}/payments/paypal_payment_return",
+            cancel_return_url: "#{root_url}/payments/paypal_payment_cancel",
+            currency: 'USD',
+            allow_guest_checkout: true,
+            items: [{name: "#{params[:goodname]} #{'Month'.pluralize(params[:goodname].to_i)} License", description: "You can use all of EurekaMath contents during #{params[:goodname]} #{'Month'.pluralize(params[:goodname].to_i)}", quantity: "1", amount: params[:price].to_i/10}]
+        )
+        
+        @payment = Payment.new()
+        @payment.user_id = current_user.id
+        @payment.amount = params[:price].to_i/1000
+        @payment.service_name = params[:goodname] + 'Month'.pluralize(params[:goodname].to_i)
+        @payment.payment_status = 'processing'
+        @payment.pay_gateway = 'paypal'
+        @payment.currency = 'USD'
+        @payment.paypal_token = response.token
+        @payment.save
+        
+        redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
+        
+    end 
+
+    
+    def paypal_payment_return
+        @payment = Payment.where('paypal_token = ?',params[:token]).first
+        unless @payment.nil?
+            @payment.paypal_payer_id = params[:PayerID]
+            @payment.save
+        end
+    end
+    
     def payment_return
         
         ActiveRecord::Base.transaction do        
@@ -85,7 +120,7 @@ class PaymentsController < ApplicationController
                 
             end
             
-        end    
+        end
         
     end    
 
@@ -106,10 +141,12 @@ class PaymentsController < ApplicationController
         @payment = Payment.new()
         @payment.user_id = current_user.id
         @payment.amount = params[:payment][:amount]
-        @payment.service_name = params[:payment][:service_name] + " months "
+        @payment.service_name = params[:payment][:service_name] + 'Month'.pluralize(params[:payment][:service_name].to_i)
         @payment.oid = params[:payment][:oid]
         @payment.payment_status = 'processing'
         @payment.pay_method = params[:payment][:pay_method]
+        @payment.pay_gateway = 'inicis'
+        @payment.currency = 'KRW'
       
         if @payment.save
             tmp = {
