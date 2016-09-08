@@ -1,0 +1,48 @@
+<!--=== Profile ===-->
+<div class="container profile">
+    <div class="row">
+
+        <%= render :partial=>"/mypages/left_sidebar"%>
+
+        <!-- Profile Content -->
+        <div class="col-md-9 margin-top-20">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">Paypal 결제 진행</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <% unless notice.blank? %>
+                                <p class="alert alert-warning"><%= notice %></p>
+                            <% end %>
+                            
+                            <% unless alert.blank? %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+                            
+                            <div class="heading heading-v4">
+                                <h2><%= @payment.service_name %> 이용권 : <%= Payment::CURRENCY_SYMBOLS[@payment.currency] %> <%= @payment.amount %></h2>
+                            </div>
+                            
+                        </div>    
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>

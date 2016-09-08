@@ -76,7 +76,9 @@
                             
                             <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제하기</h3>
                             
-                            <form id="SendPayForm_id" name="" class="sky-form" method="POST">
+                            <form id="SendPayForm" name="" class="sky-form" action="/payments/paypal" method="POST">
+                                
+                            <%= token_tag nil %>
                                 
                             <input type="hidden" name="version" value="1.0">  
                             <input type="hidden" name="mid" value="<%= @mid %>" >
@@ -124,20 +126,18 @@
                             <div >
                                 <button type="button" onclick="pay()" class="btn-u btn-u-blue" style="float:left">결제요청</button>
 
-<!--                                <span class="color-blue" style="float:left; margin-left: 10px; margin-right: 10px"> - or - </span>
+                                <span class="color-blue" style="float:left; margin-left: 10px; margin-right: 10px"> - or - </span>
 
-                                <form id="myContainer" method="post" action="/checkout" style="float:left"></form>
                                 <script>
                                 window.paypalCheckoutReady = function() {
                                     paypal.checkout.setup('UYLV5U5RAXA7A', {
                                         environment: 'sandbox',
-                                        container: 'myContainer'
+                                        container: 'SendPayForm'
                                     });
                                 };
                                 </script>
-                                <script src="//www.paypalobjects.com/api/checkout.js" async></script> -->
+                                <script src="//www.paypalobjects.com/api/checkout.js" async></script>
                             </div>    
-                            
 
                         </div>    
                         
@@ -162,8 +162,6 @@
 
 <script type="text/javascript">
 
-
-
 function pay() {
     
     var url = "/payments";
@@ -187,7 +185,7 @@ function pay() {
         data: data,
         success : function(data) {
             $('#signature').val(data.signature);
-            INIStdPay.pay('SendPayForm_id');
+            INIStdPay.pay('SendPayForm');
         },
         error : function(){
             alert("try to again. please.");
@@ -196,12 +194,16 @@ function pay() {
     
 }
 
-function initpage() {}
-
 function goodChanged() {
     var price = parseInt($('#goodname').val()) * 25000;
     $('#price').val(price);
 }
+
+function okokok() {
+    alert('이것참 미치근넹....');
+    return false;
+}
+
     
 </script>
 
