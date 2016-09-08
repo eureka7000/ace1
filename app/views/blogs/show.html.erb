@@ -1,6 +1,6 @@
 <div class="col-md-12 breadcrumbs">
   <div class="container">
-    <h2 class="pull-left" style="color: black">About / <%= Blog::BLOG_TYPES[@blog.blog_type] %></h2>
+    <h2 class="pull-left" style="color: black"> <%= 'Blog' if @blog.blog_type == '2' || @blog.blog_type == '3' %> <%= 'About' if @blog.blog_type == '5' || @blog.blog_type == '6' %> / <%= Blog::BLOG_TYPES[@blog.blog_type] %></h2>
   </div><!--/container-->
 </div><!--/breadcrumbs-->
 
