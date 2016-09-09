@@ -62,7 +62,6 @@
 </head>
 
 <body>
-      
 
 <div id="loading" style="display:none">
     <img src="/assets/img/Loading.gif" />
@@ -70,127 +69,132 @@
 
 <div class="wrapper">
 
-	<!--=== Header ===-->
-    <div class="header col-md-12">
+  <!--=== Header ===-->
+  <div class="header">
 
-		<div class="container" style="height: 100px;">
+    <div class="container" style="height: 100px;">
 
-			<!-- Logo -->
-        <a class="logo" href="/">
-          <img src="/assets/img/logo.jpg" alt="Logo" class="img-responsive">
-        </a>
+      <!-- Logo -->
+      <a class="logo" href="/">
+        <img src="/assets/img/logo.jpg" alt="Logo" class="img-responsive">
+      </a>
       <!-- End Logo -->
-            <!-- Topbar -->
-            <div class="col-md-12 topbar">
-                
-                <ul class="loginbar pull-right">
-                    <% unless current_user.nil? %>
-                <li>안녕하세요. <%= current_user.user_name.nil? ? "회원" : current_user.user_name %>님 </li>
-                <li>
-                    <% if current_user.can_I_use? %>
-                    <span class="label rounded-2x label-green" style="margin-left: 5px">member</span>
-                    <% else %>
-                    <span class="label rounded-2x label-yellow" style="margin-left: 5px" title="Level1까지 자유롭게 사용가능">Free</span>
-                    <% end %>                              
-                </li>
-                  <% else %>
-                      <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('회원가입', new_user_registration_path )%></span></li>
-                  <% end %>
-                  &nbsp;
-                  <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('로그아웃', destroy_user_session_path, :method => :delete) : link_to( t(:log_in) , new_user_session_path) %></span></li>
-                    <li></li>
+
+      <!-- Topbar -->
+      <div class="topbar">
+
+        <ul class="loginbar pull-right">
+          <% unless current_user.nil? %>
+              <li>
+                <% if current_user.can_I_use? %>
+                    <span class="label rounded label-blue" style="margin-left: 5px">Member</span>
+                <% else %>
+                    <span class="label rounded label-yellow" style="margin-left: 5px" title="Level1까지 자유롭게 사용가능">Free</span>
+                <% end %>
+              </li>
+              &nbsp;
+              <li><%= current_user.user_name.blank? ? '' : current_user.user_name %> <%= '학생' if current_user.user_types[0].user_type == 'student' %>
+                <%= '멘토님' if current_user.user_types[0].user_type == 'mento' %><%= '선생님' if current_user.user_types[0].user_type == 'school teacher' %>
+                <%= '부모님' if current_user.user_types[0].user_type == 'parent' %>
+              </li>
+        <% else %>
+              <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('회원가입', new_user_registration_path )%></span></li>
+          <% end %>
+          &nbsp;
+          <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('로그아웃', destroy_user_session_path, :method => :delete) : link_to( t(:log_in) , new_user_session_path) %></span></li>
+          <li></li>
+        </ul>
+      </div>
+      <!-- End Topbar -->
+
+      <!-- Toggle get grouped for better mobile display -->
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="fa fa-bars"></span>
+      </button>
+      <!-- End Toggle -->
+    </div><!--/end container-->
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-responsive-collapse margin-right-10">
+      <div class="container">
+
+        <ul class="nav navbar-nav margin-right-10">
+
+          <li class="<%= 'active' if @active == 'home' %> dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/contents?view_type=1&step=1">단원별</a>
+              </li>
+              <li>
+                <a href="/contents?view_type=2&step=1">학년별</a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="<%= 'active' if @active == 'mypage' %>">
+            <% if @session_yn == 'Y' %>
+                <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
+                    <a href="/mypages/user_info">MY PAGE <span class="badge rounded-2x badge-red"><%= @questions_number unless @questions_number == 0 %></span></a>
+                <% end %>
+            <% else %>
+                <a href="/mypages/user_info">MY PAGE</a>
+            <% end %>
+          </li>
+          <li class="<%= 'active' if @active == 'blog' %> dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/questions">학습문제해결</a>
+              </li>
+              <li>
+                <a href="/blogs/succession_case">성공사례</a>
+              </li>
+              <li>
+                <a href="/blogs/math_story">수학이야기</a>
+              </li>
+            </ul>
+
+          <li class="<%= 'active' if @active == 'about' %> dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">ABOUT</a>
+
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/blogs/faq">FAQ</a>
+              </li>
+              <li>
+                <a href="/blogs/notice">공지사항</a>
+              </li>
+              <li>
+                <a href="/blogs/the_news">새소식</a>
+              </li>
+
+              <!-- 회사소개 -->
+              <li class="dropdown-submenu">
+                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;회사소개</a>
+                <ul class="dropdown-menu submenu-left">
+                  <li><a href="/blogs/recommendation">- 추천사</a></li>
+                  <li><a href="/blogs/company_introduction">- 유레카매스란?</a></li>
                 </ul>
-            </div>
-            <!-- End Topbar -->
+              </li>
+              <!-- End 회사소개 -->
 
-            <!-- Toggle get grouped for better mobile display -->
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="fa fa-bars"></span>
-            </button>
-            <!-- End Toggle -->
-        </div><!--/end container-->
+              <!--<li>
+                <a href="/blogs/contact_us">Contact us</a>
+              </li>-->
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-responsive-collapse margin-right-10">
-            <div class="container">
-
-                <ul class="nav navbar-nav margin-right-10">
-
-                      <li class="<%= 'active' if @active == 'home' %> dropdown">
-                          <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="/contents?view_type=1&step=1">단원별</a>
-                                </li>
-                                <li>
-                                    <a href="/contents?view_type=2&step=1">학년별</a>
-                                </li>
-                            </ul>
-                      </li>
-
-                      <li class="<%= 'active' if @active == 'mypage' %>">
-                          <% if @session_yn == 'Y' %>
-                              <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
-                                <a href="/mypages/user_info">MY PAGE <span class="badge rounded-2x badge-red"><%= @questions_number unless @questions_number == 0 %></span></a>
-                              <% end %>
-                          <% else %>
-                            <a href="/mypages/user_info">MY PAGE</a>
-                          <% end %>
-                      </li>
-                      <li class="<%= 'active' if @active == 'blog' %> dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a href="/questions">학습문제해결</a>
-                          </li>
-                          <li>
-                            <a href="/blogs/succession_case">성공사례</a>
-                          </li>
-                          <li>
-                            <a href="/blogs/math_story">수학이야기</a>
-                          </li>
-                        </ul>
-
-                      <li class="<%= 'active' if @active == 'about' %> dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">ABOUT</a>
-
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a href="/blogs/faq">FAQ</a>
-                          </li>
-                          <li>
-                            <a href="/blogs/notice">공지사항</a>
-                          </li>
-                          <li>
-                            <a href="/blogs/the_news">새소식</a>
-                          </li>
-
-                          <!-- 회사소개 -->
-                          <li class="dropdown-submenu">
-                            <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;회사소개</a>
-                            <ul class="dropdown-menu submenu-left">
-                              <li><a href="/blogs/recommendation">- 추천사</a></li>
-                              <li><a href="/blogs/company_introduction">- 유레카매스란?</a></li>
-                            </ul>
-                          </li>
-                          <!-- End 회사소개 -->
-
-                          <!--<li>
-                            <a href="/blogs/contact_us">Contact us</a>
-                          </li>-->
-
-                        </ul>
-                      </li>
-                     <!-- 임시 주석 처리
+            </ul>
+          </li>
+          <!-- 임시 주석 처리
                       <li class="<%= 'active' if @active == 'payments' %>">
                         <a href="/payments">상품결제</a>
                       </li>
                       -->
-                </ul>
-            </div><!--/end container-->
-        </div><!--/navbar-collapse-->
-    </div>
+        </ul>
+      </div><!--/end container-->
+    </div><!--/navbar-collapse-->
+  </div>
     <!--=== End Header ===-->
 
 
