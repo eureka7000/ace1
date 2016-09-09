@@ -158,14 +158,14 @@
 /*Logo*/
 .header .logo {
 	height: 100%;
-	min-width: 100px;
+	max-width: 100px;
 	display: table-cell;
 	vertical-align: middle;
 }
 
 .header .logo img {
 	z-index: 1;
-	margin: 20px 0;
+	margin: 10px 0;
 	position: relative;
 }
 
