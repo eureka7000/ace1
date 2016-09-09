@@ -32,27 +32,25 @@
         <% if @unit_concept.level > 1 && !current_user.can_I_use? %>
 
             <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20 no-margin no-padding text-center">
-                <% unless params[:exercise_type] == 'concept_exercise' %>
-                    <h5>
-                      <% unless @unit_concept.level.nil? %>
-                          <% rst = 5 - @unit_concept.level %>
-                          <span style="-webkit-text-fill-color: orangered">
+              <h5>
+                <% unless @unit_concept.level.nil? %>
+                    <% rst = 5 - @unit_concept.level %>
+                    <span style="-webkit-text-fill-color: orangered">
                     <% (1..@unit_concept.level).each do |idx| %>
                     <i style="color: orangered" class="fa fa-star"></i>
                     <% end%>
                     </span>
-                          <span style="-webkit-text-fill-color: orangered">
+                    <span style="-webkit-text-fill-color: orangered">
                     <% (1..rst).each do |idx| %>
                     <i class="fa fa-star-o"></i>
                     <% end %>
                     </span>
-                      <% end %>
-                      <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
-                    </h5>
-                <% else %>
-                    <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %>
-                    </h5>
                 <% end %>
+                <% if params[:exercise_type] != 'concept_exercise' %>
+                    <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span>
+                <% end %>
+                <%= @unit_concept_name %>
+              </h5>
 
               <h1 class="margin-top-20"><i style="color: red" class="fa fa-exclamation-triangle"></i></h1>
 
@@ -65,6 +63,26 @@
         <div class="tab-pane active" id="d">
 
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
+
+            <h5>
+              <% unless @unit_concept.level.nil? %>
+                  <% rst = 5 - @unit_concept.level %>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
+              <% end %>
+              <% if params[:exercise_type] != 'concept_exercise' %>
+                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span>
+              <% end %>
+              <%= @unit_concept_name %>
+            </h5>
 
             <div style="overflow-y: auto; width: 100%;">
               <% imgCount = 1 %>
@@ -112,6 +130,25 @@
         <div class="tab-pane" id="e">
 
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
+            <h5>
+              <% unless @unit_concept.level.nil? %>
+                  <% rst = 5 - @unit_concept.level %>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
+              <% end %>
+              <% if params[:exercise_type] != 'concept_exercise' %>
+                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span>
+              <% end %>
+              <%= @unit_concept_name %>
+            </h5>
 
             <div style="overflow-y: auto; width: 100%;">
               <% @unit_concept_descs.each do | unit_concept_desc | %>
@@ -158,6 +195,26 @@
         <div class="tab-pane" id="f">
 
           <div class="col-md-6 col-ms-6 col-xs-12 margin-top-20 no-margin no-padding">
+            <h5>
+              <% unless @unit_concept.level.nil? %>
+                  <% rst = 5 - @unit_concept.level %>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..@unit_concept.level).each do |idx| %>
+                    <i style="color: orangered" class="fa fa-star"></i>
+                    <% end%>
+                    </span>
+                  <span style="-webkit-text-fill-color: orangered">
+                    <% (1..rst).each do |idx| %>
+                    <i class="fa fa-star-o"></i>
+                    <% end %>
+                    </span>
+              <% end %>
+              <% if params[:exercise_type] != 'concept_exercise' %>
+                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span>
+              <% end %>
+              <%= @unit_concept_name %>
+            </h5>
+
             <% @unit_concept_descs.each do | unit_concept_desc | %>
                 <% unless unit_concept_desc.desc_type.to_i != 1 %>
                     <img src="<%= unit_concept_desc.file_name %>" style="width: 100%; margin-top: 10px;" />
@@ -248,29 +305,26 @@
           <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin margin-top-20"></div>
           <div class="col-md-2"></div>
           <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
-            <% unless params[:exercise_type] == 'concept_exercise' %>
-                <h5>
-                  <% unless @unit_concept.level.nil? %>
-                      <% rst = 5 - @unit_concept.level %>
-                      <span style="-webkit-text-fill-color: orangered">
-                    <% (1..@unit_concept.level).each do |idx| %>
-                    <i style="color: orangered" class="fa fa-star"></i>
-                    <% end%>
-                    </span>
-                      <span style="-webkit-text-fill-color: orangered">
-                    <% (1..rst).each do |idx| %>
-                    <i class="fa fa-star-o"></i>
-                    <% end %>
-                    </span>
-                  <% end %>
-                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
-                  &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
-                </h5>
-            <% else %>
-                <h5 style="margin-bottom: 10px"><span style="-webkit-text-fill-color: darkblue"></span> <%= @unit_concept_name %>
-                  &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
-                </h5>
-            <% end %>
+            <h5>
+              <% unless @unit_concept.level.nil? %>
+                  <% rst = 5 - @unit_concept.level %>
+                  <span style="-webkit-text-fill-color: orangered">
+                <% (1..@unit_concept.level).each do |idx| %>
+                <i style="color: orangered" class="fa fa-star"></i>
+                <% end%>
+                </span>
+                  <span style="-webkit-text-fill-color: orangered">
+                <% (1..rst).each do |idx| %>
+                <i class="fa fa-star-o"></i>
+                <% end %>
+                </span>
+              <% end %>
+              <% if params[:exercise_type] != 'concept_exercise' %>
+                  <span style="-webkit-text-fill-color: darkblue"><%= @unit_concept.code.upcase %></span>
+              <% end %>
+              <%= @unit_concept_name %>
+              &nbsp;&nbsp;<i style="color: orange" class="fa fa-lightbulb-o"></i>Tip: <a style="color: #585858" href="/blogs/video_function_extension" target="_blank">재생 속도 조절 방법</a>
+            </h5>
 
             <% @unit_concept_descs.each do | unit_concept_desc | %>
                 <% unless unit_concept_desc.desc_type.to_i != 4 %>

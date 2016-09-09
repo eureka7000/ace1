@@ -153,8 +153,10 @@ class ContentsController < ApplicationController
                             key: concept_exercise.id,
                             value: concept_exercise.concept_name,
                             content_yn: true,
-                            level: 1,
-                            exercise_yn: true
+                            level: concept_exercise.level,
+                            exercise_yn: true,
+                            level_star_yn: true,
+                            level_star: concept_exercise.get_level_star
                         }
                     end                    
                 else    
