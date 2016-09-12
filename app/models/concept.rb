@@ -103,5 +103,30 @@ class Concept < ActiveRecord::Base
         5 => "link",
         7 => "Answer"
     }
-    
+
+    def get_level_star
+
+        ret = ""
+
+        unless self.level.nil?
+
+            ret += "<span class='item-box'><span class='item'>"
+
+            rst = 5 - self.level
+
+            (1..self.level).each do |idx|
+                ret += " <i class='fa fa-star'></i> "
+            end
+
+            (1..rst).each do |idx|
+                ret += " <i class='fa fa-star-o'></i> "
+            end
+
+            ret += "</span></span>"
+        end
+
+        ret
+
+    end
+
 end
