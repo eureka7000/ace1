@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     post 'payments/payment_return' => 'payments#payment_return'
     post 'payments/paypal' => 'payments#paypal'
     get  'payments/paypal_payment_return' => 'payments#paypal_payment_return'
+    post 'payments/paypal_confirm' => 'payments#paypal_confirm'
     resources :payments
 
     get 'teachers/students_list' => 'teachers#students_list'

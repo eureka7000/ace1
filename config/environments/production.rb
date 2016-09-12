@@ -106,6 +106,18 @@ Rails.application.configure do
           :sender_address => %{"notifier" <info@eurekamath.co.kr>},
           :exception_recipients => %w{mcjung@eurekamath.co.kr}
       }
+      
+      
+      # Setup ActiveMerchant
+      config.after_initialize do
+          ActiveMerchant::Billing::Base.mode = :production
+          paypal_options = {
+              login: "admin_api1.eurekamath.co.kr",
+              password: "D79JW3MUYSBYZ9MD",
+              signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31A411C90dE2o-Dy3ZVV35TGy6vstD"
+          }
+          ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
+      end        
   
 end
 

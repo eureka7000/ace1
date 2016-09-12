@@ -8,6 +8,47 @@ class PaymentsController < ApplicationController
     def close
     end
     
+    def paypal_confirm
+        
+        @payment = Payment.where('paypal_token = ?', params[:paypal_token]).first
+        
+        unless @payment.nil?
+            
+            express_purchase_options = {
+                :ip => request.remote_ip,
+                :token => params[:paypal_token],
+                :payer_id => @payment.paypal_payer_id
+            }
+            
+            @response = EXPRESS_GATEWAY.purchase(
+                @payment.amount * 100, express_purchase_options
+            )
+            
+            logger.debug "@message" + @response.message
+            
+            payment_log = PaymentLog.new
+            payment_log.user_id = current_user.id
+            payment_log.pg = 'paypal'
+            payment_log.result_message = @response.message
+            payment_log.result_detail = @response.inspect
+            payment_log.save
+            
+            if @response.success?
+            
+                @payment.payment_status = 'paid'
+                @payment.save                    
+            
+                @user = User.find(current_user.id)
+                @user.expire_date = user.get_expire_date(@payment.service_name[0].to_i)
+                @user.save
+                
+            end    
+            
+        end
+        
+    end
+
+    
     def paypal
         
         response = EXPRESS_GATEWAY.setup_purchase(

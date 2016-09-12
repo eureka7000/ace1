@@ -29,17 +29,12 @@
                                 <p class="alert alert-danger"><%= alert %></p>
                             <% end %>
                             
-                            <div class="heading heading-v4">
-                                <h2><%= @payment.service_name %> 이용권 : <%= Payment::CURRENCY_SYMBOLS[@payment.currency] %> <%= @payment.amount %></h2>
-                            </div>
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
                             
-                            <div class="text-center">
-                                <form id="SendPayForm" name="" class="sky-form" action="/payments/paypal_confirm" method="POST">
-                                    <%= token_tag nil %>
-                                    <input type="hidden" name="paypal_token" value="<%= @payment.paypal_token %>" />
-                                    <button type="submit" class="btn-u btn-u-blue" style="display:block">결제 확인</button>
-                                </form>
-                            </div>    
+                            <div class="heading heading-v4">
+                                <p>결제가 완료되었습니다.</p>
+                                <h2><%= @user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                            </div>                            
                             
                         </div>    
                         
