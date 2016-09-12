@@ -212,7 +212,7 @@ class ContentsController < ApplicationController
             end
             
             if @step > 1
-                @current_page_name = UnitConcept::GRADES[@grade.to_i]
+                @current_page_name = UnitConcept::CONTENTS_GRADES[@grade.to_i]
                 @breadcrumbs << { 'step2' => @current_page_name }
             end   
             
@@ -247,7 +247,7 @@ class ContentsController < ApplicationController
             
             # data
             if @step == 1
-                UnitConcept::GRADES.each_pair do |key, value|
+                UnitConcept::CONTENTS_GRADES.each_pair do |key, value|
                     @items << {
                         key: key,
                         value: value
