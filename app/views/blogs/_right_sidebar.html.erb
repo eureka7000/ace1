@@ -6,7 +6,7 @@
   <ul class="list-unstyled blog-trending margin-bottom-50">
     <% @latest_news.each do |news|%>
         <li>
-          <h5><span style="color: darkgreen"><i class="fa fa-bullhorn"></i></span><a href="/blogs/<%= news.id %>"><%= news.title  %></a></h5>
+          <h5><span style="color: darkgreen"><i class="fa fa-bullhorn"></i></span><a href="/blogs/<%= Blog::BLOG_NAMES[news.blog_type] %>"><%= news.title  %></a></h5>
           <small><%= news.created_at.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %> / <a href="/blogs/<%= Blog::BLOG_NAMES[news.blog_type] %>"><%= Blog::BLOG_TYPES[news.blog_type] %></a></small>
         </li>
     <% end %>

@@ -1,34 +1,57 @@
-<div class="col-md-9 margin-top-20 bg-color-light rounded">
-
+<div class="col-md-9">
   <% unless @blogs.blank? %>
+      <% count = 1 %>
+      <% @blogs.each do |blog| %>
+          <div class="col-md-11 margin-top-20 bg-color-light rounded box-shadow shadow-effect-1" style="padding: 2%">
 
-      <div class="row">
-        <div class="col-md-12 margin-top-20"></div>
-        <% @blogs.each do |blog| %>
-            <div class="col-md-12">
-              <div class="news-v3 bg-color-white margin-bottom-30">
-                <img class="img-responsive full-width rounded <%= 'hidden' if blog.file_name.blank? %>" src="<%= blog.file_name %>" alt="">
-                <div class="news-v3-in">
-                  <ul class="list-inline posted-info">
-                    <li>By <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></li>
-                    <li>Posted <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
-                  </ul>
-                  <h2><a href="/blogs/<%= blog.id %>"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= blog.title %></a></h2>
+            <div class="row clients-page">
+              <div class="col-md-2 col-xs-3">
+                <% if blog.admin_yn == 'Y' %>
+                    <img src="/assets/img/arch2.jpg" class="img-responsive rounded-x hover-effect center-block" alt="">
+                <% else %>
+                    <img src="<%= blog.user.user_img unless blog.user.user_img.blank? %><%= '/assets/img/user_default_img.png' if blog.user.user_img.blank? %>" class="img-responsive rounded-x hover-effect center-block" alt="">
+                <% end %>
+              </div>
+              <div class="col-md-10 col-xs-9">
+                <h3><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= blog.title %></h3>
+                <ul class="list-inline">
+                  <li style="font-style: italic"><i class="fa fa-pencil color-green"></i> <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></li>
+                  <li style="font-style: italic"><i class="fa fa-calendar color-green"></i>&nbsp; <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
+                </ul>
+
+                <p>
+                  <i class="fa fa-file-text-o color-green"></i>&nbsp;
+                  <a style="color: #3f7f7f" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-<%= count %>" aria-expanded="false">
+                    내용 보기
+                  </a>
+                </p>
+
+                <div id="collapse-<%= count %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                  <hr class="no-margin">
+                  <img src="<%= blog.file_name %>" class="img-responsive rounded margin-top-20 margin-bottom-20">
+                  <p><%= simple_format(blog.content) %></p>
                 </div>
+
               </div>
             </div>
-        <% end %>
-      </div>
+          </div>
+          <% count += 1 %>
+      <% end %>
 
-      <div class="text-center bg-color-light">
-        <ul class="pagination">
-          <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
-        </ul>
+      <div class="col-md-11 margin-top-20 bg-color-white rounded">
+        <div class="text-center">
+          <ul class="pagination">
+            <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
+          </ul>
+        </div>
       </div>
   <% else %>
-      <hr class="no-margin margin-bottom-20">
-      <div class="tag-box box-shadow shadow-effect-1">
-        <h4 class="text-center"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> 등록된 게시물이 없습니다.</h4>
+      <div class="col-md-11 margin-top-20 bg-color-light rounded box-shadow shadow-effect-1" style="padding: 2%">
+        <div class="row clients-page">
+          <div class="col-md-12 col-xs-12">
+            <h2 class="text-center" style="padding: 3%"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> 등록된 게시물이 없습니다.</h2>
+          </div>
+        </div>
       </div>
   <% end %>
 </div>
