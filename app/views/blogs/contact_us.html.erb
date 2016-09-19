@@ -1,48 +1,69 @@
-<div class="breadcrumbs col-md-12 margin-bottom-30">
+<!--<div class="breadcrumbs col-md-12 margin-bottom-30">
   <div class="container">
     <h1 class="pull-left">Contacts us</h1>
     <ul class="pull-right breadcrumb">
       <li><a href="/">Home</a></li>
-      <!--<li>About</li>-->
+      <li>About</li>
       <li class="active"><a href="/blogs/contact_us">Contact us</a></li>
     </ul>
   </div>
+</div>-->
+
+<div class="breadcrumbs-v3 img-v1 col-md-12 margin-bottom-30">
+  <div class="container text-center">
+    <h1><i class="fa fa-envelope"></i></h1>
+    <h1>Contact us</h1>
+  </div><!--/end container-->
 </div>
 
-<div class="container content">
+
+<div class="container">
   <div class="row margin-bottom-30">
     <div class="col-md-8 mb-margin-bottom-30">
 
-      <form method="post" id="sky-form3" class="sky-form contact-style" novalidate="novalidate">
-        <fieldset class="no-padding">
-
-          <label>Message <span class="color-red">*</span></label>
-          <div class="row sky-space-20">
-            <div class="col-md-11 col-md-offset-0">
-              <div>
-                <textarea rows="8" name="message" id="message" class="form-control"></textarea>
+      <% unless params[:mail].blank? %>
+          <fieldset class="no-padding">
+            <div class="row sky-space-20">
+              <div class="col-md-11">
+                <% if params[:mail] == 'send_ok' %>
+                  <p class="alert alert-info">문의하신 메일이 발송되었습니다.</p>
+                <% else %>
+                  <p class="alert alert-danger">메일 전송이 실패하였습니다.</p>
+                <% end %>
               </div>
             </div>
+          </fieldset>
+      <% end %>
+        <fieldset class="no-padding">
+          <label><h3>문의하기</h3></label>
+          <div class="row sky-space-20">
+            <form method="post" action="/blogs/contact_us_message" id="new_contact_us" class="sky-form contact-style" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+              <%= token_tag nil %>
+              <div class="col-md-11 col-md-offset-0">
+                제목<span class="color-red">*</span>
+                <input type="text" name="blog[title]" id="contact_us_title" class="form-control margin-bottom-20"/>
+                내용<span class="color-red">*</span>
+                <textarea rows="8" name="blog[content]" id="contact_us_content" class="form-control"></textarea>
+              </div>
+              <input type="hidden" name="blog[blog_type]" value="8">
+              <input type="hidden" name="blog[user_id]" id="current_user" value="<%= current_user.id unless current_user.blank? %>">
+              <input type="hidden" name="blog[admin_yn]" value="N">
+            </form>
           </div>
-
-          <p><button type="submit" class="btn-u rounded btn-u-yellow">문의하기</button></p>
+          <h6><span class="color-red">*</span> 문의하기 이용시 로그인이 필요하며 답변은 로그인된 이메일 계정을 통해서 받아보실 수 있습니다.</h6>
+          <p><button class="btn-u rounded btn-u-yellow margin-top-20" onclick="sendContactUs()">보내기</button></p>
         </fieldset>
 
-        <div class="message">
-          <i class="rounded-x fa fa-check"></i>
-          <p>Your message was successfully sent!</p>
-        </div>
-      </form>
-    </div><!--/col-md-9-->
+    </div><!--/col-md-8-->
 
     <div class="col-md-4">
       <!-- Contacts -->
       <div class="headline"><h2>Contacts</h2></div>
       <ul class="list-unstyled who margin-bottom-30">
-        <li><a href="#"><i class="fa fa-home"></i>경기도 성남시 분당구 매화로 50 송림프라자 303호</a></li>
-        <li><a href="#"><i class="fa fa-envelope"></i>info@eurekamath.co.kr</a></li>
-        <li><a href="#"><i class="fa fa-phone"></i>(사무실) 031-708-2400</a></li>
-        <li><a href="#"><i class="fa fa-fax tooltips"></i>(FAX) 031-708-0057</a></li>
+        <li><i class="fa fa-home"></i>경기도 성남시 분당구 매화로 50 송림프라자 303호</li>
+        <li><i class="fa fa-envelope"></i>info@eurekamath.co.kr</li>
+        <li><i class="fa fa-phone"></i>(사무실) 031-708-2400</li>
+        <li><i class="fa fa-fax tooltips"></i>(FAX) 031-708-0057</li>
       </ul>
 
       <!-- Business Hours -->
@@ -52,17 +73,33 @@
         <!--<li><strong>Saturday, Sunday:</strong> Closed</li>-->
       </ul>
 
-      <!-- Why we are? -->
-      <div class="headline"><h2>Why we are?</h2></div>
-      <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum.</p>
-      <ul class="list-unstyled">
-        <li><i class="fa fa-check color-green"></i> Odio dignissimos ducimus</li>
-        <li><i class="fa fa-check color-green"></i> Blanditiis praesentium volup</li>
-        <li><i class="fa fa-check color-green"></i> Eos et accusamus</li>
-      </ul>
-    </div><!--/col-md-3-->
+    </div><!--/col-md-4-->
   </div><!--/row-->
 
 </div>
+
+<%= render partial: 'modals/move_to_sign_in_modal' %>
+
+<script type="text/javascript">
+  function sendContactUs() {
+    if ($('#current_user').val() == ''){
+      $('#move_to_sign_in').modal();
+      return false;
+    }
+    $('#loading').show();
+    if ( $('#contact_us_title').val() == ''){
+      alert('제목을 입력하세요.');
+      $('#loading').hide();
+      return false;
+    }
+    if ( $('#contact_us_content').val() == ''){
+      alert('내용을 입력하세요.');
+      $('#loading').hide();
+      return false;
+    }
+    $('#new_contact_us').submit();
+    $('#loading').hide();
+  }
+</script>
 
 <%= render 'homes/footer' %>

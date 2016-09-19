@@ -15,8 +15,8 @@
               <div class="col-md-10 col-xs-9">
                 <h3><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= blog.title %></h3>
                 <ul class="list-inline">
-                  <li style="font-style: italic"><i class="fa fa-pencil color-green"></i> <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></li>
-                  <li style="font-style: italic"><i class="fa fa-calendar color-green"></i>&nbsp; <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
+                  <li><i class="fa fa-pencil color-green"></i><i> <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></i></li>
+                  <li><i class="fa fa-calendar color-green"></i><i>&nbsp; <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></i></li>
                 </ul>
 
                 <p>
@@ -55,6 +55,8 @@
       </div>
   <% end %>
 </div>
+
+
 
 <!-- Alert -->
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">

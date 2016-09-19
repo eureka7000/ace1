@@ -13,7 +13,8 @@ class Blog < ActiveRecord::Base
     "4" => "FAQ",
     "5" => "공지사항",
     "6" => "새소식",
-    "7" => "회사소개"
+    "7" => "회사소개",
+    "8" => "Contact us"
   }
 
   BLOG_NAMES = {
@@ -23,7 +24,8 @@ class Blog < ActiveRecord::Base
     "4" => "faq",
     "5" => "notice",
     "6" => "the_news",
-    "7" => "company_introduction"
+    "7" => "company_introduction",
+    "8" => "contact us"
   }
   
 end

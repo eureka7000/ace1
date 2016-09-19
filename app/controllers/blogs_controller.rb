@@ -145,6 +145,21 @@ class BlogsController < ApplicationController
     @latest_news = Blog.order(id: :desc).first(5)
   end
 
+  # POST /blogs/contact_us_message
+  def contact_us_message
+    @blog = Blog.new(blog_params)
+
+    respond_to do |format|
+      if @blog.save
+        user = User.find(@blog.user_id)
+        UserMailer.noti_contact_us_message(user, @blog).deliver_later!
+        format.html { redirect_to '/blogs/contact_us?mail=send_ok' }
+      else
+        format.html { redirect_to '/blogs/contact_us?mail=send_fail' }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_blog
