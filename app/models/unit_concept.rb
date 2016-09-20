@@ -34,7 +34,8 @@ class UnitConcept < ActiveRecord::Base
         2 => '중2',
         3 => '중3',
         4 => '고1',
-        5 => '고2 & 고3',
+        5 => '고2 & 고3 문과',
+        6 => '고2 & 고3 이과'
     }
     
     def self.get_level_count(concept_id)
