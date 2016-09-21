@@ -28,6 +28,15 @@ class UnitConcept < ActiveRecord::Base
         5 => '고2',
         6 => '고3'
     }
+
+    CONTENTS_GRADES = {
+        1 => '중1',
+        2 => '중2',
+        3 => '중3',
+        4 => '고1',
+        5 => '고2 & 고3 문과',
+        6 => '고2 & 고3 이과'
+    }
     
     def self.get_level_count(concept_id)
         str = "select exercise_yn, level, count(id) as count from unit_concepts where concept_id = #{concept_id} group by exercise_yn, level order by exercise_yn, level"

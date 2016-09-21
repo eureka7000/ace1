@@ -1,256 +1,254 @@
 <div class="row">
 
-    <div class="col-md-12 ">
+  <div class="col-md-12 ">
 
-        <div class="well">
+    <div class="well">
 
-            <%= form_for(@grade_unit_concept, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
-            
-                <input type="hidden" name="page" value="<%= params[:page] %>" />
+      <%= form_for(@grade_unit_concept, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
 
-                <div class="row">
+          <input type="hidden" name="page" value="<%= params[:page] %>" />
 
-                    <div class="col-md-12 ">
+          <div class="row">
 
-                        <% if @grade_unit_concept.errors.any? %>
-                        <div id="error_explanation">
-                            <h2><%= pluralize(@grade_unit_concept.errors.count, "error") %> prohibited this grade_unit_concept from being saved:</h2>
+            <div class="col-md-12 ">
 
-                            <ul>
-                                <% @grade_unit_concept.errors.full_messages.each do |msg| %>
-                                    <li><%= msg %></li>
-                                <% end %>
-                            </ul>
-                        </div>
-                        <% end %>
+              <% if @grade_unit_concept.errors.any? %>
+                  <div id="error_explanation">
+                    <h2><%= pluralize(@grade_unit_concept.errors.count, "error") %> prohibited this grade_unit_concept from being saved:</h2>
 
-                        <div class="form-group">
-                            <%= f.label :grade, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[grade]" id="grade" class="form-control" onchange="grade_change()">
-                                    <option value="">--- 학년 ---</option>
-                                    <% UnitConcept::GRADES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= "selected" if @grade_unit_concept.grade == key.to_s %> ><%= value %></option>
-                                    <% end %>
-                                </select> 
-                            </div>
-                        </div>
+                    <ul>
+                      <% @grade_unit_concept.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+              <% end %>
 
-                        <div class="form-group">
-                            <%= f.label :chapter, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[chapter]" id="chapter" class="form-control" onchange="chapter_change()">
-                                    <option value="">--- Chapter ---</option>
-									<% @chapters.each do |chapter|%>
-									<option value="<%= chapter[:key] %>" <%= "selected" if @grade_unit_concept.chapter == chapter[:key].to_s %>><%= chapter[:value] %></option>
-									<% end %>
-                                </select> 
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[category]" id="category" class="form-control" onchange="category_change()">
-                                    <option value="">--- Category ---</option>
-									<% @categories.each do |category|%>
-									<option value="<%= category[:key] %>" <%= "selected" if @grade_unit_concept.category == category[:key].to_s %>><%= category[:value] %></option>
-									<% end %>									
-                                </select> 
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <select name="grade_unit_concept[sub_category]" id="sub_category" class="form-control">
-                                    <option value="">--- Sub Category ---</option>
-									<% @sub_categories.each do |sub_category|%>
-									<option value="<%= sub_category[:key] %>" <%= "selected" if @grade_unit_concept.sub_category == sub_category[:key].to_s %>><%= sub_category[:value] %></option>
-									<% end %>										
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <%= f.label :code, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :code, :class => 'form-control' %>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <%= f.label :name, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
-                                <%= f.text_field :name, :class => 'form-control' %>
-                            </div>
-                        </div>
-						
-                        <div class="form-group">
-                            <%= f.label :concept_id, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-md-4">
-								<input type="text" id="concept_code" class="form-control" style="width:20%; float:left" />
-								<button class="btn-u btn-u-red" style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
-                                <select name="grade_unit_concept[concept_id]" id="concept_id" class="form-control" style="width:60%; float:left">
-                                    <option value="">--- Concept ---</option>
-                                </select>								
-                            </div>
-                        </div>  												
-
-                    </div>
-
+              <div class="form-group">
+                <%= f.label :grade, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <select name="grade_unit_concept[grade]" id="grade" class="form-control" onchange="grade_change()">
+                    <option value="">--- 학년 ---</option>
+                    <% UnitConcept::CONTENTS_GRADES.each_pair do |key, value| %>
+                        <option value="<%= key %>" <%= "selected" if @grade_unit_concept.grade == key.to_s %> ><%= value %></option>
+                    <% end %>
+                  </select>
                 </div>
+              </div>
 
-                <footer>
-                    <%= f.submit '저장', :class => 'btn btn-success' %>
-                    <%= link_to '뒤로', "/grade_unit_concepts", :class => 'btn btn-info' %>
-                </footer>
+              <div class="form-group">
+                <%= f.label :chapter, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <select name="grade_unit_concept[chapter]" id="chapter" class="form-control" onchange="chapter_change()">
+                    <option value="">--- Chapter ---</option>
+                    <% @chapters.each do |chapter|%>
+                        <option value="<%= chapter[:key] %>" <%= "selected" if @grade_unit_concept.chapter == chapter[:key].to_s %>><%= chapter[:value] %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
 
-			<% end %>
+              <div class="form-group">
+                <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <select name="grade_unit_concept[category]" id="category" class="form-control" onchange="category_change()">
+                    <option value="">--- Category ---</option>
+                    <% @categories.each do |category|%>
+                        <option value="<%= category[:key] %>" <%= "selected" if @grade_unit_concept.category == category[:key].to_s %>><%= category[:value] %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
 
-        </div>
+              <div class="form-group">
+                <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <select name="grade_unit_concept[sub_category]" id="sub_category" class="form-control">
+                    <option value="">--- Sub Category ---</option>
+                    <% @sub_categories.each do |sub_category|%>
+                        <option value="<%= sub_category[:key] %>" <%= "selected" if @grade_unit_concept.sub_category == sub_category[:key].to_s %>><%= sub_category[:value] %></option>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :code, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <%= f.text_field :code, :class => 'form-control' %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :name, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-sm-4">
+                  <%= f.text_field :name, :class => 'form-control' %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <%= f.label :concept_id, :class => 'col-sm-2 col-md-2 control-label' %>
+                <div class="input-group col-md-4">
+                  <input type="text" id="concept_code" class="form-control" style="width:20%; float:left" />
+                  <button class="btn-u rounded btn-u-red" style="float:left; margin: 0 10px 0 10px;" type="button" onclick="search_click()"><i class="fa fa-search"></i></button>
+                  <select name="grade_unit_concept[concept_id]" id="concept_id" class="form-control" style="width:60%; float:left">
+                    <option value="">--- Concept ---</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <footer>
+            <%= f.submit '저장', :class => 'btn rounded btn-success' %>
+            <%= link_to '뒤로', "/grade_unit_concepts", :class => 'btn rounded btn-info' %>
+          </footer>
+
+      <% end %>
 
     </div>
+
+  </div>
 
 </div>
 
 <script type="text/javascript">
 
-function grade_change() {
-	
-	var grade = $('#grade').val();
-	
+  function grade_change() {
+
+    var grade = $('#grade').val();
+
     $('#chapter').empty();
-	$('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));
-	
+    $('#chapter').append( $('<option>').text('--- Chapter ---').attr('value',''));
+
     $('#category').empty();
-	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));
-	
-    $('#sub_category').empty();
-	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));						
-	
-	if (grade != '') {
-	
-	    var url = "/grade_unit_concepts/get_chapters?grade=" + grade;
-    
-	    $.ajax({
-	        url: url,
-	        type: "GET",
-	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	        datatype: "json",
-	        success : function(data) {
-        
-			        $.each(data.chapters, function(i) {
-	                	$('#chapter').append( $('<option>').text(data.chapters[i].value).attr('value',data.chapters[i].key) );                
-			        });				
-	        },
-	        error : function(){
-	            alert("try to again. please.");
-	        }
-	    });  
-		
-	}	
-}
+    $('#category').append( $('<option>').text('--- Category ---').attr('value',''));
 
-function chapter_change() {
-	
-	var chapter = $('#chapter').val();
-	
+    $('#sub_category').empty();
+    $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));
+
+    if (grade != '') {
+
+      var url = "/grade_unit_concepts/get_chapters?grade=" + grade;
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        success : function(data) {
+
+          $.each(data.chapters, function(i) {
+            $('#chapter').append( $('<option>').text(data.chapters[i].value).attr('value',data.chapters[i].key) );
+          });
+        },
+        error : function(){
+          alert("try to again. please.");
+        }
+      });
+
+    }
+  }
+
+  function chapter_change() {
+
+    var chapter = $('#chapter').val();
+
     $('#category').empty();
-	$('#category').append( $('<option>').text('--- Category ---').attr('value',''));
-	
+    $('#category').append( $('<option>').text('--- Category ---').attr('value',''));
+
     $('#sub_category').empty();
-	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));					
-	
-	if (chapter != '') {
-	
-	    var url = "/grade_unit_concepts/get_categories?chapter=" + chapter;
-    
-	    $.ajax({
-	        url: url,
-	        type: "GET",
-	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	        datatype: "json",
-	        success : function(data) {
-        
-			        $.each(data.categoies, function(i) {
-	                	$('#category').append( $('<option>').text(data.categoies[i].value).attr('value',data.categoies[i].key) );                
-			        });				
-	        },
-	        error : function(){
-	            alert("try to again. please.");
-	        }
-	    });  
-		
-	}		
-	
-}
+    $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));
 
-function category_change() {
-	
-	var category = $('#category').val();
-	
+    if (chapter != '') {
+
+      var url = "/grade_unit_concepts/get_categories?chapter=" + chapter;
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        success : function(data) {
+
+          $.each(data.categoies, function(i) {
+            $('#category').append( $('<option>').text(data.categoies[i].value).attr('value',data.categoies[i].key) );
+          });
+        },
+        error : function(){
+          alert("try to again. please.");
+        }
+      });
+
+    }
+
+  }
+
+  function category_change() {
+
+    var category = $('#category').val();
+
     $('#sub_category').empty();
-	$('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));		
-	
-	if (category != '') {
-	
-	    var url = "/grade_unit_concepts/get_sub_categories?category=" + category;
-    
-	    $.ajax({
-	        url: url,
-	        type: "GET",
-	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	        datatype: "json",
-	        success : function(data) {
-        
-			        $.each(data.sub_categoies, function(i) {
-	                	$('#sub_category').append( $('<option>').text(data.sub_categoies[i].value).attr('value',data.sub_categoies[i].key) );                
-			        });				
-	        },
-	        error : function(){
-	            alert("try to again. please.");
-	        }
-	    });  
-		
-	}		
-	
-}
+    $('#sub_category').append( $('<option>').text('--- Sub Category ---').attr('value',''));
 
-function search_click() {
+    if (category != '') {
 
-	var concept_code = $('#concept_code').val();
-	
+      var url = "/grade_unit_concepts/get_sub_categories?category=" + category;
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        success : function(data) {
+
+          $.each(data.sub_categoies, function(i) {
+            $('#sub_category').append( $('<option>').text(data.sub_categoies[i].value).attr('value',data.sub_categoies[i].key) );
+          });
+        },
+        error : function(){
+          alert("try to again. please.");
+        }
+      });
+
+    }
+
+  }
+
+  function search_click() {
+
+    var concept_code = $('#concept_code').val();
+
     $('#concept_id').empty();
-	$('#concept_id').append( $('<option>').text('--- Concept ---').attr('value',''));		
-	
-	if (concept_code != '') {
-        
-        $('#loading').show();
-	
-	    var url = "/grade_unit_concepts/get_concepts?concept_code=" + concept_code;
-    
-	    $.ajax({
-	        url: url,
-	        type: "GET",
-	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	        datatype: "json",
-	        success : function(data) {
-			        $.each(data.concepts, function(i) {
-	                	$('#concept_id').append( $('<option>').text('[' + data.concepts[i].code + '] ' + data.concepts[i].name).attr('value',data.concepts[i].id) );                
-			        });	
-                    $('#loading').hide();
-	        },
-	        error : function(){
-	            alert("try to again. please.");
-                $('#loading').hide();                
-	        }
-	    });  
-		
-	}	
-	
-}
+    $('#concept_id').append( $('<option>').text('--- Concept ---').attr('value',''));
 
-function initpage() {}
+    if (concept_code != '') {
+
+      $('#loading').show();
+
+      var url = "/grade_unit_concepts/get_concepts?concept_code=" + concept_code;
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        success : function(data) {
+          $.each(data.concepts, function(i) {
+            $('#concept_id').append( $('<option>').text('[' + data.concepts[i].code + '] ' + data.concepts[i].name).attr('value',data.concepts[i].id) );
+          });
+          $('#loading').hide();
+        },
+        error : function(){
+          alert("try to again. please.");
+          $('#loading').hide();
+        }
+      });
+
+    }
+
+  }
 
 </script>

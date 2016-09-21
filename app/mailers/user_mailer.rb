@@ -33,5 +33,11 @@ class UserMailer < ApplicationMailer
 
         mail(to: mentee.email, subject: "[Eureka Math] #{user.user_name} 선생님의 답변이 도착하였습니다.")
     end
-    
+
+    def noti_contact_us_message(user, blog)
+        @user = user
+        @blog = blog
+
+        mail(to: 'info@eurekamath.co.kr', subject: "[문의사항] #{user.user_name} 님의 문의사항이 도착하였습니다." )
+    end
 end

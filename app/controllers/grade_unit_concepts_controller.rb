@@ -166,38 +166,38 @@ class GradeUnitConceptsController < ApplicationController
         @chapters = []
         @categories = []
         @sub_categories = []
-        
+
         unless params[:grade_unit_concept_id].blank?
-            
+
             before_grade_unit_concept = GradeUnitConcept.find(params[:grade_unit_concept_id])
-            
+
             @grade_unit_concept.grade = before_grade_unit_concept.grade
             @grade_unit_concept.chapter = before_grade_unit_concept.chapter
             @grade_unit_concept.category = before_grade_unit_concept.category
             @grade_unit_concept.sub_category = before_grade_unit_concept.sub_category
-            
+
             GradeUnitConcept::CHAPTERS.each_pair do |key, value|
                 if before_grade_unit_concept.grade == key.to_s[0]
                     @chapters << { key: key, value: value }
-                end    
-            end  
-        
+                end
+            end
+
             GradeUnitConcept::CATEGORIES.each_pair do |key, value|
                 if before_grade_unit_concept.chapter == key.to_s[0..2]
                     @categories << { key: key, value: value }
-                end    
-            end    
-        
+                end
+            end
+
             GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
                 if before_grade_unit_concept.category == key.to_s[0..4]
                     @sub_categories << { key: key, value: value }
                 end
-            end              
-            
-        end    
-        
+            end
 
-        
+        end
+
+
+
     end
 
     # GET /grade_unit_concepts/1/edit

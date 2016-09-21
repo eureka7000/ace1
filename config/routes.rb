@@ -85,6 +85,7 @@ Rails.application.routes.draw do
     get 'blogs/video_function_extension' => 'blogs#video_function_extension'
     get 'blogs/studying_screen_explanation' => 'blogs#studying_screen_explanation'
     get 'blogs/contact_us' => 'blogs#contact_us'
+    post 'blogs/contact_us_message' => 'blogs#contact_us_message'
     get 'blogs/recommendation' => 'blogs#recommendation'
     get 'blogs/sign_in_process' => 'blogs#sign_in_process'
     resources :blogs
