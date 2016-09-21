@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
     before_action :set_question, only: [:show, :edit, :update, :like]
-    before_filter :authenticate_user!, only: [:update, :create, :destroy, :like]
+    before_filter :authenticate_user!, only: [:update, :create, :like]
+    before_action :authenticate_admin_user!, only: [:destroy]
     
     def like
         if @question.like.nil?
