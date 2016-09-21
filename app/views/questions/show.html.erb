@@ -1,168 +1,248 @@
-<link rel="stylesheet" href="/assets/css/pages/shortcode_timeline2.css">
-
 <!--=== indicate ===-->
 <div class="col-md-12 breadcrumbs">
-  <div class="container">
-    <h2 class="pull-left" style="color: black">Blog / 학습문제해결</h2>
-  </div><!--/container-->
+    <div class="container">
+        <h2 class="pull-left" style="color: black">Blog / 학습문제해결</h2>
+    </div><!--/container-->
 </div><!--/breadcrumbs-->
 <!--=== End indicate ===-->
 
-
 <!--=== Content Part ===-->
 <div class="container content">
-  <div class="row">
-    <div class="col-md-9">
+    
+    <div class="row">
+        
+        <div class="col-md-9">
+            
+            <a href="/questions" class="btn btn-default btn-sm" style="float:right; margin-bottom: 20px">목록으로</a>
 
-      <!-- Dark Blue Panel -->
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h1 class="panel-title" style="font-size: 20px;"><i class="fa fa-tasks"></i> <%= @question.title %></h1>
-          <p style="font-size: 12px; color: black; text-align: right;"><%= @question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %> &nbsp; &nbsp; 작성자: <%= @question.user.user_name unless @question.user.nil? %><%= '탈퇴한 회원' if @question.user.nil? %></p>
-        </div>
-        <div class="panel-body">
-          <div class="col-md-12">
-            <p style="font-size: 17px; color: black;"><%= raw @question.content %></p>
-          </div>
-        </div>
-      </div>
-      <!-- End Dark Blue Panel -->
-
-      <div class="col-md-12 text-right no-padding no-margin">
-        <button class="btn-u btn-u-dark-blue"><a href="/questions/<%= @question.id %>/edit">Edit</a></button>
-      </div>
-
-      <hr>
-
-      <% unless @replies1.blank? %>
-          <hr>
-          <% reply1_number = 1 %>
-          <% @replies1.each do |reply1| %>
-              <% order_count = 1 %>
-              <div class="col-md-1 text-center margin-bottom-5" style="vertical-align: middle;"><h4>답변<br/><%= reply1_number %></h4></div>
-              <div class="col-md-11 no-margin bg-color-light">
-                <% unless reply1.file_name.blank? %>
-                    <img src="<%= reply1.file_name %>" class="img-responsive center-block margin-bottom-20 margin-top-20">
-                <% end %>
-                <h4><%= raw reply1.comment %></h4>
-                <%# button_to 'delete', reply1,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
-                <div class="col-md-12 text-right margin-top-20">
-                  <% if reply1.user_id != 0 %>
-                      <% @user = User.find(reply1.user_id) %>
-                      <p><%= reply1.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %>&nbsp;&nbsp;<%= @user.user_name %></p>
-                  <% else %>
-                      <p><%= reply1.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %>&nbsp;&nbsp; 유레카메스</p>
-                  <% end %>
+            <!-- content -->
+            <div class="news-v3 bg-color-white margin-bottom-30 tag-box-v1" >
+                
+                <% unless @question.file_name.blank? %>
+                    <img class="img-responsive full-width" src="<%= @question.file_name %>" alt="">
+                <% end %>    
+                
+                <div class="news-v3-in">
+                    
+                    <ul class="list-inline posted-info">
+                    <li>By <a href="javascript:getUserProfile(<%= @question.user_id %>)"><%= @question.user.user_name %></a></li>
+                    <li>Posted <%=l @question.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></li>
+                    </ul>
+                    
+                    <h2 ><a href="/questions/<%= @question.id %>" style="font-family: inherits"><%= @question.title %></a></h2>
+                    
+                    <%= simple_format(@question.content) %>
+                    
+                    <ul class="post-shares post-shares-lg">
+                    <li><i class="rounded-x icon-speech" title="답변"></i><span><%= @question.replies.count %></span></li>
+                    <li><a href="javascript:questionLike(<%= @question.id %>)"><i class="rounded-x icon-heart" title="추천"></i><span><%= @question.like.nil? ? 0 : @question.like %></span></a></li>
+                    </ul>                    
+                    
                 </div>
-              </div>
+            </div>
+            <!-- content end -->
+            
+            <!-- Blog Post Author -->
+            <div class="blog-author margin-bottom-30 tag-box-v1">
+                
+                <% if @question.user.user_img.blank? %>
+                <img src="/assets/img/user_default_img.png" alt="">
+                <% else %>
+                <img src="<%= @question.user.user_img %>" alt="">
+                <% end %>
+                
+                <div class="blog-author-desc">
+                    <div class="overflow-h">
+                        <h4><a href="javascript:getUserProfile(<%= @question.user_id %>)" class="unify_a"><%= @question.user.user_name %></a></h4>
+                        <ul class="list-inline">
+                        <li><%= @question.user.user_types[0].user_type %></li>
+                        <!-- <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li> -->
+                        </ul>
+                    </div>
+                    <p><%= @question.user.user_desc.nil? ? "자기 소개가 아직 없습니다." : @question.user.user_desc.truncate(300) %></p>
+                </div>
+                
+            </div>
+            <!-- Blog Post Author End -->
+            
+            <hr>
+            
+            <h2 class="margin-bottom-20"><%= t(:comments) %></h2>
+            
+            <% @replies1.each do |reply1| %>
+                
+                <% order_count = 1 %>
+                    
+            <div class="blog-comments margin-bottom-30" style="display:flex">
+                
+                <div class="col-sm-2 sm-margin-bottom-40" style="margin-top: 20px">
+                    <% if reply1.user.user_img.blank? %>
+                    <img src="/assets/img/user_default_img.png" alt="" style="border: 1px solid lightgrey">
+                    <% else %>
+                    <img src="<%= reply1.user.user_img %>" alt="" style="border: 1px solid lightgrey">
+                    <% end %>                    
+                </div>
+                
+                    <div class="col-sm-10">
+                    <div class="comments-itself" style="padding-bottom: 20px">
+                        <h4>
+                            <a href="javascript:getUserProfile(<%= reply1.user_id %>)" class="unify_a"><%= reply1.user.user_name %></a>
+                            <span><%= time_ago_in_words(reply1.created_at.in_time_zone("Asia/Seoul")) %> <%= t(:ago) %></span>
+                        </h4>
+                        
+                        <% unless reply1.file_name.blank? %>
+                            <img src="<%= reply1.file_name %>" style="width:100%">
+                        <% end %>                        
+                        
+                        <hr>
+                        
+                        <%= simple_format reply1.comment %>
+                        
+                        <button class="add_comment btn btn-default btn-sm" data-id="<%= reply1.id %>">Add a Comment</button>
 
-              <% unless @replies2.blank? %>
-                  <% @replies2.each do |reply2| %>
-                      <% unless reply1.id != reply2.parent_reply_id %>
-                          <div class="col-md-1 no-margin"></div>
-                          <div class="col-md-11 no-margin">
-                            <div class="col-md-12">
-                              <h5><%= raw reply2.comment %> - <span style="background-color: #e9f8f8; font-size: 13px;">
-                                 <% if reply2.user_id != 0 %>
-                                   <% @user = User.find(reply2.user_id) %>
-                                    <%= @user.user_name %>
-                                 <% else %>
-                                    유레카메스
-                                 <% end %>
-                              </span> &nbsp;<span style="font-size: 12px;"><%= reply2.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></span></h5>
-                              <%# button_to 'delete', reply2,:method=>:delete, :class => 'btn btn-link', data: { confirm: 'Are you sure?' } %>
-                              <% order_count += 1 %>
-                              <hr class="no-padding no-margin">
-                            </div>
-                          </div>
-                      <% end %>
-                  <% end %>
+                        <div style="display: none; margin-top: 20px" class="comment_form" data-id="<%= reply1.id %>">
+                            <form action="/replies" method="post" class="sky-form comment-style" novalidate="novalidate" charset="utf-8">
+                        
+                                <%= token_tag nil %>
+                                <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
+                                <input type="hidden" name="reply[user_id]" value="<%= current_user.id unless current_user.nil? %>" />
+                                <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
+                                <input type="hidden" name="reply[parent_reply_id]" value="<%= reply1.id %>" />
+                                <input type="hidden" name="reply[depth]" value="2" />
+                                <input type="hidden" name="reply[order_no]" value="<%= order_count %>" />
+
+                                <div class="row">
+                                    
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" name="reply[comment]" style="border: 1px solid lightgrey" placeholder="댓글 달기"></textarea>
+                                    </div>
+                            
+                                    <div class="col-md-1 text-right">
+                                        <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
+                                    </div>
+                                    
+                                </div>    
+                            
+                            </form>
+                        </div>    
+
+                    </div>
+                </div>
+                
+            </div>
+            
+            <% @re_replies = Reply.where('parent_reply_id = ?', reply1.id) %>
+            <% @re_replies.each do |reply2| %>
+            
+            <div class="blog-comments blog-comments-reply margin-bottom-30" style="display:flex"> 
+                <div class="col-sm-2 sm-margin-bottom-40" style="margin-top: 20px">
+                    <% if reply2.user.user_img.blank? %>
+                    <img src="/assets/img/user_default_img.png" alt="" style="border: 1px solid lightgrey">
+                    <% else %>
+                    <img src="<%= reply2.user.user_img %>" alt="" style="border: 1px solid lightgrey">
+                    <% end %>
+                </div>
+                <div class="col-sm-10">
+                    <div class="comments-itself">
+                        <h4>
+                            <a href="javascript:getUserProfile(<%= reply2.user_id %>)" class="unify_a"><%= reply2.user.user_name %></a>
+                            <span><%= time_ago_in_words(reply2.created_at.in_time_zone("Asia/Seoul")) %> <%= t(:ago) %></span>
+                        </h4>
+                        <%= simple_format reply2.comment %>
+                    </div>
+                </div>
+            </div>                  
+            
               <% end %>
 
-              <div class="col-md-1"></div>
-              <div class="col-md-11">
-                <div class="col-md-12 no-margin no-padding margin-bottom-50 margin-top-20">
-                  <form action="/replies" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-                    <%= token_tag nil %>
-                    <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-                    <% if session[:admin].nil? %>
-                        <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
-                    <% else %>
-                        <input type="hidden" name="reply[user_id]" value="0"/>
+            <% end %>  
+            
+            <hr>        
+                 
+            <h2 class="margin-bottom-20"><%= t(:post_a_comment) %></h2>
+            
+            <form action="/replies" method="post" enctype="multipart/form-data" class="sky-form comment-style" novalidate="novalidate" charset="utf-8">
+                
+                <%= token_tag nil %>
+                
+                <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
+                <input type="hidden" name="reply[comment]" id="reply_comment">
+                <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
+                <input type="hidden" name="reply[parent_reply_id]" value="0" />
+                <input type="hidden" name="reply[depth]" value="1" />
+                <input type="hidden" name="reply[order_no]" value="0" />                
+                
+                <fieldset>
+
+                    <div class="sky-space-30">
+                        <div>
+                            <textarea rows="8" name="reply[comment]" placeholder="Write comment here ..." class="form-control" style="border: 1px solid lightgrey" <% if current_user.nil? %> onfocus="checkLogin()" <% end %> ></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="sky-space-30">
+                        <div>
+                            <input type="file" id="question_file" name="reply[file_name]" rows="10" class="form-control" style="border: 1px solid lightgrey" />
+                        </div>
+                    </div>        
+                    <% unless current_user.nil? %>
+                    <p><button type="submit" class="btn-u">Submit</button></p>
                     <% end %>
+                    
+                </fieldset>
 
-
-                    <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
-                    <input type="hidden" name="reply[parent_reply_id]" value="<%= reply1.id %>" />
-                    <input type="hidden" name="reply[depth]" value="2" />
-                    <input type="hidden" name="reply[order_no]" value="<%= order_count %>" />
-
-                    <div class="col-md-11">
-                      <textarea class="form-control" style="width: 100%; height: 35px;" name="reply[comment]" placeholder="댓글 달기"></textarea>
-                    </div>
-                    <div class="col-md-1 text-right">
-                      <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
-                    </div>
-                  </form>
+                <div class="message">
+                    <i class="rounded-x fa fa-check"></i>
+                    <p>Your comment was successfully posted!</p>
                 </div>
-              </div>
-              <% reply1_number += 1 %>
-          <% end %>
-      <% end %>
-
-      <hr>
-
-      <div class="col-md-12">
-        <!-- 답변 달기 -->
-        <hr>
-        <form action="/replies" id="new_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-          <%= token_tag nil %>
-          <div class="tag-box tag-box-v3 form-page">
-            <div class="headline"><h4>답변 달기</h4></div>
-
-            <input type="hidden" name="reply[question_id]" value="<%= @question.id %>" />
-            <% if session[:admin].nil? %>
-                <input type="hidden" name="reply[user_id]" value="<%= current_user.id %>" />
-            <% else %>
-                <input type="hidden" name="reply[user_id]" value="0"/>
-            <% end %>
-            <input type="hidden" name="reply[comment]" id="reply_comment">
-            <input type="hidden" name="reply[group_id]" value="<%= @question.id %>" />
-            <input type="hidden" name="reply[parent_reply_id]" value="0" />
-            <input type="hidden" name="reply[depth]" value="1" />
-            <input type="hidden" name="reply[order_no]" value="0" />
-
-            <textarea type="text" rows="5" class="form-control margin-bottom-20" name="reply[comment]"></textarea>
-
-            <input type="file" id="question_file" name="reply[file_name]" rows="10" class="form-control">
-
-            <div class="text-right">
-              <button class="btn-u btn-u-dark-blue" type="submit">저장</button>
-            </div>
-          </div>
-        </form>
-        <!-- 답변 달기 END -->
-      </div>
+            </form>
+                                
+        </div>    
+  
+        <%= render partial: 'blogs/right_sidebar' %>
     </div>
+</div>    
 
-    <%= render partial: 'blogs/right_sidebar' %>
+<%= render partial: 'modals/user_profile' %>
 
-  </div>
-</div>
-
-<script type="text/javascript" charset="utf-8">
-
-  var toggle = 0;
-  function viewEditBox(index) {
-    if(toggle == 0) {
-      $('#reply2'+ index).slideDown("slow", function () {
-      });
-      toggle = 1;
+<script type="text/javascript">
+<% if current_user.nil? %>
+    function checkLogin() {
+        location = '/users/sign_in';
     }
-    else{
-      $('#reply2'+ index).slideUp( "slow", function() {
-      });
-      toggle = 0;
+<% end %>
+    
+    jQuery(".add_comment").click(function(){
+        var btnId = $(this).data('id');
+        jQuery('.comment_form[data-id=' + btnId + ']').toggle();
+    });
+    
+    function questionLike(question_id) {
+    
+        <% if current_user.nil? %>
+    
+        location = '/users/sign_in';
+    
+        <% else %>
+    
+        var url = "/questions/" + question_id + "/like";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                location.reload();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });    
+    
+        <% end %>
     }
-  }
+
+    
 </script>

@@ -1,13 +1,13 @@
 <!-- Right Sidebar -->
 <div class="col-md-3 margin-top-20">
 
-  <div class="headline-v2 bg-color-light"><h2>최근 소식</h2></div>
+  <div class="headline-v2 bg-color-white"><h2>최근 소식</h2></div>
   <!-- Trending -->
   <ul class="list-unstyled blog-trending margin-bottom-50">
     <% @latest_news.each do |news|%>
         <li>
-          <h5><span style="color: darkgreen"><i class="fa fa-bullhorn"></i></span><a href="/blogs/<%= news.id %>"><%= news.title  %></a></h5>
-          <small><%= news.created_at.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %> / <a href="/blogs/<%= Blog::BLOG_NAMES[news.blog_type] %>"><%= Blog::BLOG_TYPES[news.blog_type] %></a></small>
+          <h3><a href="/blogs/<%= news.id %>"><%= news.title  %></a></h3>
+          <small><%= l news.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %> / <a href="/blogs/<%= Blog::BLOG_NAMES[news.blog_type] %>"><%= Blog::BLOG_TYPES[news.blog_type] %></a></small>
         </li>
     <% end %>
   </ul>

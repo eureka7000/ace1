@@ -23,3 +23,37 @@
     margin: 0;
     opacity: 0.2;
 }
+
+.shadow {
+    -moz-box-shadow: 3px 3px 4px gray; 
+    -webkit-box-shadow: 3px 3px 4px gray; 
+    box-shadow: 3px 3px 4px gray; 
+}
+
+.news-v3 .posted-info li a {
+  color: #555;
+}
+
+
+
+.unify_a {
+    color: #555;
+}
+
+a.unify_a:hover {
+  color: #72c02c;
+  text-decoration: none;
+}
+
+.new_row {
+    display: flex;
+}
+
+.payment_dt {
+    text-align: right !important;
+    line-height: 2.3;
+}
+
+.payment_dd {
+    padding-right: 20px;
+}

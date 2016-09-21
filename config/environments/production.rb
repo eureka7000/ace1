@@ -113,8 +113,8 @@ Rails.application.configure do
           ActiveMerchant::Billing::Base.mode = :production
           paypal_options = {
               login: "admin_api1.eurekamath.co.kr",
-              password: "D79JW3MUYSBYZ9MD",
-              signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31A411C90dE2o-Dy3ZVV35TGy6vstD"
+              password: "HZHXRE3Q9CLN8VP8",
+              signature: "AIpgItfV72XDJRE9fvemUmrf-En8AGgdQSHB.A-WWMJV.ycxvaChpFnp"
           }
           ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
       end        

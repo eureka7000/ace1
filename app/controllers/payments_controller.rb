@@ -39,7 +39,7 @@ class PaymentsController < ApplicationController
                 @payment.save                    
             
                 @user = User.find(current_user.id)
-                @user.expire_date = user.get_expire_date(@payment.service_name[0].to_i)
+                @user.expire_date = @user.get_expire_date(@payment.service_name[0].to_i)
                 @user.save
                 
             end    
@@ -55,7 +55,7 @@ class PaymentsController < ApplicationController
             params[:price].to_i/10,
             ip: request.remote_ip,
             return_url: "#{root_url}/payments/paypal_payment_return",
-            cancel_return_url: "#{root_url}/payments/paypal_payment_cancel",
+            cancel_return_url: "#{root_url}/mypages/payment",
             currency: 'USD',
             allow_guest_checkout: true,
             items: [{name: "#{params[:goodname]} #{'Month'.pluralize(params[:goodname].to_i)} License", description: "You can use all of EurekaMath contents during #{params[:goodname]} #{'Month'.pluralize(params[:goodname].to_i)}", quantity: "1", amount: params[:price].to_i/10}]

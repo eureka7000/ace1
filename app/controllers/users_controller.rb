@@ -3,6 +3,11 @@ class UsersController < ApplicationController
     before_action :authenticate_admin_user!, only: [:new, :edit, :index, :multi_auth, :destroy]
     
     layout '/layouts/admin_main'
+    
+    def user_profile
+        @user = User.select('users.*, user_types.user_type').joins(:user_types).where('users.id = ?',params[:user_id]).first
+        render :json => @user
+    end    
 
     def user_exist
         email = params[:email]

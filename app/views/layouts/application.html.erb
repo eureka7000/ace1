@@ -58,6 +58,11 @@
 
     </script>    
     <!-- Google analytics end --> 
+    
+    <!-- JS Global Compulsory -->
+    <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>    
 
 </head>
 
@@ -214,15 +219,8 @@
 	<% end %>
 
 	<%= yield %>
-
+    
 </div><!--/wrapper-->
-
-<!-- JS Global Compulsory -->
-<script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
-<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-<!-- <script src="/js/libs/jquery_ujs.js"></script>
-<script src="/js/libs/jquery.form.js"></script>    -->
 
 <!-- JS Implementing Plugins -->
 <script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
@@ -272,6 +270,11 @@
         StyleSwitcher.initStyleSwitcher();
         new WOW().init();
         $('#notice_email_confirm_modal').modal();
+        
+        // $('.news-v3').hover(function() {
+        //     $(this).toggleClass('shadow');
+        // });
+        
     });
   
 </script>

@@ -232,15 +232,17 @@ class GradeUnitConceptsController < ApplicationController
     def create
         
         @grade_unit_concept = GradeUnitConcept.new(grade_unit_concept_params)
+        @grade_unit_concept.save
+        logger.debug '*********' + @grade_unit_concept.inspect
 
         respond_to do |format|
-            if @grade_unit_concept.save
+            # if @grade_unit_concept.save
                 format.html { redirect_to "/grade_unit_concepts/new?grade_unit_concept_id=#{@grade_unit_concept.id}", notice: 'Grade unit concept was successfully created.' }
-                format.json { render :show, status: :created, location: @grade_unit_concept }
-            else
-                format.html { render :new }
-                format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
-            end
+            #     format.json { render :show, status: :created, location: @grade_unit_concept }
+            # else
+            #     format.html { render :new }
+            #     format.json { render json: @grade_unit_concept.errors, status: :unprocessable_entity }
+            # end
         end
     end
 

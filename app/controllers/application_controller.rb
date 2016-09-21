@@ -16,5 +16,16 @@ class ApplicationController < ActionController::Base
         request.env["exception_notifier.exception_data"] = {
             :current_user => current_user
         }
+    end 
+    
+    def after_sign_in_path_for(resource)
+        
+        if session[:previous_url] == "/users/sign_in"
+            root_path
+        else    
+            session[:previous_url]
+        end    
+
     end    
+       
 end

@@ -15,6 +15,8 @@
                 <th>User</th>
                 <th>Service</th>
                 <th>Pay Method</th>
+                <th>Pay Gateway</th>
+                <th>Currency</th>
                 <th>Amount</th>
                 <th>Pay Day</th>
                 <th>Pay Status</th>
@@ -29,6 +31,8 @@
                 <td><%= payment.user.user_name %></td>
                 <td><%= payment.service_name %></td>
                 <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
+                <td><%= payment.pay_gateway %></td>
+                <td><%= raw Payment::CURRENCY_SYMBOLS[payment.currency] %></td>
                 <td class="text-right"><%= number_with_delimiter(payment.amount, delimiter: ",") %></td>
                 <td><%= payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
                 <td>

@@ -1,6 +1,21 @@
 class QuestionsController < ApplicationController
-    before_action :set_question, only: [:show, :edit, :update]
-    before_filter :authenticate_user!, only: [:index, :update]
+    before_action :set_question, only: [:show, :edit, :update, :like]
+    before_filter :authenticate_user!, only: [:update, :create, :destroy, :like]
+    
+    def like
+        if @question.like.nil?
+            @question.like = 1
+        else
+            @question.like = @question.like + 1
+        end        
+
+        @question.save
+        
+        ret = { status: "ok" }
+        
+        render :json => ret
+        
+    end    
 
     def questions_list
         unless session[:admin].nil?
@@ -24,8 +39,7 @@ class QuestionsController < ApplicationController
     end
 
     def index
-        @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(created_at: :desc)
-
+        @questions = Question.all.paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(created_at: :desc)
         @latest_news = Blog.order(id: :desc).first(5)
     end
 
@@ -33,6 +47,7 @@ class QuestionsController < ApplicationController
     def create
         
         @question = Question.new(question_params)
+        @question.like = 0
 
         #데이터를 보낸 url 주소를 받는다, 질문하기가 이용되는 곳이 여러곳이므로 보낸 주소를 받아 리턴해준다.
         url = params[:url]
@@ -70,8 +85,6 @@ class QuestionsController < ApplicationController
 
     def show
         @replies1 = Reply.where('question_id = ? and depth = ?', params[:id], 1)
-        @replies2 = Reply.where('question_id = ? and depth = ?', params[:id], 2)
-
         @latest_news = Blog.order(id: :desc).first(4)
 
         unless session[:admin].nil?
@@ -110,7 +123,7 @@ class QuestionsController < ApplicationController
         @question = Question.find(params[:id])
     end
     def question_params
-        params.require(:question).permit(:unit_concept_id, :to_user_id, :user_id, :title, :content, :file_name, :confirm_yn)
+        params.require(:question).permit(:unit_concept_id, :to_user_id, :user_id, :title, :content, :file_name, :confirm_yn, :like)
     end
     
 end

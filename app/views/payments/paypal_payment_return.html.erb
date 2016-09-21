@@ -37,7 +37,8 @@
                                 <form id="SendPayForm" name="" class="sky-form" action="/payments/paypal_confirm" method="POST">
                                     <%= token_tag nil %>
                                     <input type="hidden" name="paypal_token" value="<%= @payment.paypal_token %>" />
-                                    <button type="submit" class="btn-u btn-u-blue" style="display:block">결제 확인</button>
+                                    
+                                    <button type="submit" class="btn-u btn-u-blue">위 금액을 결제 하겠습니다.</button>
                                 </form>
                             </div>    
                             

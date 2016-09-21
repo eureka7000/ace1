@@ -7,8 +7,11 @@ Rails.application.routes.draw do
     resources :user_types
     resources :concept_exercises
     resources :replies
+    
     get 'questions/questions_list' => 'questions#questions_list'
+    get 'questions/:id/like' => 'questions#like'
     resources :questions
+    
     resources :user_relations
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions
@@ -44,7 +47,7 @@ Rails.application.routes.draw do
     get 'teachers/students_list' => 'teachers#students_list'
     resources :teachers
   
-    devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations"}
+    devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions"}
   	#devise_for :users
 
     # sub_pages of main
@@ -92,6 +95,7 @@ Rails.application.routes.draw do
     post 'users/multi_auth' => 'users#multi_auth_create'
     get  'users/resend_mail' => 'users#resend_mail'
     post 'users/user_exist' => 'users#user_exist'
+    get  'users/user_profile' => 'users#user_profile'
     resources :users  
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'

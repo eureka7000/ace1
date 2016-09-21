@@ -1,79 +1,79 @@
-<!-- Left Sidebar -->
+<!-- Blog All Posts -->
 <div class="col-md-9">
 
-  <ul class="timeline-v1">
-    <% index = 0 %>
-  <% @questions.each do |question| %>
-        <% unless index != 0 %>
-        <li>
-          <div class="timeline-badge primary"><i class="glyphicon glyphicon-record"></i></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <h3 style="font-style: italic"><a href="#">제목 : <%= question.title %></a></h3>
-              <% unless question.file_name.blank? %>
-                  <img class="img-responsive" src="<%= question.file_name %>" alt="">
-              <% else %>
-                  <img class="img-responsive" src="/assets/img/logo.jpg" alt="">
-              <% end %>
-            </div>
-            <div class="timeline-body text-justify">
-              <h3 style="font-style: italic"><a href="#"><%= question.title %></a></h3>
-              <p style="width: 100%; text-overflow:ellipsis; -o-text-overow: ellipsis; word-wrap:normal; overflow: hidden; font-size: 15px; color: black;"><nobr><%= raw question.content %></nobr></p>
-              <p><%= question.unit_concept.name %></p>
-              <div class="text-right">
-                <a class="btn-u btn-u-dark-blue" href="/questions/<%= question.id %>"> 더보기</a>
-              </div>
+<% @questions.each do |question| %>
 
-            </div>
-            <div class="timeline-footer">
-              <ul class="list-unstyled list-inline blog-info">
-                <li><i class="fa fa-clock-o"></i> <%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></li>
-                <% count = question.replies.count() %>
-                <li><i class="fa fa-comments-o"></i> <a href="#"><%= count %> Comments</a></li>
-              </ul>
-              <!--<a class="likes" href="#"><i class="fa fa-heart"></i>239</a>-->
-            </div>
-          </div>
-        </li>
-        <% else %>
-        <li class="timeline-inverted">
-          <div class="timeline-badge primary"><i class="glyphicon glyphicon-record invert"></i></div>
-          <div class="timeline-panel">
-            <div class="timeline-heading">
-              <% unless question.file_name.blank? %>
-                  <img class="img-responsive" src="<%= question.file_name %>" alt="">
-              <% else %>
-                  <img class="img-responsive" src="/assets/img/logo.jpg" alt="">
-              <% end %>
-            </div>
-            <div class="timeline-body text-justify">
-              <h3 style="font-style: italic"><a href="#"><%= question.title %></a></h3>
-              <p style="width: 100%; text-overflow:ellipsis; -o-text-overow: ellipsis; word-wrap:normal; overflow: hidden; font-size: 15px; color: black;"><nobr><%= raw question.content %></nobr></p>
-              <p><%= question.unit_concept.name %></p>
-              <div class="text-right">
-                <a class="btn-u btn-u-dark-blue" href="/questions/<%= question.id %>"> 더보기</a>
-              </div>
-            </div>
-            <div class="timeline-footer">
-              <ul class="list-unstyled list-inline blog-info">
-                <li><i class="fa fa-clock-o"></i> <%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></li>
-                <% count = question.replies.count() %>
-                <li><i class="fa fa-comments-o"></i> <a href="#"><%= count %> Comments</a></li>
-              </ul>
-              <!--<a class="likes" href="#"><i class="fa fa-heart"></i>87</a>-->
-            </div>
-          </div>
-        </li>
-        <% end %>
-        <% if index == 0 %>
-          <% index = 1 %>
-        <% else %>
-          <% index = 0 %>
-        <% end %>
-  <% end %>
-    <li class="clearfix" style="float: none;"></li> <!-- 세로줄 라인 코드 -->
-  </ul>
+<!-- Blog Posts -->
+<div class="news-v3 bg-color-white margin-bottom-60 tag-box tag-box-v1 box-shadow shadow-effect-2" >
+
+    <% unless question.file_name.blank? %>
+        <img class="img-responsive full-width" src="<%= question.file_name %>" alt="">
+    <% end %>
+
+    <div class="news-v3-in">
+        <ul class="list-inline posted-info">
+        <li>By <a href="javascript:getUserProfile(<%= question.user_id %>)"><%= question.user.user_name %></a></li>
+        <li>Posted <%=l question.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></li>
+        </ul>
+        
+        <h2><a href="/questions/<%= question.id %>"><%= question.title %></a></h2>
+        <p><%= raw question.content.truncate(300) %></p>
+        
+        <ul class="post-shares">
+        <li><i class="rounded-x icon-speech" title="답변"></i><span><%= question.replies.count %></span></li>
+        <li><a href="javascript:questionLike(<%= question.id %>)"><i class="rounded-x icon-heart" title="추천"></i><span><%= question.like.nil? ? 0 : question.like %></span></a></li>
+        </ul>
+    </div>
 </div>
-<!--End left Sidebar -->
+<!-- End Blog Posts -->
 
+<% end %>
 
+<!-- Pager v2 -->
+<% 
+    page = params[:page]
+    if page.nil?
+        page = 1
+    end    
+%>
+<ul class="pager pager-v2 pager-md no-margin">
+    <li class="previous"><a href="/questions<%= "?page=#{page.to_i - 1}" if page.to_i > 1 %>">&larr; Older</a></li>
+    <li class="page-amount"><%= page %> of <%= @questions.total_pages %></li>
+    <li class="next"><a href="/questions<%= "?page=#{page.to_i + 1}" if page.to_i < @questions.total_pages %>">Newer &rarr;</a></li>
+</ul>
+<!-- End Pager v2 -->
+
+</div>
+<!-- End Blog All Posts -->
+
+<%= render partial: 'modals/user_profile' %>
+
+<script type="text/javascript">
+
+function questionLike(question_id) {
+    
+    <% if current_user.nil? %>
+    
+    location = '/users/sign_in';
+    
+    <% else %>
+    
+    var url = "/questions/" + question_id + "/like";
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        datatype: "json",
+        success : function(data) {
+            location.reload();
+        },
+        error : function(){
+            alert("try to again. please.");
+        }
+    });    
+    
+    <% end %>
+}
+
+</script>

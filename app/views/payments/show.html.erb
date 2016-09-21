@@ -42,7 +42,17 @@
                 <td style="width:25%;"><b>Pay Method</b></td>
                 <td style="width:75%"><%= InicisPayment::GO_PAY_METHOD[@payment.pay_method] %></td>
               </tr>
-
+              
+              <tr>
+                <td style="width:25%;"><b>Pay Gateway</b></td>
+                <td style="width:75%"><%= @payment.pay_gateway %></td>
+              </tr>
+              
+              <tr>
+                <td style="width:25%;"><b>Currency</b></td>
+                <td style="width:75%"><%= raw Payment::CURRENCY_SYMBOLS[@payment.currency] %></td>
+              </tr>                            
+              
               <tr>
                 <td style="width:25%;"><b>Amount</b></td>
                 <td style="width:75%"><%= number_with_delimiter(@payment.amount, delimiter: ",") %></td>
