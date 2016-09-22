@@ -106,6 +106,7 @@ Rails.application.routes.draw do
     post 'admins/sign_in' => 'admins#sign_in'
     get 'admins/main' => 'admins#main'
     post 'admins/change_password' => 'admins#change_password'
+    get 'admins/users' => 'admins#users'
     resources :admins
 
 end
