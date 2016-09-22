@@ -54,7 +54,8 @@ class AdminsController < ApplicationController
     end    
     
     def main
-        @payments = Payment.select('coalesce(sum(amount),0) as amount').where("payment_status = 'paid' and DATE(created_at) = DATE(now())").first
+        @payments_krw = Payment.select('coalesce(sum(amount),0) as amount').where("currency='KRW' and payment_status = 'paid' and DATE(created_at) = DATE(now())").first
+        @payments_usd = Payment.select('coalesce(sum(amount),0) as amount').where("currency='USD' and payment_status = 'paid' and DATE(created_at) = DATE(now())").first
         @questions = Question.where("date(updated_at) = date(now())")
         @visit_users = User.where("date(current_sign_in_at) = date(now())")
         @new_users = User.where("date(created_at) = date(now())")
