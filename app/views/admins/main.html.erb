@@ -1,10 +1,50 @@
-    <div class="container-fluid" style="margin-top: 50px">
+    <div class="container-fluid">
         
         <div class="row">
             
             <div class="col-sm-12 col-md-12 main">
                 
-                <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> Admin Main 화면입니다.</h2>
+                <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> DashBoards </h2>
+            
+                <div class="row margin-bottom-40">
+                    
+                    <div class="col-md-3 col-sm-6">
+                        <div class="service-block service-block-sea service-or">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-fire"></i>
+                            <h2 class="heading-md counter"><%= @payments.count %></h2>
+                            <h2 class="heading-md">Payments</h2>
+                        </div>
+                    </div>                    
+                    
+                    <div class="col-md-3 col-sm-6">
+                        <div class="service-block service-block-red service-or">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x fa fa-lightbulb-o"></i>
+                            <h2 class="heading-md counter"><%= @questions.count %></h2>
+                            <h2 class="heading-md">Questions</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6">
+                        <div class="service-block service-block-yellow service-or">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-users"></i>
+                            <h2 class="heading-md counter"><%= @visit_users.count %></h2>
+                            <h2 class="heading-md">Visits</h2>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 col-sm-6">
+                        <div class="service-block service-block-purple service-or">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-star"></i>
+                            <h2 class="heading-md counter"><%= @new_users.count %></h2>
+                            <h2 class="heading-md">New Users</h2>
+                        </div>
+                    </div>                    
+
+                </div>  
             
             </div>
             
@@ -47,13 +87,16 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->   
     
+    <script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>    
+    <script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
 
     <script type="text/javascript">
     
         tomas = '<%=  session[:admin]['init_password_changed'] %>'
     
         $(document).ready(function() {
-            if (tomas != 'Y') $('#passwordModal').modal();        
+            if (tomas != 'Y') $('#passwordModal').modal(); 
+            App.initCounter();
         })
         
         function changePassword() {
@@ -100,6 +143,7 @@
     	        error: function(xhr, ajaxOptions, thrownError){}
     	    });                
         }
+        
+        function initpage() {}
     
     </script> 
-

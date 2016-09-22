@@ -49,9 +49,11 @@ class AdminsController < ApplicationController
         
     end    
     
-    
     def main
-        
+        @payments = Payment.where("payment_status = 'paid' and DATE(created_at) = DATE(now())")
+        @questions = Question.where("date(updated_at) = date(now())")
+        @visit_users = User.where("date(current_sign_in_at) = date(now())")
+        @new_users = User.where("date(created_at) = date(now())")
     end
 
   # GET /admins/1
