@@ -2,7 +2,7 @@
   <% unless @blogs.blank? %>
       <% count = 1 %>
       <% @blogs.each do |blog| %>
-          <div class="col-md-11 margin-top-20 bg-color-light rounded box-shadow shadow-effect-1" style="padding: 2%">
+          <div class="news-v3 col-md-11 margin-top-20 bg-color-white tag-box tag-box-v1 rounded box-shadow shadow-effect-2" style="padding: 2%">
 
             <div class="row clients-page">
               <div class="col-md-2 col-xs-3">
@@ -27,7 +27,7 @@
                 </p>
 
                 <div id="collapse-<%= count %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                  <hr class="no-margin">
+                  <hr>
                   <img src="<%= blog.file_name %>" class="img-responsive rounded margin-top-20 margin-bottom-20">
                   <p><%= simple_format(blog.content) %></p>
                 </div>
@@ -46,10 +46,10 @@
         </div>
       </div>
   <% else %>
-      <div class="col-md-11 margin-top-20 bg-color-light rounded box-shadow shadow-effect-1" style="padding: 2%">
+      <div class="news-v3 col-md-11 margin-top-20 bg-color-white tag-box tag-box-v1 rounded box-shadow shadow-effect-2" style="padding: 2%">
         <div class="row clients-page">
           <div class="col-md-12 col-xs-12">
-            <h2 class="text-center" style="padding: 3%"><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> 등록된 게시물이 없습니다.</h2>
+            <h2 class="text-center" style="padding: 3%">--- 등록된 게시물이 없습니다. ---</h2>
           </div>
         </div>
       </div>
