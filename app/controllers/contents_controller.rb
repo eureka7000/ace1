@@ -325,8 +325,8 @@ class ContentsController < ApplicationController
                     end                                        
                     
                 else    
-                
-                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ? and grade = ?', @concept_id, "concept", @level, @grade) 
+
+                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
                     @unit_concepts.each do |unit_concept|
                         @items << {
                             key: unit_concept.id,
