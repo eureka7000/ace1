@@ -22,6 +22,9 @@ gem 'sidekiq'
 gem 'redis-rails'
 gem 'exception_notification'
 gem 'activemerchant'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-google'
 
 group :development, :test do
   gem 'byebug'

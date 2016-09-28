@@ -99,25 +99,27 @@ Rails.application.configure do
       sign_key: 'SEowWHFiSENnK0VJSVF1Y3llamlhZz09'
   } 
   
-  # Exception Notification
-  config.middleware.use ExceptionNotification::Rack, 
-      :email => {
-          :email_prefix => "[PREFIX] ",
-          :sender_address => %{"notifier" <info@eurekamath.co.kr>},
-          :exception_recipients => %w{mcjung@eurekamath.co.kr}
-      }
+    # Exception Notification
+    config.middleware.use ExceptionNotification::Rack, 
+        :ignore_crawlers => %w{Googlebot bingbot},
+        :email => {
+            :email_prefix => "[PREFIX] ",
+            :sender_address => %{"notifier" <info@eurekamath.co.kr>},
+            :exception_recipients => %w{mcjung@eurekamath.co.kr
+        }
+     }
       
       
-      # Setup ActiveMerchant
-      config.after_initialize do
-          ActiveMerchant::Billing::Base.mode = :production
-          paypal_options = {
-              login: "admin_api1.eurekamath.co.kr",
-              password: "HZHXRE3Q9CLN8VP8",
-              signature: "AIpgItfV72XDJRE9fvemUmrf-En8AGgdQSHB.A-WWMJV.ycxvaChpFnp"
-          }
-          ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
-      end        
+     # Setup ActiveMerchant
+     config.after_initialize do
+         ActiveMerchant::Billing::Base.mode = :production
+             paypal_options = {
+                 login: "admin_api1.eurekamath.co.kr",
+                 password: "HZHXRE3Q9CLN8VP8",
+                 signature: "AIpgItfV72XDJRE9fvemUmrf-En8AGgdQSHB.A-WWMJV.ycxvaChpFnp"
+             }
+         ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
+     end        
   
 end
 

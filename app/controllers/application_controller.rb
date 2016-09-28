@@ -26,6 +26,6 @@ class ApplicationController < ActionController::Base
             session[:previous_url]
         end    
 
-    end    
+    end
        
 end

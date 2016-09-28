@@ -179,7 +179,12 @@ class PaymentsController < ApplicationController
 
     def create
 
-        @payment = Payment.new()
+        @payment = Payment.find_by_oid(params[:payment][:oid])
+        
+        if @payment.nil?
+            @payment = Payment.new()
+        end
+            
         @payment.user_id = current_user.id
         @payment.amount = params[:payment][:amount]
         @payment.service_name = params[:payment][:service_name] + 'Month'.pluralize(params[:payment][:service_name].to_i)
