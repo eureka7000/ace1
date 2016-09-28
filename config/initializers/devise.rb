@@ -242,7 +242,7 @@ Devise.setup do |config|
      config.omniauth :facebook, "562543350622674", "e0ea9ecff27b90ebc380a1ff8c0afb9a"
   end
   
-  config.omniauth :google, "KEY", "SECRET"
+  config.omniauth :google_oauth2, "508087201407-bmhtvqvj0kmn6omhifethfeqlih469to.apps.googleusercontent.com", "gOdZ5kwACOr0jdekxF5QDygr"
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

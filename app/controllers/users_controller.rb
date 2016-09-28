@@ -349,52 +349,5 @@ class UsersController < ApplicationController
         
     end
     
-    
-    def finish_signup
-        
-        @user = User.find(params[:id])
-        
-        if request.patch? && params[:user]
-            
-            # Email이 기존에 존재하는 지 확인.
-            @user_by_email = User.find_by_email(params[:user][:email])
-            
-            if @user_by_email.nil?
-                @user.email = params[:user][:email]
-            
-                if @user.save!
-                    @user.skip_reconfirmation!
-                    sign_in(@user, :bypass => true)
-                    redirect_to @user, notice: 'Your profile was successfully updated.'
-                    return
-                else
-                    @show_errors = true
-                end
-            else
-                identities = @user.identities[0]
-                identities.user_id = @user_by_email.id
-                if identities.save
-                    @user.destroy!
-                    sign_in(@user_by_email, :bypass => true)
-                    redirect_to @user_by_email, notice: 'Your profile was successfully updated.'
-                    return
-                else
-                    @show_errors = true    
-                end
-            end        
-        end  
-        
-        render :layout => 'layouts/application'
-    end    
-    
-    private
-    
-    def user_params
-        accessible = [ :name, :email ]
-        accessible << [ :password, :password_confirmation ] unless params[:user][:password].blank?
-        params.require(:user).permit(accessible)
-    end    
-    
-    
 
 end

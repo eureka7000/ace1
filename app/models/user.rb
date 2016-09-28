@@ -58,6 +58,9 @@ class User < ActiveRecord::Base
         # can be cleaned up at a later date.
         user = signed_in_resource ? signed_in_resource : identity.user
         
+        logger.debug "*************** auth : " + auth.inspect
+        logger.debug "*************** signed_in_resource : " + signed_in_resource.inspect
+        
         # Create the user if needed
         if user.nil?
             
@@ -66,6 +69,7 @@ class User < ActiveRecord::Base
             
             # Create the user if it's a new registration
             if user.nil?
+                
                 user = User.new(
                     user_name: auth.extra.raw_info.name,
                     email: email ? email : "#{TEMP_EMAIL_PREFIX}-#{auth.uid}-#{auth.provider}.com",
@@ -79,7 +83,14 @@ class User < ActiveRecord::Base
                 user_type = UserType.new
                 user_type.user_id = user.id
                 user_type.user_type = 'student'
-                user_type.save                
+                user_type.save
+            else
+                
+                if user.confirmed_at.nil?
+                    user.user_name = auth.extra.raw_info.name
+                    user.confirmed_at = DateTime.now
+                    user.save
+                end    
                 
             end    
         end

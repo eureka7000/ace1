@@ -24,7 +24,7 @@ gem 'exception_notification'
 gem 'activemerchant'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'omniauth-google'
+gem 'omniauth-google-oauth2'
 
 group :development, :test do
   gem 'byebug'
