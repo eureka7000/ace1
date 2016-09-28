@@ -110,4 +110,6 @@ Rails.application.routes.draw do
     get 'admins/users' => 'admins#users'
     resources :admins
 
+    get 'home/math1' => 'homes#index'
+
 end
