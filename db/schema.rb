@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160912105208) do
+ActiveRecord::Schema.define(version: 20160922100934) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -85,6 +85,16 @@ ActiveRecord::Schema.define(version: 20160912105208) do
     t.integer  "unit_concept_id", limit: 4
     t.integer  "concept_id",      limit: 4
   end
+
+  create_table "identities", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "provider",   limit: 255
+    t.string   "uid",        limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
 
   create_table "inicis_payments", force: :cascade do |t|
     t.string   "version",       limit: 255
@@ -160,6 +170,8 @@ ActiveRecord::Schema.define(version: 20160912105208) do
     t.datetime "updated_at",                    null: false
     t.string   "file_name",       limit: 255
   end
+
+  add_index "replies", ["parent_reply_id"], name: "dddd", using: :btree
 
   create_table "schools", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -316,9 +328,14 @@ ActiveRecord::Schema.define(version: 20160912105208) do
     t.datetime "expire_date"
     t.string   "user_img",               limit: 255
     t.text     "user_desc",              limit: 65535
+    t.string   "provider",               limit: 255
+    t.string   "uid",                    limit: 255
+    t.string   "oauth_token",            limit: 255
+    t.datetime "oauth_expires_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
+  add_foreign_key "identities", "users"
 end

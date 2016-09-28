@@ -54,11 +54,11 @@ class AdminsController < ApplicationController
     end    
     
     def main
-        @payments_krw = Payment.select('coalesce(sum(amount),0) as amount').where("currency='KRW' and payment_status = 'paid' and DATE(created_at) = DATE(now())").first
-        @payments_usd = Payment.select('coalesce(sum(amount),0) as amount').where("currency='USD' and payment_status = 'paid' and DATE(created_at) = DATE(now())").first
-        @questions = Question.where("date(updated_at) = date(now())")
-        @visit_users = User.where("date(current_sign_in_at) = date(now())")
-        @new_users = User.where("date(created_at) = date(now())")
+        @payments_krw = Payment.select('coalesce(sum(amount),0) as amount').where("currency='KRW' and payment_status = 'paid' and DATE(convert_tz(created_at,'utc','rok')) = DATE(convert_tz(now(),'utc','rok'))").first
+        @payments_usd = Payment.select('coalesce(sum(amount),0) as amount').where("currency='USD' and payment_status = 'paid' and DATE(convert_tz(created_at,'utc','rok')) = DATE(convert_tz(now(),'utc','rok'))").first
+        @questions = Question.where("date(convert_tz(updated_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
+        @visit_users = User.where("date(convert_tz(current_sign_in_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
+        @new_users = User.where("date(convert_tz(created_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
     end
 
   # GET /admins/1

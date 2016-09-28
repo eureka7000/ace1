@@ -47,7 +47,8 @@ Rails.application.routes.draw do
     get 'teachers/students_list' => 'teachers#students_list'
     resources :teachers
   
-    devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions"}
+    devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
+    match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   	#devise_for :users
 
     # sub_pages of main
