@@ -159,7 +159,9 @@
                         
                     </div> 
                     
-                    <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>                       
+                    <% if (params[:view_type] == '1' && @step == 4 && params[:exercise_type] == 'concept_exercise') || (params[:view_type] == '2' && @step == 6) %>
+                    <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>        
+                    <% end %>               
                     
                 </div>
             </div>
