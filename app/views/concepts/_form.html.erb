@@ -1,14 +1,21 @@
 <div class="row">
 
     <div class="col-md-12 ">
-
+        
+        <%= form_for(@concept, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+        
+        <input type="hidden" name="page" value="<%= params[:page] %>" />
+        <input type="hidden" name="category" value="<%= params[:category] %>" />
+        <input type="hidden" name="sub_category" value="<%= params[:sub_category] %>" />
+        <input type="hidden" name="exercise_yn" value="<%= params[:exercise_yn] %>" />
+        
+        <h4>개념 정보</h2>
+            
         <div class="well">
 
-            <%= form_for(@concept, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+            <div class="row">
 
-                <div class="row">
-
-                    <div class="col-md-12 ">
+                    <div class="col-md-6">
 
                         <% if @concept.errors.any? %>
                         <div id="error_explanation">
@@ -23,8 +30,8 @@
                         <% end %>
                         
                         <div class="form-group">
-                            <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :category, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <select name="concept[category]" id="category" class="form-control" onchange="changedCategory()">
                                     <option value="">--- Category ---</option>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
@@ -33,18 +40,23 @@
                                 </select> 
                             </div>
                         </div>
-
+                        
+                    </div>
+                    
+                    <div class="col-md-6">    
                         <div class="form-group">
-                            <%= f.label :sub_category, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :sub_category, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <select name="concept[sub_category]" id="sub_category" class="form-control">
                                     <option value="">--- Sub Category ---</option>
                                 </select> 
                             </div>
                         </div>
-                        
+                    </div>
+                    
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <div class="col-lg-offset-2 col-lg-10">
+                            <div class="col-md-offset-3 col-md-8">
                                 <div class="radio">
                                     <label>
                                         <input type="radio" name="concept[exercise_yn]" value="concept" <%= @concept.exercise_yn == "concept" ? "checked" : "" %> > Concept
@@ -56,24 +68,30 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                         
+                    <div class="col-md-6">    
                         <div class="form-group">
-                            <%= f.label :concept_code, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :concept_code, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <%= f.text_field :concept_code, :class => 'form-control' %>
                             </div>
-                        </div>                        
-                        
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <%= f.label :concept_name, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :concept_name, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <%= f.text_field :concept_name, :class => 'form-control' %>
                             </div>
                         </div>
-                        
+                    </div>
+                    
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <%= f.label :grade, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :grade, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <select name="concept[grade]" class="form-control">
                                     <option value="">--- Grade ---</option>
                                     <% UnitConcept::GRADES.each_pair do |key, value| %>
@@ -81,11 +99,13 @@
                                     <% end %>
                                 </select>
                             </div>
-                        </div>                        
-                        
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">    
                         <div class="form-group">
-                            <%= f.label :level, :class => 'col-sm-2 col-md-2 control-label' %>
-                            <div class="input-group col-sm-4">
+                            <%= f.label :level, :class => 'col-sm-2 col-md-3 control-label' %>
+                            <div class="input-group col-sm-4 col-md-8">
                                 <select name="concept[level]" class="form-control">
                                     <option value="">--- Level ---</option>
                                     <% (1..5).each do |idx| %>
@@ -93,24 +113,88 @@
                                     <% end %>
                                 </select>
                             </div>    
-                        </div>                        
-
+                        </div>
                     </div>
-
+                    
+                </div>    
+                    
+        </div>
+        
+        <h4>기출문제 정보</h2>        
+        <div class="well">
+            
+            <div class="row">
+                        
+                <div class="col-md-6">    
+                    <div class="form-group">
+                        <%= f.label :past_test_year, '출제연도', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <select name="concept[past_test_year]" class="form-control">
+                            <option value="">--- Year ---</option>
+                            <% (2005..2016).each do |idx| %>
+                            <option value="<%= idx %>" <%= "selected" if @concept.past_test_year.to_i == idx %> ><%= idx %></option>
+                            <% end %>
+                            </select>
+                            </div>    
+                        </div>
+                    </div>
+                    
+                <div class="col-md-6">    
+                    <div class="form-group">
+                        <%= f.label :past_test_month, '출제월', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <select name="concept[past_test_month]" class="form-control">
+                            <option value="">--- Month ---</option>
+                            <% (1..12).each do |idx| %>
+                            <option value="<%= idx %>" <%= "selected" if @concept.past_test_month.to_i == idx %> ><%= idx %>월</option>
+                            <% end %>
+                            </select>
+                        </div>    
+                    </div>
                 </div>
-
-                <footer>
-                    <%= f.submit '저장', :class => 'btn btn-success' %>
-                    <%= link_to '뒤로', "/concepts?page=#{params[:concept_page_num]}&#{params.to_query}", :class => 'btn btn-info' %>
-                </footer>
-
-            <% end %>
+                    
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <%= f.label :past_test_type, '유형', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <select name="concept[past_test_type]" class="form-control">
+                            <option value="">--- Type ---</option>
+                            <option value="가형" <%= "selected" if @concept.past_test_type == '가형' %> >가형</option>
+                            <option value="나형" <%= "selected" if @concept.past_test_type == '나형' %> >나형</option>
+                            </select>
+                        </div>    
+                    </div>
+                </div>
+                    
+                <div class="col-md-6">    
+                    <div class="form-group">
+                        <%= f.label :past_test_org, '출제기관', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <select name="concept[past_test_org]" class="form-control">
+                            <option value="">--- Org ---</option>
+                            <% Concept::PAST_TEST_ORGS.each_pair do |key, value| %>
+                            <option value="<%= key %>" <%= "selected" if @concept.past_test_org == key %> ><%= value %></option>
+                            <% end %>
+                            </select>
+                        </div>    
+                    </div>
+                </div>
+                        
+            </div>
 
         </div>
+
+        <footer style="float:right">
+            <%= f.submit '저장', :class => 'btn btn-success' %>
+            <%= link_to '뒤로', "/concepts?page=#{params[:concept_page_num]}&#{params.to_query}", :class => 'btn btn-info' %>
+        </footer>
+
+        <% end %>
 
     </div>
 
 </div>
+
 
 <script type="text/javascript">
 

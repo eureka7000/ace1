@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :codes
     get '/study_histories/detail' => 'study_histories#detail'
     resources :study_histories
     
@@ -48,7 +49,7 @@ Rails.application.routes.draw do
     resources :teachers
   
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
-    match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
+    # match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   	#devise_for :users
 
     # sub_pages of main

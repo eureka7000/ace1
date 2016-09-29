@@ -1,0 +1,68 @@
+<div class="row">
+
+    <div class="col-md-12 ">
+
+        <div class="well">
+
+            <%= form_for(@code, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <% if @code.errors.any? %>
+                        <div id="error_explanation">
+                            <% @code.errors.messages.each do |msg| %>
+                                <div class="alert alert-danger fade in">
+                                    <%= msg[1][0] %>
+                                </div>
+                            <% end %>
+                        </div>
+                        <% end %>
+
+                        <div class="form-group">
+                            <%= f.label :category, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+								<select class="form-control" name="code[category]">
+								<option value="">---Category---</option>	
+                                <% Code::CODE_CATEGORIES.each_pair() do |key, value| %>
+								<option value="<%= key.to_s %>" <%= "selected" if @code.category == key.to_s %> ><%= value %></option>
+                                <% end %>
+								</select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :code_name, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <%= f.text_field :code_name, :class => 'form-control' %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :use_yn, :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+								<select class="form-control" name="code[use_yn]">
+								<option value="Y" <%= "selected" if @code.use_yn == 'Y' %> >Y</option>
+                                <option value="N" <%= "selected" if @code.use_yn == 'N' %> >N</option>
+                            </select>
+                            </div>
+                        </div> 
+                        
+                    </div>
+
+                </div>
+
+                <footer style="padding-left: 220px;">
+                    <%= f.submit '저장', :class => 'btn btn-success' %>
+                    <%= link_to '뒤로', codes_path, :class => 'btn btn-info' %>
+                </footer>                                               
+
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+</div>

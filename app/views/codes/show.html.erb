@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @code.category %>
+</p>
+
+<p>
+  <strong>Code name:</strong>
+  <%= @code.code_name %>
+</p>
+
+<p>
+  <strong>Use yn:</strong>
+  <%= @code.use_yn %>
+</p>
+
+<%= link_to 'Edit', edit_code_path(@code) %> |
+<%= link_to 'Back', codes_path %>

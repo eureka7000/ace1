@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160922100934) do
+ActiveRecord::Schema.define(version: 20160929022801) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -44,6 +44,14 @@ ActiveRecord::Schema.define(version: 20160922100934) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "codes", force: :cascade do |t|
+    t.string   "category",   limit: 255
+    t.string   "code_name",  limit: 255
+    t.string   "use_yn",     limit: 255, default: "Y"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
   create_table "concept_exercises", force: :cascade do |t|
     t.integer "concept_id", limit: 4
     t.string  "file_name",  limit: 255
@@ -54,15 +62,19 @@ ActiveRecord::Schema.define(version: 20160922100934) do
   end
 
   create_table "concepts", force: :cascade do |t|
-    t.string   "category",     limit: 255
-    t.string   "sub_category", limit: 255
-    t.string   "concept_code", limit: 255
-    t.string   "concept_name", limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-    t.string   "exercise_yn",  limit: 255
-    t.integer  "grade",        limit: 4
-    t.integer  "level",        limit: 4
+    t.string   "category",        limit: 255
+    t.string   "sub_category",    limit: 255
+    t.string   "concept_code",    limit: 255
+    t.string   "concept_name",    limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.string   "exercise_yn",     limit: 255
+    t.integer  "grade",           limit: 4
+    t.integer  "level",           limit: 4
+    t.string   "past_test_year",  limit: 255
+    t.string   "past_test_month", limit: 255
+    t.string   "past_test_type",  limit: 255
+    t.string   "past_test_org",   limit: 255
   end
 
   create_table "explanations", force: :cascade do |t|

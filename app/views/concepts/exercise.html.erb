@@ -1,10 +1,14 @@
 <% return_param = "&page=#{params[:page]}&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}" %>
 
-<div class="container-fluid" style="margin-top: 50px">
+<div class="container-fluid">
 
     <div class="row">
         <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
-            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Concept - <%= @concept.concept_name %></h2>
+            <h2 class="sub-header">
+                <span class="fa fa-pencil" aria-hidden="true"> 종합문제 - <%= @concept.concept_name %> </span>
+                <% unless @concept.past_test_org.nil? %><span class="label rounded-2x label-yellow" style="position: absolute; top: 13px; margin-left: 10px;" >기출</span><% end %>
+            </h2>
+            
         </div>
     </div>
 

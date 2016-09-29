@@ -103,6 +103,13 @@ class Concept < ActiveRecord::Base
         5 => "link",
         7 => "Answer"
     }
+    
+    PAST_TEST_ORGS = {
+        "AAT"  => "수능",
+        "EO"   => "교육청",
+        "KICE" => "평가원",
+        "MT"   => "모의고사"
+    }
 
     def get_level_star
 

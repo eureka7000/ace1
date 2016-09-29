@@ -110,7 +110,7 @@ class ConceptsController < ApplicationController
         
         respond_to do |format|
             if @concept.update(concept_params)
-                format.html { redirect_to concepts_path, notice: 'Concept was successfully updated.' }
+                format.html { redirect_to concepts_path + "?category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}&page=#{params[:page]}" , notice: 'Concept was successfully updated.' }
                 format.json { render :show, status: :ok, location: @concept }
             else
                 format.html { render :edit }
@@ -136,8 +136,9 @@ class ConceptsController < ApplicationController
       @concept = Concept.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+
     def concept_params
-      params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn, :grade, :level)
+        params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn, :grade, :level, :past_test_year, :past_test_month, :past_test_type, :past_test_org)
     end
+    
 end

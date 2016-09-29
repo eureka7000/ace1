@@ -1,0 +1,43 @@
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 main">
+
+            <h2 class="sub-header"><span class="fa fa-puzzle-piece" aria-hidden="true" style="top: 5px"></span> Listing Codes</h2>
+
+            <div class="table-responsive">
+            
+                <table class="table table-striped">
+                <thead>
+                <tr>
+                <th>Category</th>
+                <th>Code name</th>
+                <th>Use yn</th>
+                <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% @codes.each do |code| %>
+                <tr>
+                <td><%= code.category %></td>
+                <td><%= code.code_name %></td>
+                <td><%= code.use_yn %></td>
+                <td><%= link_to 'Show', code %></td>
+                <td><%= link_to 'Edit', edit_code_path(code) %></td>
+                <td><%= link_to 'Destroy', code, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+                <% end %>
+                </tbody>
+                </table>
+
+                <%= will_paginate @payments, renderer: BootstrapPagination::Rails %>
+
+            </div>
+            
+            <%= link_to 'New Code', new_code_path, :class => 'btn btn-primary align-right' %>
+            
+        </div>
+    </div>                    
+</div>
