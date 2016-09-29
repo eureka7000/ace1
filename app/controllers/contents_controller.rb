@@ -156,7 +156,8 @@ class ContentsController < ApplicationController
                             level: concept_exercise.level,
                             exercise_yn: true,
                             level_star_yn: true,
-                            level_star: concept_exercise.get_level_star
+                            level_star: concept_exercise.get_level_star,
+                            past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org] 
                         }
                     end                    
                 else    

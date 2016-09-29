@@ -73,7 +73,7 @@
                         <span class="label rounded-2x label-brown">Exercise</span>
                         <% end %>
                     </td>
-                    <td><% unless concept.past_test_org.nil? %><span class="label rounded-2x label-yellow">기출</span><% end %></td>
+                    <td><% unless concept.past_test_org.blank? %><span class="label rounded-2x label-yellow">기출</span><% end %></td>
                     <td>
 						<% concept_params = "&category=#{params[:category]}&sub_category=#{params[:sub_category]}&exercise_yn=#{params[:exercise_yn]}"%>
 						<%= link_to 'Show', ( concept.exercise_yn == 'concept' || concept.exercise_yn.nil? ? "/concepts/#{concept.id}?page=#{params[:page]||1}#{concept_params}" : "/concepts/#{concept.id}/exercise?page=#{params[:page]||1}#{concept_params}"  ) %>

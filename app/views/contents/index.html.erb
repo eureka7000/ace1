@@ -61,7 +61,7 @@
     <ul class="row list-row margin-bottom-30">
     <% idx = 0 %>
     <% @items.each do | item | %>
-
+    
         <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
         
         <% if item[:content_yn] %>
@@ -69,6 +69,10 @@
                 <% item_link_str = "/contents/exercise?unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
             <% else %>
                 <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+            <% end %>
+            
+            <% if item[:level].nil? %>
+            <% item[:level] = 0 %>
             <% end %>
             
             <% if item[:level] > 1 && !current_user.can_I_use? %>
@@ -111,6 +115,7 @@
                                 <% end %>
                             <% end %>
                         </a>
+                        
                         <% if item[:drop_down] %>
                         <button type="button" class="btn btn-link dropdown-toggle" style="font-size: 20px; line-height: 27px;" data-toggle="dropdown">
                             <b class="fa fa-caret-down"></b>
@@ -150,9 +155,11 @@
                             end 
                         %>
                         </ul>
-                        <% end %>                    
+                        <% end %> 
                         
-                    </div>    
+                    </div> 
+                    
+                    <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>                       
                     
                 </div>
             </div>
