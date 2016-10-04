@@ -2,6 +2,36 @@ class ContentsController < ApplicationController
 
     before_action :authenticate_user!
     
+    def get_chapter_list
+       
+        query = "select b.category, b.sub_category, b.concept_code, b.concept_name, a.id, a.code, a.name, a.level, a.grade " +
+                "from unit_concepts a, concepts b " +
+                "where a.concept_id = b.id " +
+                "and a.exercise_yn = 'concept' " +
+                "order by b.category, b.sub_category, b.concept_code, a.code"
+                
+        @rs = UnitConcept.find_by_sql(query)
+        
+        ret = []
+        
+        @rs.each do | rs |
+           
+            tmp = {
+                category: Concept::CATEGORIES[rs.category],
+                sub_category: Concept::SUB_CATEGORIES[rs.sub_category],
+                concept_name: rs.concept_name,
+                unit_concept_id: rs.id,
+                unit_concept_name: rs.name
+            }
+            
+            ret << tmp
+            
+        end    
+        
+        render :json => ret
+        
+    end    
+    
     def exercise
 
         if params[:exercise_type] == "concept_exercise"

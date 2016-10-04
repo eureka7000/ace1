@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :unit_concepts
     
     get '/contents/exercise' => 'contents#exercise'
+    get '/contents/get_chapter_list' => 'contents#get_chapter_list'
     resources :contents
     
     get '/concepts/get_concepts' => 'concepts#get_concepts'

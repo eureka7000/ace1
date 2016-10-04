@@ -1,0 +1,213 @@
+<ul id="tree1"></ul>
+
+<script type="text/javascript">
+
+    // $.fn.extend({
+    //     treed: function (o) {
+    //
+    //       var openedClass = 'glyphicon-minus-sign';
+    //       var closedClass = 'glyphicon-plus-sign';
+    //
+    //       if (typeof o != 'undefined'){
+    //         if (typeof o.openedClass != 'undefined'){
+    //         openedClass = o.openedClass;
+    //         }
+    //         if (typeof o.closedClass != 'undefined'){
+    //         closedClass = o.closedClass;
+    //         }
+    //       };
+    //
+    //         //initialize each of the top levels
+    //         var tree = $(this);
+    //         tree.addClass("tree");
+    //         tree.find('li').has("ul").each(function () {
+    //             var branch = $(this); //li with children ul
+    //             branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+    //             branch.addClass('branch');
+    //             branch.on('click', function (e) {
+    //                 if (this == e.target) {
+    //                     var icon = $(this).children('i:first');
+    //                     icon.toggleClass(openedClass + " " + closedClass);
+    //                     $(this).children().children().toggle();
+    //                 }
+    //             })
+    //             branch.children().children().toggle();
+    //         });
+    //         //fire event from the dynamically added icon
+    //       tree.find('.branch .indicator').each(function(){
+    //         $(this).on('click', function () {
+    //             $(this).closest('li').click();
+    //         });
+    //       });
+    //         //fire event to open branch if the li contains an anchor instead of text
+    //         tree.find('.branch>a').each(function () {
+    //             $(this).on('click', function (e) {
+    //                 $(this).closest('li').click();
+    //                 e.preventDefault();
+    //             });
+    //         });
+    //         //fire event to open branch if the li contains a button instead of text
+    //         tree.find('.branch>button').each(function () {
+    //             $(this).on('click', function (e) {
+    //                 $(this).closest('li').click();
+    //                 e.preventDefault();
+    //             });
+    //         });
+    //     }
+    // });
+    //
+    // $('#tree1').treed();
+
+    function get_chapter_list() {
+
+        var url = "/contents/get_chapter_list";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                put_chapter_list(data);
+            },
+            error : function(){}
+        });
+    }
+    
+    function put_chapter_list(data) {
+        
+        var root = $('#tree1');
+        var category;
+        var pre_category;
+        var sub_category;
+        var pre_sub_category;
+        var concept;
+        var pre_concept;
+        var unit_concept;
+        
+        root.empty();
+        
+        for (var i=0; i<data.length; i++) {
+            
+            var depth = 0;
+            
+            if (pre_category == data[i].category) depth++;
+            else pre_category = data[i].category;
+                
+            if (pre_sub_category == data[i].sub_category) depth++;
+            else pre_sub_category = data[i].sub_category;
+            
+            if (pre_concept == data[i].concept_name ) depth++;
+            else pre_concept = data[i].concept_name;
+            
+            if (depth == 0) {
+                
+                category = $('<li/>').text(data[i].category).appendTo(root);
+                pre_category = data[i].category;
+                var category_ul = $('<ul/>').appendTo(category);
+                
+                sub_category = $('<li/>').text(data[i].sub_category).appendTo(category_ul);
+                pre_sub_category = data[i].sub_category;
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+            
+                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                pre_concept = data[i].concept_name;
+                var concept_ul = $('<ul/>').appendTo(concept);
+            
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+                
+            } else if (depth == 1) {
+               
+                sub_category = $('<li/>').text(data[i].sub_category).appendTo(category_ul);
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+            
+                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+            
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);               
+                
+            } else if (depth == 2) {
+                
+                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);                
+                
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+                
+            } else if (depth == 3) {
+                
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+                
+            }
+            
+            if ('<%= @unit_concept.name %>' == data[i].unit_concept_name) {
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                concept.addClass('selected');
+                // unit_concept.addClass('text-highlights text-highlights-green');
+                unit_concept.find('a').addClass('text-highlights text-highlights-green');
+                unit_concept.find('a').css({color: "white", padding: 0});
+            }             
+        }
+        
+        set_tree();
+        
+    }
+    
+    function set_tree() {
+        
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
+    
+        // initialize each of the top levels
+        var tree = $('#tree1');
+        tree.addClass("tree");
+        tree.find('li').has("ul").each(function () {
+            
+            var branch = $(this); //li with children ul
+            branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");                
+            branch.addClass('branch');
+            branch.on('click', function (e) {
+                if (this == e.target) {
+                    var icon = $(this).children('i:first');
+                    icon.toggleClass(openedClass + " " + closedClass);
+                    $(this).children().children().toggle();
+                }
+            })
+            branch.children().children().toggle();
+        });
+        //fire event from the dynamically added icon
+
+        $('#tree1 .selected').each( function() {
+            var icon = $(this).children('i:first');
+            icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
+            $(this).children().children().toggle();
+        });
+           
+        tree.find('.branch .indicator').each(function(){
+          $(this).on('click', function () {
+              $(this).closest('li').click();
+          });
+        });
+        
+        //fire event to open branch if the li contains an anchor instead of text
+        tree.find('.branch>a').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+        
+        //fire event to open branch if the li contains a button instead of text
+        tree.find('.branch>button').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+        
+    }
+    
+    get_chapter_list();
+
+
+</script>
