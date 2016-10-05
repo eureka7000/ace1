@@ -31,34 +31,6 @@
     <div class="tabbable bg-color-light" xmlns="http://www.w3.org/1999/html">
 
       <div class="tab-content">
-        <!-- 이전 다음 개념 링크 -->
-        <% count = 0 %>
-        <% unless params[:id].to_i() == 1 %>
-            <% @unit_concept_related.each do |related| %>
-                <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20 <%= 'text-left' unless count != 0 %> <%= 'text-center' unless count != 1 %> <%= 'text-right' unless count != 2 %>">
-                  <% if count == 0 || count == 2 %>
-                      <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" class="<%= 'fa fa-chevron-left' unless count != 0 %>"></i>&nbsp;<span style="color:black;"/> <%= related.name %> &nbsp;<i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 2 %>"></i></a>
-                  <% else %>
-                      <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 1 %>"/>개념화면 이동</a>
-                  <% end %>
-                </div>
-                <% count += 1 %>
-            <% end %>
-        <% else %>
-            <!-- params[:id] 값이 1인 경우 -->
-            <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20"></div>
-            <% @unit_concept_related.each do |related| %>
-                <div class="col-md-4 col-sm-4 col-xs-4 margin-top-20 <%= 'text-center' unless count != 0 %> <%= 'text-right' unless count != 1 %>">
-                  <% if count == 0 %>
-                      <a href="/contents?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><span style="color:black;<%= 'font-weight: bold;' unless count != 0 %>"/>개념화면 이동</a>
-                  <% end %>
-                  <% if count == 1 %>
-                      <a href="/contents/<%= related.id %>?view_type=<%= @view_type %>&step=<%= @step %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=<%= @level %>&concept_id=<%= @concept_id %>"><i style="color: darkblue;" ></i><span style="color:black;"/> <%= related.name %> <i style="color: darkblue;" class="<%= 'fa fa-chevron-right' unless count != 1 %>"></i></a>
-                  <% end %>
-                </div>
-                <% count += 1 %>
-            <% end %>
-        <% end %>
 
         <!-- 권한 검사 -->
         <% if @unit_concept.level > 1 && !current_user.can_I_use? %>
