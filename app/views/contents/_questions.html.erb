@@ -1,0 +1,29 @@
+<div class="panel panel-profile no-bg">
+    <div class="panel-heading overflow-h">
+        <h2 class="panel-title heading-sm pull-left"><i class="fa fa-briefcase"></i>학습문제해결</h2>
+        <a href="#m" data-toggle="modal" class="btn btn-danger btn-xs pull-right">질문하기</a>      
+    </div>
+    
+    <div class="panel-body no-padding">
+        
+        <% unless @questions.nil? %>
+            <% if @questions.size == 0 %>
+        <p class="text-center" style="margin-top: 10px">아직 등록된 내용이 없습니다.</p>
+            <% end %>
+        
+            <% @questions.each do |question| %>
+        <div class="profile-event">
+            <div class="date-formats">
+                <span><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
+                <small><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%m, %Y') %></small>                
+            </div>
+            <div class="overflow-h">
+                <h3 class="heading-xs"><a href="/questions/<%= question.id %>"><%= question.title %></a></h3>
+                <p><%= question.content.truncate(70) %></p>
+            </div>            
+        </div>    
+            <% end %>
+        <% end %>
+        
+    </div>
+</div>

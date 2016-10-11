@@ -26,151 +26,133 @@
 
 <% else %>
 
-    <!-- breadcrumbs -->
-    <div class="breadcrumbs col-md-12">
-        <div class="container">
-            <h1 class="pull-left"><%= @current_page_name %></h1>
-            
-            <ul class="pull-right breadcrumb">
-            <% count = @breadcrumbs.count %>
-            <% @breadcrumbs.each_with_index do |value, index| %>
-            <li class="<%= 'active' if count == index+1 %>">
-                <% link_str = "/contents?view_type=#{@view_type}" %>
-                <% if count == index + 1 %>
-                    <%= value["step#{index+1}"] %>
-                <% else %>
-                    <% link_str += "&step=#{index+1}" %>
-                    <% link_str += "&category=#{@category}" if index > 0 && params[:view_type] == '1' %>
-                    <% link_str += "&sub_category=#{@sub_category}" if index > 1 && params[:view_type] == '1' %>
-                    <% link_str += "&concept_id=#{@concept_id}&student=#{@student}&level=#{@level}" if index > 2 && params[:view_type] == '1' %>
-                    <% link_str += "&grade=#{@grade}" if index > 0 && params[:view_type] == '2' %>
-                    <% link_str += "&chapter=#{@chapter}" if index > 1 && params[:view_type] == '2' %>
-                    <% link_str += "&category=#{@category}" if index > 2 && params[:view_type] == '2' %>
-                    <% link_str += "&sub_category=#{@sub_category}" if index > 3 && params[:view_type] == '2' %>
-                    <% link_str += "&concept_id=#{@concept_id}&student=#{@student}&level=#{@level}" if index > 4 && params[:view_type] == '2' %>
-                <a href="<%= link_str %>"><%= value["step#{index+1}"] %></a>
-                <% end %>
-            </li>
-            <% end %>
-            </ul>
-        </div>
-    </div>
-    <!-- breadcrumbs end -->
+<h3 style="float:left; margin-top: 10px;">
+    <i class="fa fa-delicious"></i><span style="color:red;"> <%= @current_page_name %></span>
+</h3>
 
-    <!-- items -->
-    <ul class="row list-row margin-bottom-30">
-    <% idx = 0 %>
-    <% @items.each do | item | %>
+<button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>        
+      
+<hr style="clear:both; margin: 0">
+        
+        
+        <div class="col-md-12">    
     
-        <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
+            <ul class="row list-row margin-bottom-30">
+            <% idx = 0 %>
+            <% @items.each do | item | %>
+    
+                <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
         
-        <% if item[:content_yn] %>
-            <% if item[:exercise_yn] %>
-                <% item_link_str = "/contents/exercise?unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
-            <% else %>
-                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
-            <% end %>
-            
-            <% if item[:level].nil? %>
-            <% item[:level] = 0 %>
-            <% end %>
-            
-            <% if item[:level] > 1 && !current_user.can_I_use? %>
-                <% item_link_str = "javascript:openUserAuthModal()" %> 
-            <% end %>
-        <% else %>
-            <% if item[:load_modal] %>
-                <% item_link_str = "javascript:loadModal(#{item[:key]})" %>
-            <% else %>    
-                <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>
-                <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>
-                <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>
-                <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>
-                <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
-                <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
-                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
-                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
-                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{item[:key]}&level=#{@level}&exercise_type=concept_exercise" if @step == 5 && params[:view_type] == '2' %>
-                <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{@level}" if @step == 6 && params[:view_type] == '2' %>
-            <% end %>
-        <% end %>    
-        
-        <li class="col-md-4 md-margin-bottom-30">
-            <div class="content-boxes-v2 text-center block-grid-v1 rounded">
-                <a href="<%= item_link_str %>">
-                    <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %>"></i>
-                </a>
-                <div class="content-boxes-in-v3">
-                    
-                    <% if item[:level_star_yn] %>
-                        <%= raw item[:level_star] %><br>                    
+                <% if item[:content_yn] %>
+                    <% if item[:exercise_yn] %>
+                        <% item_link_str = "/contents/exercise?unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
+                    <% else %>
+                        <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
                     <% end %>
-                    
-                    <div class="btn-group">
-                        <a href="<%= item_link_str %>" class="btn btn_link" style="font-size: 20px; line-height: 27px;">
-                            <%= item[:value] %>
-                            <% unless item[:video_count].nil? %>
-                                <% unless item[:video_count] == 0 %>
-                            <i class="fa fa-film tooltips color-brown" data-placement="right" data-toggle="tooltip" title="video 있음"></i>
-                                <% end %>
-                            <% end %>
+            
+                    <% if item[:level].nil? %>
+                    <% item[:level] = 0 %>
+                    <% end %>
+            
+                    <% if item[:level] > 1 && !current_user.can_I_use? %>
+                        <% item_link_str = "javascript:openUserAuthModal()" %> 
+                    <% end %>
+                <% else %>
+                    <% if item[:load_modal] %>
+                        <% item_link_str = "javascript:loadModal(#{item[:key]})" %>
+                    <% else %>    
+                        <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>
+                        <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{item[:key]}&level=#{@level}&exercise_type=concept_exercise" if @step == 5 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{@level}" if @step == 6 && params[:view_type] == '2' %>
+                    <% end %>
+                <% end %>    
+        
+                <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                        <a href="<%= item_link_str %>">
+                            <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %>"></i>
                         </a>
-                        
-                        <% if item[:drop_down] %>
-                        <button type="button" class="btn btn-link dropdown-toggle" style="font-size: 20px; line-height: 27px;" data-toggle="dropdown">
-                            <b class="fa fa-caret-down"></b>
-                        </button>    
-                        <% end %>
+                        <div class="content-boxes-in-v3">
                     
-                        <% if item[:drop_down] %>
-                        <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
-                        <%
-                            item[:unit_concept_counts].each do | count |
-                                icon = 'fa-book'
-                                title = '개념'
+                            <% if item[:level_star_yn] %>
+                                <%= raw item[:level_star] %><br>                    
+                            <% end %>
+                    
+                            <div class="btn-group">
+                                <a href="<%= item_link_str %>" class="btn btn_link" style="font-size: 20px; line-height: 27px;">
+                                    <%= item[:value] %>
+                                    <% unless item[:video_count].nil? %>
+                                        <% unless item[:video_count] == 0 %>
+                                    <i class="fa fa-film tooltips color-brown" data-placement="right" data-toggle="tooltip" title="video 있음"></i>
+                                        <% end %>
+                                    <% end %>
+                                </a>
+                        
+                                <% if item[:drop_down] %>
+                                <button type="button" class="btn btn-link dropdown-toggle" style="font-size: 20px; line-height: 27px;" data-toggle="dropdown">
+                                    <b class="fa fa-caret-down"></b>
+                                </button>    
+                                <% end %>
+                    
+                                <% if item[:drop_down] %>
+                                <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
+                                <%
+                                    item[:unit_concept_counts].each do | count |
+                                        icon = 'fa-book'
+                                        title = '개념'
 
-                                if count[:exercise_yn] == "exercise"
-                                    icon = 'fa-jsfiddle'
-                                    title = '유형문제'
-                                elsif count[:exercise_yn] == "similar exercise"
-                                    icon = 'fa-cloud-upload'
-                                    title = '유사문제'
-                                end
-                        %>
-                        <li>
-                            <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
-                            <span class="item-box">
-                                <span class="item">&nbsp; &nbsp;
-                                    <% for i in 0..(count[:level]-1) %>
-                                    <i class="fa fa-star"></i>
-                                    <% end %>
-                                    <% for i in count[:level]..4 %>
-                                    <i class="fa fa-star-o"></i>
-                                    <% end %>
-                                </span>
-                            </span>
-                            <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count[:count] %></span>
-                        </li>
-                        <% 
-                            end 
-                        %>
-                        </ul>
-                        <% end %> 
+                                        if count[:exercise_yn] == "exercise"
+                                            icon = 'fa-jsfiddle'
+                                            title = '유형문제'
+                                        elsif count[:exercise_yn] == "similar exercise"
+                                            icon = 'fa-cloud-upload'
+                                            title = '유사문제'
+                                        end
+                                %>
+                                <li>
+                                    <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
+                                    <span class="item-box">
+                                        <span class="item">&nbsp; &nbsp;
+                                            <% for i in 0..(count[:level]-1) %>
+                                            <i class="fa fa-star"></i>
+                                            <% end %>
+                                            <% for i in count[:level]..4 %>
+                                            <i class="fa fa-star-o"></i>
+                                            <% end %>
+                                        </span>
+                                    </span>
+                                    <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count[:count] %></span>
+                                </li>
+                                <% 
+                                    end 
+                                %>
+                                </ul>
+                                <% end %> 
                         
-                    </div> 
+                            </div> 
                     
-                    <% if (params[:view_type] == '1' && @step == 4 && params[:exercise_type] == 'concept_exercise') || (params[:view_type] == '2' && @step == 6) %>
-                    <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>        
-                    <% end %>               
+                            <% if (params[:view_type] == '1' && @step == 4 && params[:exercise_type] == 'concept_exercise') || (params[:view_type] == '2' && @step == 6) %>
+                            <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>        
+                            <% end %>               
                     
-                </div>
-            </div>
-        </li>
-        <% idx += 1 %>
-        <% idx %= 12 %>
-    <% end %>    
-    </ul>        
-    <!-- items end -->
+                        </div>
+                    </div>
+                </li>
+                <% idx += 1 %>
+                <% idx %= 12 %>
+            <% end %>    
+            </ul>        
+            <!-- items end -->
+        </div>    
+  
+        
 
 <% end %><!-- current_user.grade -->
 

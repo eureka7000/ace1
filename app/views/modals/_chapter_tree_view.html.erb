@@ -2,61 +2,20 @@
 
 <script type="text/javascript">
 
-    // $.fn.extend({
-    //     treed: function (o) {
-    //
-    //       var openedClass = 'glyphicon-minus-sign';
-    //       var closedClass = 'glyphicon-plus-sign';
-    //
-    //       if (typeof o != 'undefined'){
-    //         if (typeof o.openedClass != 'undefined'){
-    //         openedClass = o.openedClass;
-    //         }
-    //         if (typeof o.closedClass != 'undefined'){
-    //         closedClass = o.closedClass;
-    //         }
-    //       };
-    //
-    //         //initialize each of the top levels
-    //         var tree = $(this);
-    //         tree.addClass("tree");
-    //         tree.find('li').has("ul").each(function () {
-    //             var branch = $(this); //li with children ul
-    //             branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
-    //             branch.addClass('branch');
-    //             branch.on('click', function (e) {
-    //                 if (this == e.target) {
-    //                     var icon = $(this).children('i:first');
-    //                     icon.toggleClass(openedClass + " " + closedClass);
-    //                     $(this).children().children().toggle();
-    //                 }
-    //             })
-    //             branch.children().children().toggle();
-    //         });
-    //         //fire event from the dynamically added icon
-    //       tree.find('.branch .indicator').each(function(){
-    //         $(this).on('click', function () {
-    //             $(this).closest('li').click();
-    //         });
-    //       });
-    //         //fire event to open branch if the li contains an anchor instead of text
-    //         tree.find('.branch>a').each(function () {
-    //             $(this).on('click', function (e) {
-    //                 $(this).closest('li').click();
-    //                 e.preventDefault();
-    //             });
-    //         });
-    //         //fire event to open branch if the li contains a button instead of text
-    //         tree.find('.branch>button').each(function () {
-    //             $(this).on('click', function (e) {
-    //                 $(this).closest('li').click();
-    //                 e.preventDefault();
-    //             });
-    //         });
-    //     }
-    // });
-    //
-    // $('#tree1').treed();
+    function view_change(opt) {
+        
+        if (opt == 'forward') {
+            $('#treeview').hide();
+            $('#mainview').removeClass("col-md-9");
+            $('#mainview').addClass('col-md-12');
+            $('#btn_tree').show();
+        } else if (opt == 'backward') {
+            $('#treeview').show();
+            $('#mainview').removeClass("col-md-12");
+            $('#mainview').addClass('col-md-9');
+            $('#btn_tree').hide();
+        }
+    }
 
     function get_chapter_list() {
 
@@ -98,7 +57,9 @@
             else pre_sub_category = data[i].sub_category;
             
             if (pre_concept == data[i].concept_name ) depth++;
-            else pre_concept = data[i].concept_name;
+            else {
+                pre_concept = data[i].concept_name;
+            }
             
             if (depth == 0) {
                 
@@ -110,7 +71,7 @@
                 pre_sub_category = data[i].sub_category;
                 var sub_category_ul = $('<ul/>').appendTo(sub_category);
             
-                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 pre_concept = data[i].concept_name;
                 var concept_ul = $('<ul/>').appendTo(concept);
             
@@ -121,14 +82,14 @@
                 sub_category = $('<li/>').text(data[i].sub_category).appendTo(category_ul);
                 var sub_category_ul = $('<ul/>').appendTo(sub_category);
             
-                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 var concept_ul = $('<ul/>').appendTo(concept);
             
-                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);               
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
                 
             } else if (depth == 2) {
                 
-                concept = $('<li/>').text(data[i].concept_name).appendTo(sub_category_ul);
+                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 var concept_ul = $('<ul/>').appendTo(concept);                
                 
                 unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
@@ -139,14 +100,62 @@
                 
             }
             
-            if ('<%= @unit_concept.name %>' == data[i].unit_concept_name) {
+            if (i == data.length-1) {
+                concept = $('<li/>').html(
+                        "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
+                        "&sub_category=" + data[i].sub_category_code + 
+                        "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                                        
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>유형문제</a>").appendTo(concept_ul);
+            }
+            
+            if ('<%= @unit_concept.name unless @unit_concept.nil? %>' == data[i].unit_concept_name) {
                 category.addClass('selected');
                 sub_category.addClass('selected');
                 concept.addClass('selected');
                 // unit_concept.addClass('text-highlights text-highlights-green');
                 unit_concept.find('a').addClass('text-highlights text-highlights-green');
                 unit_concept.find('a').css({color: "white", padding: 0});
-            }             
+            }
+            
+            
+            if (i < data.length-1) {
+                
+                // 유형문제
+                if (data[i].concept_id != data[i+1].concept_id && '<%= @concept.id unless @concept.nil? %>' == data[i].concept_id) {
+                    category.addClass('selected');
+                    sub_category.addClass('selected');
+                    concept.addClass('selected');
+                    unit_concept = $('<li/>').html(
+                            "<a href='/contents?view_type=1&step=5&category=" + data[i].category_code + 
+                            "&sub_category=" + data[i].sub_category_code + 
+                            "&concept_id=" + data[i].concept_id + "'>유형문제</a>").appendTo(concept_ul);
+                    unit_concept.find('a').addClass('text-highlights text-highlights-green');
+                    unit_concept.find('a').css({color: "white", padding: 0});
+                } else if (data[i].concept_id != data[i+1].concept_id && '<%= @concept.id unless @concept.nil? %>' != data[i].concept_id) {
+                    unit_concept = $('<li/>').html(
+                            "<a href='/contents?view_type=1&step=5&category=" + data[i].category_code + 
+                            "&sub_category=" + data[i].sub_category_code + 
+                            "&concept_id=" + data[i].concept_id + "'>유형문제</a>").appendTo(concept_ul);
+                }
+                
+                // 종합문제
+                if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+                    category.addClass('selected');
+                    sub_category.addClass('selected');                    
+                    concept = $('<li/>').html(
+                            "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
+                            "&sub_category=" + data[i].sub_category_code + 
+                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                    concept.find('a').addClass('text-highlights text-highlights-green');
+                    concept.find('a').css({color: "white", padding: 0});                            
+                } else if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' != data[i].sub_category_code) {
+                    concept = $('<li/>').html(
+                            "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
+                            "&sub_category=" + data[i].sub_category_code + 
+                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                }
+            }
         }
         
         set_tree();
@@ -181,6 +190,12 @@
             var icon = $(this).children('i:first');
             icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
             $(this).children().children().toggle();
+            // $(this).scrollIntoView();
+            
+            $('#tree_frame').scrollTop(
+                $(this).offset().top - 100
+            );
+            
         });
            
         tree.find('.branch .indicator').each(function(){

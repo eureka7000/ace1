@@ -2,9 +2,11 @@ class ContentsController < ApplicationController
 
     before_action :authenticate_user!
     
+    layout '/layouts/contents'
+    
     def get_chapter_list
        
-        query = "select b.category, b.sub_category, b.concept_code, b.concept_name, a.id, a.code, a.name, a.level, a.grade " +
+        query = "select b.category, b.sub_category, a.concept_id, b.concept_code, b.concept_name, a.id, a.code, a.name, a.level, a.grade " +
                 "from unit_concepts a, concepts b " +
                 "where a.concept_id = b.id " +
                 "and a.exercise_yn = 'concept' " +
@@ -18,8 +20,11 @@ class ContentsController < ApplicationController
            
             tmp = {
                 category: Concept::CATEGORIES[rs.category],
+                category_code: rs.category,
                 sub_category: Concept::SUB_CATEGORIES[rs.sub_category],
+                sub_category_code: rs.sub_category,
                 concept_name: rs.concept_name,
+                concept_id: rs.concept_id,
                 unit_concept_id: rs.id,
                 unit_concept_name: rs.name
             }
@@ -217,6 +222,7 @@ class ContentsController < ApplicationController
                 
             elsif @step == 5
                 
+                @concept = Concept.find(@concept_id)
                 @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
                 @unit_concept_exercises.each do |unit_concept_exercise|
                     
@@ -431,6 +437,7 @@ class ContentsController < ApplicationController
             @mento = User.find(current_user.user_relations[0].related_user_id)
         end
         @unit_concepts_exercise_histories = UnitConceptExerciseHistory.where(user_id: current_user.id)
+        @questions = Question.where('unit_concept_id = ?',params[:id]).order(created_at: :desc).limit(10)
 
 
         unless params[:id].to_i() == 1

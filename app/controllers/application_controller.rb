@@ -21,9 +21,29 @@ class ApplicationController < ActionController::Base
     def after_sign_in_path_for(resource)
         
         if session[:previous_url] == "/users/sign_in"
-            root_path
-        else    
-            session[:previous_url]
+            if current_user.user_types.first.user_type == 'student'
+                if current_user.study_histories.last.nil?
+                    "/contents/1"
+                else
+                    "/contents/#{current_user.study_histories.last.unit_concept_id}"    
+                end
+            else
+                root_url
+            end        
+        else
+            if session[:previous_url] == '/'
+                if current_user.user_types.first.user_type == 'student'
+                    if current_user.study_histories.last.nil?
+                        "/contents/1"
+                    else
+                        "/contents/#{current_user.study_histories.last.unit_concept_id}"    
+                    end        
+                else
+                    root_url
+                end        
+            else
+                session[:previous_url]
+            end         
         end    
 
     end

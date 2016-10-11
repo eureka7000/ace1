@@ -19,58 +19,6 @@
                         
                         <hr class="devider devider-dotted" style="margin:10px">
                         
-                        <div class="profile-edit tab-pane fade in active">
-                            
-                            <% unless notice.blank? %>
-                                <p class="alert alert-warning"><%= notice %></p>
-                            <% end %>
-                            
-                            <% unless alert.blank? %>
-                                <p class="alert alert-danger"><%= alert %></p>
-                            <% end %>
-                            
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
-                            
-                            <div class="heading heading-v4">
-                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
-                            </div>
-                            
-                        </div>    
-                        
-                        <hr class="devider devider-dotted" style="margin:10px">
-                        
-                        <div class="profile-edit tab-pane fade in active">
-                            
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제이력</h3>
-                            
-							<table class="table">
-                            <thead>
-                            <th>결제일</th>
-                            <th>서비스</th>
-                            <th>결제수단</th>                            
-                            <th><i class="fa fa-cog"></i></th>
-                            </thead>
-                            
-                            <tbody>
-                            <% if @payments.count == 0 %>
-                            <tr>
-                            <td colspan="5" style="text-align:center"><strong>결제이력이 없습니다.</strong></td>
-                            </tr>
-                            <% end %>
-                            
-                            <% @payments.each do |payment| %>
-                            <tr>
-                            <td><%= payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
-                            <td><%= payment.service_name %></td>
-                            <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
-                            <td></td>
-                            <% end %>
-                            </tbody>
-                            </table>
-								
-                        </div>
-                        
-                        <hr class="devider devider-dotted" style="margin:10px">
                         
                         <div id="payment" class="profile-edit tab-pane fade in active">
                             
@@ -220,6 +168,63 @@
 
                             </div>                            
                             
+                        </div> 
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">                           
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <% unless notice.blank? %>
+                                <p class="alert alert-warning"><%= notice %></p>
+                            <% end %>
+                            
+                            <% unless alert.blank? %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
+                            
+                            <div class="heading heading-v4">
+                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                            </div>
+                            
+                        </div>    
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제이력</h3>
+                            
+							<table class="table">
+                            <thead>
+                            <th>결제일</th>
+                            <th>서비스</th>
+                            <th>결제수단</th>                            
+                            <th><i class="fa fa-cog"></i></th>
+                            </thead>
+                            
+                            <tbody>
+                            <% if @payments.count == 0 %>
+                            <tr>
+                            <td colspan="5" style="text-align:center"><strong>결제이력이 없습니다.</strong></td>
+                            </tr>
+                            <% end %>
+                            
+                            <% @payments.each do |payment| %>
+                            <tr>
+                            <td><%= payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
+                            <td><%= payment.service_name %></td>
+                            <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
+                            <td></td>
+                            <% end %>
+                            </tbody>
+                            </table>
+								
+                        </div>
+                        
+                        
+                        
                     </div>
                     
                 </div>
