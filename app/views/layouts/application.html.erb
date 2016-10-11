@@ -130,7 +130,13 @@
                 <li class="<%= 'active' if @active == 'home' %> dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
                     <ul class="dropdown-menu">
-                    <li><a href="<%= current_user.study_histories.last.nil? ? "/contents/1" : "/contents/#{current_user.study_histories.last.unit_concept_id}" unless current_user.nil? %>">단원별</a></li>
+                    <li>
+                        <% if current_user.nil? %>
+                        <a href="/contents/1">단원별</a>
+                        <% else %>
+                        <a href="<%= current_user.study_histories.last.nil? ? "/contents/1" : "/contents/#{current_user.study_histories.last.unit_concept_id}" %>">단원별</a>
+                        <% end %>
+                    </li>
                     <li><a href="/contents?view_type=2&step=1">학년별</a></li>
                     </ul>
                 </li>
