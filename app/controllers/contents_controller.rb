@@ -182,7 +182,7 @@ class ContentsController < ApplicationController
             elsif @step == 4
                 
                 if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
-                    @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise")
+                    @concept_exercises = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "exercise").order(:concept_code)
                     @concept_exercises.each do |concept_exercise|
                         @items << {
                             key: concept_exercise.id,
