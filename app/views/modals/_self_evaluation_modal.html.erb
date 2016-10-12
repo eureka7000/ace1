@@ -1,0 +1,90 @@
+<div class="modal fade" id="s" role="dialog">
+
+    <div class="modal-dialog">
+        
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-title">
+                    <h4><span style="color: darkgreen"><i class="fa fa-pencil-square-o"></i></span> 자기평가</h4>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                
+                <div class="row" style="margin-left: 5px; margin-right: 5px">
+                    
+                    <h5><strong style="color:darkblue">자기평가 이력</strong></h5>
+
+                    <table class="table">
+                    <thead>
+                    <th class="text-center">날짜</th>
+                    <th class="text-center">난이도</th>
+                    <th class="text-center">Comment</th>
+                    </thead>
+
+                    <tbody>
+                    <% unless @self_evaluations.blank? %>
+                        <% @self_evaluations.each do |eval| %>
+                    <tr>
+                    <td class="text-center"><%= eval.created_at.in_time_zone("Asia/Seoul").strftime("%Y/%m/%d %H:%M") %></td>
+                    <td class="text-center"><%= eval.evaluation %></td>
+                    <td><%= simple_format(eval.comment) %></td>
+                    </tr>
+                        <% end %>
+                    <% else %>
+                    <tr>
+                    <td colspan="3" class="text-center"> - 평가 이력이 없습니다 - </td>
+                    </tr>
+                    <% end %>
+                    </tbody>
+                    </table>
+                    
+                </div>
+
+                <form action="/unit_concept_self_evaluations" id="new_unit_concept_self_evaluation" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+
+                    <%= token_tag nil %>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5><strong style="color:darkblue">&nbsp; &nbsp; 난이도</strong></h5>
+                        </div>
+                        <div class="col-md-9">
+                            <label class="radio-inline">
+                                <input type="radio" id="evaluation_easy" name="unit_concept_self_evaluation[evaluation]" value="easy" > 이해됨
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" id="evaluation_normal" name="unit_concept_self_evaluation[evaluation]" value="normal" > 보통
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" id="evaluation_difficult" name="unit_concept_self_evaluation[evaluation]" value="difficult" > 어려움
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="row margin-top-20 margin-bottom-10">
+                        <div class="col-md-3">
+                            <strong style="color:darkblue">&nbsp; &nbsp; Comment</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
+                    <input type="hidden" name="unit_concept_self_evaluation[user_id]" value="<%= current_user.id %>" />
+                    <input type="hidden" name="url" value="<%= request.original_url %>"/>
+                    
+                    <div class="modal-footer">
+                        <input type="submit" class="btn-u rounded btn-u-blue" value="보내기"/>
+                    </div>
+                    
+                </form>
+                
+            </div>
+
+        </div>
+    </div>
+</div>

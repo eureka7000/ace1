@@ -63,15 +63,15 @@
             
             if (depth == 0) {
                 
-                category = $('<li/>').text(data[i].category).appendTo(root);
+                category = $('<li/>').html('<span class="category_text">' + data[i].category + '</span>').appendTo(root);
                 pre_category = data[i].category;
                 var category_ul = $('<ul/>').appendTo(category);
                 
-                sub_category = $('<li/>').text(data[i].sub_category).appendTo(category_ul);
+                sub_category = $('<li/>').html('<span class="sub_category_text">' + data[i].sub_category + '</span>').appendTo(category_ul);
                 pre_sub_category = data[i].sub_category;
                 var sub_category_ul = $('<ul/>').appendTo(sub_category);
             
-                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                concept = $('<li/>').html('<span class="concept_text">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 pre_concept = data[i].concept_name;
                 var concept_ul = $('<ul/>').appendTo(concept);
             
@@ -79,17 +79,17 @@
                 
             } else if (depth == 1) {
                
-                sub_category = $('<li/>').text(data[i].sub_category).appendTo(category_ul);
+                sub_category = $('<li/>').html('<span class="sub_category_text">' + data[i].sub_category + '</span>').appendTo(category_ul);
                 var sub_category_ul = $('<ul/>').appendTo(sub_category);
             
-                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                concept = $('<li/>').html('<span class="concept_text">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 var concept_ul = $('<ul/>').appendTo(concept);
             
                 unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
                 
             } else if (depth == 2) {
                 
-                concept = $('<li/>').html("<span>" + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                concept = $('<li/>').html('<span class="concept_text">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
                 var concept_ul = $('<ul/>').appendTo(concept);                
                 
                 unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
@@ -119,10 +119,30 @@
             }
             
             
+            // category level
+            if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '2' && '<%= params[:category] %>' == data[i].category_code) {
+                category.addClass('selected');
+                category.find('span.category_text').addClass('text-highlights text-highlights-green');
+                category.find('span.category_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '3' && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                sub_category.find('span.sub_category_text').addClass('text-highlights text-highlights-green');
+                sub_category.find('span.sub_category_text').css({color: "white", padding: 0});                
+            } else if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '4' && '<%= params[:concept_id] %>' == data[i].concept_id) {
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                concept.addClass('selected');
+                concept.find('span.concept_text').addClass('text-highlights text-highlights-green');
+                concept.find('span.concept_text').css({color: "white", padding: 0});
+            }
+            
+            
             if (i < data.length-1) {
                 
                 // 유형문제
-                if (data[i].concept_id != data[i+1].concept_id && '<%= @concept.id unless @concept.nil? %>' == data[i].concept_id) {
+                if (data[i].concept_id != data[i+1].concept_id && '<%= @concept.id unless @concept.nil? %>' == data[i].concept_id && '<%= params[:step] %>' == '5') {
+                    
                     category.addClass('selected');
                     sub_category.addClass('selected');
                     concept.addClass('selected');
@@ -132,11 +152,25 @@
                             "&concept_id=" + data[i].concept_id + "'>유형문제</a>").appendTo(concept_ul);
                     unit_concept.find('a').addClass('text-highlights text-highlights-green');
                     unit_concept.find('a').css({color: "white", padding: 0});
+                    
+                    
                 } else if (data[i].concept_id != data[i+1].concept_id && '<%= @concept.id unless @concept.nil? %>' != data[i].concept_id) {
+                    
                     unit_concept = $('<li/>').html(
                             "<a href='/contents?view_type=1&step=5&category=" + data[i].category_code + 
                             "&sub_category=" + data[i].sub_category_code + 
                             "&concept_id=" + data[i].concept_id + "'>유형문제</a>").appendTo(concept_ul);
+                            
+                    <% if @exercise_type == 'unit_concept_exercise' %>
+                        if (data[i].concept_id == '<%= @unit_concept.concept_id %>') {
+                            category.addClass('selected');
+                            sub_category.addClass('selected');
+                            concept.addClass('selected');
+                            unit_concept.find('a').addClass('text-highlights text-highlights-green');
+                            unit_concept.find('a').css({color: "white", padding: 0});                                            
+                        }
+                    <% end %>
+                            
                 }
                 
                 // 종합문제
@@ -147,15 +181,22 @@
                             "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
                             "&sub_category=" + data[i].sub_category_code + 
                             "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
-                    concept.find('a').addClass('text-highlights text-highlights-green');
-                    concept.find('a').css({color: "white", padding: 0});                            
+                            
+                    if ('<%= params[:exercise_type] %>' == 'concept_exercise') {
+                        concept.find('a').addClass('text-highlights text-highlights-green');
+                        concept.find('a').css({color: "white", padding: 0});                        
+                    }
                 } else if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' != data[i].sub_category_code) {
                     concept = $('<li/>').html(
                             "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
                             "&sub_category=" + data[i].sub_category_code + 
                             "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
                 }
+                
+                
             }
+            
+
         }
         
         set_tree();

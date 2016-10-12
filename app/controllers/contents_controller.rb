@@ -38,17 +38,31 @@ class ContentsController < ApplicationController
     end    
     
     def exercise
+        
+        @exercise_yn = true
 
         if params[:exercise_type] == "concept_exercise"
             #종합문제일 때
             @unit_concept = Concept.find(params[:unit_concept_id])
             @unit_concept_descs = @unit_concept.concept_exercises.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.concept_name
+            
+            @exercise_type = 'concept_exercise'
+            
         else
             @unit_concept = UnitConcept.find(params[:unit_concept_id])
             @unit_concept_descs = @unit_concept.unit_concept_descs.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.name
+            
+            @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
+            @concept_answers = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 7)
+            @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
+            @solutions = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
+            @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
+            
+            @exercise_type = 'unit_concept_exercise'
         end        
+
 
         if @unit_concept.exercise_yn == 'exercise'
             
@@ -420,8 +434,13 @@ class ContentsController < ApplicationController
     
     def show
         
+        @exercise_yn = false
+        
         @unit_concept = UnitConcept.find(params[:id])
-        @unit_concept_descs = @unit_concept.unit_concept_descs.order(:id).reorder(:file_name)
+        @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
+        @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
+        @exercises = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
+        @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
 
         link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
                      "where b.unit_concept_id = #{@unit_concept.id} " +
@@ -429,7 +448,6 @@ class ContentsController < ApplicationController
         
         # @links = ActiveRecord::Base.connection.execute(link_query)
         @links = UnitConceptDesc.find_by_sql(link_query)
-        @videos = @unit_concept.unit_concept_descs.where('desc_type=4').order(:memo)
         @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', current_user.id, params[:id]).order('created_at desc limit 3')
 
         @mento = nil

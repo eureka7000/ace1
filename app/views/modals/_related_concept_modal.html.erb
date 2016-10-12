@@ -1,0 +1,31 @@
+<div class="modal fade" id="g" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-title">
+                    <h4><span style="color: green"><i class="fa fa-link"></i></span> 관련개념</h4>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <% @links.each do | link | %>
+                        <div class="col-md-4 col-xs-6 content-boxes-v6 md">
+                            <a href="/contents/<%= link.id %>" target="_blank"><i class="rounded-x icon-link"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><p> <%= link.name %></p></h1>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn-u rounded btn-u-blue" type="button" >닫기</button>
+            </div>
+            
+        </div>
+    </div>
+</div>

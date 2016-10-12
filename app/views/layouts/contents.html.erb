@@ -57,6 +57,10 @@
 </head>
 <body style="height:100%">
     
+    <div id="loading" style="display:none">
+        <img src="/assets/img/Loading.gif" />
+    </div>    
+    
     <nav class="navbar navbar-default navbar-fixed-top" style="min-height: 0">
         <div class="container">
             <div class="row">
@@ -67,14 +71,24 @@
                             <i class="fa fa-book tooltips"></i>
                             <a href="#" onclick="showTab('concept')"> 개념</a>
                         </li>
+                        <% unless @is_exercise == 0 %>
                         <li>
                             <i class="fa fa-tasks tooltips"></i>
                             <a href="#" onclick="showTab('concept_desc')"> 개념설명</a>
                         </li>
+                        <% end %>
+                        <% if @exercise_yn %>
+                        <li>
+                            <i class="fa fa-pencil tooltips"></i>
+                            <a href="#" onclick="showTab('concept_solution')"> 문제풀이</a>
+                        </li>
+                        <% else %>
                         <li>
                             <i class="fa fa-pencil tooltips"></i>
                             <a href="#" onclick="showTab('concept_exercise')"> 개념문제</a>
                         </li>
+                        <% end %>
+                        <% unless @is_exercise == 0 %>                        
                         <li>
                             <i class="fa fa-link tooltips"></i>
                             <a href="#g" data-toggle="modal" onclick="videoPause()"> 관련개념</a>
@@ -83,6 +97,7 @@
                             <i class="fa fa-film tooltips"></i>
                             <a href="#v" onclick="showTab('concept_video')"> 동영상</a>
                         </li>
+                        <% end %>
                         <li>
                             <i class="fa fa-pencil-square-o tooltips"></i>
                             <a href="#s" data-toggle="modal" onclick="videoPause()"> 자기평가</a>
@@ -129,7 +144,7 @@
     
 </body>
 </html>
-
+<script src="http://a.vimeocdn.com/js/froogaloop2.min.js"></script>
 <script type="text/javascript">
 
     function showTab(opt) {
@@ -143,6 +158,16 @@
         } else if (opt == 'concept_exercise') $('#concept_exercise').show();
         else if (opt == 'concept_video') $('#concept_video').show();
         else if (opt == 'concept_print') $('#concept_print').show();
+        else if (opt == 'concept_solution') {
+            $('#concept_main').show();
+            $('#concept_solution').show();
+        }
+    }
+    
+    function videoPause(){
+        var iframe = $('#vimeo-player')[0];
+        var player = $f(iframe);
+        player.api('pause');
     }
 
 </script>

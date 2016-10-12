@@ -1,0 +1,25 @@
+<div class="modal fade" id="notice_no_exercise" tabindex="-1" role="dialog" aria-labelledby="notice_email_confirm_modal" aria-hidden="true" style="display: none;">
+    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myModalLabel1" class="modal-title"><i class="fa fa-info"></i> Notice</h4>
+            </div>
+            
+            <div class="modal-body">
+                <p>다음 유형문제가 존재하지 않습니다.</p>
+                <% unless @unit_concept.get_next_concept.nil? %>
+                    <% next_unit_concept = @unit_concept.get_next_concept.unit_concepts.where(exercise_yn: 'concept').order(:code).first %>
+                <p><a href="/contents/<%= next_unit_concept.id %>"><%= next_unit_concept.name %></a>를 학습하시겠습니까? </p>
+                <% end %>
+            </div>
+            
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">닫기</button>
+            </div>
+        </div>
+    </div>
+    
+</div>

@@ -27,3 +27,22 @@
         
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        $('#new_question').submit(function () {
+            $('#loading').show();
+            if ( $('#question_title').val() == '') {
+                alert('질문 제목을 입력하세요.');
+                $('#loading').hide();
+                return false;
+            } else if ( $('#question_content').val() == '') {
+                alert('질문할 내용을 입력하세요.');
+                $('#loading').hide();
+                return false;
+            }
+        });
+    });
+    
+</script>

@@ -47,7 +47,7 @@
                     <% if item[:exercise_yn] %>
                         <% item_link_str = "/contents/exercise?unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
                     <% else %>
-                        <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+                        <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
                     <% end %>
             
                     <% if item[:level].nil? %>
@@ -222,7 +222,7 @@
                 curLevel = curLevel + 2;
             }
 
-            var url = "/contents?view_type=<%= @view_type %>&step=4&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
+            var url = "/contents?view_type=<%= @view_type %>&step=<%= @step+1 %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
 
             location = url;
         }

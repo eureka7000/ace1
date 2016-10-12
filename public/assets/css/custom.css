@@ -122,3 +122,9 @@ a.unify_a:hover {
     padding:0px 0px 0px 0px;
     outline: 0;
 }
+
+/* 학습창 */
+#concept_main img, #concept_desc img, #concept_exercise img, #concept_video img {
+    width:100%;
+    margin-top: 10px;
+}

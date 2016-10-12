@@ -67,10 +67,115 @@ class UnitConcept < ActiveRecord::Base
             
             ret += "</span></span>"
         end
+            
+        ret
+        
+    end
+    
+    def get_similar_exercise_list
+    
+        ret = []
+    
+        if self.exercise_yn == 'exercise'
+            
+            ret << self
+            
+            tmps = UnitConcept.where(related_unit_concept_id: self.id).order(:code)
+            
+            tmps.each do | tmp |
+                ret << tmp
+            end    
+            
+        elsif self.exercise_yn == 'similar exercise'
+            
+            unit_concept_exercise = UnitConcept.find(self.related_unit_concept_id)
+            
+            ret << unit_concept_exercise
+            
+            tmps = UnitConcept.where(related_unit_concept_id: unit_concept_exercise.id).order(:code)
+            
+            tmps.each do | tmp |
+                ret << tmp
+            end
+            
+        end
         
         ret
         
-    end   
+    end 
+    
+    
+    def get_next_exercise
+        
+        if self.exercise_yn == 'exercise'
+            
+            exercises = UnitConcept.where(concept_id: self.concept_id, exercise_yn: 'exercise').order(:code)
+            current = false
+            ret = ""
+            
+            exercises.each_with_index do | exercise, index |
+                
+                if current 
+                    ret = "/contents/exercise?unit_concept_id=#{exercise.id}"
+                    return ret
+                end    
+                
+                if exercise.id == self.id && index != exercises.count
+                    current = true
+                end
+                
+            end
+            
+            ret
+            
+        elsif self.exercise_yn == 'similar exercise'
+            
+            unit_exercise = UnitConcept.find(self.related_unit_concept_id)
+            exercises = UnitConcept.where(concept_id: unit_exercise.concept_id, exercise_yn: 'exercise').order(:code)
+            
+            current = false
+            ret = ""
+            
+            exercises.each_with_index do | exercise, index |
+                
+                if current
+                    ret = "/contents/exercise?unit_concept_id=#{exercise.id}"
+                    return ret
+                end
+                
+                if exercise.id == unit_exercise.id && index != exercises.count
+                    current = true
+                end    
+                
+            end  
+            
+            ret             
+            
+        end        
+        
+    end  
+    
+    def get_next_concept
+        
+        concepts = Concept.where(category: self.concept.category, sub_category: self.concept.sub_category).order(:concept_code)
+        current = false
+        
+        concepts.each_with_index do | concept, index |
+            
+            if current
+                return concept
+            end    
+
+            if concept.id == self.concept_id && index != concepts.count
+                current = true
+            end    
+            
+        end
+        
+        nil
+        
+    end      
+       
     
     def self.get_level_star_empty
         ret = "<span class='item-box'><span class='item'>"

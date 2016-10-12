@@ -123,23 +123,21 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-responsive-collapse margin-right-10">
-        
-        <div class="container">
+      <div class="container">
 
-            <ul class="nav navbar-nav margin-right-10">
-                <li class="<%= 'active' if @active == 'home' %> dropdown">
-                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
-                    <ul class="dropdown-menu">
-                    <li>
-                        <% if current_user.nil? %>
-                        <a href="/contents/1">단원별</a>
-                        <% else %>
-                        <a href="<%= current_user.study_histories.last.nil? ? "/contents/1" : "/contents/#{current_user.study_histories.last.unit_concept_id}" %>">단원별</a>
-                        <% end %>
-                    </li>
-                    <li><a href="/contents?view_type=2&step=1">학년별</a></li>
-                    </ul>
-                </li>
+        <ul class="nav navbar-nav margin-right-10">
+
+          <li class="<%= 'active' if @active == 'home' %> dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="/contents?view_type=1&step=1">단원별</a>
+              </li>
+              <li>
+                <a href="/contents?view_type=2&step=1">학년별</a>
+              </li>
+            </ul>
+          </li>
 
           <li class="<%= 'active' if @active == 'mypage' %>">
             <% if @session_yn == 'Y' %>
