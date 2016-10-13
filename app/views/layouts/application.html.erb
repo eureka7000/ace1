@@ -88,30 +88,62 @@
 
       <!-- Topbar -->
       <div class="topbar">
-
-        <ul class="loginbar pull-right">
+          
+          <ul class="loginbar pull-right">
           <% unless current_user.nil? %>
-              <li>
-                <% if current_user.can_I_use? %>
-                    <span class="label rounded label-blue" style="margin-left: 5px">Member</span>
-                <% else %>
-                    <span class="label rounded label-yellow" style="margin-left: 5px" title="Level1까지 자유롭게 사용가능">Free</span>
-                <% end %>
-              </li>
-              &nbsp;
-              <li><%= current_user.user_name.blank? ? '' : current_user.user_name %> <%= '학생' if current_user.user_types[0].user_type == 'student' %>
-                <%= '멘토님' if current_user.user_types[0].user_type == 'mento' %><%= '선생님' if current_user.user_types[0].user_type == 'school teacher' %>
-                <%= '부모님' if current_user.user_types[0].user_type == 'parent' %>
-              </li>
-        <% else %>
-              <li><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/signin.jpg" alt="회원가입">&nbsp;<%=link_to('회원가입', new_user_registration_path )%></span></li>
-          <% end %>
-          &nbsp;
-          <li ><span class="sign"><img style="padding-bottom: 4px" src="/assets/img/login.jpg" alt="로그인">&nbsp;<%= (user_signed_in?) ? link_to('로그아웃', destroy_user_session_path, :method => :delete) : link_to( t(:log_in) , new_user_session_path) %></span></li>
-          <li></li>
-        </ul>
-      </div>
-      <!-- End Topbar -->
+              <% unless current_user.study_histories.last.nil? %>              
+          <li>
+              <a class="text-blue" href="/contents/<%= current_user.study_histories.last.unit_concept_id %>"  title="최근학습">
+                  <span class="label rounded-2x label-success" style="margin-left: 5px">
+                      <i class="fa fa-bookmark" style="color:white"></i>
+                      <%=  current_user.study_histories.last.unit_concept.name %>
+                  </span>
+              </a>
+          </li>
+          <li class="topbar-devider"></li>          
+              <% end %>
+          
+          <li>
+              <% if current_user.can_I_use? %>
+              <span class="label rounded-2x label-blue" style="margin-left: 5px">Member</span>
+              <% else %>
+              <span class="label rounded-2x label-yellow" style="margin-left: 5px" title="Level1까지 자유롭게 사용가능">Free</span>
+              <% end %>
+          </li>
+          <li class="topbar-devider"></li>
+          
+          <li><span class="label rounded-2x label-dark-blue"><%= current_user.user_types[0].user_type.humanize %></span></li>
+          <li class="topbar-devider"></li>
+          
+          <li>
+              <a rel="nofollow" data-method="delete" href="/users/sign_out">              
+                  <span class="label rounded-2x label-dark">
+                      <i class="icon-logout"></i>
+                      로그아웃
+                  </span>
+              </a>
+          </li>
+          
+           <% else %>
+           
+          <li>
+              <a href="/users/sign_in">              
+                  <span class="label rounded-2x label-dark">
+                      <i class="icon-login"></i>
+                      <%= t(:log_in) %>
+                  </span>
+              </a>
+          </li>
+          <li class="topbar-devider"></li>                     
+           
+          <li><a href="/user/sign_up"><span class="label rounded-2x label-purple">회원가입</span></a></li>
+              
+           <% end %>
+           
+           </ul>
+
+       </div>
+       <!-- End Topbar -->
 
       <!-- Toggle get grouped for better mobile display -->
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
