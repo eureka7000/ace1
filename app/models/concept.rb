@@ -161,6 +161,8 @@ class Concept < ActiveRecord::Base
     
     def get_next_concept
         
+        Rails.logger.debug "******** concept.get_next_concept start"
+        
         current = false
         
         SUB_CATEGORIES.each do | key, value |
