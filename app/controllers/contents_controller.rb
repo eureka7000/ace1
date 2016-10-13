@@ -42,10 +42,34 @@ class ContentsController < ApplicationController
         @exercise_yn = true
 
         if params[:exercise_type] == "concept_exercise"
+            
             #종합문제일 때
             @unit_concept = Concept.find(params[:unit_concept_id])
             @unit_concept_descs = @unit_concept.concept_exercises.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.concept_name
+            
+            @concepts = []
+            @concept_answers = []
+            @concept_descs = []
+            @solutions = []
+            @videos = []
+            
+            @unit_concept.concept_exercises.each do | unit_concept_desc |
+            
+                if unit_concept_desc.desc_type == '1'
+                    @concepts << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '2'
+                    @concept_descs << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '3'
+                    @solutions << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '4'
+                    @videos << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '7'
+                    @concept_answers << unit_concept_desc    
+                end        
+            
+            end                
+                        
             
             @exercise_type = 'concept_exercise'
             
@@ -54,11 +78,33 @@ class ContentsController < ApplicationController
             @unit_concept_descs = @unit_concept.unit_concept_descs.order(:id).reorder(:file_name)
             @unit_concept_name = @unit_concept.name
             
-            @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
-            @concept_answers = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 7)
-            @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
-            @solutions = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
-            @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
+            @concepts = []
+            @concept_answers = []
+            @concept_descs = []
+            @solutions = []
+            @videos = []
+            
+            @unit_concept.unit_concept_descs.each do | unit_concept_desc |
+            
+                if unit_concept_desc.desc_type == '1'
+                    @concepts << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '2'
+                    @concept_descs << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '3'
+                    @solutions << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '4'
+                    @videos << unit_concept_desc
+                elsif unit_concept_desc.desc_type == '7'
+                    @concept_answers << unit_concept_desc    
+                end        
+            
+            end    
+            
+            # @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
+            # @concept_answers = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 7)
+            # @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
+            # @solutions = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
+            # @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
             
             @exercise_type = 'unit_concept_exercise'
         end        
@@ -435,12 +481,30 @@ class ContentsController < ApplicationController
     def show
         
         @exercise_yn = false
-        
         @unit_concept = UnitConcept.find(params[:id])
-        @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
-        @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
-        @exercises = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
-        @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
+        @concepts = []
+        @concept_descs = []
+        @exercises = []
+        @videos = []
+        
+        @unit_concept.unit_concept_descs.each do | unit_concept_desc |
+            
+            if unit_concept_desc.desc_type == '1'
+                @concepts << unit_concept_desc
+            elsif unit_concept_desc.desc_type == '2'
+                @concept_descs << unit_concept_desc
+            elsif unit_concept_desc.desc_type == '3'
+                @exercises << unit_concept_desc
+            elsif unit_concept_desc.desc_type == '4'
+                @videos << unit_concept_desc
+            end        
+            
+        end    
+        
+        # @concepts = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 1)
+        # @concept_descs = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 2)
+        # @exercises = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 3)
+        # @videos = UnitConceptDesc.where(unit_concept_id: @unit_concept, desc_type: 4).order(:memo)
 
         link_query = "select a.name, a.id, a.code from unit_concepts a, unit_concept_descs b " +
                      "where b.unit_concept_id = #{@unit_concept.id} " +

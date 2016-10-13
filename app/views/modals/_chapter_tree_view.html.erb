@@ -109,6 +109,7 @@
                 unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>유형문제</a>").appendTo(concept_ul);
             }
             
+            <% if @exercise_type == 'unit_concept_exercise' || @exercise_type.nil? %>
             if ('<%= @unit_concept.name unless @unit_concept.nil? %>' == data[i].unit_concept_name) {
                 category.addClass('selected');
                 sub_category.addClass('selected');
@@ -117,6 +118,7 @@
                 unit_concept.find('a').addClass('text-highlights text-highlights-green');
                 unit_concept.find('a').css({color: "white", padding: 0});
             }
+            <% end %>
             
             
             // category level
@@ -186,11 +188,24 @@
                         concept.find('a').addClass('text-highlights text-highlights-green');
                         concept.find('a').css({color: "white", padding: 0});                        
                     }
+                    
                 } else if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' != data[i].sub_category_code) {
                     concept = $('<li/>').html(
                             "<a href='/contents?view_type=1&step=4&category=" + data[i].category_code + 
                             "&sub_category=" + data[i].sub_category_code + 
                             "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                            
+                    <% if @exercise_type == 'concept_exercise' %>
+                            
+                    if (data[i].sub_category_code == '<%= @unit_concept.sub_category %>') {
+                        category.addClass('selected');
+                        sub_category.addClass('selected');
+                        concept.find('a').addClass('text-highlights text-highlights-green');
+                        concept.find('a').css({color: "white", padding: 0});                                            
+                    }                            
+                            
+                    <% end %>
+                            
                 }
                 
                 

@@ -135,5 +135,51 @@ class Concept < ActiveRecord::Base
         ret
 
     end
+    
+    def get_next_exercise
+        
+        exercises = Concept.where(category: self.category, sub_category: self.sub_category, exercise_yn: 'exercise').order(:concept_code)
+        current = false
+        ret = ""
+        
+        exercises.each_with_index do | exercise, index |
+            
+            if current 
+                ret = "/contents/exercise?unit_concept_id=#{exercise.id}&exercise_type=concept_exercise"
+                return ret
+            end    
+            
+            if exercise.id == self.id && index != exercises.count
+                current = true
+            end
+            
+        end
+        
+        ret
+        
+    end  
+    
+    def get_next_concept
+        
+        current = false
+        
+        SUB_CATEGORIES.each do | key, value |
+            
+            if current
+                ret = Concept.where(category: self.category, sub_category: key).order(:concept_code).first
+                return ret
+            end    
+            
+            
+            if key == self.sub_category
+                current = true
+            end    
+            
+        end    
+        
+        nil
+        
+    end     
+    
 
 end

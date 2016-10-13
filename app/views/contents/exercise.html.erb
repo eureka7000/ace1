@@ -1,5 +1,5 @@
 <h3 style="float:left; margin-top: 10px;">
-    <span style="color:darkblue;"><%= @unit_concept.code.upcase %></span> <%= @unit_concept_name %>
+    <span style="color:darkblue;"><%= @exercise_type == 'concept_exercise' ? @unit_concept.concept_code.upcase : @unit_concept.code.upcase %></span> <%= @unit_concept_name %>
 </h3>
 
 <% unless @unit_concept.level.nil? %>
@@ -18,6 +18,8 @@
 
 <!-- 유사문제 -->
 <div class="btn-group" style="position:relative; top: 13px; left: 10px">
+
+    <% if @exercise_type == 'unit_concept_exercise' %>
     <button type="button" class="btn-u btn-u-blue btn-u-xs">
         <i class="fa fa-cloud"></i>
         유사문제
@@ -29,15 +31,16 @@
     </button>
     
     <ul class="dropdown-menu" role="menu">
-    <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
+        <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
     <li><a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>"><% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a> </li>            
-    <% end %>    
+        <% end %>    
     </ul>
+    <% end %>
     
     <% if @unit_concept.get_next_exercise.blank? %>
-    <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 유형문제</a>
+    <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
     <% else %>
-    <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 유형문제</a>
+    <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
     <% end %>
     
 </div>

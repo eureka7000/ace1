@@ -157,6 +157,8 @@ class UnitConcept < ActiveRecord::Base
     
     def get_next_concept
         
+        Rails.logger.debug "*()*)(*)(*)(*)(*)(*)"
+        
         concepts = Concept.where(category: self.concept.category, sub_category: self.concept.sub_category).order(:concept_code)
         current = false
         
