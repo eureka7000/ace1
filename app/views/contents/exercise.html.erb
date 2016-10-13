@@ -71,10 +71,12 @@
         <% end %>
 
         <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
+        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red" onclick="showTab('<%= @is_exercise == 0 ? "concept_solution" : "concept_desc" %>')"> <%= @is_exercise == 0 ? "문제풀이" : "개념설명" %></a>
 
         <% @concept_answers.each do | concept_answer | %>
         <img hidden id="solution" src="<%= concept_answer.file_name %>" />
         <% end %>
+        
     </div>
     
     <div id="concept_desc" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">
@@ -85,7 +87,9 @@
         <button id="concept_desc_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
             다음
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
-        </button>        
+        </button>
+        
+        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red pull-right" <% if @concept_descs.count > 1 %>style="display:none"<% end %> onclick="showTab('concept_solution')"> 문제풀이</a>
     </div>
     
     <!-- 문제풀이 -->
@@ -120,6 +124,8 @@
             다음
             <span id="concept_solution_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @solutions.count - 1 %></span>
         </button>
+        
+        <a href="#" id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right" style="display:none" onclick="showTab('concept_video')"> 동영상</a>        
 
     </div>
     <!-- Tab 문제풀이 END -->
@@ -219,13 +225,16 @@
     
         if (count == NUMS[opt]) {
             $('#' + opt + '_btn').hide();
+            $('#' + opt + "_go_btn").show();
             update_study_history(opt, 'finish');            
         }
     }
     
     function viewSolution() {
-        $('#viewSolutionBtn').slideUp( "slow", function() {});
-        $('#solution').slideDown("slow", function() {});
+        // $('#viewSolutionBtn').hide();
+        // $('#concept_go_btn').hide();
+        
+        $('#solution').show();
     }
     
     function saveOx(unit_concept_desc_id, t) {

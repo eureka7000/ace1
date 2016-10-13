@@ -45,6 +45,9 @@
             다음
             <span id="concept_badge" class="badge badge-aqua rounded-2x" style="float:right; margin-left: 5px" ><%= @concepts.count - 1 %></span>            
         </button>
+        
+        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_desc')"> 개념설명</a>
+        
     </div>
     
     <!-- 개념설명 -->
@@ -56,6 +59,9 @@
             다음
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
+        
+        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_exercise')"> 개념문제</a>
+        
     </div>
     
     <!-- 연습문제 -->
@@ -116,7 +122,9 @@
         <button id="concept_exercise_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @exercises.count < 2 %>" type="button" onclick="next('concept_exercise', <%= @exercises.count %>)" >
             다음
             <span id="concept_exercise_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @exercises.count - 1 %></span>
-        </button>        
+        </button>
+        
+        <a href="#" id="concept_exercise_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_video')"> 동영상</a>                
         
     </div>
     
@@ -250,6 +258,7 @@
         
         if (count == NUMS[opt]) {
             $('#' + opt + '_btn').hide();
+            $('#' + opt + "_go_btn").show();
             update_study_history(opt, 'finish');            
         }
     }
