@@ -168,7 +168,7 @@ class Concept < ActiveRecord::Base
         SUB_CATEGORIES.each do | key, value |
             
             if current
-                ret = Concept.where(category: self.category, sub_category: key).order(:concept_code).first
+                ret = Concept.where(category: self.category, sub_category: key, exercise_yn: 'concept').order(:concept_code).first
                 return ret
             end    
             
