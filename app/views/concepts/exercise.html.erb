@@ -30,25 +30,22 @@
         <!-- index page params info End -->
 
         <fieldset>
-          <div class="row">
+            <div class="row">
 
-            <section class="col col-2">
-
-              <label class="select">
-                <select id="unit_concept_desc_select" name="concept_exercise[desc_type]" onchange="changedUnitCocenpt()">
-                  <option value="">항목선택</option>
-                  <% Concept::DESC_TYPES.each_pair do |key, value| %>
-                      <option value="<%= key %>" <% if key.to_s == @desc_type %>selected<% end %> ><%= value %></option>
-                  <% end %>
-
-                </select>
-                <i></i>
-              </label>
-            </section>
+                <section class="col col-2">
+                    <label class="select">
+                        <select id="unit_concept_desc_select" name="concept_exercise[desc_type]" onchange="changedUnitCocenpt()">
+                        <option value="i">파일업로드</option>
+                        <option value="4">Video</option>
+                        <option value="5">Link</option>                        
+                        </select>
+                        <i></i>
+                    </label>
+                </section>
 
             <section class="col col-6">
               <label id="file_label" for="file" class="input input-file" <% if params[:desc_type] == '5' || params[:desc_type] == '4' || params[:desc_type] == '6' %>style="display:none"<% end %> >
-                <div class="button state-success"><input type="file" name="concept_exercise[file_name]" multiple="" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
+                <div class="button state-success"><input type="file" name="concept_exercise[file_name][]" multiple="multiple" onchange="this.parentNode.nextSibling.value = this.value" class="valid">Browse</div><input type="text" placeholder="Include some file" readonly="" class="valid">
               </label>
               <label id="video_label" class="input" <% unless params[:desc_type] == '4' %>style="display:none"<% end %>>
                 <input type="text" name="concept_exercise[video]" class="form-control" placeholder="video url" />

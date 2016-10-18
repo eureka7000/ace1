@@ -6,13 +6,44 @@ class ConceptExercisesController < ApplicationController
 
     def create
         
-        @concept_exercise = ConceptExercise.new(concept_exercise_params)
-        @concept_exercise.save
+        # @concept_exercise = ConceptExercise.new(concept_exercise_params)
+        # @concept_exercise.save
+        #
+        # @concept = Concept.find(params[:concept_exercise][:concept_id])
         
-        @concept = Concept.find(params[:concept_exercise][:concept_id])
-
+        if params[:concept_exercise][:desc_type] == 'i'
+        
+            params[:concept_exercise][:file_name].each do | image |
+            
+                concept_exercise = ConceptExercise.new
+            
+                filename = image.original_filename.split('.')[0]
+                div = filename.last(1)
+            
+                if div == 'c'
+                    concept_exercise.desc_type = '1'
+                elsif div == 'e'
+                    concept_exercise.desc_type = '2'
+                elsif div == 's'
+                    concept_exercise.desc_type = '3'
+                elsif div == 'a'    
+                    concept_exercise.desc_type = '7'
+                end
+            
+                concept_exercise.memo = filename
+                concept_exercise.file_name = image
+                concept_exercise.concept_id = params[:concept_exercise][:concept_id]
+                concept_exercise.save
+            
+            end
+            
+        else
+            concept_exercise = ConceptExercise.new(concept_exercise_params)
+            concept_exercise.save
+        end                
+        
         respond_to do |format|
-            format.html { redirect_to "/concepts/#{@concept.id}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}&#{@return_param}", notice: 'Explanation Desc was successfully created.' }
+            format.html { redirect_to "/concepts/#{params[:concept_exercise][:concept_id]}/exercise?desc_type=#{params[:concept_exercise][:desc_type]}&#{@return_param}", notice: 'Explanation Desc was successfully created.' }
         end
         
     end
