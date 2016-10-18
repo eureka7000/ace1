@@ -94,7 +94,9 @@ class StudyHistory < ActiveRecord::Base
                      group by t.user_id
                  ) history, users
                  left outer join schools on users.school_id = schools.id
-                 where history.user_id = users.id"
+                 where history.user_id = users.id
+                 order by last_sign_in_at desc                 
+                 "
                  
         StudyHistory.paginate_by_sql(str, :page => page, :per_page => 30)                 
         
