@@ -5,13 +5,39 @@ class UnitConceptDescsController < ApplicationController
 
     def create
         
-        @unit_concept_desc = UnitConceptDesc.new(unit_concept_desc_params)
-        @unit_concept_desc.save
+        if params[:unit_concept_desc][:desc_type] == 'i'
         
-        @unit_concept = UnitConcept.find(params[:unit_concept_desc][:unit_concept_id])
-
+            params[:unit_concept_desc][:file_name].each do | image |
+            
+                unit_concept_desc = UnitConceptDesc.new
+            
+                filename = image.original_filename.split('.')[0]
+                div = filename.last(1)
+            
+                if div == 'c'
+                    unit_concept_desc.desc_type = '1'
+                elsif div == 'e'
+                    unit_concept_desc.desc_type = '2'
+                elsif div == 's'
+                    unit_concept_desc.desc_type = '3'
+                elsif div == 'a'    
+                    unit_concept_desc.desc_type = '7'
+                end
+            
+                unit_concept_desc.memo = filename
+                unit_concept_desc.file_name = image
+                unit_concept_desc.unit_concept_id = params[:unit_concept_desc][:unit_concept_id]
+                unit_concept_desc.save
+            
+            end
+            
+        else
+            unit_concept_desc = UnitConceptDesc.new(unit_concept_desc_params)
+            unit_concept_desc.save
+        end        
+            
         respond_to do |format|
-            format.html { redirect_to "/unit_concepts/#{@unit_concept.id}?desc_type=#{params[:unit_concept_desc][:desc_type]}", notice: 'Explanation Desc was successfully created.' }
+            format.html { redirect_to "/unit_concepts/#{params[:unit_concept_desc][:unit_concept_id]}?desc_type=#{params[:unit_concept_desc][:desc_type]}", notice: 'Explanation Desc was successfully created.' }
         end
         
     end

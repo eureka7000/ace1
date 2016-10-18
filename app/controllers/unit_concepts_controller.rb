@@ -15,7 +15,7 @@ class UnitConceptsController < ApplicationController
     def show
         
         @desc_type = params[:desc_type]
-        if @desc_type.blank? 
+        if @desc_type.blank? || @desc_type == 'i' 
            @desc_type = "all" 
         end
         @unit_concept_descs = nil
