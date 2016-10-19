@@ -7,11 +7,12 @@ class ImageUploader < CarrierWave::Uploader::Base
     process :store_dimensions
     
     def store_dir
-        if Rails.env.production?
-            "uploads/#{model.class.to_s.underscore}/#{model.id}"
-        else
-            "tests/#{model.class.to_s.underscore}/#{model.id}"            
-        end
+        # if Rails.env.production?
+        #     "uploads/#{model.class.to_s.underscore}/#{model.id}"
+        # else
+        #     "tests/#{model.class.to_s.underscore}/#{model.id}"
+        # end
+        "uploads/#{model.class.to_s.underscore}/#{model.id}"
     end
     
     version :large do
