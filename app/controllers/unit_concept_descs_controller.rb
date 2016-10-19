@@ -2,6 +2,14 @@ class UnitConceptDescsController < ApplicationController
 
     before_action :authenticate_admin_user!
     before_action :set_unit_concept_desc, only: [:show, :edit, :update, :destroy]
+    
+    def get_not_saved_images
+        
+        @lists = UnitConceptDesc.where(width: nil).limit(50)
+        render :layout => 'admin_main'
+                
+    end    
+    
 
     def create
         

@@ -1,0 +1,22 @@
+<a href="javascript:get_dimensions()" class="btn btn-default">get Dimensions</a>
+
+<% @lists.each do |list| %>
+
+    <div class="images">
+        <span><%= list.id %></span>
+        <img src="<%= list.file_name %>">
+    </div>    
+
+<% end %>
+
+
+<script>
+
+function get_dimensions() {
+    var divs = $('.images');
+    for (var i=0; i<divs.length; i++) {
+        console.log('item', $(divs[i]).find('img').naturalHeight);        
+    }
+}
+
+</script>
