@@ -155,23 +155,20 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-responsive-collapse margin-right-10">
-      <div class="container">
+        
+        <div class="container">
 
-        <ul class="nav navbar-nav margin-right-10">
+            <ul class="nav navbar-nav margin-right-10">
+            <li class="<%= 'active' if @active == 'home' %> dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
+                <ul class="dropdown-menu">
+                <li><a href="/contents?view_type=1&step=1">단원별</a></li>
+                <li><a href="/contents?view_type=2&step=1">학년별</a></li>
+                <!-- <li><a href="/contents/by_level">난위도별</a></li> -->
+                </ul>
+            </li>
 
-          <li class="<%= 'active' if @active == 'home' %> dropdown">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="/contents?view_type=1&step=1">단원별</a>
-              </li>
-              <li>
-                <a href="/contents?view_type=2&step=1">학년별</a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="<%= 'active' if @active == 'mypage' %>">
+            <li class="<%= 'active' if @active == 'mypage' %>">
             <% if @session_yn == 'Y' %>
                 <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
                     <a href="/mypages/user_info">MY PAGE <span class="badge rounded-2x badge-red"><%= @questions_number unless @questions_number == 0 %></span></a>
@@ -179,7 +176,8 @@
             <% else %>
                 <a href="/mypages/user_info">MY PAGE</a>
             <% end %>
-          </li>
+            </li>
+            
           <li class="<%= 'active' if @active == 'blog' %> dropdown">
             <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
             <ul class="dropdown-menu">

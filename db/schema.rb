@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160929022801) do
+ActiveRecord::Schema.define(version: 20161019083657) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20160929022801) do
     t.string  "desc_type",  limit: 255
     t.string  "video",      limit: 255
     t.string  "link",       limit: 255
+    t.string  "width",      limit: 255
+    t.string  "height",     limit: 255
   end
 
   create_table "concepts", force: :cascade do |t|
@@ -241,6 +243,8 @@ ActiveRecord::Schema.define(version: 20160929022801) do
     t.string   "desc_type",       limit: 255
     t.string   "video",           limit: 255
     t.string   "link",            limit: 255
+    t.string   "width",           limit: 255
+    t.string   "height",          limit: 255
   end
 
   create_table "unit_concept_exercise_histories", force: :cascade do |t|

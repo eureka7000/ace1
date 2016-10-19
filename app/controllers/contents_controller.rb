@@ -4,6 +4,11 @@ class ContentsController < ApplicationController
     
     layout '/layouts/contents'
     
+    def by_level
+        
+    end    
+    
+    
     def get_chapter_list
        
         query = "select b.category, b.sub_category, a.concept_id, b.concept_code, b.concept_name, a.id, a.code, a.name, a.level, a.grade " +
@@ -523,6 +528,7 @@ class ContentsController < ApplicationController
 
 
         unless params[:id].to_i() == 1
+            
             query = "select row_number from ( 
                         select id, @curRow := @curRow + 1 AS row_number
                         from unit_concepts uc join (select @curRow := 0) r

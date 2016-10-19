@@ -1,158 +1,71 @@
-<!--=== Profile ===-->
 <div class="container profile">
-  <div class="row">
+    
+    <div class="row">
 
-    <%= render :partial=>"left_sidebar"%>
+        <%= render :partial=>"left_sidebar"%>
 
-    <!-- Profile Content -->
-    <div class="col-md-9 margin-top-20">
-      <div class="profile-body margin-bottom-20">
-        <div class="tab-v1">
-          <ul class="nav nav-justified nav-tabs">
-            <li class="active"><a data-toggle="tab">개념별 exercise 평가 및 자기평가</a></li>
-          </ul>
+        <!-- Profile Content -->
+        <div class="col-md-9 margin-top-20">
+            <div class="profile-body margin-bottom-20">
+                <div class="tab-v1">
+                    <ul class="nav nav-justified nav-tabs">
+                        <li class="active"><a data-toggle="tab">자기평가 이력</a></li>
+                    </ul>
 
-          <div class="tab-content">
-
-
-
-            <% unless @evaluations.blank? %>
-            <% pre_id  = 0 %> <!-- 현재의 evaluation의 id와 이전의 실행한 evaluation의 id를 비교하는 변수 -->
-            <% check = 0 %> <!-- exercise 평가테이블의 중복을 피하기 위한 변수 -->
-            <% @evaluations.each do |evaluation| %>
-                <% if pre_id != evaluation.id %>
-                    <% check = 0 %>
-                    <hr class="devider devider-dotted" style="margin:10px">
-                    <% if evaluation.created_at.nil? %>
-                        <!-- unit_concept name -->
-                            <% unit_concept_name = evaluation.name %>
-                            <% if unit_concept_name.to_s.include?('유형문제') %>
-                              <% unit_concept_name =  evaluation.concept.concept_name + ' / ' + evaluation.name %>
-                            <% end %>
+                    <div class="tab-content">
+              
+                        <hr class="devider devider-dotted" style="margin:10px">
+              
                         <div class="profile-edit tab-pane fade in active">
-                          <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= unit_concept_name %></h3>
+                            <div class="table-search-v1 margin-bottom-20">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                    <th class="col-md-3">평가일</th>
+                                    <th>개념</th>
+                                    <th>하위개념</th>
+                                    <th class="hidden-sm col-md-5">메모</th>
+                                    <th style="width: 100px;">Status</th>
+                                    </tr>
+                                    </thead>
+                                
+                                    <tbody>
+                                    <% @evaluations.each do |evaluation| %>    
+                                    <tr>
+                                    <td><%= l evaluation.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></td>
+                                    <td><%= evaluation.unit_concept.concept.concept_name %></td>
+                                    <td>
+                                        <% if evaluation.unit_concept.exercise_yn == 'concept' %>
+                                        <a href="/contents/<%= evaluation.unit_concept_id %>">
+                                        <% else %>
+                                        <a href="/contents/exercise?unit_concept_id=<%= evaluation.unit_concept_id %>">    
+                                        <% end %>    
+                                        <%= evaluation.unit_concept.name %></a>
+                                    </td>
+                                    <td class="td-width"><%= evaluation.comment %></td>
+                                    <td>
+                                        <% if evaluation.evaluation == 'difficult' %>
+                                        <button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i>
+                                        <% elsif evaluation.evaluation == 'easy' %>
+                                        <button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i>
+                                        <% elsif evaluation.evaluation == 'normal' %>
+                                        <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i>
+                                        <% end %>
+                                        <%= evaluation.evaluation %></button>
+                                    </td>                                
+                                    </tr>
+                                    <% end %>
+                                    </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                        <% pre_id = evaluation.id %>
-                    <% end %>
-                <% end %>
-                <% unless evaluation.what != 'evaluation' %>
-                    <% pre_id = evaluation.id %>
-                    <!-- self evaluation -->
-                    <div class="profile-edit tab-pane fade in active">
-                      <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-book-open"></i> <%= evaluation.name %></h3>
-                      <div class="profile-event">
-                        <div class="date-formats">
-                          <span><%= evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
-                          <small><%= evaluation.created_at.in_time_zone("Asia/Seoul").strftime('%Y, %m') %></small>
-                        </div>
-                        <div class="overflow-h">
-                          <h3 class="heading-xs"><span style="color: darkblue">자기평가</span></h3>
-                          <p><span style="color: #000;">● 느낀 수준 :</span> <span style="color: <%= 'green' unless evaluation.evaluation != 'easy' %><%= 'orange' unless evaluation.evaluation != 'normal' %><%= 'darkred' unless evaluation.evaluation != 'difficult' %>"><%= evaluation.evaluation %></span> <br/>
-                            <span style="color:#000;">● comment :</span> <span style="color: #545454 "><%= evaluation.comment %></span></p>
-                        </div>
-                      </div>
                     </div>
-                <% else %>
-
-                    <% if evaluation.history.to_s.length < 5 %>
-                        <% o_num = evaluation.history.to_s.count('O') %>
-                        <% x_num = evaluation.history.to_s.count('X') %>
-                        <% ox_history = evaluation.history %>
-                    <% else %>
-                        <% o_num = evaluation.history.to_s.slice(-5, 5).count('O') %>
-                        <% x_num = evaluation.history.to_s.slice(-5, 5).count('X') %>
-                        <% ox_history = evaluation.history.to_s.slice(-5, 5) %>
-                    <% end %>
-
-                    <% ox_sum = o_num + x_num %>
-
-                    <% if ox_sum == o_num
-                         #weather = 'sun'
-                         weather_color = 'red'
-                         weather_icon_number = '023'
-                         weather_tooltips_msg = 'Excellent!'
-                       elsif ox_sum - 1 == o_num
-                         #weather = 'cloud'
-                         weather_color = 'grey'
-                         weather_icon_number = '003'
-                         weather_tooltips_msg = 'Good!'
-                       elsif ox_sum - 2 == o_num
-                         #weather = 'rain'
-                         weather_color = 'deepskyblue'
-                         weather_icon_number = '007'
-                         weather_tooltips_msg = 'Cheer up!'
-                       end %>
-                    <% if o_num == 0
-                         #weather = 'thunder'
-                         weather_color = 'orange'
-                         weather_icon_number = '006'
-                         weather_tooltips_msg = 'Cheer up!'
-                       end %>
-
-                    <% if check == 0 %>
-                        <div class="funny-boxes bg-color-white">
-                          <div class="col-md-12 text-center">
-                            <h5 class="margin-bottom-20"><span style="color: darkblue;">- Exercise 평가 -</span></h5>
-                          </div>
-                          <div class="row no-margin margin-bottom-20 text-center">
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin">개념 이름</h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin">맞음/틀림</h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin">상태</h6>
-                            </div>
-                          </div>
-                          <hr class="no-margin margin-bottom-20">
-                          <div class="row no-margin text-center">
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin"><%= ox_history %></h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h4 class="no-margin">
-                                <span style="color:<%= weather_color %>;" aria-hidden="true" class="icon-weather-<%= weather_icon_number %> tooltips" data-toggle="tooltips" data-placement="top" data-original-title="<%= weather_tooltips_msg %>"></span>
-                              </h4>
-                            </div>
-                          </div>
-                        </div>
-                        <% check = 1 %>
-                    <% else %>
-                        <div class="funny-boxes bg-color-white">
-                          <div class="row no-margin text-center">
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin">exercise <%= evaluation.memo.to_s.slice(-2, 2) %></h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h6 class="no-margin"><%= ox_history %></h6>
-                            </div>
-                            <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
-                              <h4 class="no-margin">
-                                <span style="color:<%= weather_color %>;" aria-hidden="true" class="icon-weather-<%= weather_icon_number %> tooltips" data-toggle="tooltips" data-placement="top" data-original-title="<%= weather_tooltips_msg %>"></span>
-                              </h4>
-                            </div>
-                          </div>
-                        </div>
-                    <% end %>
-                <% end %>
-            <% end %>
-            <% else %>
-                <div class="profile-edit tab-pane fade in active">
-                  <h3 class="heading-md"><i aria-hidden="true" class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-education-119"></i> Exercise 평가 &amp; 자기평가</h3>
-                  <div class="heading heading-v4">
-                    <h2>아직 평가하지 않았습니다.</h2>
-                  </div>
                 </div>
-            <% end %>
-          </div>
+            </div>
         </div>
-      </div>
+        
     </div>
-  </div>
-  <!-- End Profile Content -->
+    
 </div>
-</div><!--/container-->
