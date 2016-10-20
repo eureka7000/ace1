@@ -5,7 +5,7 @@ class UnitConceptDescsController < ApplicationController
     
     def get_not_saved_images
         
-        @lists = UnitConceptDesc.where(width: nil).limit(50)
+        @lists = UnitConceptDesc.where("width is null and desc_type in ('1','2','3','7')").limit(50)
         render :layout => 'admin_main'
                 
     end    
