@@ -31,10 +31,10 @@ function save_dimensions() {
     
     $('div.images').each(function() {
        
-        var url = "/unit_concept_descs/" + $(this).find('span.id').html();
+        var url = "/concept_exercises/" + $(this).find('span.id').html();
         
         var data = {
-            "unit_concept_desc" : {
+            "concept_exercise" : {
                 "width" : $(this).find('span.width').html(),
                 "height" : $(this).find('span.height').html()
             }
