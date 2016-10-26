@@ -75,7 +75,7 @@ class ConceptExercisesController < ApplicationController
     end    
 
     def concept_exercise_params
-        params.require(:concept_exercise).permit(:memo, :file_name, :concept_id, :desc_type, :video, :link)
+        params.require(:concept_exercise).permit(:memo, :file_name, :concept_id, :desc_type, :video, :link, :width, :height)
     end
     
     def set_return_param
