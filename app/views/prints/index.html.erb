@@ -239,23 +239,23 @@
         
         var table = $("<table width='100%' class='table-bordered' style='margin-bottom: 30px' />");
         var tr = $('<tr />').appendTo(table);
-        var td = $("<td rowspan='3' class='col-md-1' ><img src='/assets/img/logo.jpg' width='100%' />").appendTo(tr);
-        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>단원</td>").appendTo(tr);
-        td = $("<td class='col-md-4'>" + sub_category_name + "</td>").appendTo(tr);
-        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>과정</td>").appendTo(tr);
-        td = $("<td class='col-md-3'></td>").appendTo(tr);
+        var td = $("<td rowspan='3' style='width:100px'><img src='/assets/img/logo.jpg' style='width:100%' />").appendTo(tr);
+        td = $("<td class='text-center' style='background:#7fb57f !important; width:150px'>단원</td>").appendTo(tr);
+        td = $("<td style='padding-left: 5px'>" + sub_category_name + "</td>").appendTo(tr);
+        td = $("<td class='col-md-2 text-center' style='background-color:#c37631 !important; width:150px'>과정</td>").appendTo(tr);
+        td = $("<td style='width:150px'></td>").appendTo(tr);
 
         var tr = $('<tr />').appendTo(table);
-        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>개념</td>").appendTo(tr);
-        td = $("<td class='col-md-4'>" + cur_concept_name + "</td>").appendTo(tr);
-        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>출제</td>").appendTo(tr);
-        td = $("<td class='col-md-3'></td>").appendTo(tr);
+        td = $("<td class='text-center' style='background-color:#7fb57f !important'>개념</td>").appendTo(tr);
+        td = $("<td style='padding-left: 5px'>   " + cur_concept_name + "</td>").appendTo(tr);
+        td = $("<td class='text-center' style='background-color:#c37631 !important'>출제</td>").appendTo(tr);
+        td = $("<td ></td>").appendTo(tr);
 
         var tr = $('<tr />').appendTo(table);
-        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>문제종류</td>").appendTo(tr);
-        td = $("<td class='col-md-4'>유형문제</td>").appendTo(tr);
-        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>이름</td>").appendTo(tr);
-        td = $("<td class='col-md-3'></td>").appendTo(tr);
+        td = $("<td class='text-center' style='background-color:#7fb57f !important'>문제종류</td>").appendTo(tr);
+        td = $("<td style='padding-left: 5px'>   유형문제</td>").appendTo(tr);
+        td = $("<td class='text-center' style='background-color:#c37631 !important'>이름</td>").appendTo(tr);
+        td = $("<td ></td>").appendTo(tr);
         
         return table;
     }
