@@ -144,3 +144,79 @@ body {
 .table-gray {
     border: 1px solid gray !important;
 }
+
+/* print */
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #FAFAFA;
+    font: 12pt "Tahoma";
+}
+* {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+.page {
+    width: 216mm;
+    min-height: 297mm;
+/*    padding: 20mm;*/
+    margin: 10mm auto;
+    border: 1px #D3D3D3 solid;
+    border-radius: 5px;
+    background: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+    padding: 1cm;
+/*    border: 5px red solid;*/
+    height: 297mm; /* .page height -40mm (20 off top/bottom) */
+/*    outline: 2cm #FFEAEA solid;*/
+}
+.pane {
+    width: 50%;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.pane img {
+    margin-bottom: 100px;
+}
+
+/*.subpage:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    border-left: 2px dotted #444;
+}*/
+
+
+
+@page {
+    size: A4;
+    margin: 0;
+}
+
+@media print {
+    
+    html, body {
+        width: 210mm;
+        height: 297mm;        
+    }
+    
+    .page {
+        margin: 0;
+        border: initial;
+        border-radius: initial;
+        width: initial;
+        min-height: initial;
+        box-shadow: initial;
+        background: initial;
+        page-break-after: always;
+    }
+}

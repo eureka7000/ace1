@@ -1,0 +1,270 @@
+<div class="row" style="margin-left: 20px; margin-bottom: 20px;">
+    <button onclick="print()">print</button>
+</div>    
+
+<div class="row">
+    
+    <div class="col-md-2">
+        
+        <ul class="list-group sidebar-nav-v1" id="sidebar-nav">
+        <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+        <li class="list-group-item"><a href="javascript:get_question_list('<%= key %>')"><%= value %></a></li>
+        <% end %>    
+        </ul>        
+        
+    </div>
+    
+    <div class="col-md-10" style="background: gray">
+        
+        <div class="book" id="book">
+        </div>
+        
+    </div>
+    
+</div>
+
+<script type="text/javascript" src="/assets/js/printThis.js"></script>
+<script type="text/javascript">
+
+    var maxHeight = 1122;  // 1 mm = 3.779528 px
+    var totalHeight = 0;
+    var root = $('.book');
+    var sub_category_name = '';
+
+    function get_question_list(sub_category) {
+        
+        $('#loading').show();
+        $('#book').html('');
+        totalHeight = 0;
+        
+        var url = "/prints/get_question_list?sub_category=" + sub_category;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                console.log('data',data);
+                drawImages(data);
+            },
+            error : function(){}
+        });
+            
+    }
+
+    function drawImages(data) {
+        
+        var page;
+        var subpage;
+        
+        var main_pane;
+        var img;
+        var loadedCount = 0;
+        
+        if (data.length > 0) {
+            page = $('<div />').addClass('page firstpage').appendTo(root);
+            subpage = $('<div />').addClass('subpage').appendTo(page);
+            main_pane = $('<div />').addClass('pane').appendTo(subpage);
+        }
+        
+        for (var i=0; i<data.length; i++) {
+            
+            sub_category_name = data[i].sub_category_name;
+            
+            img = $('<img />').attr({'src':data[i].file_name.url,'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id})
+            .addClass('questions')
+            .css('width','100%')
+            .load(function() {
+                // imgHeight[$(this).attr('data')] = this.height;
+                loadedCount++;
+                totalHeight += this.height;
+                if (data.length == loadedCount) {
+                    alignImages();
+                }
+            })
+            .appendTo(main_pane);
+        }
+        
+    }
+    
+    function alignImages() {
+        
+        var page;
+        var subpage;
+        
+        var stackHeight = 0;
+        
+        // PaneHeight = maxHeight - header height - margin
+        // var paneCount = Math.ceil(totalHeight/paneHeight);
+        // var pageCount = Math.ceil(paneCount/2);
+        
+        // console.log('paneHeight', paneHeight);
+        // console.log('paneCount', paneCount);
+        // console.log('pageCount', pageCount);
+        
+        // // Pane Create
+        // for (var i=0; i<paneCount; i++) {
+        //
+        //     pagenum = parseInt(i/2);
+        //
+        //     if ( i%2 == 0 ) {
+        //         // 짝수일경우
+        //         $('<div />').addClass('pane').attr('id','pane'+i).css({'border-right':'1px solid lightgrey','height':paneHeight}).appendTo($('#subpage'+pagenum));
+        //     } else {
+        //         $('<div />').addClass('pane').attr('id','pane'+i).css('height',paneHeight).appendTo($('#subpage'+pagenum));
+        //     }
+        // }
+              
+        
+        var old_concept_name;
+        var pageNum = 0;
+        var paneNum = 0;
+        var existPane = false;
+        var countNum = 0;
+        var paneHeight = 0;
+        var pagePaneCount = 0;
+        
+        $('.questions').each(function(i) {
+            
+            // if (i == 13) return false;
+            
+            console.log('Start : ',countNum);
+            
+            // stackHeight += $(this).height();
+            var cur_concept_name = $(this).attr('concept_name');
+            
+            if (old_concept_name != cur_concept_name) {
+                
+                console.log('concept is different. start with new page',old_concept_name + " : " + cur_concept_name);
+                
+                pageNum++;
+                existPane = false;
+                pagePaneCount = 0;
+                
+                page = $('<div />').addClass('page').attr('id','page'+pageNum).appendTo(root);
+                subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
+                
+                // Header Add.
+                var header = get_table(cur_concept_name);
+                header.appendTo(subpage);
+                
+                paneHeight = maxHeight - 67 - 100;  // width header.
+                
+                // // two Pane Add
+                // $('<div />').addClass('pane').attr('id','pane' + paneNum).css({'border-right':'1px solid lightgrey','height':paneHeight}).appendTo(subpage);
+                // paneNum++;
+                //
+                // $('<div />').addClass('pane').attr('id','pane'+ paneNum).css('height',paneHeight).appendTo(subpage);
+                
+            } else {
+                console.log('concept is same. use old page...');
+            }
+            
+            // if not exist pane.. create it .
+            if (!existPane) {
+                
+                console.log('새 pane을 추가합니다.');
+                paneNum++;
+                pagePaneCount++;
+                stackHeight = 0;
+                
+                add_pane(paneNum, paneHeight, subpage, pagePaneCount);
+                existPane = true;
+                
+            } else {
+                console.log('Pane이 존재합니다. 이전 Pane에 put합니다.')
+            } 
+            
+            old_concept_name = cur_concept_name;
+            imageHeight = $(this).height();
+            
+            // put the image to pane
+            console.log('stackHeight, imageHeight',stackHeight + ", " + imageHeight);
+            console.log('stackHeight, paneHeight',(stackHeight + imageHeight + 100) + "," + paneHeight );
+            
+            if (stackHeight + imageHeight + 100 >= paneHeight) {  // should add new pane 
+                
+                console.log('Image의 높이가 pane을 넘어섰습니다. 새로운 Pane을 추가하고, 이미지를 넣습니다.');
+                
+                if (pagePaneCount == 2) {
+                    
+                    console.log('Pane이 2개 이므로, 새로운 Page를 생성 후 작업을 계속합니다.');
+                    
+                    pageNum++;
+                    existPane = false;
+                    pagePaneCount = 0;
+                
+                    page = $('<div />').addClass('page').attr('id','page'+pageNum).appendTo(root);
+                    subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
+                    
+                    paneHeight = maxHeight - 100;  // without header.
+                    
+                } 
+                
+                paneNum++;
+                pagePaneCount++;
+                add_pane(paneNum,paneHeight, subpage, pagePaneCount);
+                $(this).appendTo($('#pane'+paneNum)); 
+                stackHeight = imageHeight+100;
+                
+                existPane = true;
+                
+            } else {
+                
+                $(this).appendTo($('#pane'+paneNum)); 
+                stackHeight += imageHeight+100; // imageheight + marginbottom;    
+                
+            }
+            
+            console.log('stackHeight : ',stackHeight);
+            console.log('End : ',countNum);
+            countNum++;
+            
+        });
+        
+        $('.firstpage').remove();
+        $('#loading').hide();
+    }
+    
+    function add_pane(paneNum, paneHeight, subpage, pagePaneCount) {
+        if (pagePaneCount%2 == 0) {
+            $('<div />').addClass('pane').attr('id','pane'+ paneNum).css('height',paneHeight).appendTo(subpage);
+        } else {
+            $('<div />').addClass('pane').attr('id','pane' + paneNum).css({'border-right':'1px solid lightgrey','height':paneHeight}).appendTo(subpage);            
+        }
+    }
+    
+    function get_table(cur_concept_name) {
+        
+        var table = $("<table width='100%' class='table-bordered' style='margin-bottom: 30px' />");
+        var tr = $('<tr />').appendTo(table);
+        var td = $("<td rowspan='3' class='col-md-1' ><img src='/assets/img/logo.jpg' width='100%' />").appendTo(tr);
+        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>단원</td>").appendTo(tr);
+        td = $("<td class='col-md-4'>" + sub_category_name + "</td>").appendTo(tr);
+        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>과정</td>").appendTo(tr);
+        td = $("<td class='col-md-3'></td>").appendTo(tr);
+
+        var tr = $('<tr />').appendTo(table);
+        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>개념</td>").appendTo(tr);
+        td = $("<td class='col-md-4'>" + cur_concept_name + "</td>").appendTo(tr);
+        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>출제</td>").appendTo(tr);
+        td = $("<td class='col-md-3'></td>").appendTo(tr);
+
+        var tr = $('<tr />').appendTo(table);
+        td = $("<td class='col-md-2 text-center' style='background-color:#7fb57f'>문제종류</td>").appendTo(tr);
+        td = $("<td class='col-md-4'>유형문제</td>").appendTo(tr);
+        td = $("<td class='col-md-2 text-center' style='background-color:#c37631'>이름</td>").appendTo(tr);
+        td = $("<td class='col-md-3'></td>").appendTo(tr);
+        
+        return table;
+    }
+    
+    function print() {
+        $('#book').printThis();
+    }
+    
+    
+    function initpage() {}
+
+</script>

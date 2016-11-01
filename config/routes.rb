@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :codes
+    get '/prints/get_question_list' => 'prints#get_question_list'
+    resources :prints
+    
     get '/study_histories/detail' => 'study_histories#detail'
     resources :study_histories
     
@@ -26,7 +28,7 @@ Rails.application.routes.draw do
     resources :grade_unit_concepts
     
     get 'concepts/:id/exercise' => 'concepts#exercise'
-    get '/unit_concept_descs/get_not_saved_images' => 'unit_concept_descs#get_not_saved_images'
+    # get '/unit_concept_descs/get_not_saved_images' => 'unit_concept_descs#get_not_saved_images'
     resources :unit_concept_descs
     resources :explanations
     resources :unit_concepts
