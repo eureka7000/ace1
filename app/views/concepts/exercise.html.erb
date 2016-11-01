@@ -37,7 +37,7 @@
                         <select id="unit_concept_desc_select" name="concept_exercise[desc_type]" onchange="changedUnitCocenpt()">
                         <option value="i">파일업로드</option>
                         <option value="4">Video</option>
-                        <option value="5">Link</option>                        
+                        <option value="5" <%= 'selected' if @desc_type == '5' %>>Link</option>
                         </select>
                         <i></i>
                     </label>
