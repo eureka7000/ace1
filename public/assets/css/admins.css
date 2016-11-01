@@ -218,7 +218,6 @@ body {
         box-shadow: initial;
         background: initial;
         page-break-after: always;
-        -webkit-print-color-adjust: exact;
     }
     
 }
