@@ -142,7 +142,7 @@
                 existPane = false;
                 pagePaneCount = 0;
                 
-                page = $('<div />').addClass('page').attr('id','page'+pageNum).appendTo(root);
+                page = $('<div />').addClass('page').attr('id','page'+pageNum).css('background-color','white').appendTo(root);
                 subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
                 
                 // Header Add.
@@ -195,7 +195,7 @@
                     existPane = false;
                     pagePaneCount = 0;
                 
-                    page = $('<div />').addClass('page').attr('id','page'+pageNum).appendTo(root);
+                    page = $('<div />').addClass('page').attr('id','page'+pageNum).css('background-color','white').appendTo(root);
                     subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
                     
                     paneHeight = maxHeight - 100;  // without header.
@@ -239,7 +239,7 @@
         
         var table = $("<table width='100%' style='margin-bottom: 30px; border-spacing:0; border-collapse:0' />");
         var tr = $('<tr />').appendTo(table);
-        var td = $("<td rowspan='3' style='width:100px; border:1px solid lightgrey'><img src='/assets/img/logo.jpg' style='width:100%' />").appendTo(tr);
+        var td = $("<td rowspan='3' style='width:100px; border:1px solid lightgrey; text-align:center '><img src='/assets/img/logo.jpg' style='width:90%' />").appendTo(tr);
         td = $("<td class='text-center' style='background:#7fb57f !important; width:150px; border:1px solid lightgrey'>단원</td>").appendTo(tr);
         td = $("<td style='padding-left: 5px; border:1px solid lightgrey'>" + sub_category_name + "</td>").appendTo(tr);
         td = $("<td class='col-md-2 text-center' style='background-color:#c37631 !important; width:150px; border:1px solid lightgrey'>과정</td>").appendTo(tr);
