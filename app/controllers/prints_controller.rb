@@ -15,7 +15,7 @@ class PrintsController < ApplicationController
         unless sub_category.blank?
             
             @questions = UnitConceptDesc.find_by_sql(
-                "select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id, a.concept_name, a.concept_code, b.id, b.name, b.code, c.*
+                "select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id, a.concept_name, a.concept_code, b.id, b.name, b.code, b.level, c.*
                  from concepts a, unit_concepts b, unit_concept_descs c
                  where a.sub_category = '#{sub_category}'
                  and a.exercise_yn = 'concept'

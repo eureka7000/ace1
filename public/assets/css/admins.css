@@ -185,6 +185,8 @@ body {
     margin-bottom: 100px;
 }
 
+.fa:before { color:red !important; }
+
 /*.subpage:after {
     content:"";
     position: absolute;
@@ -219,5 +221,6 @@ body {
         background: initial;
         page-break-after: always;
     }
+    
     
 }

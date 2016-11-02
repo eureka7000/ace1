@@ -72,7 +72,7 @@
             
             sub_category_name = data[i].sub_category_name;
             
-            img = $('<img />').attr({'src':data[i].file_name.url,'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id})
+            img = $('<img />').attr({'src':data[i].file_name.url,'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id, 'level':data[i].level})
             .addClass('questions')
             .css('width','100%')
             .load(function() {
@@ -124,12 +124,14 @@
         var countNum = 0;
         var paneHeight = 0;
         var pagePaneCount = 0;
+        var questionNumber = 0;
         
         $('.questions').each(function(i) {
             
-            // if (i == 13) return false;
+            // if (i == 60) return false;
             
             console.log('Start : ',countNum);
+            questionNumber++;
             
             // stackHeight += $(this).height();
             var cur_concept_name = $(this).attr('concept_name');
@@ -141,6 +143,7 @@
                 pageNum++;
                 existPane = false;
                 pagePaneCount = 0;
+                questionNumber = 1;
                 
                 page = $('<div />').addClass('page').attr('id','page'+pageNum).css('background-color','white').appendTo(root);
                 subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
@@ -149,7 +152,7 @@
                 var header = get_table(cur_concept_name);
                 header.appendTo(subpage);
                 
-                paneHeight = maxHeight - 67 - 100;  // width header.
+                paneHeight = maxHeight - 67 - 100;  // header, margin.
                 
                 // // two Pane Add
                 // $('<div />').addClass('pane').attr('id','pane' + paneNum).css({'border-right':'1px solid lightgrey','height':paneHeight}).appendTo(subpage);
@@ -172,9 +175,7 @@
                 add_pane(paneNum, paneHeight, subpage, pagePaneCount);
                 existPane = true;
                 
-            } else {
-                console.log('Pane이 존재합니다. 이전 Pane에 put합니다.')
-            } 
+            }
             
             old_concept_name = cur_concept_name;
             imageHeight = $(this).height();
@@ -183,7 +184,7 @@
             console.log('stackHeight, imageHeight',stackHeight + ", " + imageHeight);
             console.log('stackHeight, paneHeight',(stackHeight + imageHeight + 100) + "," + paneHeight );
             
-            if (stackHeight + imageHeight + 100 >= paneHeight) {  // should add new pane 
+            if (stackHeight + imageHeight + 25 /* Question number */ + 100 >= paneHeight) {  // should add new pane 
                 
                 console.log('Image의 높이가 pane을 넘어섰습니다. 새로운 Pane을 추가하고, 이미지를 넣습니다.');
                 
@@ -205,15 +206,26 @@
                 paneNum++;
                 pagePaneCount++;
                 add_pane(paneNum,paneHeight, subpage, pagePaneCount);
+                
+                var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                $(get_stars($(this).attr('level'))).appendTo(question_number);                
+                
                 $(this).appendTo($('#pane'+paneNum)); 
-                stackHeight = imageHeight+100;
+                
+                stackHeight = imageHeight + 25 + 100;
                 
                 existPane = true;
                 
             } else {
                 
-                $(this).appendTo($('#pane'+paneNum)); 
-                stackHeight += imageHeight+100; // imageheight + marginbottom;    
+                var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                $(get_stars($(this).attr('level'))).appendTo(question_number);
+                
+                $(this).appendTo($('#pane'+paneNum));
+                
+                stackHeight += imageHeight + 25 + 100; // imageheight + marginbottom;    
                 
             }
             
@@ -226,6 +238,25 @@
         $('.firstpage').remove();
         $('#loading').hide();
     }
+    
+    function get_stars(level) {
+        
+        var ret = "<span style='color:#ff4500 !important; float:left; margin-top: 7px; margin-left:10px'>";
+        
+        for (var i=0; i<level; i++) {
+            ret += "<i style='color:#ff4500 !important' class='fa fa-star'></i>";
+        }
+        
+        for (var i=level; i<5; i++) {
+            ret += "<i class='fa fa-star-o'></i>"
+        }
+        
+        ret += "</span>";
+        
+        return ret;
+        
+    }
+    
     
     function add_pane(paneNum, paneHeight, subpage, pagePaneCount) {
         if (pagePaneCount%2 == 0) {
