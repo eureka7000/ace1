@@ -185,7 +185,7 @@ body {
     margin-bottom: 100px;
 }
 
-.fa:before { color:red !important; }
+.fa:before { color:#ff4500 !important; }
 
 /*.subpage:after {
     content:"";
