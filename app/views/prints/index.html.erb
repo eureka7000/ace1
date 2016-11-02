@@ -208,7 +208,7 @@
                 add_pane(paneNum,paneHeight, subpage, pagePaneCount);
                 
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
-                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -10px; '>" + questionNumber + ".</h4>").appendTo(question_number);
                 $(get_stars($(this).attr('level'))).appendTo(question_number);                
                 
                 $(this).appendTo($('#pane'+paneNum)); 
@@ -220,7 +220,7 @@
             } else {
                 
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
-                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -10px; '>" + questionNumber + ".</h4>").appendTo(question_number);
                 $(get_stars($(this).attr('level'))).appendTo(question_number);
                 
                 $(this).appendTo($('#pane'+paneNum));
@@ -241,7 +241,7 @@
     
     function get_stars(level) {
         
-        var ret = "<span style='color:#ff4500 !important; float:left; margin-top: 7px; margin-left:10px'>";
+        var ret = "<span style='color:#ff4500 !important; float:left; margin-top: 7px; margin-left:10px; font-size:1px'>";
         
         for (var i=0; i<level; i++) {
             ret += "<i style='color:#ff4500 !important' class='fa fa-star'></i>";
@@ -273,8 +273,8 @@
         var td = $("<td rowspan='3' style='width:100px; border:1px solid lightgrey; text-align:center '><img src='/assets/img/logo.jpg' style='width:90%' />").appendTo(tr);
         td = $("<td class='text-center' style='background:#7fb57f !important; width:150px; border:1px solid lightgrey'>단원</td>").appendTo(tr);
         td = $("<td style='padding-left: 5px; border:1px solid lightgrey'>" + sub_category_name + "</td>").appendTo(tr);
-        td = $("<td class='col-md-2 text-center' style='background-color:#c37631 !important; width:150px; border:1px solid lightgrey'>과정</td>").appendTo(tr);
-        td = $("<td style='width:150px; border:1px solid lightgrey'></td>").appendTo(tr);
+        td = $("<td class='text-center' style='background-color:#c37631 !important; width:100px; border:1px solid lightgrey'>과정</td>").appendTo(tr);
+        td = $("<td style='width:100px; border:1px solid lightgrey'></td>").appendTo(tr);
 
         var tr = $('<tr />').appendTo(table);
         td = $("<td class='text-center' style='background-color:#7fb57f !important; border:1px solid lightgrey'>개념</td>").appendTo(tr);
