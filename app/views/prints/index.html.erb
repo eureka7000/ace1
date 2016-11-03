@@ -71,8 +71,15 @@
         for (var i=0; i<data.length; i++) {
             
             sub_category_name = data[i].sub_category_name;
+            src = '';
             
-            img = $('<img />').attr({'src':data[i].file_name.url,'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id, 'level':data[i].level})
+            if (data[i].question_type == '1') {
+                src = data[i].file_name.url
+            } else {
+                src = data[i].file_name.url.replace("unit_concept_desc", "concept_exercise");
+            }
+            
+            img = $('<img />').attr({'src':src, 'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id, 'level':data[i].level, 'question_type':data[i].question_type })
             .addClass('questions')
             .css('width','100%')
             .load(function() {
@@ -128,7 +135,7 @@
         
         $('.questions').each(function(i) {
             
-            // if (i == 60) return false;
+            // if (i == 170) return false;
             
             console.log('Start : ',countNum);
             questionNumber++;
@@ -208,8 +215,8 @@
                 add_pane(paneNum,paneHeight, subpage, pagePaneCount);
                 
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
-                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -10px; '>" + questionNumber + ".</h4>").appendTo(question_number);
-                $(get_stars($(this).attr('level'))).appendTo(question_number);                
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                if ($(this).attr("question_type") == 1) $(get_stars($(this).attr('level'))).appendTo(question_number);
                 
                 $(this).appendTo($('#pane'+paneNum)); 
                 
@@ -220,8 +227,8 @@
             } else {
                 
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
-                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -10px; '>" + questionNumber + ".</h4>").appendTo(question_number);
-                $(get_stars($(this).attr('level'))).appendTo(question_number);
+                $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
+                if ($(this).attr("question_type") == 1) $(get_stars($(this).attr('level'))).appendTo(question_number);
                 
                 $(this).appendTo($('#pane'+paneNum));
                 
@@ -268,6 +275,14 @@
     
     function get_table(cur_concept_name) {
         
+        var concept_name = cur_concept_name;
+        var question_type = "유형문제";
+        
+        if (concept_name == "종합문제") {
+            concept_name = "";
+            question_type = "종합문제";
+        }
+        
         var table = $("<table width='100%' style='margin-bottom: 30px; border-spacing:0; border-collapse:0' />");
         var tr = $('<tr />').appendTo(table);
         var td = $("<td rowspan='3' style='width:100px; border:1px solid lightgrey; text-align:center '><img src='/assets/img/logo.jpg' style='width:90%' />").appendTo(tr);
@@ -278,13 +293,13 @@
 
         var tr = $('<tr />').appendTo(table);
         td = $("<td class='text-center' style='background-color:#7fb57f !important; border:1px solid lightgrey'>개념</td>").appendTo(tr);
-        td = $("<td style='padding-left: 5px; border:1px solid lightgrey'>   " + cur_concept_name + "</td>").appendTo(tr);
+        td = $("<td style='padding-left: 5px; border:1px solid lightgrey'>   " + concept_name + "</td>").appendTo(tr);
         td = $("<td class='text-center' style='background-color:#c37631 !important; border:1px solid lightgrey'>출제</td>").appendTo(tr);
         td = $("<td style='border:1px solid lightgrey'></td>").appendTo(tr);
 
         var tr = $('<tr />').appendTo(table);
         td = $("<td class='text-center' style='background-color:#7fb57f !important; border:1px solid lightgrey'>문제종류</td>").appendTo(tr);
-        td = $("<td style='padding-left: 5px; border:1px solid lightgrey'>   유형문제</td>").appendTo(tr);
+        td = $("<td style='padding-left: 5px; border:1px solid lightgrey'> " + question_type + "</td>").appendTo(tr);
         td = $("<td class='text-center' style='background-color:#c37631 !important; border:1px solid lightgrey'>이름</td>").appendTo(tr);
         td = $("<td style='border:1px solid lightgrey'></td>").appendTo(tr);
         
