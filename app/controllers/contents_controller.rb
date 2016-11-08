@@ -491,8 +491,9 @@ class ContentsController < ApplicationController
         @concept_descs = []
         @exercises = []
         @videos = []
-        
-        @unit_concept.unit_concept_descs.each do | unit_concept_desc |
+        @unit_concept_descs = @unit_concept.unit_concept_descs.order(:memo)
+
+        @unit_concept_descs.each do | unit_concept_desc |
             
             if unit_concept_desc.desc_type == '1'
                 @concepts << unit_concept_desc
