@@ -1,84 +1,85 @@
+<!-- Blog All Posts -->
 <div class="col-md-9">
-  <% unless @blogs.blank? %>
-      <% count = 1 %>
-      <% @blogs.each do |blog| %>
-          <div class="news-v3 col-md-11 margin-top-20 bg-color-white tag-box tag-box-v1 rounded box-shadow shadow-effect-2" style="padding: 2%">
 
-            <div class="row clients-page">
-              <div class="col-md-2 col-xs-3">
-                <% if blog.admin_yn == 'Y' %>
-                    <img src="/assets/img/arch2.jpg" class="img-responsive rounded-x hover-effect center-block" alt="">
-                <% else %>
-                    <img src="<%= blog.user.user_img unless blog.user.user_img.blank? %><%= '/assets/img/user_default_img.png' if blog.user.user_img.blank? %>" class="img-responsive rounded-x hover-effect center-block" alt="">
-                <% end %>
-              </div>
-              <div class="col-md-10 col-xs-9">
-                <h3><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= blog.title %></h3>
-                <ul class="list-inline">
-                  <li><i class="fa fa-pencil color-green"></i><i> <%='관리자' if blog.admin_yn == 'Y' %><%= @user.user_name if blog.admin_yn == 'N' %></i></li>
-                  <li><i class="fa fa-calendar color-green"></i><i>&nbsp; <%= blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></i></li>
+    <% @blogs.each do |blog| %>
+
+        <!-- Blog Posts -->
+        <div class="news-v3 bg-color-white margin-bottom-60 tag-box tag-box-v1 box-shadow shadow-effect-2" >
+
+            <% unless blog.file_name.blank? %>
+                <img class="img-responsive full-width" src="<%= blog.file_name %>" alt="">
+            <% end %>
+
+            <div class="news-v3-in">
+                <ul class="list-inline posted-info">
+                    <% if blog.admin_yn == 'Y' %>
+                        <li>By <a data-toggle="modal" data-target="#admin_profile_modal">운영자</a></li>
+                    <% else %>
+                        <li>By <a href="javascript:getUserProfile(<%= blog.user_id %>)"><%= blog.user.user_name unless blog.user.nil? %></a></li>
+                    <% end %>
+
+                    <li>Posted <%=l blog.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></li>
                 </ul>
 
-                <p>
-                  <i class="fa fa-file-text-o color-green"></i>&nbsp;
-                  <a style="color: #3f7f7f" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-<%= count %>" aria-expanded="false">
-                    내용 보기
-                  </a>
-                </p>
+                <h2><a href="/blogs/<%= blog.id %>?blog_type=<%= blog.blog_type %>"><%= blog.title %></a></h2>
+                <p><%= simple_format(blog.content.truncate(300)) %></p>
 
-                <div id="collapse-<%= count %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                  <hr>
-                  <img src="<%= blog.file_name %>" class="img-responsive rounded margin-top-20 margin-bottom-20">
-                  <p><%= simple_format(blog.content) %></p>
-                </div>
-
-              </div>
+                <ul class="post-shares">
+                    <li><i class="rounded-x icon-speech" title="답변"></i><span><%= blog.blog_replies.count %></span></li>
+                    <li><a href="javascript:blogLike(<%= blog.id %>)"><i class="rounded-x icon-heart" title="추천"></i><span><%= blog.like.nil? ? 0 : blog.like %></span></a></li>
+                </ul>
             </div>
-          </div>
-          <% count += 1 %>
-      <% end %>
+        </div>
+        <!-- End Blog Posts -->
 
-      <div class="col-md-11 margin-top-20 bg-color-white rounded">
-        <div class="text-center">
-          <ul class="pagination">
-            <%= will_paginate @blogs, renderer: BootstrapPagination::Rails %>
-          </ul>
-        </div>
-      </div>
-  <% else %>
-      <div class="news-v3 col-md-11 margin-top-20 bg-color-white tag-box tag-box-v1 rounded box-shadow shadow-effect-2" style="padding: 2%">
-        <div class="row clients-page">
-          <div class="col-md-12 col-xs-12">
-            <h2 class="text-center" style="padding: 3%">--- 등록된 게시물이 없습니다. ---</h2>
-          </div>
-        </div>
-      </div>
-  <% end %>
+    <% end %>
+
+    <!-- Pager v2 -->
+    <%
+        page = params[:page]
+        if page.nil?
+            page = 1
+        end
+    %>
+    <ul class="pager pager-v2 pager-md no-margin">
+        <li class="previous"><a href="/blogs/<%=Blog::BLOG_NAMES[@blog_type]%><%= "?page=#{page.to_i - 1}" if page.to_i > 1 %>">&larr; Older</a></li>
+        <li class="page-amount"><%= page %> of <%= @blogs.total_pages %></li>
+        <li class="next"><a href="/blogs/<%=Blog::BLOG_NAMES[@blog_type]%><%= "?page=#{page.to_i + 1}" if page.to_i < @blogs.total_pages %>">Newer &rarr;</a></li>
+    </ul>
+    <!-- End Pager v2 -->
+
 </div>
+<!-- End Blog All Posts -->
 
+<%= render partial: 'modals/user_profile' %>
+<%= render partial: 'modals/admin_profile' %>
 
+<script type="text/javascript">
 
-<!-- Alert -->
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content modAlertch">
-      <div class="modal-header">
-        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-        <h4 id="myLargeModalLabel3" class="modal-title"><i class="glyphicon glyphicon-check"></i> 알림</h4>
-      </div>
+    function blogLike(blog_id) {
 
-      <div class="modal-body modAlert">
-        <div class="modAlertbox">
-          <p>로그인이 필요합니다!</p>
-          <ul>
-            <li><%=link_to '로그인',  new_user_session_path, :class => 'btn btn-link' %></li>
-            <li><%=link_to '회원가입', new_user_registration_path, :class => 'btn btn-link' %></li>
-          </ul>
-        </div>
-        <div class="margin-bottom-20"></div>
-      </div>
+        <% if current_user.nil? %>
 
-    </div>
-  </div>
-</div>
-<!-- End Alert -->
+        location = '/users/sign_in';
+
+        <% else %>
+
+        var url = "/blogs/" + blog_id + "/like";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                location.reload();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+
+        <% end %>
+    }
+
+</script>

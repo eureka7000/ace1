@@ -123,6 +123,18 @@
                                       </section>
                                     </dd>
                                   <% end %>
+
+                                    <dt>자기소개</dt>
+                                    <dd>
+                                        <section>
+                                            <label class="input">
+                                                <i class="icon-append fa fa-smile-o"></i>
+                                                <input type="text" placeholder="자기소개를 입력하세요" name="user[user_desc]" value="<%= current_user.user_desc %>">
+                                                <b class="tooltip tooltip-bottom-right">다른 유저들에게 자신을 소개해 보세요. </b>
+                                            </label>
+                                        </section>
+                                    </dd>
+
                                 </dl>
 
                                 <button type="button" class="btn-u btn-u-default">취소</button>

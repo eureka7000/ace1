@@ -29,7 +29,7 @@
             </div>
             
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn-u btn-u-default" type="button">닫기</button>
+                <button data-dismiss="modal" class="btn-u btn-u-default rounded" type="button">닫기</button>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
 <script type="text/javascript">
 
 function getUserProfile(user_id) {
-    
+
     $.ajax({
         type: "GET",
 	    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
@@ -48,33 +48,33 @@ function getUserProfile(user_id) {
 	    success: function(data){
 
             var src = "/assets/img/user_default_img.png";
-            
+
             if (data.user_img.url != null) {
                 src = data.user_img.url;
             }
-            
+
             $('#user_picture').attr('src',src);
             $('#user_name').text(data.user_name);
             $('#user_type').html("<strong>신분: </strong>" + data.user_type);
-            
+
             var user_type = "Free 회원";
             var currentTime = new Date();
-            
+
             if (new Date(data.expire_date) > currentTime) user_type = "정회원";
-            
+
             $('#user_auth').html("<strong>회원형태: </strong>" + user_type);
-            
+
             var user_desc = '아직 회원님의 자기소개글이 없습니다.';
             if (data.user_desc != null) user_desc = data.user_desc;
             $('#user_desc').html(user_desc);
-            
+
             $('#user_profile_modal').modal();
         },
         error: function(xhr, ajaxOptions, thrownError){
             alert(xhr.status);
         }
-    });    
-    
+    });
+
 }
 
 </script>

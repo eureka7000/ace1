@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :blog_replies
     get '/prints/get_question_list' => 'prints#get_question_list'
     resources :prints
     
@@ -95,6 +96,7 @@ Rails.application.routes.draw do
     post 'blogs/contact_us_message' => 'blogs#contact_us_message'
     get 'blogs/recommendation' => 'blogs#recommendation'
     get 'blogs/sign_in_process' => 'blogs#sign_in_process'
+    get 'blogs/:id/like' => 'blogs#like'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'

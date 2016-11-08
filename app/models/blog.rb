@@ -1,6 +1,7 @@
 class Blog < ActiveRecord::Base
     
     belongs_to :user
+    has_many :blog_replies, :dependent => :delete_all
 
     mount_uploader :file_name, ImageUploader
     

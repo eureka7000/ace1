@@ -106,4 +106,7 @@ en:
   log_in: "Login"
   comments: "Comments"
   post_a_comment: "Post a Comment"
+  post_a_solution: "Post a Comment"
+  solution_comment: "Comments"
   ago: "ago"
+
