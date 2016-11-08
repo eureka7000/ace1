@@ -1,9 +1,24 @@
 class BlogsController < ApplicationController
-  before_action :set_blog, only: [:show, :edit, :update, :destroy]
+  before_action :set_blog, only: [:show, :edit, :update, :destroy, :like]
   before_action :authenticate_admin_user!, only: [:index]
 
   # GET /blogs
   # GET /blogs.json
+
+  def like
+    if @blog.like.nil?
+      @blog.like = 1
+    else
+      @blog.like = @blog.like + 1
+    end
+
+    @blog.save
+
+    ret = { status: "ok" }
+
+    render :json => ret
+
+  end
 
   def index
 
@@ -25,20 +40,23 @@ class BlogsController < ApplicationController
   end
 
 
-    def show
-        
-        @blog_type = params[:blog_type]
-        
-        if @blog.admin_yn == "Y"
-            @user = Admin.find(@blog.user_id)
-        else
-            @user = User.find(@blog.user_id)
-        end
+  def show
 
-        unless session[:admin].nil?
-            render layout: 'admin_main'
-        end
-    end
+      @blog_type = params[:blog_type]
+
+      if @blog.admin_yn == "Y"
+          @user = Admin.find(@blog.user_id)
+      else
+          @user = User.find(@blog.user_id)
+      end
+
+      @replies1 = BlogReply.where('blog_id = ? and depth = ?', params[:id], 1)
+      @latest_news = Blog.order(id: :desc).first(5)
+
+      unless session[:admin].nil?
+          render layout: 'admin_main'
+      end
+  end
 
 
   # GET /blogs/new
@@ -53,11 +71,11 @@ class BlogsController < ApplicationController
 
   end
 
-    def edit
-        unless session[:admin].nil?
-            render layout: 'admin_main'
-        end
-    end
+  def edit
+      unless session[:admin].nil?
+          render layout: 'admin_main'
+      end
+  end
 
   # POST /blogs
   # POST /blogs.json
@@ -129,7 +147,7 @@ class BlogsController < ApplicationController
 
   def notice
     @blog_type = '5'
-    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 10 ).order(id: :desc)
+    @blogs = Blog.where('blog_type = ?', @blog_type).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 5 ).order(created_at: :desc)
     @latest_news = Blog.where('blog_type !=?', '8').order(id: :desc).first(5)
   end
 

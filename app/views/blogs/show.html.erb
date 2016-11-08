@@ -4,44 +4,293 @@
   </div><!--/container-->
 </div><!--/breadcrumbs-->
 
-<div class="wrapper">
-  <div class="col-md-2"></div>
-  <div class="col-md-8 col-xs-12 margin-top-20 bg-color-light">
 
-    <div class="container-fluid margin-top-20">
+<!--=== Content Part ===-->
+<div class="container content-sm" style="margin-top: 40px">
 
-      <% if @blog.errors.any? %>
-          <div id="error_explanation">
-            <h2><%= pluralize(@blog.errors.count, "error") %> prohibited this blog from being saved:</h2>
-            <ul>
-              <% @blog.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-      <% end %>
+    <div class="row">
 
-      <div class="news-v3 bg-color-white margin-bottom-30">
-        <img class="img-responsive full-width rounded <%= 'hidden' if @blog.file_name.blank? %>" src="<%= @blog.file_name %>" alt="">
-        <div class="news-v3-in">
-          <ul class="list-inline posted-info">
-            <li>By <%='관리자' if @blog.admin_yn == 'Y' %><%= @user.user_name if @blog.admin_yn == 'N' %></li>
-            <li>Posted <%= @blog.created_at.in_time_zone("Asia/Seoul").strftime('%Y.%m.%d') %></li>
-          </ul>
-          <h2><span style="color: #00a2ed"><i class="fa fa-paper-plane-o"></i></span> <%= @blog.title %></h2>
-          <p><%= simple_format(@blog.content) %></p>
+        <div class="col-md-9">
 
-          <div class="text-right">
-            <% unless session[:admin].nil? %>
-                <a href="/blogs" class="btn-u rounded btn-u-yellow">확인</a>
+            <a href="/blogs/<%= Blog::BLOG_NAMES[@blog_type] %>" class="btn btn-default btn-sm rounded" style="float:right; margin-bottom: 20px"><i class="fa fa-reply"></i> 목록으로</a>
+
+            <!-- content -->
+            <div class="news-v3 bg-color-white margin-bottom-30 tag-box-v1" >
+
+                <% unless @blog.file_name.blank? %>
+                    <img class="img-responsive full-width" src="<%= @blog.file_name %>" alt="">
+                <% end %>
+
+                <div class="news-v3-in">
+
+                    <ul class="list-inline posted-info">
+                        <% if @blog.admin_yn == 'Y' %>
+                            <li>By <a data-toggle="modal" data-target="#admin_profile_modal">운영자</a></li>
+                        <% else %>
+                            <li>By <a href="javascript:getUserProfile(<%= @blog.user_id %>)"><%= @blog.user.user_name unless @blog.user.nil? %></a></li>
+                        <% end %>
+                        <li>Posted <%=l @blog.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></li>
+                    </ul>
+
+                    <h2 ><a href="/blogs/<%= @blog.id %>" style="font-family: inherits"><%= @blog.title %></a></h2>
+
+                    <%= simple_format(@blog.content) %>
+
+                    <ul class="post-shares post-shares-lg">
+                        <li><i class="rounded-x icon-speech" title="답변"></i><span><%= @blog.blog_replies.count %></span></li>
+                        <li><a href="javascript:blogLike(<%= @blog.id %>)"><i class="rounded-x icon-heart" title="추천"></i><span><%= @blog.like.nil? ? 0 : @blog.like %></span></a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <!-- content end -->
+
+
+            <% if @blog.admin_yn == 'Y' %>
+
+                <!-- Blog Post Author -->
+                <div class="blog-author margin-bottom-30 tag-box-v1">
+
+                    <img src="/assets/img/user_default_img.png" alt="">
+
+                    <div class="blog-author-desc">
+                        <div class="overflow-h">
+                            <h4>운영자</h4>
+                            <ul class="list-inline">
+                                <li>Admin</li>
+                                <!-- <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li> -->
+                            </ul>
+                        </div>
+                        <p><span style="color: blue">Math</span> <span style="color: green">Fun</span> <span style="color: red">Dream</span> 세 마리 토끼를 잡으세요!</p>
+                        <br/>
+                        <p>"성공의 비결은 좌절하지 않고 극복하는 데 있다."  - 발자크(1799-1850), 프랑스의 소설가 -</p>
+                    </div>
+
+                </div>
+                <!-- Blog Post Author End -->
+
             <% else %>
-                <a href="/blogs/<%= Blog::BLOG_NAMES[@blog.blog_type] %>" class="btn-u rounded btn-u-yellow">확인</a>
+
+                <!-- Blog Post Author -->
+                <div class="blog-author margin-bottom-30 tag-box-v1">
+
+                    <% if @blog.user.user_img.blank? %>
+                        <img src="/assets/img/user_default_img.png" alt="">
+                    <% else %>
+                        <img src="<%= @blog.user.user_img %>" alt="">
+                    <% end %>
+
+                    <div class="blog-author-desc">
+                        <div class="overflow-h">
+                            <h4><a href="javascript:getUserProfile(<%= @blog.user_id %>)" class="unify_a"><%= @blog.user.user_name %></a></h4>
+                            <ul class="list-inline">
+                                <li><%= @blog.user.user_types[0].user_type %></li>
+                                <!-- <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li> -->
+                            </ul>
+                        </div>
+                        <p><%= @blog.user.user_desc.nil? ? "자기 소개가 아직 없습니다." : @blog.user.user_desc.truncate(300) %></p>
+                    </div>
+
+                </div>
+                <!-- Blog Post Author End -->
+
             <% end %>
-          </div>
+
+
+            <hr>
+
+            <h2 class="margin-bottom-20"><%= t(:comments) %></h2>
+
+            <% index = 1 %>
+
+            <% @replies1.each do |reply1| %>
+
+                <% order_count = 1 %>
+
+                <div class="blog-comments margin-bottom-30" style="display:flex">
+
+                    <div class="col-sm-2 sm-margin-bottom-40" style="margin-top: 20px">
+                        <% if reply1.user.user_img.blank? %>
+                            <img src="/assets/img/user_default_img.png" alt="" style="border: 1px solid lightgrey">
+                        <% else %>
+                            <img src="<%= reply1.user.user_img %>" class="rounded" alt="" style="border: 1px solid lightgrey">
+                        <% end %>
+                    </div>
+
+                    <div class="col-sm-10">
+                        <div class="comments-itself" style="padding-bottom: 20px">
+                            <h4>
+                                <a href="javascript:getUserProfile(<%= reply1.user_id %>)" class="unify_a"><%= reply1.user.user_name %></a>
+                                <span><%= time_ago_in_words(reply1.created_at.in_time_zone("Asia/Seoul")) %> <%= t(:ago) %></span>
+                            </h4>
+
+                            <hr>
+
+                            <%= simple_format reply1.comment %>
+
+                            <button class="add_comment btn btn-default btn-sm rounded" data-id="<%= reply1.id %>">Add a Comment</button>
+
+                            <div style="display: none; margin-top: 20px" class="comment_form" data-id="<%= reply1.id %>">
+
+                                <form action="/blog_replies" id="blog_reply_form_<%= index %>" method="post" class="sky-form comment-style" novalidate="novalidate" charset="utf-8">
+
+                                    <%= token_tag nil %>
+                                    <input type="hidden" name="blog_reply[blog_id]" value="<%= @blog.id %>" />
+                                    <input type="hidden" name="blog_reply[user_id]" value="<%= current_user.id unless current_user.nil? %>" />
+                                    <input type="hidden" name="blog_reply[group_id]" value="<%= @blog.id %>" />
+                                    <input type="hidden" name="blog_reply[parent_reply_id]" value="<%= reply1.id %>" />
+                                    <input type="hidden" name="blog_reply[depth]" value="2" />
+                                    <input type="hidden" name="blog_reply[order_no]" value="<%= order_count %>" />
+
+                                    <div class="row">
+
+                                        <div class="col-md-10">
+                                            <input type="text" class="form-control" name="blog_reply[comment]" id="blog_reply_comment_<%= index %>" style="border: 1px solid lightgrey" placeholder="댓글 달기"></textarea>
+                                        </div>
+
+                                        <div class="col-md-1 text-right">
+                                            <button class="btn-u btn-u-dark-blue rounded" type="button" onclick="sendBlogReplyComment(<%= index %>)">저장</button>
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                                <% index += 1 %>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <% @re_replies = BlogReply.where('parent_reply_id = ?', reply1.id) %>
+                <% @re_replies.each do |reply2| %>
+
+                    <div class="blog-comments blog-comments-reply margin-bottom-30" style="display:flex">
+                        <div class="col-sm-2 sm-margin-bottom-40" style="margin-top: 20px">
+                            <% if reply2.user.user_img.blank? %>
+                                <img src="/assets/img/user_default_img.png" alt="" style="border: 1px solid lightgrey">
+                            <% else %>
+                                <img src="<%= reply2.user.user_img %>" class="rounded" alt="" style="border: 1px solid lightgrey">
+                            <% end %>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="comments-itself">
+                                <h4>
+                                    <a href="javascript:getUserProfile(<%= reply2.user_id %>)" class="unify_a"><%= reply2.user.user_name %></a>
+                                    <span><%= time_ago_in_words(reply2.created_at.in_time_zone("Asia/Seoul")) %> <%= t(:ago) %></span>
+                                </h4>
+                                <%= simple_format reply2.comment %>
+                            </div>
+                        </div>
+                    </div>
+
+                <% end %>
+
+            <% end %>
+
+            <hr>
+
+            <h2 class="margin-bottom-20"><%= t(:post_a_comment) %></h2>
+
+            <form action="/blog_replies" id="blog_reply_form" method="post" enctype="multipart/form-data" class="sky-form comment-style" novalidate="novalidate" charset="utf-8">
+
+                <%= token_tag nil %>
+
+                <input type="hidden" name="blog_reply[blog_id]" value="<%= @blog.id %>" />
+                <input type="hidden" name="blog_reply[user_id]" value="<%= current_user.id unless current_user.nil? %>" />
+                <input type="hidden" name="blog_reply[group_id]" value="<%= @blog.id %>" />
+                <input type="hidden" name="blog_reply[parent_reply_id]" value="0" />
+                <input type="hidden" name="blog_reply[depth]" value="1" />
+                <input type="hidden" name="blog_reply[order_no]" value="0" />
+
+                <fieldset>
+
+                    <div class="sky-space-30">
+                        <div>
+                            <textarea rows="8" name="blog_reply[comment]" id="blog_reply_comment" placeholder="Write comment here ..." class="form-control" style="border: 1px solid lightgrey" <% if current_user.nil? %> onfocus="checkLogin()" <% end %> ></textarea>
+                        </div>
+                    </div>
+
+                    <% unless current_user.nil? %>
+                        <p><button type="submit" class="btn-u rounded">Submit</button></p>
+                    <% end %>
+
+                </fieldset>
+
+                <div class="message">
+                    <i class="rounded-x fa fa-check"></i>
+                    <p>Your comment was successfully posted!</p>
+                </div>
+            </form>
+
         </div>
-      </div>
+
+        <%= render partial: 'blogs/right_sidebar' %>
     </div>
-  </div>
-  <div class="col-md-2"></div>
-  <div class="col-md-12 margin-bottom-20 margin-top-20"></div>
 </div>
+
+<%= render partial: 'modals/user_profile' %>
+<%= render partial: 'modals/admin_profile' %>
+
+<script type="text/javascript">
+    <% if current_user.nil? %>
+    function checkLogin() {
+        location = '/users/sign_in';
+    }
+    <% end %>
+
+    jQuery(".add_comment").click(function(){
+        var btnId = $(this).data('id');
+        jQuery('.comment_form[data-id=' + btnId + ']').toggle();
+    });
+
+    function blogLike(blog_id) {
+
+        <% if current_user.nil? %>
+
+        location = '/users/sign_in';
+
+        <% else %>
+
+        var url = "/blogs/" + blog_id + "/like";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                location.reload();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+
+        <% end %>
+    }
+
+    $("#blog_reply_form").submit(function () {
+        if($("#blog_reply_comment").val() == "" ){
+            alert("댓글을 입력하세요.");
+            return false;
+        }
+    });
+
+    function sendBlogReplyComment(index){
+        if ($("#blog_reply_comment_"+ index).val() == ""){
+            alert("댓글을 입력하세요.");
+            return false;
+        }
+        else {
+            $("#blog_reply_form_"+ index).submit();
+        }
+    }
+
+
+</script>

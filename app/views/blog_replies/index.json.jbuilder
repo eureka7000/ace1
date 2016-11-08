@@ -1,0 +1,1 @@
+json.array! @blog_replies, partial: 'blog_replies/blog_reply', as: :blog_reply

@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Blog:</strong>
+  <%= @blog_reply.blog_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @blog_reply.user_id %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @blog_reply.comment %>
+</p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @blog_reply.group_id %>
+</p>
+
+<p>
+  <strong>Parent reply:</strong>
+  <%= @blog_reply.parent_reply_id %>
+</p>
+
+<p>
+  <strong>Depth:</strong>
+  <%= @blog_reply.depth %>
+</p>
+
+<p>
+  <strong>Order no:</strong>
+  <%= @blog_reply.order_no %>
+</p>
+
+<%= link_to 'Edit', edit_blog_reply_path(@blog_reply) %> |
+<%= link_to 'Back', blog_replies_path %>
