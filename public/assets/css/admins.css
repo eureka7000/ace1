@@ -181,8 +181,13 @@ body {
     padding: 0;
 }
 
-.pane img {
+.pane .questions {
     margin-bottom: 100px;
+}
+
+.pane .solutions {
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .fa:before { color:#ff4500 !important; }
