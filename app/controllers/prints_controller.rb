@@ -63,7 +63,7 @@ class PrintsController < ApplicationController
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'concept'
     	            and b.exercise_yn = 'exercise'
-                    and c.desc_type in ('7','2','3')
+                    and c.desc_type in ('7','3')
                     and a.id = b.concept_id
                     and b.id = c.unit_concept_id
                     
@@ -75,7 +75,7 @@ class PrintsController < ApplicationController
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'
                     and a.id = c.concept_id
-                    and c.desc_type in ('7','2','3')
+                    and c.desc_type in ('7','3')
                 ) tot
                 order by question_type, tot.concept_code, tot.code, tot.memo "
             ) 
