@@ -228,15 +228,17 @@
                 }   
                 old_unit_concept_id = unit_concept_id;
                 
+                var answer_height = 0;
                 if ($(this).attr('desc_type') == '7') {
                     var answer = $('<div style="margin-bottom: -10px; margin-left: 10px" />').appendTo($('#pane'+paneNum));
                     $("<strong style='color:darkgreen'>정답 : </strong>").appendTo(answer);
+                    answer_height = 10;
                 }
                 
                 
                 $(this).appendTo($('#pane'+paneNum)); 
                 
-                stackHeight = imageHeight + 20; // imageheight + marginbottom;   
+                stackHeight = imageHeight + answer_height + 20; // imageheight + marginbottom;   
                 
                 existPane = true;
                 
@@ -251,14 +253,17 @@
                 }
                 old_unit_concept_id = unit_concept_id;
                 
+                var answer_height = 0;
+                
                 if ($(this).attr('desc_type') == '7') {
                     var answer = $("<div style='margin-bottom: -10px; margin-left: 10px' />").appendTo($('#pane'+paneNum));
                     $("<strong style='color:darkgreen'>정답 : </strong>").appendTo(answer);
-                }                
+                    answer_height = 10;
+                }
                 
                 $(this).appendTo($('#pane'+paneNum));
                 
-                stackHeight += imageHeight + 20; // imageheight + marginbottom;    
+                stackHeight += imageHeight + answer_height + 20; // imageheight + marginbottom;    
                 
             }
             
