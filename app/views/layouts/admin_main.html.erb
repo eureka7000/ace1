@@ -72,7 +72,13 @@
                     <li><a href="/teachers">교사 관리</a></li>
                     <li><a href="/teachers/students_list">학생 목록</a></li>
                     <% else %>
-                    <li><a href="/prints">출력</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">출력</a>
+                        <ul class="dropdown-menu">
+                        <li><a href="/prints">문제출력</a></li>
+                        <li><a href="/prints/solutions">해답출력</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/study_histories">학습이력</a></li>
                     <li><a href="/payments">결제 관리</a></li>
                     <li><a href="/concepts">단원별 관리</a></li>

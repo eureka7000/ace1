@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
     get '/prints/get_question_list' => 'prints#get_question_list'
+    get '/prints/solutions' => 'prints#solutions'
+    get '/prints/get_solution_list' => 'prints#get_solution_list'
     resources :prints
     
     get '/study_histories/detail' => 'study_histories#detail'
