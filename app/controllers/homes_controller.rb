@@ -10,6 +10,11 @@ class HomesController < ApplicationController
                 @session_yn = 'Y'
             end
         end
+        
+        @unit_concept_count = UnitConcept.where('exercise_yn = ?','concept').count;
+        @question_count = UnitConcept.where('exercise_yn <> ?','concept').count;
+        @summary_question_count = Concept.where('exercise_yn = ?','exercise').count;
+        @video_count = UnitConceptDesc.where('desc_type = 4').count + ConceptExercise.where('desc_type = 4').count
 
         respond_to do |format|
             format.html

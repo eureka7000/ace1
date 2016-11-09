@@ -1,4 +1,40 @@
 <div class="col-md-12 no-padding no-margin bg-color-white">
+    
+    <div class="parallax-counter parallaxBg" style="background-position: 50% -223px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-xs-6">
+                    <div class="counters">
+                        <span class="counter"><%= @unit_concept_count %></span>
+                        <h4>개념설명</h4>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3 col-xs-6">
+                    <div class="counters">
+                        <span class="counter"><%= @question_count %></span>
+                        <h4>유형문제</h4>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3 col-xs-6">
+                    <div class="counters">
+                        <span class="counter"><%= @summary_question_count %></span>
+                        <h4>종합문제</h4>
+                    </div>
+                </div>
+                
+                <div class="col-sm-3 col-xs-6">
+                    <div class="counters">
+                        <span class="counter"><%= @video_count %></span>
+                        <h4>강의 동영상</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    
+    
   <!--=== 아르키메데스===-->
   <div class="container-fluid bg-color-white" style="height: 630px;">
     <div class="container">
@@ -266,3 +302,14 @@
         <%= render partial: 'modals/notice_email_confirm' %>
     <% end %>
 <% end %>
+
+<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>    
+<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        App.initCounter();
+    });
+    
+</script>
+    

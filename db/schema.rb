@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161025030013) do
+ActiveRecord::Schema.define(version: 20161108093216) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -26,6 +26,18 @@ ActiveRecord::Schema.define(version: 20161025030013) do
     t.string   "init_password_changed", limit: 255
   end
 
+  create_table "blog_replies", force: :cascade do |t|
+    t.integer  "blog_id",         limit: 4
+    t.integer  "user_id",         limit: 4
+    t.text     "comment",         limit: 65535
+    t.integer  "group_id",        limit: 4
+    t.integer  "parent_reply_id", limit: 4
+    t.integer  "depth",           limit: 4
+    t.integer  "order_no",        limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
   create_table "blogs", force: :cascade do |t|
     t.string   "blog_type",  limit: 255
     t.string   "title",      limit: 255
@@ -35,6 +47,7 @@ ActiveRecord::Schema.define(version: 20161025030013) do
     t.datetime "updated_at",               null: false
     t.string   "admin_yn",   limit: 255
     t.string   "file_name",  limit: 255
+    t.integer  "like",       limit: 4
   end
 
   create_table "categories", force: :cascade do |t|
@@ -183,9 +196,9 @@ ActiveRecord::Schema.define(version: 20161025030013) do
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.string   "file_name",       limit: 255
+    t.integer  "width",           limit: 4
+    t.integer  "height",          limit: 4
   end
-
-  add_index "replies", ["parent_reply_id"], name: "dddd", using: :btree
 
   create_table "schools", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -304,10 +317,10 @@ ActiveRecord::Schema.define(version: 20161025030013) do
     t.integer  "user_id",         limit: 4
     t.integer  "related_user_id", limit: 4
     t.string   "relation_type",   limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.string   "confirm_status",  limit: 255
-    t.datetime "request_date",                null: false
+    t.datetime "request_date",                default: '2016-07-24 09:34:53'
     t.datetime "confirmed_at"
   end
 
