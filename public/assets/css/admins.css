@@ -190,7 +190,7 @@ body {
     margin-top: 10px;
 }
 
-/*.fa:before { color:#ff4500 !important; }*/
+.fa:before { color:#ff4500 !important; }
 
 /*.subpage:after {
     content:"";
