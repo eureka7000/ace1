@@ -8,7 +8,10 @@ class PrintsController < ApplicationController
     end
     
     def solutions
-    end    
+    end
+    
+    def exercises
+    end
     
     def get_question_list
         
@@ -85,5 +88,32 @@ class PrintsController < ApplicationController
         render :json => @solutions
         
     end
+    
+    def get_exercise_list
+        
+        sub_category = params[:sub_category]
+        @solutions = nil
+        
+        unless sub_category.blank?
+       
+            @solutions = UnitConceptExerciseSolution.find_by_sql(
+                "select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id as concept_id, a.concept_name, a.concept_code, b.id as unit_concept_id, b.name as unit_concept_name,
+                        b.code, b.level, c.desc_type, d.file_name, d.memo, d.id, d.ox
+                 from concepts a, unit_concepts b, unit_concept_descs c, unit_concept_exercise_solutions d
+                 where a.sub_category = '#{sub_category}'
+                 and a.exercise_yn = 'concept'
+                 and b.exercise_yn = 'concept'
+                 and c.desc_type = '3'
+                 and a.id = b.concept_id
+                 and b.id = c.unit_concept_id
+                 and c.id = d.unit_concept_desc_id
+                 order by a.concept_code, b.code, d.memo"
+            )
+        
+        end
+        
+        render :json => @solutions        
+        
+    end    
     
 end
