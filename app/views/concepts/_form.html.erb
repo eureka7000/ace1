@@ -9,7 +9,7 @@
         <input type="hidden" name="sub_category" value="<%= params[:sub_category] %>" />
         <input type="hidden" name="exercise_yn" value="<%= params[:exercise_yn] %>" />
         
-        <h4>개념 정보</h2>
+        <h4>개념 정보</h4>
             
         <div class="well">
 
@@ -35,7 +35,7 @@
                                 <select name="concept[category]" id="category" class="form-control" onchange="changedCategory()">
                                     <option value="">--- Category ---</option>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= "selected" if @concept.category == key %> ><%= value %></option>
+                                    <option value="<%= key %>" <%= "selected" if @concept.category == key %> <%= "selected" if params[:category] == key %> ><%= value %></option>
                                     <% end %>
                                 </select> 
                             </div>
@@ -49,6 +49,9 @@
                             <div class="input-group col-sm-4 col-md-8">
                                 <select name="concept[sub_category]" id="sub_category" class="form-control">
                                     <option value="">--- Sub Category ---</option>
+                                    <% unless params[:sub_category] == "" %>
+                                        <option value="<%= params[:sub_category] %>" selected ><%= Concept::SUB_CATEGORIES[params[:sub_category]] %></option>
+                                    <% end %>
                                 </select> 
                             </div>
                         </div>
@@ -59,11 +62,11 @@
                             <div class="col-md-offset-3 col-md-8">
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="concept[exercise_yn]" value="concept" <%= @concept.exercise_yn == "concept" ? "checked" : "" %> > Concept
+                                        <input type="radio" name="concept[exercise_yn]" value="concept" <%= @concept.exercise_yn == "concept" ? "checked" : "" %> <%= 'checked' if params[:exercise_yn] == 'concept' %> > Concept
                                     </label>
                                     &nbsp;&nbsp;
                                     <label>     
-                                        <input type="radio" name="concept[exercise_yn]" value="exercise" <%= @concept.exercise_yn == "exercise" ? "checked" : "" %> > Exercise
+                                        <input type="radio" name="concept[exercise_yn]" value="exercise" <%= @concept.exercise_yn == "exercise" ? "checked" : "" %> <%= 'checked' if params[:exercise_yn] == 'exercise' %> > Exercise
                                     </label>
                                 </div>
                             </div>
@@ -120,7 +123,7 @@
                     
         </div>
         
-        <h4>기출문제 정보</h2>        
+        <h4>기출문제 정보</h4>
         <div class="well">
             
             <div class="row">

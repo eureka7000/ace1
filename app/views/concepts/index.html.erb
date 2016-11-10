@@ -39,7 +39,7 @@
 					</div>
 
                     <div class="col-md-12 margin-top-20 margin-bottom-20">
-                        <%= link_to 'New Concept', new_concept_path, :class => 'btn btn-primary align-right' %>
+                        <%= link_to 'New Concept', new_concept_path(:category => params[:category], :sub_category => params[:sub_category], :exercise_yn => params[:exercise_yn]), :class => 'btn btn-primary align-right' %>
                     </div>
                     
                     <table class="table table-striped">
