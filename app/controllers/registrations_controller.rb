@@ -6,10 +6,10 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     super
-    
+
     user = User.find(current_user.id)
     user.user_auth = 'free'
-    user.save    
+    user.save
         
     user_type = UserType.new
     
@@ -18,7 +18,7 @@ class RegistrationsController < Devise::RegistrationsController
     user_type.user_id = @user.id
     user_type.user_type = params[:user_type][:user_type]
     user_type.save
-    
+
   end
 
   def update

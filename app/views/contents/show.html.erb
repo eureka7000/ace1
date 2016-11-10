@@ -39,14 +39,14 @@
     <!-- 개념 -->
     <div id="concept_main" class="col-md-6 col-sm-6 col-xs-12 tabs">
         <% @concepts.each_with_index do | concept, index | %>
-        <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />    
+        <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
         <button id="concept_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concepts.count < 2 %>" type="button" onclick="next('concept', <%= @concepts.count %>)">
             다음
             <span id="concept_badge" class="badge badge-aqua rounded-2x" style="float:right; margin-left: 5px" ><%= @concepts.count - 1 %></span>            
         </button>
         
-        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_desc')"> 개념설명</a>
+        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @concepts.count > 1 %>" onclick="showTab('concept_desc')"> 개념설명</a>
         
     </div>
     
@@ -60,7 +60,7 @@
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
         
-        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_exercise')"> 개념문제</a>
+        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @concept_descs.count > 1 %>" onclick="showTab('concept_exercise')"> 개념문제</a>
         
     </div>
     
@@ -124,7 +124,7 @@
             <span id="concept_exercise_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @exercises.count - 1 %></span>
         </button>
         
-        <a href="#" id="concept_exercise_go_btn" class="btn-u rounded btn-u-red" style="float: right; display:none" onclick="showTab('concept_video')"> 동영상</a>                
+        <a href="#" id="concept_exercise_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @exercises.count > 1 %>" onclick="showTab('concept_video')"> 동영상</a>
         
     </div>
     

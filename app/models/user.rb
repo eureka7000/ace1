@@ -111,6 +111,8 @@ class User < ActiveRecord::Base
     end
     
     def can_I_use?
+        true
+=begin
         if self.expire_date.nil?
             false
         else
@@ -119,7 +121,8 @@ class User < ActiveRecord::Base
             else
                 false
             end        
-        end        
+        end
+=end
     end
     
     def get_expire_date(month)
