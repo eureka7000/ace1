@@ -224,7 +224,7 @@
                 if (old_unit_concept_id != unit_concept_id) {
                     var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
                     $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
-                    if ($(this).attr("question_type") == 1) $(get_stars($(this).attr('level'))).appendTo(question_number);
+                    $(get_stars($(this).attr('level'))).appendTo(question_number);
                 }   
                 old_unit_concept_id = unit_concept_id;
                 
@@ -253,7 +253,7 @@
                 if (old_unit_concept_id != unit_concept_id) {
                     var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
                     $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
-                    if ($(this).attr("question_type") == 1) $(get_stars($(this).attr('level'))).appendTo(question_number);                    
+                    $(get_stars($(this).attr('level'))).appendTo(question_number);                    
                 }
                 old_unit_concept_id = unit_concept_id;
                 

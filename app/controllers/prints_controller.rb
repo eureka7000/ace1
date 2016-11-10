@@ -35,7 +35,7 @@ class PrintsController < ApplicationController
                     union all
 
                     select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id as concept_id, '종합문제' as concept_name, a.concept_code, '' as unit_concept_id, '' as unit_concept_name, 
-                            '' as code, '' as level, c.file_name, c.id, c.memo, 2 as question_type
+                            '' as code, a.level as level, c.file_name, c.id, c.memo, 2 as question_type
                     from concepts a, concept_exercises c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'
@@ -73,7 +73,7 @@ class PrintsController < ApplicationController
                     union all
  
                     select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id as concept_id, '종합문제' as concept_name, a.concept_code, '' as unit_concept_id, '' as unit_concept_name, 
-                           '' as code, '' as level, c.file_name, c.id, c.memo, 2 as question_type, c.desc_type
+                           '' as code, a.level as level, c.file_name, c.id, c.memo, 2 as question_type, c.desc_type
                     from concepts a, concept_exercises c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'

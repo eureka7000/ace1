@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161108093216) do
+ActiveRecord::Schema.define(version: 20161110022258) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -183,6 +183,8 @@ ActiveRecord::Schema.define(version: 20161108093216) do
     t.datetime "updated_at",                    null: false
     t.string   "confirm_yn",      limit: 255
     t.integer  "like",            limit: 4
+    t.integer  "width",           limit: 4
+    t.integer  "height",          limit: 4
   end
 
   create_table "replies", force: :cascade do |t|
