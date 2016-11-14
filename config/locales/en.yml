@@ -104,6 +104,10 @@ en:
       year: Year    
   hello: "Hello world"
   log_in: "Login"
+  sign_up: "Sign Up"
+  email_address: "Email Address"
+  password: "Password"
+  confirm_password: "Confirm Password"
   comments: "Comments"
   post_a_comment: "Post a Comment"
   post_a_solution: "Post a Comment"

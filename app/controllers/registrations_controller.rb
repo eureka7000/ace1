@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   def new
-    @page_name = 'Sign Up'
+    @page_name = t(:sign_up)
     super
   end
 

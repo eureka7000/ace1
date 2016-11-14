@@ -8,7 +8,7 @@
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name), :html=>{:class=>'reg-page'}) do |f| %>
 
           <div class="reg-header">
-            <h2>회원가입</h2>
+            <h2><%= t(:sign_up) %></h2>
             <p>이미 가입하셨습니까? <%= link_to('여기', new_user_session_path, :class=>"color-green") %> 에서 로그인하세요.</p>
           </div>
 
@@ -20,7 +20,7 @@
 
           <div class="row margin-bottom-20">
             <div class="col-sm-12">
-              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>">Email Address <span class="color-red">*</span>
+              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>"><%= t(:email_address) %> <span class="color-red">*</span>
                 <input autofocus="autofocus" type="text" value="<%= params[:email] %>" name="user[email]" id="new_user_email" class="form-control">
               </label>
             </div>
@@ -28,12 +28,12 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:password].blank? %>">Password <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%>
+              <label style="width:100%" class="<%= 'state-error' unless resource.errors[:password].blank? %>"><%= t(:password) %> <span class="color-red">*</span> <% if @minimum_password_length %>(최소 <%= @minimum_password_length %> 자리)<%end%>
                 <input autocomplete="off" type="password" name="user[password]" id="user_password" class="form-control margin-bottom-20">
               </label>
             </div>
             <div class="col-sm-6">
-              <label style="width:100%">Confirm Password <span class="color-red">*</span>
+              <label style="width:100%"><%= t(:confirm_password) %> <span class="color-red">*</span>
                 <input autocomplete="off" type="password" name="user[password_confirmation]" id="user_password_confirmation" class="form-control margin-bottom-20">
               </label>
             </div>

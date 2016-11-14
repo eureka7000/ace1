@@ -62,8 +62,11 @@
     <!-- JS Global Compulsory -->
     <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
-    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>    
-    
+    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
 
 </head>
 
@@ -136,7 +139,7 @@
           </li>
           <li class="topbar-devider"></li>                     
            
-          <li><a href="/users/sign_up"><span class="label rounded-2x label-purple">회원가입</span></a></li>
+          <li><a href="/users/sign_up"><span class="label rounded-2x label-purple"><%= t(:sign_up) %></span></a></li>
               
            <% end %>
            
@@ -246,7 +249,7 @@
 	<!--=== End Breadcrumbs ===-->
 	<% end %>
 
-	<%= yield %>
+    <%= yield %>
     
 </div><!--/wrapper-->
 

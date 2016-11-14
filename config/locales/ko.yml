@@ -101,9 +101,14 @@ ko:
       year: 년    
   hello: "Hello world"
   log_in: "로그인"
+  sign_up: "회원가입"
+  email_address: "이메일 주소"
+  password: "비밀번호"
+  confirm_password: "비밀번호 확인"
   comments: "댓글"
   post_a_comment: "댓글 달기"
   post_a_solution: "답글 달기"
   solution_comment: "답글"
   ago: "전"
+
   
