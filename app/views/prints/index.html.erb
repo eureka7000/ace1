@@ -1,5 +1,18 @@
 <div class="row" style="margin-left: 20px; margin-bottom: 20px;">
-    <button onclick="print()">print</button>
+    
+    <div class="col-md-1"><button onclick="print()">print</button></div>
+    
+    <div class="col-md-1">
+        <select id="grade" class="form-control" style="width: 100px;">
+        <option value="1">중1</option>
+        <option value="2">중2</option>
+        <option value="3">중3</option>
+        <option value="4">고1</option>
+        <option value="5">고2 &amp; 고3 문과</option>
+        <option value="6">고2 &amp; 고3 이과</option>
+        </select>
+    </div>    
+    
 </div>    
 
 <div class="row">
@@ -37,7 +50,9 @@
         $('#book').html('');
         totalHeight = 0;
         
-        var url = "/prints/get_question_list?sub_category=" + sub_category;
+        var grade = $('#grade').val();
+        
+        var url = "/prints/get_question_list?sub_category=" + sub_category + "&grade=" + grade;
 
         $.ajax({
             url: url,
@@ -45,8 +60,14 @@
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             datatype: "json",
             success : function(data) {
-                console.log('data',data);
-                drawImages(data);
+            
+                if (data.length == 0) {
+                    alert('조회할 데이터가 없습니다.');
+                    $('#loading').hide();
+                } else {
+                    drawImages(data);                    
+                }
+                
             },
             error : function(){}
         });
