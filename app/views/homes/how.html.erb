@@ -15,8 +15,9 @@
 
     <div class="row">
         <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 margin-top-20 margin-bottom-50">
-            <h2><img src="/assets/img/subimg/bullet01.jpg"/>&nbsp;서비스 종류</h2>
 
+            <h2><img src="/assets/img/subimg/bullet01.jpg"/>&nbsp;유료 서비스 종류</h2>
+            <h4 class="margin-bottom-30"><img src="/assets/img/subimg/bullet02.jpg"/> &nbsp; 초급(level 1) 웹강의 내용 등 자유롭게 검색, 이용</h4>
 
             <div class="col-md-4">
                 <table class="table table-bordered" style="color: black; text-align: center;">
@@ -30,6 +31,7 @@
                     <tr><td>기본자료 : 학교명, 선생님, 학생의 ID, password</td></tr>
                     <tr><td>학교단위 Admin(관리자)화면 제공</td></tr>
                     <tr><td>Mentor : 학교 선생님</td></tr>
+                    <tr><td>이용료 : 학생당 25,000원/월</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -46,6 +48,7 @@
                     <tr><td>기본자료 : 학원명, 선생님, 학생의 ID, password</td></tr>
                     <tr><td>학교단위 Admin(관리자)화면 제공</td></tr>
                     <tr><td>Mentor : 학원 선생님</td></tr>
+                    <tr><td>이용료 : 학생당 25,000원/월</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -58,118 +61,28 @@
                     </tr>
                     </thead>
                     <tbody style="font-size: 15px;">
-                    <tr><td>가입방법 : 사이트에서 개인별 회원 가입</td></tr>
+                    <tr><td>가입방법 : 사이트에서 개인별 회원 가입 <img src="/assets/img/btn04.png" alt="결제하기" class="payMent" /></td></tr>
                     <tr><td>기본자료 : ID, password</td></tr>
                     <tr><td>Mentor : Eureka Math 소속 일반 선생님</td></tr>
+                    <tr><td>이용료 : 학생당 25,000원/월 + α(Mentor비용)</td></tr>
+                    <tr><td>* Mentor비용 : 최소한의 비용</td></tr>
+                    <tr><td>일반 : 질문 회수 월 60회 이내</td></tr>
+                    <tr><td>special 1 : 질문 회수 월 60회 ~ 90회</td></tr>
+                    <tr><td>special 2 : 질문 회수 무제한</td></tr>
                     </tbody>
                 </table>
             </div>
+
+            <h2><img src="/assets/img/subimg/bullet01.jpg"/>&nbsp;무료서비스 이용 </h2>
+            <h3 class="margin-left-10"><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;신청</h3>
+            <h4 class="margin-left-10">&nbsp;&nbsp;- 사유 </h4>
+            <h4 class="margin-left-10">&nbsp;&nbsp;- 연락처 등 </h4>
+            <h3 class="margin-left-10"><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;자체 심사</h3>
+            <h3 class="margin-left-10"><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;무료서비스 이용권한 부여</h3>
+            <h4 class="margin-left-10">&nbsp;&nbsp;- 사용기간 </h4>
 
         </div>
     </div>
 </div>
 
 <%= render 'homes/footer' %>
-
-<!--
-<div class="container-fluid">
-<div class="container content">
-  <div class="col-md-12 margin-bottom-50">
-    <br/><br/><br/><br/>
-    <div class="col-md-6">
-      <br/>
-      <h1><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp; 누구에게나 open된 서비스</h1>
-      <h3><img src="/assets/img/subimg/bullet02.jpg"/> &nbsp; 초급(level 1) 웹강의 내용 등 자유롭게 검색, 이용</h3>
-      <h4>* guest로 login(ID : guest, password : guest)</h4>
-    </div>
-    <div class="col-md-4">
-      <img src="/assets/img/howerk.jpg" class="center-block">
-    </div>
-    <div class="col-md-2"></div>
-  </div>
-
-</div>
-
-</div>
-
-<div class="container-fluid bg-color-light">
-  <div class="container">
-    <div class="col-md-12">
-      <br/><br/>
-      <h1><img src="/assets/img/subimg/bullet01.jpg"/>&nbsp;유료서비스 종류 </h1>
-      <br/>
-    </div>
-
-    <div class="col-md-12 margin-bottom-50">
-      <div class="col-md-4">
-        <table class="table table-bordered" style="color: black; text-align: center;">
-          <thead style="background-color: #ccecf8">
-          <tr>
-            <th style="text-align: center; font-size: 15px;">학교(School Zone)</th>
-          </tr>
-          </thead>
-          <tbody style="font-size: 15px;">
-            <tr><td>가입방법 : 학교를 통해 가입</td></tr>
-            <tr><td>기본자료 : 학교명, 선생님, 학생의 ID, password</td></tr>
-            <tr><td>학교단위 Admin(관리자)화면 제공</td></tr>
-            <tr><td>Mentor : 학교 선생님</td></tr>
-            <tr><td>이용료 : 학생당 25,000원/월</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="col-md-4">
-        <table class="table table-bordered" style="color: black; text-align: center;">
-          <thead style="background-color: #8dd5f8">
-          <tr>
-            <th style="text-align: center; font-size: 15px;">학원 (Institute Zone)</th>
-          </tr>
-          </thead>
-          <tbody style="font-size: 15px;">
-          <tr><td>가입방법 : 학원을 통해 가입</td></tr>
-          <tr><td>기본자료 : 학원명, 선생님, 학생의 ID, password</td></tr>
-          <tr><td>학교단위 Admin(관리자)화면 제공</td></tr>
-          <tr><td>Mentor : 학원 선생님</td></tr>
-          <tr><td>이용료 : 학생당 25,000원/월</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="col-md-4">
-        <table class="table table-bordered" style="color: black; text-align: center;">
-          <thead style="background-color: #4194f8">
-          <tr>
-            <th style="text-align: center; font-size: 15px;">일반 (General Zone)</th>
-          </tr>
-          </thead>
-          <tbody style="font-size: 15px;">
-            <tr><td>가입방법 : 사이트에서 개인별 회원 가입 <img src="/assets/img/btn04.png" alt="결제하기" class="payMent" /></td></tr>
-            <tr><td>기본자료 : ID, password</td></tr>
-            <tr><td>Mentor : Eureka Math 소속 일반 선생님</td></tr>
-            <tr><td>이용료 : 학생당 25,000원/월 + α(Mentor비용)</td></tr>
-            <tr><td>* Mentor비용 : 최소한의 비용</td></tr>
-            <tr><td>일반 : 질문 회수 월 60회 이내</td></tr>
-            <tr><td>special 1 : 질문 회수 월 60회 ~ 90회</td></tr>
-            <tr><td>special 2 : 질문 회수 무제한</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div class="container">
-    <div class="col-md-12">
-      <br/><br/>
-      <h1><img src="/assets/img/subimg/bullet01.jpg"/>&nbsp;무료서비스 이용 </h1>
-      <h2><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;신청</h2>
-      <h4>&nbsp;- 사유 </h4>
-      <h4>&nbsp;- 연락처 등 </h4>
-      <h2><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;자체 심사</h2>
-      <h2><img src="/assets/img/subimg/bullet02.jpg"/>&nbsp;무료서비스 이용권한 부여</h2>
-      <h4>&nbsp;- 사용기간 </h4>
-    </div>
-    <div class="col-md-12 margin-bottom-50"></div>
-  </div>
-</div>-->
