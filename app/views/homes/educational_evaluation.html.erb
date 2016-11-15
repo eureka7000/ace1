@@ -1,194 +1,237 @@
 <!--=== indicate ===-->
 <div class="col-md-12 breadcrumbs">
-  <div class="container">
-    <h2 class="pull-left" style="font-weight:bold; font-size:30px; color:black; padding-top: 15px; padding-bottom: 15px;">교육(학습)평가</h2>
-  </div><!--/container-->
+    <div class="container">
+        <h2 class="pull-left" style="font-weight:bold; font-size:30px; color:black; padding-top: 15px; padding-bottom: 15px;">교육(학습)평가</h2>
+    </div><!--/container-->
 </div><!--/breadcrumbs-->
 <!--=== End indicate ===-->
 
+<div class="container-fluid">
 
-<!--=== 1단 ===-->
-<div class="container content-sm">
-  <div class="col-md-12">
-    <br/><br/>
-    <h1><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;학습 평가</h1><br/>
-    <h4>- 이름 : 홍길동</h4><br/>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1 margin-top-20">
+            <h2><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;자기 학습 평가</h2>
+            <h4>- 이름 : 홍길동</h4>
 
-    <div class="col-md-12 no-padding no-margin">
-      <div class="panel panel-dark-blue">
-        <div class="panel-heading">
-          <h3 style="color: white;">&nbsp;총괄학습평가</h3>
+            <div class="profile-edit tab-pane fade in active">
+                <div class="table-search-v1 margin-bottom-20">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th class="col-md-3">평가일</th>
+                                <th>개념</th>
+                                <th>하위개념</th>
+                                <th class="hidden-sm col-md-5">메모</th>
+                                <th style="width: 100px;">Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            <tr>
+                                <td>2016년 11월 11일 (금)</td>
+                                <td>삼각형의 닮음</td>
+                                <td>직각삼각형의 닮음</td>
+                                <td class="td-width">개념 이해가 잘 되었습니다! :)</td>
+                                <td>
+                                    <button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i>easy</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>2016년 11월 09일 (수)</td>
+                                <td>두 점 사이의 거리</td>
+                                <td>두 점 사이의 거리</td>
+                                <td class="td-width">이해하기가 까다로웠지만 강의 동영상을 보고 이해했습니다.</td>
+                                <td>
+                                    <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i>normal</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>2016년 11월 01일 (화)</td>
+                                <td>대칭차집합</td>
+                                <td>대칭차집합</td>
+                                <td class="td-width">이해하기 어려웠습니다.. :(</td>
+                                <td>
+                                    <button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i>difficult</button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!--
+            <div class="panel panel-dark-blue margin-top-20">
+                <div class="panel-heading">
+                    <h3 style="color: white;">&nbsp;총괄학습평가</h3>
+                </div>
+                <div class="panel-body no-padding text-center">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr style="font-size: 20px;">
+                            <th style="text-align: center;">소단원</th>
+                            <th style="text-align: center;">개념완료</th>
+                            <th style="text-align: center;">학습중</th>
+                            <th style="text-align: center;">비고</th>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 17px;">
+                        <tr>
+                            <td>2</td>
+                            <td>10</td>
+                            <td>2</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h4>- 학급완료 소단원 평가 </h4>
+            <h4 class="margin-bottom-30">- 소단원명 : </h4>
+
+            <h2><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;개념 평가 : (수준:중급) </h2>
+            <h4>- 학습수준 : 초급 </h4>
+
+
+            <div class="panel panel-dark-blue margin-bottom-40">
+                <div class="panel-heading">
+                    <h3 style="color: white;">&nbsp;단위개념표</h3>
+                </div>
+                <div class="panel-body no-padding no-margin">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
+                            <th colspan="2"style="text-align: center; ">자기평가</th>
+                            <th style="text-align: center;">Exercise</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
+                        </tr>
+                        <tr>
+                            <td>○ △ X</td>
+                            <td>comment</td>
+                            <td>맞은개수/전체</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>2</td>
+                            <td>1</td>
+                            <td>X</td>
+                            <td>조금 어렵다..</td>
+                            <td>2/5</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>1</td>
+                            <td>○</td>
+                            <td>이해 쏙쏙 잘된다!</td>
+                            <td>5/5</td>
+                            <td></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="panel panel-dark-blue margin-bottom-40">
+                <div class="panel-heading">
+                    <h3 style="color: white;">&nbsp;유형문제표</h3>
+                </div>
+                <div class="panel-body no-padding no-margin">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr style="font-size: 20px;">
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
+                            <th colspan="2"style="text-align: center; ">자기평가</th>
+                            <th style="text-align: center;">Exercise</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
+                        </tr>
+                        <tr style="font-size: 20px;">
+                            <td>○ △ X</td>
+                            <td>comment</td>
+                            <td>맞은개수/전체</td>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 17px;">
+                        <tr>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>△</td>
+                            <td>문제 풀기에 개념 이해가 부족한 것 같다..</td>
+                            <td>4/10</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>○</td>
+                            <td>문제가 술술 풀린다!</td>
+                            <td>9/10</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <h1><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;종합문제평가</h1><br/>
+            <h4>- 학습수준 : 초급 </h4>
+
+            <div class="panel panel-dark-blue margin-bottom-40">
+                <div class="panel-heading">
+                    <h3 style="color: white;">&nbsp;종합문제평가표</h3>
+                </div>
+                <div class="panel-body no-padding no-margin">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr style="font-size: 20px;">
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
+                            <th colspan="2"style="text-align: center; ">자기평가</th>
+                            <th style="text-align: center;">Exercise</th>
+                            <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
+                        </tr>
+                        <tr style="font-size: 20px;">
+                            <td>○ △ X</td>
+                            <td>comment</td>
+                            <td>맞은개수/전체</td>
+                        </tr>
+                        </thead>
+                        <tbody style="font-size: 17px;">
+                        <tr>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>△</td>
+                            <td>개념학습이 필요하다</td>
+                            <td>4/10</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>2</td>
+                            <td>○</td>
+                            <td>개념이해가 잘 되어 있다 </td>
+                            <td>9/10</td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> -->
+
+
         </div>
-        <div class="panel-body no-padding text-center">
-          <table class="table table-bordered">
-            <thead>
-            <tr style="font-size: 20px;">
-              <th style="text-align: center;">소단원</th>
-              <th style="text-align: center;">개념완료</th>
-              <th style="text-align: center;">학습중</th>
-              <th style="text-align: center;">비고</th>
-            </tr>
-            </thead>
-            <tbody style="font-size: 17px;">
-            <tr>
-              <td>2</td>
-              <td>10</td>
-              <td>2</td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
 
-    <h4>- 학급완료 소단원 평가 </h4>
-    <h4>- 소단원명 : </h4><br/><br/>
-  </div>
-
-
-
-  <div class="col-md-12">
-    <br/><br/>
-    <h1><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;개념 평가 : (수준:중급) </h1><br/>
-    <h4>- 학습수준 : 초급 </h4><br/>
-
-    <div class="col-md-12 no-padding no-margin">
-      <div class="panel panel-dark-blue margin-bottom-40">
-        <div class="panel-heading">
-          <h3 style="color: white;">&nbsp;단위개념표</h3>
-        </div>
-        <div class="panel-body no-padding no-margin">
-          <table class="table table-bordered text-center">
-            <thead>
-            <tr style="font-size: 20px;">
-              <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
-              <th colspan="2"style="text-align: center; ">자기평가</th>
-              <th style="text-align: center;">Exercise</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
-            </tr>
-            <tr style="font-size: 20px;">
-              <td>○ △ X</td>
-              <td>comment</td>
-              <td>맞은개수/전체</td>
-            </tr>
-            </thead>
-            <tbody style="font-size: 17px;">
-            <tr>
-              <td>2</td>
-              <td>1</td>
-              <td>X</td>
-              <td>조금 어렵다..</td>
-              <td>2/5</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>1</td>
-              <td>○</td>
-              <td>이해 쏙쏙 잘된다!</td>
-              <td>5/5</td>
-              <td></td>
-            </tr>
-
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-12 no-padding no-margin">
-      </br>
-      <div class="panel panel-dark-blue margin-bottom-40">
-        <div class="panel-heading">
-          <h3 style="color: white;">&nbsp;유형문제표</h3>
-        </div>
-        <div class="panel-body no-padding no-margin">
-          <table class="table table-bordered text-center">
-            <thead>
-            <tr style="font-size: 20px;">
-              <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
-              <th colspan="2"style="text-align: center; ">자기평가</th>
-              <th style="text-align: center;">Exercise</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
-            </tr>
-            <tr style="font-size: 20px;">
-              <td>○ △ X</td>
-              <td>comment</td>
-              <td>맞은개수/전체</td>
-            </tr>
-            </thead>
-            <tbody style="font-size: 17px;">
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>△</td>
-              <td>문제 풀기에 개념 이해가 부족한 것 같다..</td>
-              <td>4/10</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>○</td>
-              <td>문제가 술술 풀린다!</td>
-              <td>9/10</td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <br/><br/>
-    <h1><img src="/assets/img/subimg/bullet01.jpg"/> &nbsp;종합문제평가</h1><br/>
-    <h4>- 학습수준 : 초급 </h4>
-    <div class="col-md-12 no-padding no-margin">
-      </br>
-      <div class="panel panel-dark-blue margin-bottom-40">
-        <div class="panel-heading">
-          <h3 style="color: white;">&nbsp;종합문제평가표</h3>
-        </div>
-        <div class="panel-body no-padding no-margin">
-          <table class="table table-bordered text-center">
-            <thead>
-            <tr style="font-size: 20px;">
-              <th rowspan="2" style="text-align: center; vertical-align: top;">단위개념</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">수준</th>
-              <th colspan="2"style="text-align: center; ">자기평가</th>
-              <th style="text-align: center;">Exercise</th>
-              <th rowspan="2" style="text-align: center; vertical-align: top;">비고</th>
-            </tr>
-            <tr style="font-size: 20px;">
-              <td>○ △ X</td>
-              <td>comment</td>
-              <td>맞은개수/전체</td>
-            </tr>
-            </thead>
-            <tbody style="font-size: 17px;">
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>△</td>
-              <td>개념학습이 필요하다</td>
-              <td>4/10</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>2</td>
-              <td>○</td>
-              <td>개념이해가 잘 되어 있다 </td>
-              <td>9/10</td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
