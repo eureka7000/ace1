@@ -45,7 +45,10 @@
     
 </div>
 
-<button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>
+<div id="btn_tree" class="pull-right" style="display:none">
+    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>    
+    <button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
+</div>    
 
 <hr style="clear:both; margin: 0">
 
@@ -195,6 +198,10 @@
 
 <!-- no more exercise -->
 <%= render partial: 'modals/notice_no_exercise' %>
+
+<!-- 질문하기 Modal -->
+<%= render partial: 'modals/do_questions' %>
+<!-- 질문하기 Modal End -->
 
 <script type="text/javascript">
 
