@@ -459,7 +459,7 @@ class ContentsController < ApplicationController
                 
                 if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
                     
-                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
                     @concept_exercises.each do |concept_exercise|
                         @items << {
                             key: concept_exercise.id,
@@ -501,8 +501,8 @@ class ContentsController < ApplicationController
                 end    
                 
             elsif @step == 7
-                
-                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade = ?', @concept_id, "exercise", @grade)
+
+                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade <= ?', @concept_id, "exercise", @grade)
                 
                 
                 
