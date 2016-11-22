@@ -37,7 +37,7 @@
                                     <td><%= evaluation.unit_concept.concept.concept_name %></td>
                                     <td>
                                         <% if evaluation.unit_concept.exercise_yn == 'concept' %>
-                                        <a href="/contents/<%= evaluation.unit_concept_id %>">
+                                        <a href="/contents/<%= evaluation.unit_concept_id %>"></a>
                                         <% else %>
                                         <a href="/contents/exercise?unit_concept_id=<%= evaluation.unit_concept_id %>">    
                                         <% end %>    
@@ -46,13 +46,12 @@
                                     <td class="td-width"><%= evaluation.comment %></td>
                                     <td>
                                         <% if evaluation.evaluation == 'difficult' %>
-                                        <button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i>
+                                        <button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i><%= evaluation.evaluation %></button>
                                         <% elsif evaluation.evaluation == 'easy' %>
-                                        <button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i>
+                                        <button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i><%= evaluation.evaluation %></button>
                                         <% elsif evaluation.evaluation == 'normal' %>
-                                        <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i>
+                                        <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i><%= evaluation.evaluation %></button>
                                         <% end %>
-                                        <%= evaluation.evaluation %></button>
                                     </td>                                
                                     </tr>
                                     <% end %>

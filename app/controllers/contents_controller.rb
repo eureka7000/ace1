@@ -3,12 +3,52 @@ class ContentsController < ApplicationController
     before_action :authenticate_user!
     
     layout '/layouts/contents'
-    
+
     def by_level
         
     end    
-    
-    
+
+
+    def get_grade_list
+
+        query ="select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level "+
+        "from grade_unit_concepts a, concepts b, unit_concepts c "+
+        "where a.concept_id = b.id "+
+        "and b.id = c.concept_id "+
+        "and c.exercise_yn = 'concept' "+
+        "order by a.grade, a.chapter, a.category, a.sub_category"
+
+        @rs = GradeUnitConcept.find_by_sql(query)
+
+        ret = []
+
+        @rs.each do | rs |
+
+            tmp = {
+                grade: UnitConcept::CONTENTS_GRADES[rs.grade.to_i],
+                grade_code: rs.grade,
+                chapter: GradeUnitConcept::CHAPTERS[rs.chapter.to_i],
+                chapter_code: rs.chapter,
+                category: GradeUnitConcept::CATEGORIES[rs.category.to_i],
+                category_code: rs.category,
+                sub_category: GradeUnitConcept::SUB_CATEGORIES[rs.sub_category.to_i],
+                sub_category_code: rs.sub_category,
+                concept_id: rs.concept_id,
+                concept_name: rs.concept_name,
+                unit_concept_id: rs.unit_concept_id,
+                unit_concept_name: rs.unit_concept_name,
+                unit_concept_level: rs.unit_concept_level
+            }
+
+            ret << tmp
+
+            # logger.info "This is result" + "| #{rs. grade}" +" | #{rs. chapter}"+ " | #{rs. category}" + " | #{rs. sub_category}"+ " | #{rs. concept_id}" + " | #{rs. concept_name}" + " | #{rs. unit_concept_id}" + " | #{rs. unit_concept_name}" + " | #{rs. unit_concept_level}"
+        end
+
+        render :json => ret
+
+    end
+
     def get_chapter_list
        
         query = "select b.category, b.sub_category, a.concept_id, b.concept_code, b.concept_name, a.id, a.code, a.name, a.level, a.grade " +
@@ -40,11 +80,18 @@ class ContentsController < ApplicationController
         
         render :json => ret
         
-    end    
-    
+    end
+
     def exercise
         
         @exercise_yn = true
+        @view_type = params[:view_type]
+        @grade = params[:grade]
+        @chapter = params[:chapter]
+        @category = params[:category]
+        @sub_category = params[:sub_category]
+        @concept_id = params[:concept_id]
+        @step = params[:step]
 
         if params[:exercise_type] == "concept_exercise"
             
@@ -73,8 +120,7 @@ class ContentsController < ApplicationController
                     @concept_answers << unit_concept_desc    
                 end        
             
-            end                
-                        
+            end
             
             @exercise_type = 'concept_exercise'
             
@@ -116,7 +162,7 @@ class ContentsController < ApplicationController
 
 
         if @unit_concept.exercise_yn == 'exercise'
-            
+
             @exercise = @unit_concept
             
             # 유형문제일 경우에만 유사문제 조회, 종합문제는 유사문제가 없음.
