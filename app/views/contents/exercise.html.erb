@@ -20,47 +20,35 @@
 <div class="btn-group" style="position:relative; top: 13px; left: 10px">
 
     <% if @exercise_type == 'unit_concept_exercise' %>
-        <button type="button" class="btn-u btn-u-blue btn-u-xs">
-            <i class="fa fa-cloud"></i>
-            유사문제
-        </button>
-
-        <button type="button" class="btn-u btn-u-blue btn-u-xs btn-u-split-blue dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-angle-down"></i>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-
-        <ul class="dropdown-menu" role="menu">
-            <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
-                <li>
-                    <% if @view_type == '2' %><!-- 유사문제 경로 설정 -->
-                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>&view_type=<%= @view_type %>&step=8&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&exercise_type=unit_concept_exercise">
-                    <% else %>
-                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>">
-                    <% end %>
-                    <% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
-                </li>
-            <% end %>
-        </ul>
+    <button type="button" class="btn-u btn-u-blue btn-u-xs">
+        <i class="fa fa-cloud"></i>
+        유사문제
+    </button>
+    
+    <button type="button" class="btn-u btn-u-blue btn-u-xs btn-u-split-blue dropdown-toggle" data-toggle="dropdown">
+        <i class="fa fa-angle-down"></i>
+        <span class="sr-only">Toggle Dropdown</span>                            
+    </button>
+    
+    <ul class="dropdown-menu" role="menu">
+        <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
+    <li><a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>"><% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a> </li>            
+        <% end %>    
+    </ul>
     <% end %>
-
-    <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
-        <% if @unit_concept.get_next_exercise_at_view_type_2.blank? %>
-            <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% else %>
-            <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% end %>
+    
+    <% if @unit_concept.get_next_exercise.blank? %>
+    <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
     <% else %>
-        <% if @unit_concept.get_next_exercise.blank? %>
-            <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% else %>
-            <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% end %>
+    <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
     <% end %>
-
+    
 </div>
 
-<button id="btn_tree" class="btn btn-info btn-sm rounded" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>
+<div id="btn_tree" class="pull-right" style="display:none">
+    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>    
+    <button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
+</div>    
 
 <hr style="clear:both; margin: 0">
 
@@ -211,7 +199,9 @@
 <!-- no more exercise -->
 <%= render partial: 'modals/notice_no_exercise' %>
 
-<%= render partial: 'modals/notice_no_exercise_at_view_type_2' if @view_type == '2' %>
+<!-- 질문하기 Modal -->
+<%= render partial: 'modals/do_questions' %>
+<!-- 질문하기 Modal End -->
 
 <script type="text/javascript">
 

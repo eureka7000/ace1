@@ -1,0 +1,55 @@
+<div id="m" class="modal fade" id="question" role="dialog">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form action="/questions" id="new_question" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+
+                <%= token_tag nil %>
+
+                <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
+                <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
+                <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
+                <input type="hidden" name="question[confirm_yn]" value="N" />
+                <input type="hidden" name="url" value="<%= request.original_url %>"/>
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="modal-title">
+                        <h4><span style="color: green"><i class="fa fa-comments-o"></i></span> 질문하기</h4>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-2" style="text-align:left">제목</div>
+                        <div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-2" style="text-align:left">내용</div>
+                        <div class="col-md-10">
+                            <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-2" style="text-align:left">파일첨부</div>
+                        <div class="col-md-10">
+                            <input type="file" id="question_file" name="question[file_name]" rows="10" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn-u rounded btn-u-blue" type="submit">보내기</button>
+                </div>
+                
+            </form>
+
+        </div>
+        
+    </div>
+    
+</div>
