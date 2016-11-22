@@ -20,35 +20,52 @@
 <div class="btn-group" style="position:relative; top: 13px; left: 10px">
 
     <% if @exercise_type == 'unit_concept_exercise' %>
-    <button type="button" class="btn-u btn-u-blue btn-u-xs">
-        <i class="fa fa-cloud"></i>
-        유사문제
-    </button>
-    
-    <button type="button" class="btn-u btn-u-blue btn-u-xs btn-u-split-blue dropdown-toggle" data-toggle="dropdown">
-        <i class="fa fa-angle-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>                            
-    </button>
-    
-    <ul class="dropdown-menu" role="menu">
-        <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
-    <li><a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>"><% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a> </li>            
-        <% end %>    
-    </ul>
+        <button type="button" class="btn-u btn-u-blue btn-u-xs">
+            <i class="fa fa-cloud"></i>
+            유사문제
+        </button>
+
+        <button type="button" class="btn-u btn-u-blue btn-u-xs btn-u-split-blue dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-angle-down"></i>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+
+        <ul class="dropdown-menu" role="menu">
+            <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
+                <li>
+                    <% if @view_type == '2' %><!-- 유사문제 경로 설정 -->
+                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>&view_type=<%= @view_type %>&step=8&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&exercise_type=unit_concept_exercise">
+                    <% else %>
+                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>">
+                    <% end %>
+                    <% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
+                </li>
+            <% end %>
+        </ul>
     <% end %>
-    
-    <% if @unit_concept.get_next_exercise.blank? %>
-    <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+
+    <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
+        <% if @unit_concept.get_next_exercise_at_view_type_2.blank? %>
+            <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <% else %>
+            <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <% end %>
     <% else %>
-    <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <% if @unit_concept.get_next_exercise.blank? %>
+            <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <% else %>
+            <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+        <% end %>
     <% end %>
-    
+
+
 </div>
 
 <div id="btn_tree" class="pull-right" style="display:none">
-    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>    
-    <button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
-</div>    
+    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm rounded pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>
+    <button id="btn_tree" class="btn btn-info btn-sm rounded" style="margin-top: 10px; margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
+</div>
 
 <hr style="clear:both; margin: 0">
 
@@ -79,26 +96,26 @@
         <% @concept_answers.each do | concept_answer | %>
         <img hidden class="solution" src="<%= concept_answer.file_name %>" />
         <% end %>
-        
+
         <a href="#s" data-toggle="modal" style="display:none" class="btn-u rounded btn-u-yellow margin-top-20 margin-bottom-20 solution">자기 평가</a>
-        
+
     </div>
-    
+
     <div id="concept_desc" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">
         <% @concept_descs.each_with_index do | concept_desc, index | %>
         <img id="concept_desc_<%= index %>" src="<%= concept_desc.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
-        
+
         <button id="concept_desc_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
             다음
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
-        
+
         <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20" <% if @concept_descs.count > 1 %>style="display:none"<% end %> onclick="showTab('concept_solution')"> 문제풀이</a>
     </div>
-    
+
     <!-- 문제풀이 -->
-    <div id="concept_solution" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">    
+    <div id="concept_solution" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">
         <% @solutions.each_with_index do | solution, index | %>
         <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="concept_solution_<%= index %>" <%= "hidden" if index > 0 %> >
             <img src="<%= solution.file_name %>" class="img-responsive" style="width:100%;"/>
@@ -124,17 +141,17 @@
             <% end %>
         </div>
         <% end %>
-        
+
         <button id="concept_solution_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @solutions.count < 2 %>" type="button" onclick="next('concept_solution', <%= @solutions.count %>)" >
             다음
             <span id="concept_solution_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @solutions.count - 1 %></span>
         </button>
-        
-        <a href="#" id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20"  style="display:none" onclick="showTab('concept_video')"> 동영상</a>        
+
+        <a href="#" id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20"  style="display:none" onclick="showTab('concept_video')"> 동영상</a>
 
     </div>
     <!-- Tab 문제풀이 END -->
-    
+
     <!-- Video -->
     <div id="concept_video" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">
         <% @videos.each do | video | %>
@@ -145,10 +162,10 @@
         <% end %>
     </div>
     <!-- Video End -->
-    
+
     <!-- Print -->
-    <div id="concept_print" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">    
-    
+    <div id="concept_print" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">
+
         <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
 
             <% @concepts.each do | concept | %>
@@ -156,7 +173,7 @@
             <% end %>
 
             <br/>
-        
+
             <% @links.each do | link | %>
             &nbsp;&nbsp;<span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
                 <i class="fa fa-circle"></i>&nbsp;
@@ -166,11 +183,11 @@
             <br>
             <% end %>
             <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
-            
+
         </div>
 
         <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
-            
+
             <% @concept_descs.each do | concept_desc | %>
             <img src="<%= concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
             <% end %>
@@ -180,12 +197,12 @@
             <% end %>
             <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
         </div>
-        
+
         <input type="button" id="printBtn" onclick="printing('concept_print')" value="프린트하기" class="btn-u rounded btn-u-orange" style="float:right"/>
-        
+
     </div>
     <!-- Print End -->
-        
+
 </div>
 
 <!-- 관련개념 Modal -->
@@ -198,8 +215,10 @@
 
 <!-- no more exercise -->
 <%= render partial: 'modals/notice_no_exercise' %>
+<%= render partial: 'modals/notice_no_exercise_at_view_type_2' if @view_type == '2' %>
 
-<!-- 질문하기 Modal -->
+
+    <!-- 질문하기 Modal -->
 <%= render partial: 'modals/do_questions' %>
 <!-- 질문하기 Modal End -->
 
@@ -210,9 +229,9 @@
         concept_desc: 1,
         concept_solution: 1
     };
-    
+
     $(document).ready(function(){
-        
+
         $('#new_unit_concept_self_evaluation').submit(function () {
             $('#loading').show();
             if ( !$('#evaluation_easy').is(":checked") && !$('#evaluation_normal').is(":checked") && !$('#evaluation_difficult').is(":checked") ) {
@@ -225,29 +244,29 @@
                 return false;
             }
         });
-        
+
     });
-    
+
 
     function next(opt, count) {
         $("#" + opt + "_" + NUMS[opt]).show();
         NUMS[opt]++;
         $("#" + opt + "_badge").text(count-NUMS[opt]);
-    
+
         if (count == NUMS[opt]) {
             $('#' + opt + '_btn').hide();
             $('#' + opt + "_go_btn").show();
-            update_study_history(opt, 'finish');            
+            update_study_history(opt, 'finish');
         }
     }
-    
+
     function viewSolution() {
         // $('#viewSolutionBtn').hide();
         // $('#concept_go_btn').hide();
-        
+
         $('.solution').show();
     }
-    
+
     function saveOx(unit_concept_desc_id, t) {
 
         if (!$('#o' + unit_concept_desc_id).is(":checked") && !$('#x' + unit_concept_desc_id).is(":checked") ) {
@@ -279,7 +298,7 @@
             success : function(data) {
                 $(t).attr("disabled", true);
                 $(t).removeClass('btn-u-orange');
-                $(t).addClass('btn-u-light-grey');                
+                $(t).addClass('btn-u-light-grey');
                 $('#loading').hide();
             },
             error : function(){
@@ -287,10 +306,10 @@
                 $('#loading').hide();
             }
         });
-    }    
-    
+    }
+
     function printing(printId) {
-        
+
         var printElements = document.getElementById(printId).innerHTML;
         var allPage = document.body.innerHTML;
 
@@ -301,7 +320,7 @@
         document.body.innerHTML = allPage;
         location.reload();
     }
-       
+
 
 </script>
 

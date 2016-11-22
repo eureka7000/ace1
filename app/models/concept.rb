@@ -171,8 +171,7 @@ class Concept < ActiveRecord::Base
                 ret = Concept.where(category: self.category, sub_category: key, exercise_yn: 'concept').order(:concept_code).first
                 return ret
             end    
-            
-            
+
             if key == self.sub_category
                 current = true
             end    
@@ -181,7 +180,57 @@ class Concept < ActiveRecord::Base
         
         nil
         
-    end     
-    
+    end
+
+
+
+    def get_next_exercise_at_view_type_2
+        exercises = Concept.where(category: self.category, sub_category: self.sub_category, exercise_yn: 'exercise', grade: self.grade).order(:concept_code)
+        current = false
+        ret = ""
+
+        exercises.each_with_index do | exercise, index |
+
+            if current
+                ret = "/contents/exercise?unit_concept_id=#{exercise.id}&exercise_type=concept_exercise"
+                return ret
+            end
+
+            if exercise.id == self.id && index != exercises.count
+                current = true
+            end
+
+        end
+
+        ret
+    end
+
+    def get_next_concept_at_view_type_2(sub_category)
+
+        category = sub_category.to_s.slice(0, 5)
+
+        query = "select grade, chapter, category, sub_category, concept_id, concept_name, unit_concept_id, unit_concept_name, unit_concept_level
+from (
+	select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+	from grade_unit_concepts a, concepts b, unit_concepts c
+	where a.concept_id = b.id
+	and b.id = c.concept_id
+	order by a.grade, a.chapter, a.category, a.sub_category) e
+where e.category = #{category}
+order by grade, chapter, sub_category, concept_id;"
+
+        grade_unit_concepts = GradeUnitConcept.find_by_sql(query)
+
+        grade_unit_concepts.each_with_index do | grade_unit_concept, index |
+
+            if grade_unit_concept.sub_category > sub_category && index != grade_unit_concepts.count
+                return grade_unit_concept
+            end
+
+        end
+
+        nil
+
+    end
 
 end

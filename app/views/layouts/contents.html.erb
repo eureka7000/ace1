@@ -52,7 +52,17 @@
     
     <!-- JS Global Compulsory -->
     <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>    
+    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- MathJAX -->
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
 
 </head>
 <body style="height:100%">
@@ -129,10 +139,11 @@
         
         <div id="treeview" class="col-md-3" style="height: 100%;">
             
-            <button class="btn btn-info btn-sm" style="margin-bottom: 10px; margin-top: 10px" onclick="view_change('forward')">목차숨기기</button>
+            <button class="btn btn-info btn-sm rounded" style="margin-bottom: 10px; margin-top: 10px" onclick="view_change('forward')">목차숨기기</button>
             
             <div id="tree_frame" class="row" style="height:-webkit-calc(50% - 25px); border:1px solid lightgrey; overflow-y: auto">
-                <%= render partial: 'modals/chapter_tree_view' %>
+                <%= render partial: 'modals/chapter_tree_view' unless @view_type == '2' %>
+                <%= render partial: 'modals/grade_tree_view' if @view_type == '2' %>
             </div>
             
             <div class="row profile" style="height:-webkit-calc(50% - 25px); border: 1px solid lightgrey; overflow-y: auto">

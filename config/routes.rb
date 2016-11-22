@@ -42,6 +42,7 @@ Rails.application.routes.draw do
     get '/contents/exercise' => 'contents#exercise'
     get '/contents/get_chapter_list' => 'contents#get_chapter_list'
     get '/contents/by_level' => 'contents#by_level'
+    get '/contents/get_grade_list' => 'contents#get_grade_list'
     resources :contents
     
     get '/concepts/get_concepts' => 'concepts#get_concepts'
