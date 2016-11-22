@@ -30,7 +30,7 @@ class PrintsController < ApplicationController
                     and a.exercise_yn = 'concept'
                     and b.exercise_yn = 'exercise'
                     and c.desc_type = '1'
-                    and b.grade = '#{grade}'
+                    and b.grade in (#{grade})
                     and a.id = b.concept_id
                     and b.id = c.unit_concept_id
                     
@@ -42,7 +42,7 @@ class PrintsController < ApplicationController
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'
                     and a.id = c.concept_id
-                    and a.grade = '#{grade}' 
+                    and a.grade in (#{grade}) 
                     and c.desc_type = '1'
                 ) tot
                 order by question_type, tot.concept_code, tot.code, tot.memo "
@@ -70,7 +70,7 @@ class PrintsController < ApplicationController
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'concept'
     	            and b.exercise_yn = 'exercise'
-                    and b.grade = '#{grade}'
+                    and b.grade in (#{grade})
                     and c.desc_type in ('7','3')
                     and a.id = b.concept_id
                     and b.id = c.unit_concept_id
@@ -82,7 +82,7 @@ class PrintsController < ApplicationController
                     from concepts a, concept_exercises c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'
-                    and a.grade = '#{grade}' 
+                    and a.grade in (#{grade}) 
                     and a.id = c.concept_id
                     and c.desc_type in ('7','3')
                 ) tot
@@ -110,7 +110,7 @@ class PrintsController < ApplicationController
                  where a.sub_category = '#{sub_category}'
                  and a.exercise_yn = 'concept'
                  and b.exercise_yn = 'concept'
-                 and b.grade = '#{grade}'
+                 and b.grade in (#{grade}) 
                  and c.desc_type = '3'
                  and a.id = b.concept_id
                  and b.id = c.unit_concept_id

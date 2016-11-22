@@ -2,15 +2,10 @@
     
     <div class="col-md-1"><button onclick="print()">print</button></div>
     
-    <div class="col-md-1">
-        <select id="grade" class="form-control" style="width: 100px;">
-        <option value="1">중1</option>
-        <option value="2">중2</option>
-        <option value="3">중3</option>
-        <option value="4">고1</option>
-        <option value="5">고2 &amp; 고3 문과</option>
-        <option value="6">고2 &amp; 고3 이과</option>
-        </select>
+    <div class="col-md-5">
+        <% UnitConcept::CONTENTS_GRADES.each_pair do | key, value | %>
+        <input type="checkbox" name="grade" value="<%= key %>" <%= "checked" if key == 1 %> >&nbsp;<%= value %> &nbsp; &nbsp; &nbsp;
+        <% end %>
     </div>    
     
 </div>    
@@ -50,7 +45,18 @@
         $('#book').html('');
         totalHeight = 0;
         
-        var grade = $('#grade').val();
+        // var grade = $("input[name='grade']").is(":checked").val();
+        var grade = "";
+        
+        $('input:checkbox[name="grade"]').each(function() {
+              if(this.checked) {
+                  grade += this.value + ",";
+              }
+        });
+        
+        if (grade.substring(grade.length-1,grade.length) == ',') {
+            grade = grade.substring(0, grade.length-1);
+        };
         
         var url = "/prints/get_question_list?sub_category=" + sub_category + "&grade=" + grade;
 
