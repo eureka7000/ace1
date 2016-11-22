@@ -128,3 +128,7 @@ a.unify_a:hover {
     width:100%;
     margin-top: 10px;
 }
+
+#ms-my-select {
+    width: 100% !important;
+}

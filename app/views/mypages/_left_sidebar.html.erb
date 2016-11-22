@@ -42,6 +42,10 @@
         
         <li class="list-group-item <%= 'active' if @click == 'payment'%>">
             <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결제 정보</a>
+        </li>
+        
+        <li class="list-group-item <%= 'active' if @click == 'textbook'%>">
+            <a href="/mypages/request_textbook"><i class="fa fa-book"></i> 교재 신청</a>
         </li>        
         
     <% end %>

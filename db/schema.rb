@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161114093048) do
+ActiveRecord::Schema.define(version: 20161122051824) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -170,6 +170,8 @@ ActiveRecord::Schema.define(version: 20161114093048) do
     t.string   "paypal_payer_id", limit: 255
     t.string   "pay_gateway",     limit: 255
     t.string   "currency",        limit: 255
+    t.string   "item_type",       limit: 255
+    t.string   "item_list_pay",   limit: 255
   end
 
   create_table "questions", force: :cascade do |t|

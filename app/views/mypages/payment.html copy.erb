@@ -1,0 +1,290 @@
+<!--=== Profile ===-->
+<div class="container profile">
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <!-- Profile Content -->
+        <div class="col-md-9 margin-top-20">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">결제정보</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        
+                        <div id="payment" class="profile-edit tab-pane fade in active">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제하기</h3>
+                            
+                            <div class="panel-group acc-v1">
+                                
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#kg_inicis" href="#collapse-One" aria-expanded="true">
+                                                KG INICIS (KRW - KOREA)
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse-One" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            
+                                            <div class="row">
+                                                
+                                                <form id="SendPayForm" name="" class="sky-form" method="POST">
+                                
+                                                <%= token_tag nil %>
+                                
+                                                <input type="hidden" name="version" value="1.0">  
+                                                <input type="hidden" name="mid" value="<%= @mid %>" >
+                                                <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
+                                                <input type="hidden" name="currency" value="WON">
+                                                <input type="hidden" name="buyername" value="<%= current_user.user_name %>">
+                                                <input type="hidden" name="buyertel" value="<%= current_user.phone %>">
+                                                <input type="hidden" name="buyeremail" value="<%= current_user.email %>">
+                                                <input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">
+                                                <input type="hidden" name="signature" id="signature" value=''>
+                                                <input type="hidden" name="returnUrl" value="<%= root_url %>payments/payment_return">
+                                                <input type="hidden" name="mKey" value='<%= @m_key %>'>
+                                                <input type="hidden" name="price" id="price" value='25000'>
+                                                <input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">
+
+                                                <dl class="dl-horizontal">
+                                                <dt class="payment_dt">상품</dt>
+                                                <dd class="payment_dd">
+                                                    <section>
+                                                        <select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">
+                                                        <option value="1">1개월 (&#8361; 25,000)</option>
+                                                        <option value="2">2개월 (&#8361; 50,000)</option>
+                                                        <option value="3">3개월 (&#8361; 75,000)</option>
+                                                        <option value="4">4개월 (&#8361; 100,000)</option>
+                                                        <option value="5">5개월 (&#8361; 125,000)</option>
+                                                        <option value="6">6개월 (&#8361; 150,000)</option>
+                                                        </select>    
+                                                    </section>
+                                                </dd>
+                            
+                                                <dt class="payment_dt">결제수단</dt>
+                                                <dd class="payment_dd">
+                                                    <section>
+                                                        <select name="gopaymethod" id="gopaymethod" class="form-control">
+                                                        <% InicisPayment::GO_PAY_METHOD.each_pair do |key, value| %>
+                                                        <option value="<%= key %>" ><%= value %></option>
+                                                        <% end %>
+                                                        </select>
+                                                    </section>
+                                                </dd>
+                                                
+                                                <dt></dt>
+                                                <dd class="payment_dd"><button type="button" onclick="pay()" class="btn-u btn-u-blue" style="float:left">결제하기</button></dd>
+                                                
+                                                </dl>
+                                                
+
+                                                </form>
+                            
+                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                    
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Two" aria-expanded="false">
+                                                Paypal (USD - OTHER)
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    
+                                    <div id="collapse-Two" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                
+                                                <form id="paypal_form" name="" class="sky-form" action="/payments/paypal" method="POST">
+                                
+                                                <%= token_tag nil %>
+                                
+                                                <input type="hidden" name="version" value="1.0">  
+                                                <input type="hidden" name="mid" value="<%= @mid %>" >
+                                                <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
+                                                <input type="hidden" name="currency" value="WON">
+                                                <input type="hidden" name="buyername" value="<%= current_user.user_name %>">
+                                                <input type="hidden" name="buyertel" value="<%= current_user.phone %>">
+                                                <input type="hidden" name="buyeremail" value="<%= current_user.email %>">
+                                                <input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">
+                                                <input type="hidden" name="signature" id="signature" value=''>
+                                                <input type="hidden" name="returnUrl" value="<%= root_url %>payments/payment_return">
+                                                <input type="hidden" name="mKey" value='<%= @m_key %>'>
+                                                <input type="hidden" name="price" id="price" value='25000'>
+                                                <input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">
+
+                                                <dl class="dl-horizontal">
+                                                <dt class="payment_dt">상품</dt>
+                                                <dd class="payment_dd">
+                                                    <section>
+                                                        <select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">
+                                                        <option value="1">1 Month ($ 25)</option>
+                                                        <option value="2">2 Months ($ 50)</option>
+                                                        <option value="3">3 Months ($ 75)</option>
+                                                        <option value="4">4 Months ($ 100)</option>
+                                                        <option value="5">5 Months ($ 125)</option>
+                                                        <option value="6">6 Months ($ 150)</option>
+                                                        </select>    
+                                                    </section>
+                                                </dd>
+                                                </dl>
+                                                
+                                                <div class="col-md-3"></div>
+
+                                                </form>    
+                                                
+                                                <script>
+                                                window.paypalCheckoutReady = function() {
+                                                    paypal.checkout.setup('UYLV5U5RAXA7A', {
+                                                        environment: 'sandbox',
+                                                        container: 'paypal_form'
+                                                    });
+                                                };
+                                                </script>
+                                                <script src="//www.paypalobjects.com/api/checkout.js" async></script>                                                                                            
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>                            
+                            
+                        </div> 
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">                           
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <% unless notice.blank? %>
+                                <p class="alert alert-warning"><%= notice %></p>
+                            <% end %>
+                            
+                            <% unless alert.blank? %>
+                                <p class="alert alert-danger"><%= alert %></p>
+                            <% end %>
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-calendar"></i> 계정만료일</h3>
+                            
+                            <div class="heading heading-v4">
+                                <h2><%= current_user.expire_date.nil? ? "아직 결제하지 않았습니다." : current_user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y년 %m월 %d일') %></h2>
+                            </div>
+                            
+                        </div>    
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line  icon-credit-card"></i> 결제이력</h3>
+                            
+							<table class="table">
+                            <thead>
+                            <th>결제일</th>
+                            <th>서비스</th>
+                            <th>결제수단</th>                            
+                            <th><i class="fa fa-cog"></i></th>
+                            </thead>
+                            
+                            <tbody>
+                            <% if @payments.count == 0 %>
+                            <tr>
+                            <td colspan="5" style="text-align:center"><strong>결제이력이 없습니다.</strong></td>
+                            </tr>
+                            <% end %>
+                            
+                            <% @payments.each do |payment| %>
+                            <tr>
+                            <td><%= payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>
+                            <td><%= payment.service_name %></td>
+                            <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
+                            <td></td>
+                            <% end %>
+                            </tbody>
+                            </table>
+								
+                        </div>
+                        
+                        
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>                
+
+<% if Rails.env.production? %>
+<script language="javascript" type="text/javascript" src="http://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% else %>
+<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% end %>
+
+
+<script type="text/javascript">
+
+    function pay() {
+    
+        var url = "/payments";
+    
+        var data = {
+            price: $('#price').val(),
+            timestamp: $('#timestamp').val(),
+            "payment" : {
+                "service_name" : $('#goodname').val(), 
+                "amount" : $('#price').val(),
+                "oid" : $('#oid').val(),
+                "pay_method" : $('#gopaymethod').val()
+            }
+        }
+    
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                $('#signature').val(data.signature);
+                INIStdPay.pay('SendPayForm');
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });     
+        
+    }
+    
+
+    function goodChanged() {
+        var price = parseInt($('#goodname').val()) * 25000;
+        $('#price').val(price);
+    }
+    
+
+</script>
+
+<script src="http://www.paypalobjects.com/api/checkout.js" async></script>

@@ -176,8 +176,17 @@ class PaymentsController < ApplicationController
         @payment_logs = PaymentLog.where('moid = ?', @payment.oid)
         render :layout => 'layouts/admin_main'
     end
+    
 
     def create
+
+        item_type = params[:payment][:item_type]
+        service_name = params[:payment][:service_name]
+        item_list_pay = params[:payment][:item_list_pay]
+        
+        unless item_type == "textbook"
+            service_name += 'Month'.pluralize(params[:payment][:service_name].to_i)
+        end    
 
         @payment = Payment.find_by_oid(params[:payment][:oid])
         
@@ -187,12 +196,14 @@ class PaymentsController < ApplicationController
             
         @payment.user_id = current_user.id
         @payment.amount = params[:payment][:amount]
-        @payment.service_name = params[:payment][:service_name] + 'Month'.pluralize(params[:payment][:service_name].to_i)
+        @payment.service_name = params[:payment][:service_name]
         @payment.oid = params[:payment][:oid]
         @payment.payment_status = 'processing'
         @payment.pay_method = params[:payment][:pay_method]
         @payment.pay_gateway = 'inicis'
         @payment.currency = 'KRW'
+        @payment.item_type = item_type
+        @payment.item_list_pay = item_list_pay
       
         if @payment.save
             tmp = {

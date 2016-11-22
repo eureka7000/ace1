@@ -3,11 +3,41 @@ class MypagesController < ApplicationController
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => :payment_return
     
+
+    def request_textbook
+        
+        @click = 'textbook'
+        @mid = Rails.application.config.inicis[:mid]
+        # @order_number = current_user.id.to_s + "#" + Time.now().strftime('%Y%m%d%H%M%S')
+        @price = 1000
+        @timestamp = DateTime.now.strftime('%Q')
+        @order_number = @mid + "_" + @timestamp        
+        @params = {
+            oid: @order_number,
+            price: @price,
+            timestamp: @timestamp
+        }
+
+        @sign = InicisPayment.make_hash(@params.to_query)  
+        @m_key = InicisPayment.make_hash(Rails.application.config.inicis[:sign_key])
+        
+        # 결제이력
+        @payments = Payment.where('user_id = ? and payment_status = ?',current_user.id, 'paid').order(id: :desc)
+
+
+        # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+        #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        # end
+        
+    end    
+
+
     def study_progress_detail
         @click = 'study_progress'
         @study_histories = StudyHistory.get_study_history_detail(params[:user_id])
         @student = User.find(params[:user_id])
     end    
+
 
     def study_progress_check
         @click = 'study_progress'
@@ -17,6 +47,7 @@ class MypagesController < ApplicationController
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         end
     end    
+
 
     def payment
         

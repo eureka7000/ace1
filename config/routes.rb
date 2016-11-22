@@ -54,6 +54,7 @@ Rails.application.routes.draw do
     post 'payments/paypal' => 'payments#paypal'
     get  'payments/paypal_payment_return' => 'payments#paypal_payment_return'
     post 'payments/paypal_confirm' => 'payments#paypal_confirm'
+    # post 'payments/textbook' => 'payments#textbook'
     resources :payments
 
     get 'teachers/students_list' => 'teachers#students_list'
@@ -86,6 +87,7 @@ Rails.application.routes.draw do
     post 'mypages/user_image_upload' => 'mypages#user_image_upload'
     get  'mypages/study_progress_check' => 'mypages#study_progress_check'
     get  'mypages/study_progress_detail' => 'mypages#study_progress_detail'
+    get  'mypages/request_textbook' => 'mypages#request_textbook'
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'

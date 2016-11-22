@@ -1,0 +1,191 @@
+<!--=== Profile ===-->
+<div class="container profile">
+    
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <!-- Profile Content -->
+        <div class="col-md-9 margin-top-20">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">교재 신청</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        
+                        <div id="payment" class="profile-edit tab-pane fade in active">
+                            
+                            <form id="SendPayForm" name="" class="sky-form" method="POST">
+                                
+                            <%= token_tag nil %>
+                                
+                            <input type="hidden" name="version" value="1.0">  
+                            <input type="hidden" name="mid" value="<%= @mid %>" >
+                            <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
+                            <input type="hidden" name="currency" value="WON">
+                            <input type="hidden" name="buyername" value="<%= current_user.user_name %>">
+                            <input type="hidden" name="buyertel" value="<%= current_user.phone %>">
+                            <input type="hidden" name="buyeremail" value="<%= current_user.email %>">
+                            <input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">
+                            <input type="hidden" name="signature" id="signature" value=''>
+                            <input type="hidden" name="returnUrl" value="<%= root_url %>payments/payment_return">
+                            <input type="hidden" name="mKey" value='<%= @m_key %>'>
+                            <input type="hidden" name="price" id="price" value='3000'>
+                            <input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">
+                            <input type="hidden" id="goodname" name="goodname" value="" />
+
+                            <dl class="dl-horizontal">
+                            <dt class="payment_dt">교재</dt>
+                            <dd class="payment_dd">
+                                <section>
+                                    <select multiple="multiple" id="my-select" name="users[]" >
+                                    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                    <option value="<%= value %>"><%= value %></option>
+                                    <% end %>    
+                                    </select>
+                                </section>
+                            </dd>
+                                
+                            <dt class="payment_dt">금액</dt>
+                            <dd class="payment_dd">
+                                <section style="display:flex">
+                                    <input id="totalPrice" type="text" class="form-control pull-left" style="width:15%;" read-only value="" />
+                                </section>
+                            </dd>
+                                
+                            <dt class="payment_dt">결제수단</dt>
+                            <dd class="payment_dd">
+                                <section>
+                                    <select name="gopaymethod" id="gopaymethod" class="form-control">
+                                    <% InicisPayment::GO_PAY_METHOD.each_pair do |key, value| %>
+                                    <option value="<%= key %>" ><%= value %></option>
+                                    <% end %>
+                                    </select>
+                                </section>
+                            </dd>
+                                                
+                            <dt></dt>
+                            <dd class="payment_dd"><button type="button" onclick="pay()" class="btn-u btn-u-blue" style="float:left">결제하기</button></dd>
+                            </dl>
+                            </form>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div> 
+                        
+</div>                
+
+<% if Rails.env.production? %>
+<script language="javascript" type="text/javascript" src="http://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% else %>
+<script language="javascript" type="text/javascript" src="https://stgstdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
+<% end %>
+
+
+<script type="text/javascript">
+
+    function pay() {
+    
+        var url = "/payments";
+    
+        var data = {
+            price: $('#totalPrice').val(),
+            timestamp: $('#timestamp').val(),
+            "payment" : {
+                "service_name" : "교재구입", 
+                "amount" : $('#totalPrice').val(),
+                "oid" : $('#oid').val(),
+                "pay_method" : $('#gopaymethod').val(),
+                "item_type" : "textbook",
+                "item_list_pay" : $('#my-select').val()
+            }
+        }
+    
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                $('#signature').val(data.signature);
+                INIStdPay.pay('SendPayForm');
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });     
+        
+    }
+    
+
+    jQuery(document).ready(function() {
+        
+        $('#my-select').multiSelect({
+          selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
+          selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+          afterInit: function(ms){
+              
+            var that = this,
+                $selectableSearch = that.$selectableUl.prev(),
+                $selectionSearch = that.$selectionUl.prev(),
+                selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+            that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+            .on('keydown', function(e){
+              if (e.which === 40){
+                that.$selectableUl.focus();
+                return false;
+              }
+            });
+
+            that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+            .on('keydown', function(e){
+              if (e.which == 40){
+                that.$selectionUl.focus();
+                return false;
+              }
+            });
+            
+          },
+          
+          afterSelect: function(values){
+            this.qs1.cache();
+            this.qs2.cache();
+          },
+          
+          afterDeselect: function(values){
+            this.qs1.cache();
+            this.qs2.cache();
+          }
+          
+        });
+        
+        $('#my-select').change(function(){
+            var selectedTextbookCount = $(this).val().length;
+            var textbookPrice = 3000;
+            $('#totalPrice').val(selectedTextbookCount * textbookPrice);
+            $('#price').val(selectedTextbookCount * textbookPrice);
+            $('#goodname').val($(this).val());
+        });        
+        
+    });    
+
+</script>
+
+<script src="http://www.paypalobjects.com/api/checkout.js" async></script>
