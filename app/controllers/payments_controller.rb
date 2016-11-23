@@ -203,6 +203,14 @@ class PaymentsController < ApplicationController
             @payments = Payment.where(user_id: @users.ids).paginate( :page => page, :per_page => 30 ).order(id: :desc)
         end
 
+        if @service=='' && @status=='' && @buyer_name==''
+            @payments = Payment.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        end
+
+        if @service.nil? && @status.nil? && @buyer_name.nil?
+            @payments = Payment.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        end
+
         render :layout => 'layouts/admin_main'
     end
 
