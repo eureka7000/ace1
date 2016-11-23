@@ -51,7 +51,6 @@
             <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
         <% end %>
     <% else %>
-        <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
         <% if @unit_concept.get_next_exercise.blank? %>
             <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
         <% else %>
