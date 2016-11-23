@@ -39,7 +39,7 @@
                         <div class="service-block service-block-green service-or rounded-4x">
                             <div class="service-bg"></div>
                             <i class="icon-custom icon-color-light rounded-x icon-line icon-diamond"></i>
-                            <h2 class="heading-md">&#8361; <span class="counter"><%= @payments_krw.amount %></span> / $ <span class="counter"><%= @payments_usd.amount %></span></h2>
+                            <h2 class="heading-md">&#8361; <span class="counter"><%= @payments_krw.amount unless @new_book_orders.nil? %></span> / $ <span class="counter"><%= @payments_usd.amount %></span></h2>
                             <h2 class="heading-md"><strong>Payments</strong></h2>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                         <div class="service-block service-block-blue service-or rounded-4x">
                             <div class="service-bg"></div>
                             <i class="icon-custom icon-color-light rounded-x icon-line icon-book-open"></i>
-                            <h2 class="heading-md"><%= @new_book_orders.count %>건 / &#8361; <span class="counter"><%= @payments_textbook_krw.amount %></span></h2>
+                            <h2 class="heading-md"><%= @new_book_orders.count unless @new_book_orders.nil? %>건 / &#8361; <span class="counter"><%= @payments_textbook_krw.amount %></span></h2>
                             <h2 class="heading-md"><strong>Order Textbooks</strong></h2>
                         </div>
                     </div>
