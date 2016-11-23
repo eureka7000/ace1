@@ -59,6 +59,8 @@ class AdminsController < ApplicationController
         @questions = Question.where("date(convert_tz(updated_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
         @visit_users = User.where("date(convert_tz(current_sign_in_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
         @new_users = User.where("date(convert_tz(created_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
+        @new_book_orders = Payment.where("item_type='textbook' and date(convert_tz(created_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
+        @payments_textbook_krw = Payment.select('coalesce(sum(amount),0) as amount').where("currency='KRW' and payment_status = 'paid' and item_type = 'textbook' and DATE(convert_tz(created_at,'utc','rok')) = DATE(convert_tz(now(),'utc','rok'))").first
     end
 
   # GET /admins/1

@@ -7,42 +7,51 @@
                 <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> DashBoards </h2>
             
                 <div class="row margin-bottom-40">
-                    
-                    <div class="col-md-3 col-sm-6">
-                        <div class="service-block service-block-sea service-or">
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="service-block service-block-red service-or rounded-4x">
                             <div class="service-bg"></div>
-                            <i class="icon-custom icon-color-light rounded-x icon-line icon-fire"></i>
-                            <h2 class="heading-md">&#8361; <span class="counter"><%= @payments_krw.amount %></span> / $ <span class="counter"><%= @payments_usd.amount %></span></h2>
-                            <h2 class="heading-md">Payments</h2>
-                        </div>
-                    </div>                    
-                    
-                    <div class="col-md-3 col-sm-6">
-                        <div class="service-block service-block-red service-or">
-                            <div class="service-bg"></div>
-                            <i class="icon-custom icon-color-light rounded-x fa fa-lightbulb-o"></i>
-                            <h2 class="heading-md counter"><%= @questions.count %></h2>
-                            <h2 class="heading-md">Questions</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 col-sm-6">
-                        <div class="service-block service-block-yellow service-or">
-                            <div class="service-bg"></div>
-                            <i class="icon-custom icon-color-light rounded-x icon-line icon-users"></i>
-                            <h2 class="heading-md counter"><%= @visit_users.count %></h2>
-                            <h2 class="heading-md">Visits</h2>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 col-sm-6">
-                        <div class="service-block service-block-purple service-or">
-                            <div class="service-bg"></div>
-                            <i class="icon-custom icon-color-light rounded-x icon-line icon-star"></i>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-user-follow"></i>
                             <h2 class="heading-md counter"><%= @new_users.count %></h2>
-                            <h2 class="heading-md">New Users</h2>
+                            <h2 class="heading-md"><strong>New Users</strong></h2>
                         </div>
-                    </div>                    
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="service-block service-block-orange service-or rounded-4x">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-login"></i>
+                            <h2 class="heading-md counter"><%= @visit_users.count %></h2>
+                            <h2 class="heading-md"><strong>Visits</strong></h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="service-block service-block-yellow service-or rounded-4x">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-bulb"></i>
+                            <h2 class="heading-md counter"><%= @questions.count %></h2>
+                            <h2 class="heading-md"><strong>Questions</strong></h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="service-block service-block-green service-or rounded-4x">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-diamond"></i>
+                            <h2 class="heading-md">&#8361; <span class="counter"><%= @payments_krw.amount %></span> / $ <span class="counter"><%= @payments_usd.amount %></span></h2>
+                            <h2 class="heading-md"><strong>Payments</strong></h2>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-6">
+                        <div class="service-block service-block-blue service-or rounded-4x">
+                            <div class="service-bg"></div>
+                            <i class="icon-custom icon-color-light rounded-x icon-line icon-book-open"></i>
+                            <h2 class="heading-md"><%= @new_book_orders.count %>건 / &#8361; <span class="counter"><%= @payments_textbook_krw.amount %></span></h2>
+                            <h2 class="heading-md"><strong>Order Textbooks</strong></h2>
+                        </div>
+                    </div>
 
                 </div>  
             
