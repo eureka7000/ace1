@@ -168,7 +168,49 @@ class PaymentsController < ApplicationController
     def index
         page = params[:page].blank? ? 1 : params[:page]
         @active = 'payments'
-        @payments = Payment.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+
+        @service = params[:service]
+        @status = params[:status]
+        @buyer_name = params[:buyer_name]
+
+
+        unless @service.blank?
+            @payments = Payment.where('service_name LIKE ?', "%#{@service}%").paginate( :page => page, :per_page => 30 ).order(id: :desc)
+            unless @status.blank?
+                @payments = @payments.where('payment_status=?', @status).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+                unless @buyer_name.blank?
+                    @users = User.where('user_name LIKE ?', "%#{@buyer_name}%")
+                    @payments = @payments.where(user_id: @users.ids).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+                end
+            else
+                unless @buyer_name.blank?
+                    @users = User.where('user_name LIKE ?', "%#{@buyer_name}%")
+                    @payments = @payments.where(user_id: @users.ids).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+                end
+            end
+        end
+
+        if @service == '' && @status != ''
+            @payments = Payment.where('payment_status=?', @status).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+            unless @buyer_name.blank?
+                @users = User.where('user_name LIKE ?', "%#{@buyer_name}%")
+                @payments = @payments.where(user_id: @users.ids).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+            end
+        end
+
+        if @service=='' && @status==''
+            @users = User.where('user_name LIKE ?', "%#{@buyer_name}%")
+            @payments = Payment.where(user_id: @users.ids).paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        end
+
+        if @service=='' && @status=='' && @buyer_name==''
+            @payments = Payment.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        end
+
+        if @service.nil? && @status.nil? && @buyer_name.nil?
+            @payments = Payment.all.paginate( :page => page, :per_page => 30 ).order(id: :desc)
+        end
+
         render :layout => 'layouts/admin_main'
     end
 
