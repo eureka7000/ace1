@@ -1,8 +1,24 @@
 class MypagesController < ApplicationController
     
     before_filter :authenticate_user!
-    skip_before_filter :verify_authenticity_token, :only => :payment_return
+    skip_before_filter :verify_authenticity_token, :only => [:payment_return, :juso_popup]
     
+    def juso_popup
+        
+        @inputYn = params[:inputYn]
+        @roadFullAddr = params[:roadFullAddr]
+        @roadAddrPart1 = params[:roadAddrPart1]
+        @roadAddrPart2 = params[:roadAddrPart2]
+        @engAddr = params[:engAddr]    
+        @jibunAddr = params[:jibunAddr]
+        @zipNo = params[:zipNo]
+        @addrDetail = params[:addrDetail]
+        @admCd = params[:admCd]
+        @rnMgtSn = params[:rnMgtSn]
+        @bdMgtSn = params[:bdMgtSn]
+        
+        render layout: nil
+    end    
 
     def request_textbook
         

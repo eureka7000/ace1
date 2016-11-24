@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions
     resources :unit_concept_exercise_histories
-
+    
     get '/grade_unit_concepts/get_chapters' => 'grade_unit_concepts#get_chapters' 
     get '/grade_unit_concepts/get_categories' => 'grade_unit_concepts#get_categories' 
     get '/grade_unit_concepts/get_sub_categories' => 'grade_unit_concepts#get_sub_categories'
@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     get  'mypages/study_progress_check' => 'mypages#study_progress_check'
     get  'mypages/study_progress_detail' => 'mypages#study_progress_detail'
     get  'mypages/request_textbook' => 'mypages#request_textbook'
+    match 'mypages/juso_popup' => 'mypages#juso_popup', via: [:get, :post]
 
     # blogs
     get 'blogs/learning_problem_solution' => 'blogs#learning_problem_solution'

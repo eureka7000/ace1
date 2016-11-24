@@ -41,6 +41,14 @@
                             <input type="hidden" name="price" id="price" value='3000'>
                             <input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">
                             <input type="hidden" id="goodname" name="goodname" value="" />
+                            
+                            <input type="hidden" id="roadAddrPart1" name="roadAddrPart1" />
+                            <input type="hidden" id="roadAddrPart2" name="roadAddrPart2" /> <!-- 참고주소 -->
+                            <input type="hidden" id="engAddr" name="engAddr" /> <!-- 영문 도로명주소 -->
+                            <input type="hidden" id="jibunAddr" name="jibunAddr" /> <!-- 지번 -->
+                            <input type="hidden" id="admCd" name="admCd" /> <!-- 행정구역코드 -->
+                            <input type="hidden" id= "rnMgtSn" name= "rnMgtSn" /> <!-- 도로명코드 -->
+                            <input type="hidden" id="bdMgtSn" name="bdMgtSn" /> <!-- 건물관리번호 -->
 
                             <dl class="dl-horizontal">
                             <dt class="payment_dt">교재</dt>
@@ -71,7 +79,29 @@
                                     </select>
                                 </section>
                             </dd>
-                                                
+                            
+                            <dt class="payment_dt">우편번호</dt>
+                            <dd class="payment_dd">
+                                <section>
+                                    <input type="text" id="zipNo" name="zipNo" class="form-control read-only" style="width:20%; display:inline-block" readonly />
+                                    <input type="button" class="btn-u" onClick="goPopup();" value="주소찾기" />
+                                </section>    
+                            </dd>                            
+                            
+                            <dt class="payment_dt">주소</dt>
+                            <dd class="payment_dd">
+                                <section>
+                                    <input type="text" id="roadFullAddr" name="roadFullAddr" class="form-control" readonly />
+                                </section>    
+                            </dd>
+                            
+                            <dt class="payment_dt">상세주소</dt>
+                            <dd class="payment_dd">
+                                <section>
+                                    <input type="text" id="addrDetail" name="addrDetail" class="form-control" />
+                                </section>    
+                            </dd>
+                            
                             <dt></dt>
                             <dd class="payment_dd"><button type="button" onclick="pay()" class="btn-u btn-u-blue" style="float:left">결제하기</button></dd>
                             </dl>
@@ -97,6 +127,23 @@
 
 
 <script type="text/javascript">
+
+    function goPopup(){
+        var pop = window.open("/mypages/juso_popup","pop","width=570,height=420, scrollbars=yes"); //경로는 시스템에 맞게 수정하여 사용
+    }
+    
+    function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn){
+        $('#roadFullAddr').val(roadFullAddr);
+        $('#roadAddrPart1').val(roadAddrPart1);
+        $('#roadAddrPart2').val(roadAddrPart2);
+        $('#addrDetail').val(addrDetail);
+        $('#engAddr').val(engAddr);
+        $('#jibunAddr').val(jibunAddr);
+        $('#zipNo').val(zipNo);
+        $('#admCd').val(admCd);
+        $('#rnMgtSn').val(rnMgtSn);
+        $('#bdMgtSn').val(bdMgtSn);
+    }
 
     function pay() {
     
