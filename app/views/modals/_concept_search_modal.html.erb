@@ -188,25 +188,36 @@
         <%# end %>
 
         <% if @origin == "concept exercise" %>
-        var url = "/concept_exercises/" + unitConceptDescId;
-        <% else %>
-	    var url = "/unit_concept_desc_solution_links?unit_concept_id=<%= params[:id] %>";
-        <% end %>
 
+        var url = "/concept_exercise_solution_links?concept_id=<%= params[:id] %>";
         data = {
 //            "<%#= @origin == "concept exercise" ? "concept_exercise" : "unit_concept_desc" %>" : {
 //                // "id" : unitConceptDescId,
 //                "link" : unitConceptId
 //            }
-              "unit_concept_desc_solution_link" : {
+            "concept_exercise_solution_link" : {
+                "concept_exercise_id" : unitConceptDescId,
+                "unit_concept_linked_id" : unitConceptId
+            }
+        }
+        <% else %>
+
+	    var url = "/unit_concept_desc_solution_links?unit_concept_id=<%= params[:id] %>";
+        data = {
+            "unit_concept_desc_solution_link" : {
                 "unit_concept_desc_id" : unitConceptDescId,
                 "unit_concept_linked_id" : unitConceptId
             }
         }
+        <% end %>
 
         if (unitConceptId == null){
             var type = "DELETE";
-            url = "/unit_concept_desc_solution_links/"+unitConceptDescId+"?unit_concept_id=<%= params[:id] %>";
+            <% if @origin == "concept exercise" %>
+                url = "/concept_exercise_solution_links/"+unitConceptDescId+"?concept_id=<%= params[:id] %>";
+            <% else %>
+                url = "/unit_concept_desc_solution_links/"+unitConceptDescId+"?unit_concept_id=<%= params[:id] %>";
+            <% end %>
         }
         else{
             var type = "POST";

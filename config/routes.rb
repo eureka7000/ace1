@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
 
+    get 'concept_exercise_solution_links/create'
+    get 'concept_exercise_solution_links/update'
+
+    resources :concept_exercise_solution_links
+
     get 'unit_concept_desc_solution_links/create'
     get 'unit_concept_desc_solution_links/update'
 

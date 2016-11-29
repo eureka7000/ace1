@@ -1,0 +1,2 @@
+module ConceptExerciseSolutionLinksHelper
+end

@@ -134,13 +134,20 @@
             <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해 : <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %></label>
                 <% end %>
 
-            <% @unit_concept_exercises_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', solution.id) %>
+            <% if @exercise_type == 'concept_exercise' %>
+                <% @unit_concept_exercises_solution_links = ConceptExerciseSolutionLink.where('concept_exercise_id = ?', solution.id) %>
+            <% else %>
+                <% @unit_concept_exercises_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', solution.id) %>
+            <% end %>
+
             <% unless @unit_concept_exercises_solution_links.nil? %>
                 <br/>
                 <%# solution에 연결된 unit_concept들을 불러온다 %>
                 <% unless @unit_concept_exercises_solution_links.each do |unit_concept_exercises_solution_link| %>
-                    <%@linked_unit_concept = UnitConcept.find(unit_concept_exercises_solution_link.unit_concept_linked_id) %>
-                    <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= @linked_unit_concept.id %>" target="_blank" ><%= @linked_unit_concept.name %></a></label>
+                    <% unless unit_concept_exercises_solution_link.unit_concept_linked_id.blank? %>
+                        <%@linked_unit_concept = UnitConcept.find(unit_concept_exercises_solution_link.unit_concept_linked_id) %>
+                        <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= @linked_unit_concept.id %>" target="_blank" ><%= @linked_unit_concept.name %></a></label>
+                    <% end %>
                 <% end %>
             <% end %>
             <hr class="no-margin margin-top-20 devider devider-dotted">
