@@ -125,6 +125,7 @@ class ContentsController < ApplicationController
             @exercise_type = 'concept_exercise'
             
         else
+            #유형문제일 때
             @unit_concept = UnitConcept.find(params[:unit_concept_id])
             @unit_concept_descs = @unit_concept.unit_concept_descs.order(:memo)
             @unit_concept_name = @unit_concept.name

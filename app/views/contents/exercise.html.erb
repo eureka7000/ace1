@@ -90,7 +90,7 @@
         <% end %>
 
         <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
-        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red" onclick="showTab('<%= @is_exercise == 0 ? "concept_solution" : "concept_desc" %>')"> <%= @is_exercise == 0 ? "문제풀이" : "개념설명" %></a>
+        <a id="concept_go_btn" class="btn-u rounded btn-u-red" onclick="showTab('<%= @is_exercise == 0 ? "concept_solution" : "concept_desc" %>')"> <%= @is_exercise == 0 ? "문제풀이" : "개념설명" %></a>
 
         <% @concept_answers.each do | concept_answer | %>
         <img hidden class="solution" src="<%= concept_answer.file_name %>" />
@@ -110,7 +110,7 @@
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
 
-        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20" <% if @concept_descs.count > 1 %>style="display:none"<% end %> onclick="showTab('concept_solution')"> 문제풀이</a>
+        <a id="concept_desc_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20" <% if @concept_descs.count > 1 %>style="display:none"<% end %> onclick="showTab('concept_solution')"> 문제풀이</a>
     </div>
 
     <!-- 문제풀이 -->
@@ -118,9 +118,10 @@
         <% @solutions.each_with_index do | solution, index | %>
         <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="concept_solution_<%= index %>" <%= "hidden" if index > 0 %> >
             <img src="<%= solution.file_name %>" class="img-responsive" style="width:100%;"/>
-            <% unless solution.link.blank?
+            <%# unless solution.link.blank?
                 ret_unit_concept = UnitConcept.find(solution.link)
             %>
+
             <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
                 <label class="radio-inline"><input type="radio" id="o<%= solution.id %>" name="exe<%= solution.memo %>"> 맞음</label>
                 <label class="radio-inline"><input type="radio" id="x<%= solution.id %>" name="exe<%=solution.memo%>"> 틀림</label>
@@ -133,8 +134,15 @@
             <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해 : <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %></label>
                 <% end %>
 
-            <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= ret_unit_concept.id %>" target="_blank" ><%= ret_unit_concept.name %></a></label>
-
+            <% @unit_concept_exercises_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', solution.id) %>
+            <% unless @unit_concept_exercises_solution_links.nil? %>
+                <br/>
+                <%# solution에 연결된 unit_concept들을 불러온다 %>
+                <% unless @unit_concept_exercises_solution_links.each do |unit_concept_exercises_solution_link| %>
+                    <%@linked_unit_concept = UnitConcept.find(unit_concept_exercises_solution_link.unit_concept_linked_id) %>
+                    <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= @linked_unit_concept.id %>" target="_blank" ><%= @linked_unit_concept.name %></a></label>
+                <% end %>
+            <% end %>
             <hr class="no-margin margin-top-20 devider devider-dotted">
 
             <% end %>
@@ -146,7 +154,7 @@
             <span id="concept_solution_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @solutions.count - 1 %></span>
         </button>
 
-        <a href="#" id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20"  style="display:none" onclick="showTab('concept_video')"> 동영상</a>
+        <a id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20"  style="display:none" onclick="showTab('concept_video')"> 동영상</a>
 
     </div>
     <!-- Tab 문제풀이 END -->
@@ -319,7 +327,6 @@
         document.body.innerHTML = allPage;
         location.reload();
     }
-
 
 </script>
 
