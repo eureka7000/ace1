@@ -1,0 +1,116 @@
+<div class="row">
+
+    <div class="col-md-12 ">
+
+        <div class="well">
+
+            <%= form_for(@coupon, :html => {:role=>'form', :class => 'form-horizontal' } ) do |f| %>
+
+                <div class="row">
+
+                    <div class="col-md-12 ">
+                        
+                        <input type="hidden" name="coupon[user_id]" value="<%= session[:admin]["id"] %>" />
+
+                        <% if @coupon.errors.any? %>
+                        <div id="error_explanation">
+                            <% @coupon.errors.messages.each do |msg| %>
+                                <div class="alert alert-danger fade in">
+                                    <%= msg[1][0] %>
+                                </div>
+                            <% end %>
+                        </div>
+                        <% end %>
+
+                        <div class="form-group">
+                            <%= f.label :coupon_code, '쿠폰코드', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <%= f.text_field :coupon_code, :class => 'form-control' %>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :effective_period, '적용기간', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <%= f.number_field :effective_period, :class => 'form-control', :style => 'width:100px' %>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <%= f.label :effective_period_type, '적용기간 타입', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <select name="coupon[effective_period_type]" class="form-control">
+                                <%  Coupon::EFFECTIVE_PERIOD_TYPE.each_pair do |key, value|  %>
+                                <option value="<%= key %>"><%= value %></option>
+                                <% end %>    
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :issued_reason, '쿠폰발급사유', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <%= f.text_area :issued_reason, :class => 'form-control' %>
+                            </div>
+                        </div> 
+                        
+                        <div class="form-group">
+                            <%= f.label :expire_from, '유효기간 시작일', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <input type="text" name="coupon[expire_from]" id="expire_from" placeholder="Expected start date" value="<%= @coupon.expire_from.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') unless @coupon.expire_from.nil?  %>">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <%= f.label :expire_to, '유효기간 종료일', :class => 'col-sm-2 col-md-2 control-label' %>
+                            <div class="input-group col-sm-4 float-left">
+                                <input type="text" name="coupon[expire_to]" id="expire_to" placeholder="Expected start date" value="<%= @coupon.expire_to.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') unless @coupon.expire_to.nil? %>" >
+                            </div>
+                        </div>                                                
+                        
+                    </div>
+
+                </div>
+
+                <footer>
+                    <div class="col-md-offset-2">
+                        <%= f.submit '저장', :class => 'btn btn-success' %>
+                        <%= link_to '뒤로', coupons_path, :class => 'btn btn-info' %>
+                    </div>    
+                </footer>
+
+            <% end %>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+
+    $( function() {
+        
+        $('#expire_from').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_from').datepicker('option', 'minDate', selectedDate);
+            }
+        });
+    
+        $('#expire_to').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_to').datepicker('option', 'maxDate', selectedDate);
+            }
+        });        
+        
+    } );
+
+        
+        
+</script>

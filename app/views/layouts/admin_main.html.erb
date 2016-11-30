@@ -73,7 +73,7 @@
                     <li><a href="/teachers/students_list">학생 목록</a></li>
                     <% else %>
                     <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">출력</a>
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">출력 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                         <li><a href="/prints">문제출력</a></li>
                         <li><a href="/prints/solutions">해답출력</a></li>
@@ -86,9 +86,16 @@
 				    <li><a href="/grade_unit_concepts">학년별 관리</a></li>
                     <li><a href="/blogs">블로그 관리</a></li>
                     <li><a href="/questions/questions_list">질문 관리</a></li>
-                    <li><a href="/schools">학교(학원)</a></li>
-                    <li><a href="/admins/users">관리자</a></li>
-                    <li><a href="/users">사용자 관리</a></li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">User <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="/schools">학교(학원)</a></li>
+                        <li><a href="/admins/users">관리자</a></li>
+                        <li><a href="/users">사용자</a></li>
+                        <li><a href="/coupons">쿠폰</a></li>
+                        </ul>                        
+                    </li>    
+                        
                     <li><a href="/codes">코드</a></li>
                     <% end %>
                     <li><a href="/admins/logout">logout</a></li>
@@ -121,7 +128,7 @@
 
     <script>
         jQuery(document).ready(function() {
-            initpage();
+            // initpage();
         });
     </script>
 </body>

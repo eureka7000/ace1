@@ -1,0 +1,51 @@
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 main">
+
+            <h2 class="sub-header"><span class="fa fa-tags" aria-hidden="true" style="top: 5px"></span> Listing Coupons</h2>
+
+            <div class="table-responsive">
+                
+                <table class="table table-striped">
+                <thead>
+                <tr>
+                <th>쿠폰코드</th>
+                <th>적용기간</th>
+                <th>적용기간 타입</th>
+                <th>등록자</th>
+                <th>유효기간 시작일</th>
+                <th>유효기간 종료일</th>
+                <th>쿠폰발급사유</th>
+                <th><i class="fa fa-cog"></i></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <% @coupons.each do |coupon| %>
+                <tr>
+                <td><%= coupon.coupon_code %></td>
+                <td><%= coupon.effective_period %></td>
+                <td><%= coupon.effective_period_type %></td>
+                <td><%= coupon.admin.name %></td>
+                <td><%= coupon.expire_from.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %></td>
+                <td><%= coupon.expire_to.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %></td>
+                <td><%= coupon.issued_reason %></td>
+                <td><%= link_to 'Show', coupon %></td>
+                <td><%= link_to 'Edit', edit_coupon_path(coupon) %></td>
+                <td><%= link_to 'Destroy', coupon, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                </tr>
+                <% end %>
+                </tbody>
+                </table>
+                
+                <%= will_paginate @coupons, renderer: BootstrapPagination::Rails %>
+
+            </div>
+            
+            <%= link_to '쿠폰 발급', new_coupon_path, :class => 'btn btn-primary align-right' %>
+            
+        </div>
+    </div>                    
+</div>

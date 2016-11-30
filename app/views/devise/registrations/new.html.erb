@@ -48,18 +48,29 @@
           </div>
 
           <hr>
+          
+          <div class="row margin-bottom-20">
+              <div class="col-sm-12">
+                  <label style="width:100%">쿠폰 입력
+                      <input type="text" value="" name="user[coupon_code]" id="coupon_code" class="form-control" />
+                  </label>
+              </div>
+          </div>
+          
+          <hr>
 
           <div class="row">
-            <div class="col-lg-6 checkbox">
-              <label>
-                <input type="checkbox" id="term_check">
-                나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.</a>
-              </label>
-            </div>
-            <div class="col-lg-6 text-right">
-              <input class="btn-u rounded btn-u-info" type="button" onclick="newUserSend()" value="가입">
-            </div>
+              <div class="col-lg-6 checkbox">
+                  <label>
+                      <input type="checkbox" id="term_check">
+                      나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.</a>
+                  </label>
+              </div>
+              <div class="col-lg-6 text-right">
+                  <input class="btn-u rounded btn-u-info" type="button" onclick="newUserSend()" value="가입">
+              </div>
           </div>
+          
       <% end %>
     </div>
   </div>

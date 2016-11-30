@@ -1,6 +1,7 @@
 class Admin < ActiveRecord::Base
     
     belongs_to :school
+    has_many :coupons
     
     ADMIN_TYPES = {
         "admin" => "admin",

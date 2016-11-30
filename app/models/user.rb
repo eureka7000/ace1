@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
     
     
     def user_params
-        params.require(:user).permit(:email, :name, :location, :phone, :grade)
+        params.require(:user).permit(:email, :name, :location, :phone, :grade, :coupon_code)
     end
     
     def can_I_use?

@@ -1,0 +1,73 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+            <h2 class="sub-header"><span class="fa fa-tags" aria-hidden="true"></span> 쿠폰 </h2>
+        </div>
+    </div>
+
+    <% unless notice.blank? %>
+        <p class="alert alert-warning"><%= notice %></p>
+    <% end %>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="well">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <table class="table table-bordered table-striped" style="clear: both">
+                        <tr>
+                        <td style="width:25%;"><b>쿠폰코드</b></td>
+                        <td style="width:75%"><%= @coupon.coupon_code %></td>
+                        </tr>
+                        
+                        <tr>
+                        <td style="width:25%;"><b>적용기간</b></td>
+                        <td style="width:75%"><%= @coupon.effective_period %></td>
+                        </tr>
+                        
+                        <tr>
+                        <td style="width:25%;"><b>적용기간 타입</b></td>
+                        <td style="width:75%"><%= Coupon::EFFECTIVE_PERIOD_TYPE[@coupon.effective_period_type] %></td>
+                        </tr>
+                        
+                        <tr>
+                        <td style="width:25%;"><b>등록자</b></td>
+                        <td style="width:75%"><%= @coupon.admin.name %></td>
+                        </tr>
+                             
+                        <tr>
+                        <td style="width:25%;"><b>쿠폰발급사유</b></td>
+                        <td style="width:75%"><%= @coupon.issued_reason %></td>
+                        </tr>                                                
+                        
+                        <tr>
+                        <td style="width:25%;"><b>유효기간</b></td>
+                        <td style="width:75%">
+                            <%= @coupon.expire_from.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %> ~ 
+                            <%= @coupon.expire_to.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %>
+                        </td>
+                        </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <footer>
+                    <%= link_to 'Edit', edit_coupon_path(@coupon), :class => 'btn btn-primary' %>
+                    <%= link_to 'Back', coupons_path, :class => 'btn btn-default' %>
+                </footer>
+
+            </div>
+            
+        </div>
+        
+    </div>
+    
+</div>

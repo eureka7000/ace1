@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :coupons
     resources :blog_replies
     
     get '/prints/get_question_list' => 'prints#get_question_list'

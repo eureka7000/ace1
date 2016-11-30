@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  coupon_code: MyString
+  effective_period: 1
+  effective_period_type: MyString
+  user_id: 1
+  expire_from: 2016-11-24 12:20:48
+  expire_to: 2016-11-24 12:20:48
+  issued_reason: MyText
+
+two:
+  coupon_code: MyString
+  effective_period: 1
+  effective_period_type: MyString
+  user_id: 1
+  expire_from: 2016-11-24 12:20:48
+  expire_to: 2016-11-24 12:20:48
+  issued_reason: MyText
