@@ -164,9 +164,10 @@
                       <a href="<%= unit_concept_desc.file_name %>"><img src="<%= unit_concept_desc.file_name.thumb %>" alt=""></a>
                   <% end %>
                 </td>
+
                 <td>
                   <% # desc_type이 'exercise'일 경우 solution을 보여준다. %>
-                  <% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "concept") %>
+                  <% if unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "concept" %>
                       <% solutions = unit_concept_desc.unit_concept_exercise_solutions.order(:code) %>
                       <% solutions.each do |solution| %>
                           <% unless solution.file_name.blank? %>
@@ -179,15 +180,18 @@
                         <a href="javascript:openSolutionModal(<%= unit_concept_desc.id %>)">Add</a>
                   <% end %>
 
-                  <% if (unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "exercise") %>
-                      <% unless unit_concept_desc.link.blank? %>
-                          <% @link_exercises = UnitConcept.where('id = ?', unit_concept_desc.link) %>
+                  <% # solution에 연결된 관련 개념일 때 %>
+                  <% if unit_concept_desc.desc_type == '3' && @unit_concept.exercise_yn == "exercise" %>
+                        <% @unit_concept_exercises_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', unit_concept_desc.id) %>
+                      <% unless @unit_concept_exercises_links.blank? %>
 
-                          <% @link_exercises.each do |link_exercise| %>
-                              <% unless link_exercise.blank? %>
-                                  <a href="/contents/<%= link_exercise.id %>"><%= link_exercise.code %> : <%= link_exercise.name %></a> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a></p>
+                          <% @unit_concept_exercises_links.each do |unit_concept_exercises_link| %>
+
+                              <% unless unit_concept_exercises_link.unit_concept_linked_id.blank? %>
+                                   <% @linked_unit_concept = UnitConcept.find(unit_concept_exercises_link.unit_concept_linked_id) %>
+                                   <a href="/contents/<%= @linked_unit_concept.id %>"><%= @linked_unit_concept.code %> : <%= @linked_unit_concept.name %></a> <a href="javascript:setLink(null, <%= unit_concept_exercises_link.id %>)">[x]</a></p>
                               <% else %>
-                                  link exercise id is not exist : <%= link_exercise.link %>
+                                  link exercise id is not exist : <%= unit_concept_desc.id %>
                               <% end %>
                           <% end %>
                           <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>

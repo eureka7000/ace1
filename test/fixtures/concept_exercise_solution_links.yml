@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  concept_exercise_id: 1
+  unit_concept_linked_id: MyString
+
+two:
+  concept_exercise_id: 1
+  unit_concept_linked_id: MyString

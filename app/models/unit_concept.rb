@@ -2,14 +2,14 @@ class UnitConcept < ActiveRecord::Base
     
     belongs_to :concept
     
-    has_many :unit_concept_descs
+    has_many :unit_concept_descs, :dependent => :delete_all
     has_many :explanations
     has_many :unit_concept_self_evaluations
     # has_one  :grade_unit_concept
     has_many :questions
     has_many :unit_concept_exercise_solutions
     has_many :study_histories
-    
+
     DESC_TYPES = {
         1 => "Unit Concept",
         2 => "Explanation",

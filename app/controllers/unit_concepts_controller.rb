@@ -25,10 +25,8 @@ class UnitConceptsController < ApplicationController
         else
             @unit_concept_descs = UnitConceptDesc.where("unit_concept_id=? and desc_type=?", @unit_concept.id, @desc_type).order(:desc_type, :memo)
         end
-        
-        @concepts = Concept.all
-        @exercises = UnitConceptDesc.where("unit_concept_id=? and desc_type=?", @unit_concept.id, '3').order(:memo)
-        
+
+
         respond_to do |format|
             format.html { render :show }
             format.json { render json: @unit_concept }
@@ -81,6 +79,16 @@ class UnitConceptsController < ApplicationController
   # DELETE /unit_concepts/1
   # DELETE /unit_concepts/1.json
   def destroy
+      @unit_concept_descs = UnitConceptDesc.where('unit_concept_id = ? and desc_type = ?', @unit_concept.id, '3')
+      @unit_concept_descs.each do |unit_concept_desc|
+          @unit_concept_desc_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', unit_concept_desc.id)
+          unless @unit_concept_desc_solution_links.nil?
+              @unit_concept_desc_solution_links.each do |unit_concept_desc_solution_link|
+                  unit_concept_desc_solution_link.destroy
+              end
+          end
+      end
+
     @unit_concept.destroy
     respond_to do |format|
       format.html { redirect_to unit_concepts_url, notice: 'Unit concept was successfully destroyed.' }

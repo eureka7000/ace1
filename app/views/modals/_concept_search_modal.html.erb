@@ -171,6 +171,7 @@
             $('#unit_concept_desc').val(unitConceptName);
             $('#conceptSearchModal').modal('hide');
         } else {
+            // solution 관련 개념을 설정할 때
             setLink(unitConceptId, $('#whereareyoufrom').val());
             // $('#unit_concept_exercise_solution_text').val(unitConceptName);
             // $('#unit_concept_exercise_solution_link').val();
@@ -180,22 +181,51 @@
     
     function setLink(unitConceptId, unitConceptDescId) {
         
+        <%# if @origin == "concept exercise" %>
+//        var url = "/concept_exercises/" + unitConceptDescId;
+        <%# else %>
+//	    var url = "/unit_concept_descs/" + unitConceptDescId;
+        <%# end %>
+
         <% if @origin == "concept exercise" %>
-        var url = "/concept_exercises/" + unitConceptDescId;
-        <% else %>
-	    var url = "/unit_concept_descs/" + unitConceptDescId;
-        <% end %>
-        
+
+        var url = "/concept_exercise_solution_links?concept_id=<%= params[:id] %>";
         data = {
-            "<%= @origin == "concept exercise" ? "concept_exercise" : "unit_concept_desc" %>" : {
-                // "id" : unitConceptDescId,
-                "link" : unitConceptId
+//            "<%#= @origin == "concept exercise" ? "concept_exercise" : "unit_concept_desc" %>" : {
+//                // "id" : unitConceptDescId,
+//                "link" : unitConceptId
+//            }
+            "concept_exercise_solution_link" : {
+                "concept_exercise_id" : unitConceptDescId,
+                "unit_concept_linked_id" : unitConceptId
             }
         }
-    
+        <% else %>
+
+	    var url = "/unit_concept_desc_solution_links?unit_concept_id=<%= params[:id] %>";
+        data = {
+            "unit_concept_desc_solution_link" : {
+                "unit_concept_desc_id" : unitConceptDescId,
+                "unit_concept_linked_id" : unitConceptId
+            }
+        }
+        <% end %>
+
+        if (unitConceptId == null){
+            var type = "DELETE";
+            <% if @origin == "concept exercise" %>
+                url = "/concept_exercise_solution_links/"+unitConceptDescId+"?concept_id=<%= params[:id] %>";
+            <% else %>
+                url = "/unit_concept_desc_solution_links/"+unitConceptDescId+"?unit_concept_id=<%= params[:id] %>";
+            <% end %>
+        }
+        else{
+            var type = "POST";
+        }
+
 	    $.ajax({
 	        url: url,
-	        type: "PUT",
+	        type: type,
 	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
 	        datatype: "json",
             data: data,

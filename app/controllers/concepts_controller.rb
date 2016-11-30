@@ -122,6 +122,16 @@ class ConceptsController < ApplicationController
 
     
     def destroy
+        @concept_exercises = ConceptExercise.where('concept_id = ? and desc_type = ?', @concept.id, '3')
+        @concept_exercises.each do |concept_exercise|
+            @concept_exercise_solution_links = ConceptExerciseSolutionLink.where('concept_exercise_id = ?', concept_exercise.id)
+            unless @concept_exercise_solution_links.nil?
+                @concept_exercise_solution_links.each do |concept_exercise_solution_link|
+                    concept_exercise_solution_link.destroy
+                end
+            end
+        end
+
         @concept.destroy
         respond_to do |format|
             format.html { redirect_to "/concepts?#{params.to_query}", notice: 'Concept was successfully destroyed.' }

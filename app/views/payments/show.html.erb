@@ -58,6 +58,18 @@
                 <td style="width:75%"><%= number_with_delimiter(@payment.amount, delimiter: ",") %></td>
               </tr>
 
+                <% if @payment.service_name == '교재구입' %>
+                    <tr>
+                        <td style="width:25%;"><b>Goods</b></td>
+                        <td style="width:75%"><%= @payment.item_list_pay.to_s.delete('/"[]') %></td>
+                    </tr>
+
+                    <tr>
+                        <td style="width:25%;"><b>Shipping Address</b></td>
+                        <td style="width:75%"><%= @payment.shipping_address %></td>
+                    </tr>
+                <% end %>
+
               <tr>
                 <td style="width:25%;"><b>Pay Day</b></td>
                 <td style="width:75%"><%= @payment.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M') %></td>

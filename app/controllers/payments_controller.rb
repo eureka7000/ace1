@@ -246,6 +246,8 @@ class PaymentsController < ApplicationController
         @payment.currency = 'KRW'
         @payment.item_type = item_type
         @payment.item_list_pay = item_list_pay
+        @payment.postcode = params[:payment][:postcode]
+        @payment.shipping_address = params[:payment][:shipping_address]
       
         if @payment.save
             tmp = {

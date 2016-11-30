@@ -40,6 +40,7 @@ class UnitConceptDescsController < ApplicationController
             end
             
         else
+            #링크 저장..
             unit_concept_desc = UnitConceptDesc.new(unit_concept_desc_params)
             unit_concept_desc.save
         end        

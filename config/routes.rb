@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
 
-  resources :coupons
+    get 'concept_exercise_solution_links/create'
+    get 'concept_exercise_solution_links/update'
+
+    resources :concept_exercise_solution_links
+
+    get 'unit_concept_desc_solution_links/create'
+    get 'unit_concept_desc_solution_links/update'
+
+    resources :unit_concept_desc_solution_links
+
     resources :blog_replies
     
     get '/prints/get_question_list' => 'prints#get_question_list'

@@ -170,17 +170,21 @@
 							</td>
                             <td>
                                 <% if unit_concept_desc.desc_type == '3' %>
-                                    <% unless unit_concept_desc.link.blank? %>
-                                        <% @link_exercise = UnitConcept.where('id = ?',unit_concept_desc.link).first %>
-                                        <% unless @link_exercise.nil? %>
-                                        <a href="/contents/<%= @link_exercise.id %>"><%= @link_exercise.code %> : <%= @link_exercise.name %></a> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a></p>
-                                        <% else %>
-                                        exercise is not exist : <%= unit_concept_desc.link %> <a href="javascript:setLink(null, <%= unit_concept_desc.id %>)">[x]</a>
+                                    <% @concept_exercise_solution_links = ConceptExerciseSolutionLink.where('concept_exercise_id = ?',unit_concept_desc.id) %>
+                                    <% unless @concept_exercise_solution_links.nil? %>
+                                        <% @concept_exercise_solution_links.each do |concept_exercise_solution_link| %>
+                                            <% unless concept_exercise_solution_link.unit_concept_linked_id.blank? %>
+                                                <% @linked_unit_concept = UnitConcept.find(concept_exercise_solution_link.unit_concept_linked_id) %>
+                                                <% unless @linked_unit_concept.nil? %>
+                                                    <a href="/contents/<%= @linked_unit_concept.id %>"><%= @linked_unit_concept.code %> : <%= @linked_unit_concept.name %></a> <a href="javascript:setLink(null, <%= concept_exercise_solution_link.id %>)">[x]</a></p>
+                                                <% end %>
+                                            <% end %>
                                         <% end %>
-                                    <% else %>    
+                                        <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>
+                                    <% else %>
                                         <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>
                                     <% end %>
-                                <% end %>                                
+                                <% end %>
                             </td>    
 							<td>
 								<%= link_to 'Delete'.html_safe, "/concept_exercises/#{unit_concept_desc.id}?#{return_param}", method: :delete, data: { confirm: 'Are you sure?' } %>

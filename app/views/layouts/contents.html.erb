@@ -79,23 +79,23 @@
                     <ul class="list-inline top-v1-contacts" style="top: 5px; position: relative;">
                         <li>
                             <i class="fa fa-book tooltips"></i>
-                            <a href="#" onclick="showTab('concept')"> 개념</a>
+                            <a onclick="showTab('concept')"> 개념</a>
                         </li>
                         <% unless @is_exercise == 0 %>
                         <li>
                             <i class="fa fa-tasks tooltips"></i>
-                            <a href="#" onclick="showTab('concept_desc')"> 개념설명</a>
+                            <a onclick="showTab('concept_desc')"> 개념설명</a>
                         </li>
                         <% end %>
                         <% if @exercise_yn %>
                         <li>
                             <i class="fa fa-pencil tooltips"></i>
-                            <a href="#" onclick="showTab('concept_solution')"> 문제풀이</a>
+                            <a onclick="showTab('concept_solution')"> 문제풀이</a>
                         </li>
                         <% else %>
                         <li>
                             <i class="fa fa-pencil tooltips"></i>
-                            <a href="#" onclick="showTab('concept_exercise')"> 개념문제</a>
+                            <a onclick="showTab('concept_exercise')"> 개념문제</a>
                         </li>
                         <% end %>
                         <% unless @is_exercise == 0 %>                        
@@ -105,7 +105,7 @@
                         </li>
                         <li>
                             <i class="fa fa-film tooltips"></i>
-                            <a href="#v" onclick="showTab('concept_video')"> 동영상</a>
+                            <a onclick="showTab('concept_video')"> 동영상</a>
                         </li>
                         <% end %>
                         <li>
@@ -114,7 +114,7 @@
                         </li>
                         <li>
                             <i class="fa fa-print tooltips"></i>
-                            <a href="#p" onclick="showTab('concept_print')"> 프린트</a>
+                            <a onclick="showTab('concept_print')"> 프린트</a>
                         </li>                        
                     </ul>
                 </div>
