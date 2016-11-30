@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+    resources :coupons
+
     get 'concept_exercise_solution_links/create'
     get 'concept_exercise_solution_links/update'
 
