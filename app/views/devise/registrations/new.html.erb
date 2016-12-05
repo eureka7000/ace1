@@ -20,6 +20,7 @@
 
           <div class="row margin-bottom-20">
             <div class="col-sm-12">
+                <label style="width:100%" class="margin-bottom-20"><span class="color-red">*</span> 필수입력항목</label>
               <label style="width:100%" class="<%= 'state-error' unless resource.errors[:email].blank? %>"><%= t(:email_address) %> <span class="color-red">*</span>
                 <input autofocus="autofocus" type="text" value="<%= params[:email] %>" name="user[email]" id="new_user_email" class="form-control">
               </label>
@@ -63,7 +64,7 @@
               <div class="col-lg-6 checkbox">
                   <label>
                       <input type="checkbox" id="term_check">
-                      나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.</a>
+                      나는 <a href="/homes/access_terms" class="color-green">이용약관</a> 을 읽었습니다.<span class="color-red">*</span></a>
                   </label>
               </div>
               <div class="col-lg-6 text-right">
