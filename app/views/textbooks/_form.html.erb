@@ -1,0 +1,37 @@
+<%= form_for(@textbook) do |f| %>
+    <% if @textbook.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@textbook.errors.count, "error") %> prohibited this textbook from being saved:</h2>
+
+            <ul>
+                <% @textbook.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+        <%= f.label :name %><br>
+        <%= f.text_field :name, class:'form-control rounded' %>
+    </div>
+    <div class="field">
+        <%= f.label :price %> 단위 (: 원)<br>
+        <%= f.number_field :price, class:'form-control rounded' %>
+    </div>
+    <div class="field">
+        <%= f.label :grade %><br>
+        <%= f.select :grade, [['중1', 1], ['중2', 2], ['중3', 3], ['고1', 4], ['고2 & 고3 문과', 5], ['고2 & 고3 이과', 6]], {}, {class: 'form-control'} %>
+    </div>
+    <div class="field">
+        <%= f.label :sub_category %><br>
+        <select class="form-control" name="textbook[sub_category]">
+            <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                <option value="<%= key %>" <%= 'selected' if @textbook.sub_category == key %>><%= value %></option>
+            <% end %>
+        </select>
+    </div>
+    <div class="actions margin-top-20 margin-bottom-20">
+        <%= f.submit :class => 'btn-u btn-u-dark-blue rounded' %>
+    </div>
+<% end %>

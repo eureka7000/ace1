@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    resources :textbooks
     resources :coupons
 
     get 'concept_exercise_solution_links/create'
@@ -89,6 +90,7 @@ Rails.application.routes.draw do
     get 'homes/how' => 'homes#how'
     get 'homes/access_terms' => 'homes#access_terms'
     get 'homes/personal_info_protection' => 'homes#personal_info_protection'
+    get 'homes/chapter_list' => 'homes#chapter_list'
 
     root :to => "homes#index"
 
