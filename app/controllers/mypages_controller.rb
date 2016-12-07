@@ -53,7 +53,7 @@ class MypagesController < ApplicationController
             timestamp: @timestamp
         }
 
-        @textbooks = Textbook.select(:name, :price).distinct
+        @textbooks = Textbook.select(:name, :price).distinct.order(:sub_category)
 
         @sign = InicisPayment.make_hash(@params.to_query)  
         @m_key = InicisPayment.make_hash(Rails.application.config.inicis[:sign_key])

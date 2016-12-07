@@ -8,7 +8,7 @@ class TextbooksController < ApplicationController
   # GET /textbooks.json
   def index
     page = params[:page].blank? ? 1 : params[:page]
-    @textbooks = Textbook.all.paginate( :page => page, :per_page => 20 )
+    @textbooks = Textbook.all.paginate( :page => page, :per_page => 20 ).order(:sub_category)
   end
 
   # GET /textbooks/1
