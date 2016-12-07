@@ -2,7 +2,26 @@ class MypagesController < ApplicationController
     
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => [:payment_return, :juso_popup]
-    
+
+    def get_textbook_price
+
+        goods_list = params[:goods_list]
+
+        # logger.info "*****  #{goods_list}"
+        # logger.info "*****  #{goods_list.size}"
+
+        total_price = 0
+
+        (0..goods_list.size-1).each do |index|
+            total_price = total_price + Textbook.find_by_name("#{goods_list[index]}").price
+            # logger.info "$$$$$$$$  #{total_price}"
+        end
+
+        # 데이터 값 전달 부분 수정
+        ret = { total_price: total_price }
+        render json: ret
+    end
+
     def juso_popup
         
         @inputYn = params[:inputYn]
@@ -34,6 +53,8 @@ class MypagesController < ApplicationController
             timestamp: @timestamp
         }
 
+        @textbooks = Textbook.select(:name, :price).distinct
+
         @sign = InicisPayment.make_hash(@params.to_query)  
         @m_key = InicisPayment.make_hash(Rails.application.config.inicis[:sign_key])
         
@@ -45,8 +66,7 @@ class MypagesController < ApplicationController
         #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         # end
         
-    end    
-
+    end
 
     def study_progress_detail
         @click = 'study_progress'

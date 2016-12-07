@@ -55,9 +55,14 @@
                             <dd class="payment_dd">
                                 <section>
                                     <select multiple="multiple" id="my-select" name="users[]" >
-                                    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= value %>"><%= value %></option>
-                                    <% end %>    
+
+                                        <% @textbooks.each do |textbook| %>
+                                            <option value="<%= textbook.name %>"><%= textbook.name %> (<%= textbook.price %>원)</option>
+                                        <% end %>
+
+                                    <%# Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                    <!--<option value="<%#= value %>"><%#= value %></option>-->
+                                    <%# end %>
                                     </select>
                                 </section>
                             </dd>
@@ -224,16 +229,38 @@
           }
           
         });
-        
+
         $('#my-select').change(function(){
-            var selectedTextbookCount = $(this).val().length;
-            var textbookPrice = 3000;
-            $('#totalPrice').val(selectedTextbookCount * textbookPrice);
-            $('#price').val(selectedTextbookCount * textbookPrice);
+
+            if($(this).val() == null ){
+                $('#totalPrice').val(0);
+            }
+
+            var url = '/mypages/get_textbook_price';
+            var data = {
+                goods_list: $(this).val()
+            }
+
+            alert($(this).val());
+            $.ajax({
+                url: url,
+                type: "POST",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                data: data,
+                success : function(data) {
+                    $('#totalPrice').val(data.total_price);
+                    $('#price').val(data.total_price);
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+
             $('#goodname').val($(this).val());
-        });        
-        
-    });    
+        });
+
+    });
 
 </script>
 
