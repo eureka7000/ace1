@@ -190,8 +190,8 @@
     jQuery(document).ready(function() {
         
         $('#my-select').multiSelect({
-          selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
-          selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+          selectableHeader: "<div class='custom-header text-center form-class margin-bottom-10 bg-color-green'>선택 전</div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+          selectionHeader: "<div class='custom-header text-center form-class margin-bottom-10 bg-color-green'>선택 후</div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
           afterInit: function(ms){
               
             var that = this,
