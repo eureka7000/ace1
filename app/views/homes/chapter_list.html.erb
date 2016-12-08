@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="/assets/css/custom.css">
 <div class="col-md-12 breadcrumbs">
     <div class="container">
         <h2 class="pull-left" style="color: black">학습 목차 한눈에 보기</h2>
@@ -156,11 +157,6 @@
             icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
             $(this).children().children().toggle();
             // $(this).scrollIntoView();
-
-            $('#tree_frame').scrollTop(
-                $(this).offset().top - 100
-            );
-
         });
 
         tree.find('.branch .indicator').each(function(){
@@ -406,10 +402,6 @@
             icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
             $(this).children().children().toggle();
             // $(this).scrollIntoView();
-
-            $('#tree_frame').scrollTop(
-                $(this).offset().top - 100
-            );
 
         });
 
