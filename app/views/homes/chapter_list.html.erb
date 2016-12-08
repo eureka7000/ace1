@@ -1,0 +1,444 @@
+<div class="col-md-12 breadcrumbs">
+    <div class="container">
+        <h2 class="pull-left" style="color: black">학습 목차 한눈에 보기</h2>
+    </div>
+</div>
+
+<div class="container container-fluid margin-top-20">
+    <div class="content-sm">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <h2 class="bg-color-red text-center rounded">단원별 목차</h2>
+            <h4><ul id="tree1"></ul></h4>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <h2 class="bg-color-blue text-center rounded">학년별 목차</h2>
+            <h4><ul id="tree2"></ul></h4>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function get_chapter_list() {
+
+        var url = "/homes/get_chapter_list";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                put_chapter_list(data);
+            },
+            error : function(){}
+        });
+    }
+
+    function put_chapter_list(data) {
+
+        var root = $('#tree1');
+        var category;
+        var pre_category;
+        var sub_category;
+        var pre_sub_category;
+        var concept;
+        var pre_concept;
+        var unit_concept;
+
+        root.empty();
+
+        for (var i=0; i<data.length; i++) {
+
+            var depth = 0;
+
+            if (pre_category == data[i].category) depth++;
+            else pre_category = data[i].category;
+
+            if (pre_sub_category == data[i].sub_category) depth++;
+            else pre_sub_category = data[i].sub_category;
+
+            if (pre_concept == data[i].concept_name ) depth++;
+            else {
+                pre_concept = data[i].concept_name;
+            }
+
+            if (depth == 0) {
+
+                category = $('<li/>').html('<span class="category_text" style="color:black">' + data[i].category + '</span>').appendTo(root);
+                pre_category = data[i].category;
+                var category_ul = $('<ul/>').appendTo(category);
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:orangered">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                pre_sub_category = data[i].sub_category;
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:green">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                pre_concept = data[i].concept_name;
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + "<span style='color:darkslateblue'>" + data[i].unit_concept_name + "</span>" + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 1) {
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:orangered">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:green">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + "<span style='color:darkslateblue'>" + data[i].unit_concept_name + "</span>" + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 2) {
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:green">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + "<span style='color:darkslateblue'>" + data[i].unit_concept_name + "</span>" + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 3) {
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "'>" + "<span style='color:darkslateblue'>" + data[i].unit_concept_name + "</span>" + "</a>").appendTo(concept_ul);
+
+            }
+
+
+            // category level
+            if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '2' && '<%= params[:category] %>' == data[i].category_code) {
+                category.addClass('selected');
+                category.find('span.category_text').addClass('text-highlights text-highlights-green');
+                category.find('span.category_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '3' && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                sub_category.find('span.sub_category_text').addClass('text-highlights text-highlights-green');
+                sub_category.find('span.sub_category_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '1' && '<%= params[:step] %>' == '4' && '<%= params[:concept_id] %>' == data[i].concept_id) {
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                concept.addClass('selected');
+                concept.find('span.concept_text').addClass('text-highlights text-highlights-green');
+                concept.find('span.concept_text').css({color: "white", padding: 0});
+            }
+
+        }
+
+        set_tree_chapter();
+
+    }
+
+    function set_tree_chapter() {
+
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
+
+        // initialize each of the top levels
+        var tree = $('#tree1');
+        tree.addClass("tree2");
+        tree.find('li').has("ul").each(function () {
+
+            var branch = $(this); //li with children ul
+            branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+            branch.addClass('branch');
+            branch.on('click', function (e) {
+                if (this == e.target) {
+                    var icon = $(this).children('i:first');
+                    icon.toggleClass(openedClass + " " + closedClass);
+                    $(this).children().children().toggle();
+                }
+            })
+            branch.children().children().toggle();
+        });
+        //fire event from the dynamically added icon
+
+        $('#tree1 .selected').each( function() {
+            var icon = $(this).children('i:first');
+            icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
+            $(this).children().children().toggle();
+            // $(this).scrollIntoView();
+
+            $('#tree_frame').scrollTop(
+                $(this).offset().top - 100
+            );
+
+        });
+
+        tree.find('.branch .indicator').each(function(){
+            $(this).on('click', function () {
+                $(this).closest('li').click();
+            });
+        });
+
+        //fire event to open branch if the li contains an anchor instead of text
+        tree.find('.branch>a').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+
+        //fire event to open branch if the li contains a button instead of text
+        tree.find('.branch>button').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+
+    }
+
+    function get_grade_list() {
+
+        var url = "/homes/get_grade_list";
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                put_grade_list(data);
+            },
+            error : function(){}
+        });
+    }
+
+    function put_grade_list(data) {
+
+        var root1 = $('#tree2');
+        var grade;
+        var pre_grade ='';
+        var chapter;
+        var pre_chapter ='';
+        var category;
+        var pre_category ='';
+        var sub_category;
+        var pre_sub_category ='';
+        var concept;
+        var pre_concept ='';
+        var unit_concept;
+
+        root1.empty();
+
+        for (var i=0; i<data.length; i++) {
+
+            var depth = 0;
+
+            if (pre_grade == data[i].grade) depth++;
+            else pre_grade = data[i].grade;
+
+            if (pre_chapter == data[i].chapter) depth++;
+            else pre_chapter = data[i].chapter;
+
+            if (pre_category == data[i].category) depth++;
+            else pre_category = data[i].category;
+
+            if (pre_sub_category == data[i].sub_category) depth++;
+            else pre_sub_category = data[i].sub_category;
+
+            if (pre_concept == data[i].concept_name) depth++;
+            else pre_concept = data[i].concept_name;
+
+
+            if (depth == 0) {
+
+                grade = $('<li/>').html('<span class="grade_text" style="color:black">' + data[i].grade + '</span>').appendTo(root1);
+                pre_grade = data[i].grade;
+                var grade_ul = $('<ul/>').appendTo(grade);
+
+                chapter = $('<li/>').html('<span class="chapter_text" style="color:orangered">' + data[i].chapter + '</span>').appendTo(grade_ul);
+                pre_chapter = data[i].chapter;
+                var chapter_ul = $('<ul/>').appendTo(chapter);
+
+                category = $('<li/>').html('<span class="category_text" style="color:green">' + data[i].category + '</span>').appendTo(chapter_ul);
+                pre_category = data[i].category;
+                var category_ul = $('<ul/>').appendTo(category);
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:darkblue">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                pre_sub_category = data[i].sub_category;
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:darkgoldenrod">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                pre_concept = data[i].concept_name;
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 1) {
+
+                chapter = $('<li/>').html('<span class="chapter_text" style="color:orangered">' + data[i].chapter + '</span>').appendTo(grade_ul);
+                var chapter_ul = $('<ul/>').appendTo(chapter);
+
+                category = $('<li/>').html('<span class="category_text" style="color:green">' + data[i].category + '</span>').appendTo(chapter_ul);
+                var category_ul = $('<ul/>').appendTo(category);
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:darkblue">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:darkgoldenrod">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 2) {
+
+                category = $('<li/>').html('<span class="category_text" style="color:green">' + data[i].category + '</span>').appendTo(chapter_ul);
+                var category_ul = $('<ul/>').appendTo(category);
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:darkblue">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:darkgoldenrod">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 3) {
+
+                sub_category = $('<li/>').html('<span class="sub_category_text" style="color:darkblue">' + data[i].sub_category + '</span>').appendTo(category_ul);
+                var sub_category_ul = $('<ul/>').appendTo(sub_category);
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:darkgoldenrod">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 4) {
+
+                concept = $('<li/>').html('<span class="concept_text" style="color:darkgoldenrod">' + data[i].concept_name + "</span>").appendTo(sub_category_ul);
+                var concept_ul = $('<ul/>').appendTo(concept);
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            } else if (depth == 5) {
+
+                unit_concept = $('<li/>').html("<a href='/contents/" + data[i].unit_concept_id + "?view_type=2&step=7&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code+"&category="
+                    +data[i].category_code+"&sub_category="+data[i].sub_category_code+"&concept_id="+ data[i].concept_id +"'>" + data[i].unit_concept_name + "</a>").appendTo(concept_ul);
+
+            }
+
+
+            // chapter level
+            if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '2' && '<%= params[:grade] %>' == data[i].grade_code) {
+                grade.addClass('selected');
+                grade.find('span.grade_text').addClass('text-highlights text-highlights-green');
+                grade.find('span.grade_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '3' && '<%= params[:chapter] %>' == data[i].chapter_code) {
+                grade.addClass('selected');
+                chapter.addClass('selected');
+                chapter.find('span.chapter_text').addClass('text-highlights text-highlights-green');
+                chapter.find('span.chapter_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '4' && '<%= params[:category] %>' == data[i].category_code) {
+                grade.addClass('selected');
+                chapter.addClass('selected');
+                category.addClass('selected');
+                category.find('span.category_text').addClass('text-highlights text-highlights-green');
+                category.find('span.category_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '5' && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+                grade.addClass('selected');
+                chapter.addClass('selected');
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                sub_category.find('span.sub_category_text').addClass('text-highlights text-highlights-green');
+                sub_category.find('span.sub_category_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '6' && '<%= params[:concept_id] %>' == data[i].concept_id && '<%= params[:grade] %>' == data[i].grade_code) {
+                //다른 학년에서 concept_id가 같은 경우가 있으므로 학년을 조건에 추가함
+                grade.addClass('selected');
+                chapter.addClass('selected');
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                concept.addClass('selected');
+                concept.find('span.concept_text').addClass('text-highlights text-highlights-green');
+                concept.find('span.concept_text').css({color: "white", padding: 0});
+            } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '7' && '<%= params[:concept_id] %>' == data[i].concept_id && '<%= params[:grade] %>' == data[i].grade_code ) {
+                //다른 학년에서 concept_id가 같은 경우가 있으므로 학년을 조건에 추가함
+                grade.addClass('selected');
+                chapter.addClass('selected');
+                category.addClass('selected');
+                sub_category.addClass('selected');
+                concept.addClass('selected');
+                unit_concept.addClass('selected');
+
+                //unit_concept가 개념을 보여주는 화면일 때
+                if ('<%= @unit_concept.id unless @unit_concept.nil? %>' == data[i].unit_concept_id){
+                    unit_concept.find('a').addClass('text-highlights text-highlights-green');
+                    unit_concept.find('a').css({color: "white", padding: 0});
+                }
+            }
+
+        }
+
+        set_tree_grade();
+
+    }
+
+    function set_tree_grade() {
+
+        var openedClass = 'glyphicon-minus-sign';
+        var closedClass = 'glyphicon-plus-sign';
+
+        // initialize each of the top levels
+        var tree = $('#tree2');
+        tree.addClass("tree3");
+        tree.find('li').has("ul").each(function () {
+
+            var branch = $(this); //li with children ul
+            branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+            branch.addClass('branch');
+            branch.on('click', function (e) {
+                if (this == e.target) {
+                    var icon = $(this).children('i:first');
+                    icon.toggleClass(openedClass + " " + closedClass);
+                    $(this).children().children().toggle();
+                }
+            })
+            branch.children().children().toggle();
+        });
+        //fire event from the dynamically added icon
+
+        $('#tree2 .selected').each( function() {
+            var icon = $(this).children('i:first');
+            icon.toggleClass('glyphicon-minus-sign glyphicon-plus-sign');
+            $(this).children().children().toggle();
+            // $(this).scrollIntoView();
+
+            $('#tree_frame').scrollTop(
+                $(this).offset().top - 100
+            );
+
+        });
+
+        tree.find('.branch .indicator').each(function(){
+            $(this).on('click', function () {
+                $(this).closest('li').click();
+            });
+        });
+
+        //fire event to open branch if the li contains an anchor instead of text
+        tree.find('.branch>a').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+
+        //fire event to open branch if the li contains a button instead of text
+        tree.find('.branch>button').each(function () {
+            $(this).on('click', function (e) {
+                $(this).closest('li').click();
+                e.preventDefault();
+            });
+        });
+
+    }
+
+    get_grade_list();
+
+    get_chapter_list();
+
+</script>
