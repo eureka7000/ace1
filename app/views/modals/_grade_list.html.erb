@@ -1,0 +1,57 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <h2 class="bg-color-blue text-center rounded">학년별 목차</h2>
+
+    <% pre_grade = '' %>
+    <% pre_grade_chapter = '' %>
+    <% pre_grade_category = '' %>
+    <% pre_grade_sub_category = '' %>
+    <% pre_grade_concept = '' %>
+    <% pre_grade_unit_concept = '' %>
+    <% include_grade = '' %>
+    <% include_chapter = '' %>
+
+    <% @grades.each do |grade| %>
+        <% unless UnitConcept::CONTENTS_GRADES[grade.grade.to_i] == pre_grade %>
+            <% include_grade = grade.grade + 'In' %>
+            <h2><ul><i class="indicator glyphicon glyphicon-plus-sign" onclick="show_grade_list('<%= grade.grade %>')"></i><%= pre_grade = UnitConcept::CONTENTS_GRADES[grade.grade.to_i] %></ul></h2>
+        <% end %>
+        <% unless GradeUnitConcept::CHAPTERS[grade.chapter.to_i] == pre_grade_chapter %>
+            <% include_chapter = grade.chapter + 'In' %>
+            <h3><ul hidden class="<%= grade.grade %>"><ul><i class="indicator glyphicon glyphicon-plus-sign" onclick="show_grade_list('<%= grade.chapter %>')"></i><%= pre_grade_chapter = GradeUnitConcept::CHAPTERS[grade.chapter.to_i] %></ul></ul></h3>
+        <% end %>
+        <% unless GradeUnitConcept::CATEGORIES[grade.category.to_i] == pre_grade_category %>
+            <h3><ul hidden class="<%= grade.chapter %> <%= include_grade %>"><ul><ul><i class="indicator glyphicon glyphicon-plus-sign" onclick="show_grade_list('<%= grade.category %>')"></i><%= pre_grade_category = GradeUnitConcept::CATEGORIES[grade.category.to_i] %></ul></ul></ul></h3>
+        <% end %>
+        <% unless GradeUnitConcept::SUB_CATEGORIES[grade.sub_category.to_i] == pre_grade_sub_category %>
+            <h3><ul hidden class="<%= grade.category %> <%= include_grade %> <%= include_chapter %>"><ul><ul><ul>
+                <li class="bg-color-aqua rounded">&nbsp;&nbsp;<%= pre_grade_sub_category = GradeUnitConcept::SUB_CATEGORIES[grade.sub_category.to_i] %></li>
+            </ul></ul></ul></ul></h3>
+        <% end %>
+        <% unless grade.concept_name == pre_grade_concept %>
+            <h4><ul hidden class="<%= grade.category %> <%= include_grade %> <%= include_chapter %>"><ul><ul><ul><ul>
+                <li class="bg-color-green rounded">&nbsp;&nbsp;<%= pre_grade_concept = grade.concept_name %></li>
+            </ul></ul></ul></ul></ul></h4>
+        <% end %>
+        <% unless grade.unit_concept_name == pre_grade_unit_concept %>
+            <h5><ul hidden class="<%= grade.category %> <%= include_grade %> <%= include_chapter %>"><ul><ul><ul><ul><ul>
+                <li><%= pre_grade_unit_concept = grade.unit_concept_name %></li>
+            </ul></ul></ul></ul></ul></ul></h5>
+        <% end %>
+    <% end %>
+
+</div>
+
+<script type="text/javascript">
+
+    function show_grade_list(key){
+        $('.' + key + 'In').each(function () {
+            $(this).hide();
+            $('.'+key).find('i').removeClass('glyphicon-minus-sign');
+            $('.'+key).find('i').addClass('glyphicon-plus-sign');
+            $('.'+key+ 'In').find('i').removeClass('glyphicon-minus-sign');
+            $('.'+key+ 'In').find('i').addClass('glyphicon-plus-sign');
+        });
+        $('.'+key).slideToggle(1000, 'swing');
+    }
+
+</script>

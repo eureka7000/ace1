@@ -1,0 +1,20 @@
+<div class="col-md-12 breadcrumbs">
+    <div class="container">
+        <h2 class="pull-left" style="color: black">학습 목차 한눈에 보기</h2>
+    </div>
+</div>
+
+<div class="container container-fluid margin-top-20">
+    <div class="content-sm">
+        <%= render partial: 'modals/chapter_list' %>
+        <%= render partial: 'modals/grade_list' %>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("i").each(function () {
+        $(this).click(function () {
+            $(this).toggleClass('glyphicon-plus-sign glyphicon-minus-sign');
+        });
+    });
+</script>

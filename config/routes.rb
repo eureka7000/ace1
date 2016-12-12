@@ -90,9 +90,7 @@ Rails.application.routes.draw do
     get 'homes/how' => 'homes#how'
     get 'homes/access_terms' => 'homes#access_terms'
     get 'homes/personal_info_protection' => 'homes#personal_info_protection'
-    get 'homes/get_chapter_list' => 'homes#get_chapter_list'
-    get 'homes/chapter_list' => 'homes#chapter_list'
-    get 'homes/get_grade_list' => 'homes#get_grade_list'
+    get 'homes/contents_list' => 'homes#contents_list'
     root :to => "homes#index"
 
     # Mypages

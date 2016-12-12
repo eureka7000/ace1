@@ -1,0 +1,45 @@
+<div class="col-md-6 col-sm-6 col-xs-12">
+    <h2 class="bg-color-red text-center rounded">단원별 목차</h2>
+
+    <% pre_category = '' %>
+    <% pre_sub_category = '' %>
+    <% pre_concept = '' %>
+    <% pre_unit_concept = '' %>
+    <% include_category = '' %>
+
+    <% @chapters.each do |chapter| %>
+        <% unless Concept::CATEGORIES[chapter.category] == pre_category %>
+            <% include_category = chapter.category + 'In' %>
+            <h2><ul><i class="indicator glyphicon glyphicon-plus-sign" onclick="show_list('<%= chapter.category %>')"></i><%= pre_category = Concept::CATEGORIES[chapter.category] %></ul></h2>
+        <% end %>
+        <% unless Concept::SUB_CATEGORIES[chapter.sub_category] == pre_sub_category %>
+            <h3><ul hidden class="<%= chapter.category %>"><ul>
+                <i class="indicator glyphicon glyphicon-plus-sign" onclick="show_list('<%= chapter.sub_category %>')"></i><%= pre_sub_category = Concept::SUB_CATEGORIES[chapter.sub_category] %>
+            </ul></ul></h3>
+        <% end %>
+        <% unless chapter.concept_name == pre_concept %>
+            <h4><ul hidden class="<%= chapter.sub_category %> <%= include_category %>"><ul><ul>
+                <li class="bg-color-orange rounded">&nbsp;&nbsp;<%= pre_concept = chapter.concept_name %></li>
+            </ul></ul></ul></h4>
+        <% end %>
+        <% unless chapter.name == pre_unit_concept %>
+            <h5><ul hidden class="<%= chapter.sub_category %> <%= include_category %>"><ul><ul><ul>
+                <li><%= pre_unit_concept = chapter.name %></li>
+            </ul></ul></ul></ul></h5>
+        <% end %>
+    <% end %>
+
+</div>
+
+<script type="text/javascript">
+
+    function show_list(key){
+        $('.' + key + 'In').each(function () {
+            $(this).hide();
+            $('.'+key).find('i').removeClass('glyphicon-minus-sign');
+            $('.'+key).find('i').addClass('glyphicon-plus-sign');
+        });
+        $('.'+key).slideToggle(1000, 'swing');
+    }
+
+</script>
