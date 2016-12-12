@@ -151,7 +151,22 @@
     }
 
     function pay() {
-    
+
+        if ($('#totalPrice').val() == '' || $('#totalPrice').val() == 0 ){
+            alert('교재를 선택해주세요.');
+            return null;
+        }
+
+        if ($('#zipNo').val() == ''){
+            alert('주소를 입력해주세요.');
+            return null;
+        }
+
+        if ($('#addrDetail').val() == ''){
+            alert('상세주소를 입력해주세요.');
+            return null;
+        }
+
         var url = "/payments";
     
         var data = {
