@@ -1,3 +1,5 @@
+<div class="sm-margin-bottom-50"></div>
+<div class="margin-top-20">
 <h3 style="float:left; margin-top: 10px;">
     <span style="color:darkblue;"><%= @unit_concept.code.upcase %></span> <%= @unit_concept.name %>
 </h3>
@@ -17,9 +19,10 @@
 <% end %>
 
 <div id="btn_tree" class="pull-right" style="display:none">
-    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>    
-    <button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
-</div>    
+    <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm rounded pull-right" style="margin-left: 10px; ">질문하기</a>
+    <button id="btn_tree" class="btn btn-info rounded btn-sm" style="margin-left: 20px; float:right" onclick="view_change('backward')">목차보이기</button>
+</div>
+</div>
 
 <hr style="clear:both; margin: 0">
 
@@ -44,12 +47,12 @@
         <% @concepts.each_with_index do | concept, index | %>
         <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
-        <button id="concept_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concepts.count < 2 %>" type="button" onclick="next('concept', <%= @concepts.count %>)">
+        <button id="concept_btn" class="btn-u rounded btn-u-blue margin-top-20" style="float: right; <%= "display:none" if @concepts.count < 2 %>" type="button" onclick="next('concept', <%= @concepts.count %>)">
             다음
             <span id="concept_badge" class="badge badge-aqua rounded-2x" style="float:right; margin-left: 5px" ><%= @concepts.count - 1 %></span>            
         </button>
         
-        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @concepts.count > 1 %>" onclick="showTab('concept_desc')"> 개념설명</a>
+        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concepts.count > 1 %>" onclick="showTab('concept_desc')"> 개념설명</a>
         
     </div>
     
@@ -58,12 +61,12 @@
         <% @concept_descs.each_with_index do | concept_desc, index | %>
         <img id="concept_desc_<%= index %>" src="<%= concept_desc.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
-        <button id="concept_desc_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
+        <button id="concept_desc_btn" class="btn-u rounded btn-u-blue margin-top-20" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
             다음
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
         
-        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @concept_descs.count > 1 %>" onclick="showTab('concept_exercise')"> 개념문제</a>
+        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concept_descs.count > 1 %>" onclick="showTab('concept_exercise')"> 개념문제</a>
         
     </div>
     
@@ -122,7 +125,7 @@
         
         <% end %>
         
-        <button id="concept_exercise_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @exercises.count < 2 %>" type="button" onclick="next('concept_exercise', <%= @exercises.count %>)" >
+        <button id="concept_exercise_btn" class="btn-u rounded btn-u-blue margin-bottom-20 margin-top-20" style="float: right; <%= "display:none" if @exercises.count < 2 %>" type="button" onclick="next('concept_exercise', <%= @exercises.count %>)" >
             다음
             <span id="concept_exercise_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @exercises.count - 1 %></span>
         </button>

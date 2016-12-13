@@ -75,7 +75,7 @@
         <div class="container">
             <div class="row">
                 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                     <ul class="list-inline top-v1-contacts" style="top: 5px; position: relative;">
                         <li>
                             <i class="fa fa-book tooltips"></i>
@@ -119,7 +119,7 @@
                     </ul>
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6 col-xs-12">
                     <ul class="list-inline top-v1-data" style="top: 5px; position: relative; float:right">
                         <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
                         <li><a href="/mypages/user_info"><i class="fa fa-user"></i> My Page</a></li>
@@ -139,7 +139,7 @@
         
         <div id="treeview" class="col-md-3" style="height: 100%;">
             
-            <button class="btn btn-info btn-sm rounded" style="margin-bottom: 10px; margin-top: 10px" onclick="view_change('forward')">목차숨기기</button>
+            <button class="btn btn-info btn-sm rounded" style="margin-bottom: 10px; margin-top: 25px" onclick="view_change('forward')">목차숨기기</button>
             
             <div id="tree_frame" class="row" style="height:-webkit-calc(50% - 25px); border:1px solid lightgrey; overflow-y: auto">
                 <%= render partial: 'modals/chapter_tree_view' unless @view_type == '2' %>
