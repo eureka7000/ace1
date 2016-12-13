@@ -47,7 +47,7 @@
         <% @concepts.each_with_index do | concept, index | %>
         <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
-        <button id="concept_btn" class="btn-u rounded btn-u-blue margin-top-20" style="float: right; <%= "display:none" if @concepts.count < 2 %>" type="button" onclick="next('concept', <%= @concepts.count %>)">
+        <button id="concept_btn" class="btn-u rounded btn-u-blue margin-top-20 margin-bottom-20" style="float: right; <%= "display:none" if @concepts.count < 2 %>" type="button" onclick="next('concept', <%= @concepts.count %>)">
             다음
             <span id="concept_badge" class="badge badge-aqua rounded-2x" style="float:right; margin-left: 5px" ><%= @concepts.count - 1 %></span>            
         </button>
@@ -61,7 +61,7 @@
         <% @concept_descs.each_with_index do | concept_desc, index | %>
         <img id="concept_desc_<%= index %>" src="<%= concept_desc.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
-        <button id="concept_desc_btn" class="btn-u rounded btn-u-blue margin-top-20" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
+        <button id="concept_desc_btn" class="btn-u rounded btn-u-blue margin-top-20 margin-bottom-20" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
             다음
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
