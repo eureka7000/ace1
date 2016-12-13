@@ -138,7 +138,7 @@ class ConceptsController < ApplicationController
             format.json { head :no_content }
         end
     end
-    
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -148,7 +148,7 @@ class ConceptsController < ApplicationController
 
 
     def concept_params
-        params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn, :grade, :level, :past_test_year, :past_test_month, :past_test_type, :past_test_org)
+        params.require(:concept).permit(:category, :sub_category, :concept_code, :concept_name, :exercise_yn, :grade, :level, :past_test_year, :past_test_month, :past_test_type, :past_test_org, :past_test_score, :past_test_number, :past_test_examiner)
     end
     
 end

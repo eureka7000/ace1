@@ -138,9 +138,9 @@
                             <option value="<%= idx %>" <%= "selected" if @concept.past_test_year.to_i == idx %> ><%= idx %></option>
                             <% end %>
                             </select>
-                            </div>    
                         </div>
                     </div>
+                </div>
                     
                 <div class="col-md-6">    
                     <div class="form-group">
@@ -182,7 +182,39 @@
                         </div>    
                     </div>
                 </div>
-                        
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <%= f.label :past_test_score, '점수', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <select name="concept[past_test_score]" class="form-control">
+                                <option value="">--- Score ---</option>
+                                <option value="2" <%= 'selected' if @concept.past_test_score == '2' %>>2</option>
+                                <option value="3" <%= 'selected' if @concept.past_test_score == '3' %>>3</option>
+                                <option value="4" <%= 'selected' if @concept.past_test_score == '4' %>>4</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <%= f.label :past_test_number, '문제번호', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <%= f.text_field :past_test_number, :class => 'form-control' %>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <%= f.label :past_test_examiner, '출제자', :class => 'col-sm-2 col-md-3 control-label' %>
+                        <div class="input-group col-sm-4 col-md-8">
+                            <%= f.text_field :past_test_examiner, :class => 'form-control' %>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
