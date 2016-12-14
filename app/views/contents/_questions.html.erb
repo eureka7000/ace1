@@ -13,7 +13,7 @@
         
             <% @questions.each do |question| %>
         <div class="profile-event">
-            <div class="date-formats">
+            <div class="date-formats rounded">
                 <span><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
                 <small><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%m, %Y') %></small>                
             </div>
