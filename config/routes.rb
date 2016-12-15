@@ -121,6 +121,7 @@ Rails.application.routes.draw do
     get 'blogs/sign_in_process' => 'blogs#sign_in_process'
     get 'blogs/:id/like' => 'blogs#like'
     get 'blogs/how_to_purchase_textbook' => 'blogs#how_to_purchase_textbook'
+    get 'blogs/how_to_purchase_membership' => 'blogs#how_to_purchase_membership'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
