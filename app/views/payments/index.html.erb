@@ -38,7 +38,8 @@
                 <table class="table table-striped">
                 <thead>
                 <tr>
-                <th>Order Number</th>    
+                <th>Order Number</th>
+                <th>Email</th>
                 <th>User</th>
                 <th>Service</th>
                 <th>Pay Method</th>
@@ -56,6 +57,7 @@
                 <% @payments.each do |payment| %>
                 <tr>
                 <td><%= payment.oid %></td>
+                <td><%= payment.user.email %></td>
                 <td><%= payment.user.user_name %></td>
                 <td><%= payment.service_name %></td>
                 <td><%= InicisPayment::GO_PAY_METHOD[payment.pay_method] %></td>
