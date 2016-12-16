@@ -114,9 +114,9 @@ Rails.application.configure do
      config.after_initialize do
          ActiveMerchant::Billing::Base.mode = :production
              paypal_options = {
-                 login: "admin_api1.eurekamath.co.kr",
-                 password: "HZHXRE3Q9CLN8VP8",
-                 signature: "AIpgItfV72XDJRE9fvemUmrf-En8AGgdQSHB.A-WWMJV.ycxvaChpFnp"
+                 login: "eureka7000_api1.naver.com",
+                 password: "ZKWSB6DLB3WB7AFY",
+                 signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AlmDP.q.z38.iVNpKvbDzqo-jCtn"
              }
          ::EXPRESS_GATEWAY = ActiveMerchant::Billing::PaypalExpressGateway.new(paypal_options)
      end        
