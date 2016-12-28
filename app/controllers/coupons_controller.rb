@@ -20,6 +20,7 @@ class CouponsController < ApplicationController
   # GET /coupons/new
   def new
     @coupon = Coupon.new
+    @status = 'new'
   end
 
   # GET /coupons/1/edit
@@ -45,6 +46,8 @@ class CouponsController < ApplicationController
   # PATCH/PUT /coupons/1
   # PATCH/PUT /coupons/1.json
   def update
+    @status = 'update'
+
     respond_to do |format|
       if @coupon.update(coupon_params)
         format.html { redirect_to @coupon, notice: 'Coupon was successfully updated.' }

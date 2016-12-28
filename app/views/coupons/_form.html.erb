@@ -74,8 +74,9 @@
 
                 <footer>
                     <div class="col-md-offset-2">
-                        <%= f.submit '저장', :class => 'btn btn-success' %>
-                        <%= link_to '뒤로', coupons_path, :class => 'btn btn-info' %>
+                        <% @status == 'new' ? form_id = 'new_coupon' : form_id = 'edit_coupon_'+ params[:id] %>
+                        <input type="button" value="저장" class="btn btn-u btn-u-dark-info rounded" onclick="check_expire_date('<%= form_id %>')">
+                        <%= link_to '뒤로', coupons_path, :class => 'btn btn-info rounded' %>
                     </div>    
                 </footer>
 
@@ -111,6 +112,23 @@
         
     } );
 
-        
+
+    function check_expire_date(form_id){
+        if ( $('#coupon_coupon_code').val() == "" ){
+            alert('쿠폰코드를 입력하세요');
+            return null;
+        }
+
+        if ( $('#expire_from').val() == "" ){
+            alert('시작일을 입력하세요');
+            return null;
+        }
+        if ( $('#expire_to').val() == "" ){
+            alert('종료일을 입력하세요');
+            return null;
+        }
+
+        $('#'+form_id).submit();
+    }
         
 </script>

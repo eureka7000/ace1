@@ -49,8 +49,8 @@
                         <tr>
                         <td style="width:25%;"><b>유효기간</b></td>
                         <td style="width:75%">
-                            <%= @coupon.expire_from.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %> ~ 
-                            <%= @coupon.expire_to.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') %>
+                            <%= @coupon.expire_from.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') unless @coupon.expire_from.nil? %> ~
+                            <%= @coupon.expire_to.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d') unless @coupon.expire_to.nil? %>
                         </td>
                         </tr>
                         </table>
