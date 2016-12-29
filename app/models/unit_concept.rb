@@ -25,8 +25,8 @@ class UnitConcept < ActiveRecord::Base
         2 => '중2',
         3 => '중3',
         4 => '고1',
-        5 => '고2',
-        6 => '고3'
+        5 => '고2 문과',
+        6 => '고2 이과'
     }
 
     CONTENTS_GRADES = {
