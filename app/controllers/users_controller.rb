@@ -313,7 +313,7 @@ class UsersController < ApplicationController
         end        
             
             
-        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date, coupon_code ')
             .joins("left outer join user_types on user_types.user_id = users.id")
             .joins("left join schools on schools.id = users.school_id").where(str).paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)
         

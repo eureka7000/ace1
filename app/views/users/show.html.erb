@@ -67,7 +67,12 @@
 							end	 
 						%>
 
-	                    <tr>
+                        <tr>
+                        <td style="width:25%;"><b>쿠폰 사용</b></td>
+                        <td style="width:75%"><%= @user.coupon_code unless @user.coupon_code.nil? %></td>
+                        </tr>
+
+                        <tr>
 	                    <td style="width:25%;"><b>멘토</b></td>
 	                    <td style="width:75%"><%= mento %></td>
 	                    </tr>																

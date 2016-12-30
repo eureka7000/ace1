@@ -47,6 +47,7 @@
                                 <th>전화번호</th>
                                 <th>사용자타입</th>
                                 <th>학교/학원</th>
+                                <th>쿠폰 사용</th>
                                 <th>접속횟수</th>
                                 <th>만료일</th>
                                 <th colspan="3"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
@@ -60,6 +61,7 @@
                                 <td><%= user.phone %></td>
                                 <td><%= user.user_type %></td>
                                 <td><%= user.school_name %></td>
+                                <td><%= user.coupon_code unless user.coupon_code.nil? %></td>
                                 <td><%= user.sign_in_count %></td>
                                 <td><%= user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') unless user.expire_date.nil? %></td>
                                 <td><%= link_to 'Show', user %></td>
