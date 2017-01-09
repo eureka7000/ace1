@@ -98,75 +98,77 @@
                                     </div>
                                 </div>
 
-                                <div class="panel panel-default">
-                                    
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Two" aria-expanded="false">
-                                                Paypal (USD - OTHER)
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    
-                                    <div id="collapse-Two" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                
-                                                <form id="paypal_form" name="" class="sky-form" action="/payments/paypal" method="POST">
-                                
-                                                <%= token_tag nil %>
-                                
-                                                <input type="hidden" name="version" value="1.0">  
-                                                <input type="hidden" name="mid" value="<%= @mid %>" >
-                                                <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
-                                                <input type="hidden" name="currency" value="WON">
-                                                <input type="hidden" name="buyername" value="<%= current_user.user_name %>">
-                                                <input type="hidden" name="buyertel" value="<%= current_user.phone %>">
-                                                <input type="hidden" name="buyeremail" value="<%= current_user.email %>">
-                                                <input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">
-                                                <input type="hidden" name="signature" id="signature" value=''>
-                                                <input type="hidden" name="returnUrl" value="<%= root_url %>payments/payment_return">
-                                                <input type="hidden" name="mKey" value='<%= @m_key %>'>
-                                                <input type="hidden" name="price" id="price" value='25000'>
-                                                <input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">
+                                <!--<div class="panel panel-default">-->
+                                    <!---->
+                                    <!--<div class="panel-heading">-->
+                                        <!--<h4 class="panel-title">-->
+                                            <!--<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Two" aria-expanded="false">-->
+                                                <!--Paypal (USD - OTHER)-->
+                                            <!--</a>-->
+                                        <!--</h4>-->
+                                    <!--</div>-->
+                                    <!---->
+                                    <!--<div id="collapse-Two" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">-->
+                                        <!--<div class="panel-body">-->
+                                            <!--<div class="row">-->
+                                                <!---->
+                                                <!--<form id="paypal_form" name="" class="sky-form" action="/payments/paypal" method="POST">-->
+                                <!---->
+                                                <!--<%= token_tag nil %>-->
+                                <!---->
+                                                <!--<input type="hidden" name="version" value="1.0">  -->
+                                                <!--<input type="hidden" name="mid" value="<%= @mid %>" >-->
+                                                <!--<input type="hidden" name="oid" id="oid" value="<%= @order_number %>">-->
+                                                <!--<input type="hidden" name="currency" value="WON">-->
+                                                <!--<input type="hidden" name="buyername" value="<%= current_user.user_name %>">-->
+                                                <!--<input type="hidden" name="buyertel" value="<%= current_user.phone %>">-->
+                                                <!--<input type="hidden" name="buyeremail" value="<%= current_user.email %>">-->
+                                                <!--<input type="hidden" name="timestamp" id="timestamp" value="<%= @timestamp %>">-->
+                                                <!--<input type="hidden" name="signature" id="signature" value=''>-->
+                                                <!--<input type="hidden" name="returnUrl" value="<%= root_url %>payments/payment_return">-->
+                                                <!--<input type="hidden" name="mKey" value='<%= @m_key %>'>-->
+                                                <!--<input type="hidden" name="price" id="price" value='25000'>-->
+                                                <!--<input type="hidden" name="closeUrl" value="<%= root_url %>payments/close">-->
 
-                                                <dl class="dl-horizontal">
-                                                <dt class="payment_dt">상품</dt>
-                                                <dd class="payment_dd">
-                                                    <section>
-                                                        <select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">
-                                                        <option value="1">1 Month ($ 25)</option>
-                                                        <option value="2">2 Months ($ 50)</option>
-                                                        <option value="3">3 Months ($ 75)</option>
-                                                        <option value="4">4 Months ($ 100)</option>
-                                                        <option value="5">5 Months ($ 125)</option>
-                                                        <option value="6">6 Months ($ 150)</option>
-                                                        </select>    
-                                                    </section>
-                                                </dd>
-                                                </dl>
-                                                
-                                                <div class="col-md-3"></div>
+                                                <!--<dl class="dl-horizontal">-->
+                                                <!--<dt class="payment_dt">상품</dt>-->
+                                                <!--<dd class="payment_dd">-->
+                                                    <!--<section>-->
+                                                        <!--<select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">-->
+                                                        <!--<option value="1">1 Month ($ 25)</option>-->
+                                                        <!--<option value="2">2 Months ($ 50)</option>-->
+                                                        <!--<option value="3">3 Months ($ 75)</option>-->
+                                                        <!--<option value="4">4 Months ($ 100)</option>-->
+                                                        <!--<option value="5">5 Months ($ 125)</option>-->
+                                                        <!--<option value="6">6 Months ($ 150)</option>-->
+                                                        <!--</select>    -->
+                                                    <!--</section>-->
+                                                <!--</dd>-->
+                                                <!--</dl>-->
+                                                <!---->
+                                                <!--<div class="col-md-3"></div>-->
 
-                                                </form>
+                                                <!--</form>-->
 
-                                                <!--UYLV5U5RAXA7A 개발상태-->
+                                                <!--&lt;!&ndash;UYLV5U5RAXA7A 개발상태&ndash;&gt;-->
 
-                                                <script>
-                                                window.paypalCheckoutReady = function() {
-                                                    paypal.checkout.setup('H7REX6WUTUK8J', {
-                                                        environment: 'production',
-                                                        container: 'paypal_form'
-                                                    });
-                                                };
-                                                </script>
-                                                <script src="//www.paypalobjects.com/api/checkout.js" async></script>                                                                                            
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
+
+                                                <!--<script>-->
+<!--//                                                window.paypalCheckoutReady = function() {-->
+<!--//                                                    paypal.checkout.setup('H7REX6WUTUK8J', {-->
+<!--//                                                        environment: 'sandbox',  //develop 일 때 : sandbox, production 일 때 : production-->
+<!--//                                                        container: 'paypal_form'-->
+<!--//                                                    });-->
+<!--//                                                };-->
+                                                <!--</script>-->
+                                                <!--<script src="//www.paypalobjects.com/api/checkout.js" async></script>                                                                                            -->
+                                                <!---->
+                                            <!--</div>-->
+
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!---->
+                                <!--</div>-->
 
                             </div>                            
                             

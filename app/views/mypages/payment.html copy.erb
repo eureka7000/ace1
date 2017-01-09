@@ -99,7 +99,7 @@
                                 </div>
 
                                 <div class="panel panel-default">
-                                    
+
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion-1" href="#collapse-Two" aria-expanded="false">
@@ -107,16 +107,16 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    
+
                                     <div id="collapse-Two" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
                                         <div class="panel-body">
                                             <div class="row">
-                                                
+
                                                 <form id="paypal_form" name="" class="sky-form" action="/payments/paypal" method="POST">
-                                
+
                                                 <%= token_tag nil %>
-                                
-                                                <input type="hidden" name="version" value="1.0">  
+
+                                                <input type="hidden" name="version" value="1.0">
                                                 <input type="hidden" name="mid" value="<%= @mid %>" >
                                                 <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
                                                 <input type="hidden" name="currency" value="WON">
@@ -141,15 +141,15 @@
                                                         <option value="4">4 Months ($ 100)</option>
                                                         <option value="5">5 Months ($ 125)</option>
                                                         <option value="6">6 Months ($ 150)</option>
-                                                        </select>    
+                                                        </select>
                                                     </section>
                                                 </dd>
                                                 </dl>
-                                                
+
                                                 <div class="col-md-3"></div>
 
-                                                </form>    
-                                                
+                                                </form>
+
                                                 <script>
                                                 window.paypalCheckoutReady = function() {
                                                     paypal.checkout.setup('UYLV5U5RAXA7A', {
@@ -158,12 +158,12 @@
                                                     });
                                                 };
                                                 </script>
-                                                <script src="//www.paypalobjects.com/api/checkout.js" async></script>                                                                                            
-                                                
+                                                <script src="//www.paypalobjects.com/api/checkout.js" async></script>
+
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                             </div>                            
