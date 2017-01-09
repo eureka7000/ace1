@@ -280,6 +280,7 @@ class UsersController < ApplicationController
         user_type = params[:user_type]
         school = params[:school]
         user_name = params[:user_name]
+        coupon_name = params[:coupon_name]
         page = params[:page].blank? ? 1 : params[:page]
         
         str = "";
@@ -298,21 +299,28 @@ class UsersController < ApplicationController
         
         unless school.blank?
             if str == ""
-                str += " schools.name like '#{school}%' "
+                str += " schools.name like '%#{school}%' "
             else
-                str += " and schools.name like '#{school}%' "
+                str += " and schools.name like '%#{school}%' "
             end        
         end
         
         unless user_name.blank?
             if str == ""
-                str += " users.user_name like '#{user_name}%' "
+                str += " users.user_name like '%#{user_name}%' "
             else
-                str += " and users.user_name like '#{user_name}%' "
+                str += " and users.user_name like '%#{user_name}%' "
             end        
-        end        
-            
-            
+        end
+
+        unless coupon_name.blank?
+            if str == ""
+                str += " users.coupon_code like '%#{coupon_name}%' "
+            else
+                str += " and users.coupon_code like '%#{coupon_name}%' "
+            end
+        end
+
         @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date, coupon_code ')
             .joins("left outer join user_types on user_types.user_id = users.id")
             .joins("left join schools on schools.id = users.school_id").where(str).paginate( :page => params[:page], :per_page => 30 ).order(id: :desc)

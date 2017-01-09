@@ -27,13 +27,20 @@
                     
     				<div class="col-md-2">
                         <input type="text" id="user_name" placeholder="이름" class="form-control" value="<%= params[:user_name] %>">
-    				</div>                    
-
-    				<div class="col-md-4">
-    					<a href="javascript:goSearch()" class="btn btn-success"><i class="fa fa-search"></i> Search</a>
-                        <a href="javascript:goSearch2()" class="btn btn-warning"><i class="fa fa-search"></i> 일괄권한주기</a>                        
-                        <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary' %>
     				</div>
+
+                    <div class="col-md-2">
+                        <input type="text" id="coupon_name" placeholder="쿠폰" class="form-control" value="<%= params[:coupon_name] %>">
+                    </div>
+
+                    <div class="col-md-2">
+                        <a href="javascript:goSearch()" class="btn btn-info rounded"><i class="fa fa-search"></i> Search</a>
+                    </div>
+
+                    <div class="col-md-4 margin-top-20">
+                        <a href="javascript:goSearch2()" class="btn btn-warning rounded">일괄권한주기</a>
+                        <%= link_to '사용자 등록', new_user_path, :class => 'btn btn-primary rounded' %>
+                    </div>
                 </div>
                 
                 <hr class="devider devider-dotted" style="margin:10px">
@@ -84,7 +91,7 @@
 <script type="text/javascript">
 
     function goSearch() {
-		location = "/users?user_type=" + $('#user_type').val() + "&email=" + $('#email').val() + "&school=" + $('#school').val() + "&user_name=" + $('#user_name').val();
+		location = "/users?user_type=" + $('#user_type').val() + "&email=" + $('#email').val() + "&school=" + $('#school').val() + "&user_name=" + $('#user_name').val() + "&coupon_name=" + $('#coupon_name').val();
 	}
     
     function goSearch2() {
