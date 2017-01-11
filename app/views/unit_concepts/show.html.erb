@@ -25,7 +25,6 @@
     </div>
   </div>
 
-
     <div class="row">
 
         <div class="col-md-12">
@@ -190,8 +189,6 @@
                               <% unless unit_concept_exercises_link.unit_concept_linked_id.blank? %>
                                    <% @linked_unit_concept = UnitConcept.find(unit_concept_exercises_link.unit_concept_linked_id) %>
                                    <a href="/contents/<%= @linked_unit_concept.id %>"><%= @linked_unit_concept.code %> : <%= @linked_unit_concept.name %></a> <a href="javascript:setLink(null, <%= unit_concept_exercises_link.id %>)">[x]</a></p>
-                              <% else %>
-                                  link exercise id is not exist : <%= unit_concept_desc.id %>
                               <% end %>
                           <% end %>
                           <a href="javascript:conceptSearch('<%= unit_concept_desc.id %>')">Add Link</a>
