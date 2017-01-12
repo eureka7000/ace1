@@ -7,27 +7,27 @@
 
         <!-- Profile Content -->
         <div class="col-md-9 margin-top-20">
-        
+
             <div class="profile-body margin-bottom-20">
-                
+
                 <div class="tab-v1">
-                    
+
                     <ul class="nav nav-justified nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#passwordTab">교재 신청</a></li>
                     </ul>
-                    
+
                     <div class="tab-content">
-                        
+
                         <hr class="devider devider-dotted" style="margin:10px">
-                        
-                        
+
+
                         <div id="payment" class="profile-edit tab-pane fade in active">
-                            
+
                             <form id="SendPayForm" name="" class="sky-form" method="POST">
-                                
+
                             <%= token_tag nil %>
-                                
-                            <input type="hidden" name="version" value="1.0">  
+
+                            <input type="hidden" name="version" value="1.0">
                             <input type="hidden" name="mid" value="<%= @mid %>" >
                             <input type="hidden" name="oid" id="oid" value="<%= @order_number %>">
                             <input type="hidden" name="currency" value="WON">
@@ -51,7 +51,11 @@
                             <input type="hidden" id="bdMgtSn" name="bdMgtSn" /> <!-- 건물관리번호 -->
 
                             <dl class="dl-horizontal">
-                            <dt class="payment_dt">교재</dt>
+
+                            <!--<dt class="payment_dt text-left">교재-->
+                                <!--<br><i class="fa fa-book" data-toggle="modal" data-target=".bs-example-modal-lg" style="color: green"><strong><i> <a>샘플 보기!</a></i></strong></i>-->
+                            <!--</dt>-->
+
                             <dd class="payment_dd">
                                 <section>
                                     <select multiple="multiple" id="my-select" name="users[]" >
@@ -66,7 +70,7 @@
                                     </select>
                                 </section>
                             </dd>
-                                
+
                             <dt class="payment_dt">금액</dt>
                             <dd class="payment_dd">
                                 <section style="display:flex">
@@ -122,7 +126,9 @@
         
     </div> 
                         
-</div>                
+</div>
+
+<%= render 'modals/sample_book_modal' %>
 
 <% if Rails.env.production? %>
 <script language="javascript" type="text/javascript" src="http://stdpay.inicis.com/stdjs/INIStdPay.js" charset="UTF-8"></script>
