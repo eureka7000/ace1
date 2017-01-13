@@ -28,7 +28,7 @@ class PrintsController < ApplicationController
                     from concepts a, unit_concepts b, unit_concept_descs c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'concept'
-                    and b.exercise_yn = 'exercise'
+                    and b.exercise_yn != 'concept'
                     and c.desc_type = '1'
                     and b.grade in (#{grade})
                     and a.id = b.concept_id
@@ -69,7 +69,7 @@ class PrintsController < ApplicationController
                     from concepts a, unit_concepts b, unit_concept_descs c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'concept'
-    	            and b.exercise_yn = 'exercise'
+    	            and b.exercise_yn != 'concept'
                     and b.grade in (#{grade})
                     and c.desc_type in ('7','3')
                     and a.id = b.concept_id
