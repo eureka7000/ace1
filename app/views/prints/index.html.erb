@@ -172,7 +172,7 @@
             
             if (old_concept_name != cur_concept_name) {
                 
-                console.log('concept is different. start with new page',old_concept_name + " : " + cur_concept_name);
+                console.log('concept is different. start with new page', old_concept_name + " : " + cur_concept_name);
                 
                 pageNum++;
                 existPane = false;
@@ -290,8 +290,8 @@
         return ret;
         
     }
-    
-    
+
+
     function add_pane(paneNum, paneHeight, subpage, pagePaneCount) {
         if (pagePaneCount%2 == 0) {
             $('<div />').addClass('pane').attr('id','pane'+ paneNum).css('height',paneHeight).appendTo(subpage);
