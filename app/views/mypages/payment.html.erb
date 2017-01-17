@@ -64,10 +64,16 @@
                                                         <select id="goodname" name="goodname" class="form-control" onchange="goodChanged()">
                                                         <option value="1">1개월 (&#8361; 25,000)</option>
                                                         <option value="2">2개월 (&#8361; 50,000)</option>
-                                                        <option value="3">3개월 (&#8361; 75,000)</option>
-                                                        <option value="4">4개월 (&#8361; 100,000)</option>
-                                                        <option value="5">5개월 (&#8361; 125,000)</option>
-                                                        <option value="6">6개월 (&#8361; 150,000)</option>
+                                                        <option value="3">3개월(5%할인) (&#8361; 71,250)</option>
+                                                        <option value="4">4개월(5%할인) (&#8361; 95,000)</option>
+                                                        <option value="5">5개월(10%할인) (&#8361; 118,750)</option>
+                                                        <option value="6">6개월(10%할인) (&#8361; 135,000)</option>
+                                                        <option value="7">7개월(10%할인) (&#8361; 157,500)</option>
+                                                        <option value="8">8개월(10%할인) (&#8361; 180,000)</option>
+                                                        <option value="9">9개월(10%할인) (&#8361; 202,500)</option>
+                                                        <option value="10">10개월(10%할인) (&#8361; 225,000)</option>
+                                                        <option value="11">11개월(10%할인) (&#8361; 247,500)</option>
+                                                        <option value="12">12개월(15%할인) (&#8361; 255,000)</option>
                                                         </select>    
                                                     </section>
                                                 </dd>
@@ -226,9 +232,7 @@
                             </table>
 								
                         </div>
-                        
-                        
-                        
+
                     </div>
                     
                 </div>
@@ -284,7 +288,45 @@
     
 
     function goodChanged() {
-        var price = parseInt($('#goodname').val()) * 25000;
+        var price = 0;
+
+        if ( parseInt($('#goodname').val()) == 1 ){
+            price = 25000;
+        }
+        else if ( parseInt($('#goodname').val()) == 2 ){
+            price = 50000;
+        }
+        else if ( parseInt($('#goodname').val()) == 3 ){
+            price = 71250;
+        }
+        else if ( parseInt($('#goodname').val()) == 4 ){
+            price = 95000;
+        }
+        else if ( parseInt($('#goodname').val()) == 5 ){
+            price = 118750;
+        }
+        else if ( parseInt($('#goodname').val()) == 6 ){
+            price = 135000;
+        }
+        else if ( parseInt($('#goodname').val()) == 7 ){
+            price = 157500;
+        }
+        else if ( parseInt($('#goodname').val()) == 8 ){
+            price = 180000;
+        }
+        else if ( parseInt($('#goodname').val()) == 9 ){
+            price = 202500;
+        }
+        else if ( parseInt($('#goodname').val()) == 10 ){
+            price = 225000;
+        }
+        else if ( parseInt($('#goodname').val()) == 11 ){
+            price = 247500;
+        }
+        else if ( parseInt($('#goodname').val()) == 12 ){
+            price = 255000;
+        }
+
         $('#price').val(price);
     }
     
