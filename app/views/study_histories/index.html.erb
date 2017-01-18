@@ -13,6 +13,7 @@
                 <tr>
                 <th>User</th>
                 <th>School</th>
+                <th>Coupon</th>
                 <th>Grade</th>
                 <th>Studied Concept</th>
                 <th>Last Studied</th>
@@ -28,6 +29,7 @@
                 <tr>
                 <td><%= study_history.user_name %></td>
                 <td><%= study_history.name %></td>
+                <td><%= study_history.coupon_code %></td>
                 <td><%= UnitConcept::GRADES[study_history.grade.to_i] %></td>
                 <td><%= study_history.concept_count %></td>
                 <td><%= study_history.last_study %></td>

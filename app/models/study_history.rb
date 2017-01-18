@@ -53,7 +53,7 @@ class StudyHistory < ActiveRecord::Base
     
     def self.get_study_history(user_id, page)
         
-        str = "select history.user_id, users.user_name, users.grade, schools.name, history.concept_count, history.last_study, users.last_sign_in_at from (
+        str = "select history.user_id, users.user_name, users.coupon_code, users.grade, schools.name, history.concept_count, history.last_study, users.last_sign_in_at from (
             select t.user_id, sum(t.concept_count) concept_count, max(t.concept_studying) last_study from (
                 select d.user_id, count(d.concept_name) as concept_count, '' as concept_studying from (
 	                select a.user_id, c.concept_name from (
