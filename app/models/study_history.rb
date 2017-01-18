@@ -45,7 +45,7 @@ class StudyHistory < ActiveRecord::Base
                 and a.unit_concept_id = b.id
                 and b.concept_id = c.id
                 group by a.unit_concept_id
-                order by c.id, b.id"
+                order by a.updated_at desc"
                 
         StudyHistory.find_by_sql(str)        
         
