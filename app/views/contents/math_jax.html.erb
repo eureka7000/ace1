@@ -1,0 +1,233 @@
+<div class="test margin-bottom-50">
+    <div id="top"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    var root = $('#top');
+    var divd = $('<div>').addClass('margin-bottom-50 margin-top-20').appendTo(root);
+    $('<h2>').html('hello world!!').appendTo(divd);
+    var page = $('<div>').addClass('margin-top-20 what col-md-12').attr('id:power', name='super').appendTo(root);
+    $('<p>').html('Wow It\'s different!').appendTo(page);
+
+    $('.what').find('p').addClass('text-center');
+
+</script>
+
+
+<hr>
+
+<h3 style="float:left; margin-top: 10px;">
+    <span style="color:darkblue;">000-TEST</span> 테스트
+</h3>
+
+
+<% rst = 5 - 3 %>
+<span style="color:orangered; float:left; margin-top: 15px; margin-left: 10px">
+<% (1..3).each do |idx| %>
+    <i class="fa fa-star"></i>
+<% end%>
+</span>
+
+<span style="color:orangered; float:left; margin-top: 15px; margin-left: 3px">
+<% (1..rst).each do |idx| %>
+    <i class="fa fa-star-o"></i>
+<% end %>
+</span>
+
+
+<button id="btn_tree" class="btn btn-info btn-sm" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>
+
+<hr style="clear:both; margin: 0">
+
+
+<div class="row" style="height:calc(100% - 50px)">
+
+    <!-- 개념 -->
+    <div id="concept_main" class="col-md-6 col-sm-6 col-xs-12 tabs">
+
+        <h3>291-1 무리식</h3>
+        <h4><strong>1. 무리식(irrational expression, 無理式)의 정의</strong></h4>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;무리식이란 근호(`sqrt(" ")`)안에 문자를 포함한 식을 말한다.</h5>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;▷ 식의 분류</h5>
+        <h5>
+        <table border="0" class="text-center" style="margin-left: 30px;">
+            <tr>
+                <td rowspan="4">식 </td>
+                <td rowspan="4"><h1>&nbsp;{ &nbsp;</h1></td>
+                <td rowspan="3">유리식</td>
+                <td rowspan="3"><h1>&nbsp;{ &nbsp;</h1></td>
+                <td>다항식</td>
+                <td>`: 2x+1, x^2+x+1,...`</td>
+            </tr>
+
+            <tr></tr>
+
+            <tr>
+                <td>분수식</td>
+                <td>`: 1/x, x/(x-1), x-1/x, ...`</td>
+            </tr>
+
+            <tr>
+                <td>무리식</td>
+                <td colspan="3">`: sqrt(x+1), sqrt(x^2-1), 1/sqrt(x-1), ...`</td>
+            </tr>
+        </table>
+        </h5>
+        <br>
+
+        <h4>
+            <strong>2. 무리식의 성질</strong></h4>
+        <h5>
+            &nbsp;&nbsp;&nbsp;&nbsp;무리식이 실수값을 갖기 위한 조건은<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;➡ (근호 안의 식)`>=0`<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(분모)`!=0`
+        </h5>
+
+        <hr>
+
+        <h3>341-2 연립방정식</h3>
+        <h5>
+            <strong>4. 연립방정식의 종류</strong> <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;1) 미지수가 2개인 연립일차방정식 : 이원일차연립방정식 <br>
+            <table border="0" class="margin-left-10">
+                <tr>
+                    <td rowspan="2"><h1>{</h1></td>
+                    <td>&nbsp;&nbsp;`ax+by+c=0` (`a`, `b`, `c`는 상수)</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;`a^'x+b^'y+c=0` (`a^'`, `b^'`, `c^'`는 상수)</td>
+                </tr>
+            </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;2) 미지수가 3개인 연립일차방정식 : 삼원일차연립방정식 <br>
+            <table border="0" class="margin-left-10">
+                <tr>
+                    <td rowspan="3"><span style="font-size: 40px">{</span></td>
+                    <td>&nbsp;&nbsp;`ax+by+c=0` (`a`, `b`, `c`는 상수)</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;`a^'x+b^'y+c^'z+d^'=0` (`a^'`, `b^'`, `c^'`, `d^'`는 상수)</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;`a^&#x2033;x+b^&#x2033;y+c^&#x2033;z+d^&#x2033;=0` (`a^&#x2033;`, `b^&#x2033;`, `c^&#x2033;`, `d^&#x2033;`는 상수)</td>
+                </tr>
+            </table>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;3) 미지수가 2개인 연립일차방정식 : 이원일차연립방정식 <br>
+            <table border="0" class="margin-left-10">
+                <tr>
+                    <td rowspan="2"><h1>{</h1></td>
+                    <td>&nbsp;&nbsp;`x^2+2x+y=0`</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;&nbsp;`3x^2+y^2=3`</td>
+                </tr>
+            </table>
+        </h5>
+
+        <hr>
+
+        <h3>c611-4 거듭제곱근의 성질</h3>
+
+        <h4><strong>Exercise</strong></h4>
+
+        <h5>`01.` $\sqrt[n]{a} \sqrt[n]{b}$ =
+            <label class="table-bordered">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>이다.
+        </h5>
+
+        <h5>
+            `02.` $(\sqrt[n]{a} \sqrt[n]{b})^n = (\sqrt[n]{a})^n (\sqrt[n]{b})^n = ab$이다. <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            `a>0, b>0`이므로 $\sqrt[n]{a} \sqrt[n]{b} >0, ab>0$이다. <br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            따라서 $\sqrt[n]{a} \sqrt[n]{b}$은 `ab`의 양의
+            <label class="table-bordered">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>이다.
+        </h5>
+
+        <h5>
+            `11.` $\frac{\sqrt[n]{a}}{\sqrt[n]{b}} = \sqrt[n]{\frac{a}{b}}$ 이다. `(O, X)`
+        </h5>
+
+        <h5>`12.` $(\sqrt[n]{a})^m = \sqrt[n]{a^m}$이다. `(O, X)`</h5>
+
+        <h5>`13.` $\sqrt[m]{\sqrt[n]{a}} = \sqrt[mn]{a} = \sqrt[n]{\sqrt[m]{a}}$이다. `(O, X)`</h5>
+
+    </div>
+
+    <div id="concept_desc" class="col-md-6 col-sm-6 col-xs-12 tabs">
+
+        <h3>446-1 이차함수와 이차방정식의 근의 분리</h3>
+
+        <h5>
+            이차방정식 `ax^2+bx+c=0 (a>0)`의 두 근을 `alpha, beta (alpha<=beta)`이고, 판별식 `D=b^2-4ac`일 때
+        </h5>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th width="10%">No.</th>
+                <th width="45%">근의 분리</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+
+                    <td>
+                        ▷판별식 : `D>=0`<br>
+                        ▷분리점의 함숫값 : `f(1)>0`<br>
+                        ▷대칭축 : `-b/(2a)>1`
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+
+                    <td>
+                        ▷판별식 : `D>=0`<br>
+                        ▷분리점의 함숫값 : `f(1)>0`<br>
+                        ▷대칭축 : `-b/(2a)<1`
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+
+                    <td>
+                        ▷판별식 : 필요없음<br>
+                        ▷분리점의 함숫값 : `f(1)<0`<br>
+                        ▷대칭축 : 필요없음
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr>
+
+        <h3>c483-3 임의의 예각의 삼각비의 값</h3>
+
+        <h4><strong>1. 임의의 예각의 삼각비의 값</strong></h4>
+
+        <h5>1) `sin x = bar(AB)/bar(OA) = bar(AB)/1 = bar(AB)`</h5>
+        <h5>2) `cos x = bar(OB)/bar(OA) = bar(OB)/1 = bar(OB)`</h5>
+        <h5>3) `tan x = bar(CD)/bar(OD) = bar(CD)/1 = bar(CD)`</h5>
+        <h5>4) `sin 0^@ = 0, cos 0^@ = 1, tan 0^@ = 0,`</h5>
+        <h5>&nbsp;&nbsp;&nbsp;&nbsp;`sin 90^@=0, cos 90^@=1, tan 90^@=`한없이 커지므로 정할 수 없다.</h5>
+
+        `((2, 132, 55), (142, 2, 9), (35, 12, 198), (4, 5, 2))`<br>
+        `a_(kappa)^2` <br>
+        `a^2 sqrt(x)`<br><br>
+
+        $a \sqrt[2]{x}$ <br>
+
+        `int_0^sqrt(-pi/a) ax+1`<br/><br/>
+
+        `a_(kappa)""^2`
+
+    </div>
+</div>
+
+<div class="margin-bottom-50"></div>
+

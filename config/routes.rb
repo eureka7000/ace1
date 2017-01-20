@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+    
     resources :textbooks
     resources :coupons
 
@@ -56,6 +56,7 @@ Rails.application.routes.draw do
     get '/contents/get_chapter_list' => 'contents#get_chapter_list'
     get '/contents/by_level' => 'contents#by_level'
     get '/contents/get_grade_list' => 'contents#get_grade_list'
+    get 'contents/math_jax' => 'contents#math_jax'
     resources :contents
     
     get '/concepts/get_concepts' => 'concepts#get_concepts'
