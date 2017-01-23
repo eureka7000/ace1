@@ -34,12 +34,12 @@ class StudyHistory < ActiveRecord::Base
         str = "select a.unit_concept_id, b.name as unit_concept_name, b.id, c.concept_name, c.id,
                     sum(case when a.segment = 'concept' and a.status = 'start' then 1 else 0 end) as concept_start,
                     sum(case when a.segment = 'concept' and a.status = 'finish' then 1 else 0 end) as concept_finish,
-                    sum(case when a.segment = 'concept_explanation' and a.status = 'start' then 1 else 0 end) as concept_explanation_start,
-        	        sum(case when a.segment = 'concept_explanation' and a.status = 'finish' then 1 else 0 end) as concept_explanation_finish,
-                    sum(case when a.segment = 'exercise' and a.status = 'start' then 1 else 0 end) as exercise_start,
-        	        sum(case when a.segment = 'exercise' and a.status = 'finish' then 1 else 0 end) as exercise_finish,
-                    sum(case when a.segment = 'video' and a.status = 'start' then 1 else 0 end) as video,
-        	        sum(case when a.segment = 'self_evaluation' and a.status = 'start' then 1 else 0 end) as self_evaluation   
+                    sum(case when a.segment = 'concept_desc' and a.status = 'start' then 1 else 0 end) as concept_explanation_start,
+        	        sum(case when a.segment = 'concept_desc' and a.status = 'finish' then 1 else 0 end) as concept_explanation_finish,
+                    sum(case when a.segment = 'concept_exercise' and a.status = 'start' then 1 else 0 end) as exercise_start,
+        	        sum(case when a.segment = 'concept_exercise' and a.status = 'finish' then 1 else 0 end) as exercise_finish,
+                    sum(case when a.segment = 'concept_video' and a.status = 'start' then 1 else 0 end) as video,
+        	        sum(case when a.segment = 'self_evaluation' and a.status = 'finish' then 1 else 0 end) as self_evaluation
                 from study_histories a, unit_concepts b, concepts c
                 where a.user_id = #{user_id}
                 and a.unit_concept_id = b.id

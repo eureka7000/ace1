@@ -78,7 +78,7 @@
                     <input type="hidden" name="url" value="<%= request.original_url %>"/>
                     
                     <div class="modal-footer">
-                        <input type="submit" class="btn-u rounded btn-u-blue" value="저장"/>
+                        <input type="button" class="btn-u rounded btn-u-blue" value="저장" onclick="sendForm()"/>
                     </div>
                     
                 </form>
@@ -88,3 +88,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function sendForm() {
+        update_study_history('self_evaluation', 'finish');
+        $('#new_unit_concept_self_evaluation').submit();
+    }
+</script>

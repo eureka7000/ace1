@@ -52,7 +52,7 @@
             <span id="concept_badge" class="badge badge-aqua rounded-2x" style="float:right; margin-left: 5px" ><%= @concepts.count - 1 %></span>            
         </button>
         
-        <a href="#" id="concept_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concepts.count > 1 %>" onclick="showTab('concept_desc')"> 개념설명</a>
+        <a id="concept_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concepts.count > 1 %>" onclick="update_study_history('concept', 'finish'); showTab('concept_desc'); update_study_history('concept_desc', 'start');"> 개념설명</a>
         
     </div>
     
@@ -66,7 +66,7 @@
             <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
         </button>
         
-        <a href="#" id="concept_desc_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concept_descs.count > 1 %>" onclick="showTab('concept_exercise')"> 개념문제</a>
+        <a id="concept_desc_go_btn" class="btn-u rounded btn-u-red margin-bottom-20 margin-top-20" style="float: right; <%= "display:none;" if @concept_descs.count > 1 %>" onclick="update_study_history('concept_desc', 'finish'); showTab('concept_exercise'); update_study_history('concept_exercise', 'start');"> 개념문제</a>
         
     </div>
     
@@ -130,7 +130,7 @@
             <span id="concept_exercise_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @exercises.count - 1 %></span>
         </button>
         
-        <a href="#" id="concept_exercise_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @exercises.count > 1 %>" onclick="showTab('concept_video')"> 동영상</a>
+        <a id="concept_exercise_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @exercises.count > 1 %>" onclick="update_study_history('concept_exercise', 'finish'); showTab('concept_video'); update_study_history('concept_video', 'start');"> 동영상</a>
         
     </div>
     
@@ -211,7 +211,7 @@
         if (count == NUMS[opt]) {
             $('#' + opt + '_btn').hide();
             $('#' + opt + "_go_btn").show();
-            update_study_history(opt, 'finish');            
+            //update_study_history(opt, 'finish');
         }
     }
 
