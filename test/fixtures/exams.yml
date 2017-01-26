@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: 1
+  month: 1
+  exam_type: MyString
+  number: 1
+  score: 1
+  contents: MyText
+
+two:
+  year: 1
+  month: 1
+  exam_type: MyString
+  number: 1
+  score: 1
+  contents: MyText

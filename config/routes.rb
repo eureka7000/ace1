@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-    
+
+  resources :exam_images
+  get '/exams/previous_exams' => 'exams#previous_exams'
+  get '/exams/list'=> 'exams#list'
+  resources :exams
     resources :textbooks
     resources :coupons
 
@@ -51,7 +55,7 @@ Rails.application.routes.draw do
     resources :unit_concept_descs
     resources :explanations
     resources :unit_concepts
-    
+
     get '/contents/exercise' => 'contents#exercise'
     get '/contents/get_chapter_list' => 'contents#get_chapter_list'
     get '/contents/by_level' => 'contents#by_level'

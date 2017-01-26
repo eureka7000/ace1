@@ -1,0 +1,123 @@
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<div class="col-md-12">
+    <%= form_for(@exam) do |f| %>
+        <% if @exam.errors.any? %>
+            <div id="error_explanation">
+                <h2><%= pluralize(@exam.errors.count, "error") %> prohibited this exam from being saved:</h2>
+
+                <ul>
+                    <% @exam.errors.full_messages.each do |message| %>
+                        <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+
+        <input hidden name="exam[exam_image_id]" id="exam_image_id" value="">
+
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label :year %><br>
+                <%= f.number_field :year, :value => @year , class: 'form-control' %>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label :month %><br>
+                <%= f.number_field :month, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label '시험지 유형' %><br>
+                <select name="exam[exam_type]" class="form-control">
+                    <option <%= 'selected' unless @exam.exam_type != '가형' %> value="가형">가형</option>
+                    <option <%= 'selected' unless @exam.exam_type != '나형' %> value="나형">나형</option>
+                </select>
+                <%#= f.text_field :exam_type, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label '문제 번호' %><br>
+                <%= f.number_field :number, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label '문제 점수' %><br>
+                <%= f.number_field :score, class: 'form-control' %>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="field">
+                <%= f.label '출제 기관명' %><br>
+                <select name="exam[org]" class="form-control">
+                    <% Exam::ORG_ORG.each_pair do |key, value| %>
+                        <option <%= 'selected' unless @exam.org != key %> value="<%= key %>" ><%= value %></option>
+                    <% end %>
+                </select>
+                <%#= f.text_field :org, class: 'form-control' %>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="field">
+                <%= f.label :contents %><br>
+                <%#= f.text_area :contents %>
+                <textarea id="summernote" name="exam[contents]"><%== @exam.contents %></textarea>
+            </div>
+        </div>
+
+        <div class="col-md-12 margin-bottom-50">
+            <div class="actions">
+                <%= f.submit :class => 'btn btn-u btn-u-purple rounded'%> |
+                <%= link_to 'Show', @exam, class:'btn btn-u btn-u-red rounded' %> |
+                <%= link_to 'Back', exams_path, class:'btn btn-u btn-u-blue rounded' %>
+            </div>
+        </div>
+
+    <% end %>
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 400,
+            placeholder: '문제를 입력하세요',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    //console.log(files[0]);
+                    sendFile(files[0], editor, welEditable);
+                }
+            }
+        });
+    });
+
+    function sendFile(file, editor, welEditable) {
+        var data = new FormData();
+        data.append("exam_image[filename]", file);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/exam_images",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                var img = document.createElement('img');
+                img.setAttribute('id', data.id);
+                img.src = data.url;
+                //$('#summernote').summernote('insertText', data);
+                $('#summernote').summernote('insertNode', img);
+                $('#exam_image_id').val(data.id);
+            }
+        });
+    }
+</script>

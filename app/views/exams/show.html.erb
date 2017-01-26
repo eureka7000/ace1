@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Year:</strong>
+  <%= @exam.year %>
+</p>
+
+<p>
+  <strong>Month:</strong>
+  <%= @exam.month %>
+</p>
+
+<p>
+  <strong>Exam type:</strong>
+  <%= @exam.exam_type %>
+</p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @exam.number %>
+</p>
+
+<p>
+  <strong>Score:</strong>
+  <%= @exam.score %>
+</p>
+
+<p>
+  <strong>Contents:</strong>
+  <%== @exam.contents %>
+</p>
+
+<div class="col-md-12">
+    <div class="actions">
+        <%= link_to 'Edit', edit_exam_path(@exam, :year=>@exam.year), class:'btn btn-u btn-u-red rounded' %> |
+        <%= link_to 'Back', exams_path, class:'btn btn-u btn-u-blue rounded' %>
+    </div>
+</div>
+
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>

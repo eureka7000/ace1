@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @exam_image.filename %>
+</p>
+
+<p>
+  <strong>Width:</strong>
+  <%= @exam_image.width %>
+</p>
+
+<p>
+  <strong>Height:</strong>
+  <%= @exam_image.height %>
+</p>
+
+<%= link_to 'Edit', edit_exam_image_path(@exam_image) %> |
+<%= link_to 'Back', exam_images_path %>

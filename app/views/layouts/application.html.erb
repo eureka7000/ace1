@@ -65,8 +65,13 @@
     <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 
+    <!-- MathJAX -->
     <script type="text/javascript" async
             src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
     </script>
 
 </head>
@@ -168,6 +173,7 @@
                 <ul class="dropdown-menu">
                 <li><a href="/contents?view_type=1&step=1">단원별</a></li>
                 <li><a href="/contents?view_type=2&step=1">학년별</a></li>
+                <!--<li><a href="/exams/previous_exams">기출문제</a></li>-->
                 <li><a href="/homes/contents_list">학습 목차 한눈에 보기</a></li>
                 <!-- <li><a href="/contents/by_level">난위도별</a></li> -->
                 </ul>

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.2.4'
+gem 'rake', '~> 12.0.0'
 gem 'mysql2', '~> 0.3.20'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
@@ -25,6 +26,9 @@ gem 'activemerchant'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem 'simple_form'
+gem 'refile', require: 'refile/rails'
+gem 'refile-mini_magick'
 
 group :development, :test do
   gem 'byebug'

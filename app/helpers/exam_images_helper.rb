@@ -1,0 +1,2 @@
+module ExamImagesHelper
+end

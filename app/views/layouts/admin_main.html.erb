@@ -34,8 +34,8 @@
     <link rel="stylesheet" href="/assets/plugins/cube-portfolio/cubeportfolio/custom/custom-cubeportfolio.css">
     <link rel="stylesheet" href="/css/multi-select.css">
 
+    <!-- Summernote -->
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
-    <!-- CSS Implementing Plugins -->
 
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">    
@@ -82,8 +82,16 @@
                     </li>
                     <li><a href="/study_histories">학습이력</a></li>
                     <li><a href="/payments">결제 관리</a></li>
-                    <li><a href="/concepts">단원별 관리</a></li>
-				    <li><a href="/grade_unit_concepts">학년별 관리</a></li>
+
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">컨텐츠 관리 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/concepts">단원별 관리</a></li>
+                                <li><a href="/grade_unit_concepts">학년별 관리</a></li>
+                                <li><a href="/exams">기출문제 관리</a> </li>
+                            </ul>
+                        </li>
+
                     <li><a href="/blogs">블로그 관리</a></li>
                     <li><a href="/textbooks">교재 관리</a></li>
                     <li><a href="/questions/questions_list">질문 관리</a></li>

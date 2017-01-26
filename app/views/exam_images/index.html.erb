@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Exam Images</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Width</th>
+      <th>Height</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exam_images.each do |exam_image| %>
+      <tr>
+        <td><%= exam_image.filename %></td>
+        <td><%= exam_image.width %></td>
+        <td><%= exam_image.height %></td>
+        <td><%= link_to 'Show', exam_image %></td>
+        <td><%= link_to 'Edit', edit_exam_image_path(exam_image) %></td>
+        <td><%= link_to 'Destroy', exam_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Exam image', new_exam_image_path %>

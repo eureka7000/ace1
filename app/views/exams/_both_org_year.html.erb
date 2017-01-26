@@ -1,0 +1,13 @@
+<div class="col-md-12">
+    <h1><%= @year %>년도 <%= @org %> 문제</h1>
+    <hr>
+
+    <% @exams.each do |exam| %>
+
+        <div class="col-md-6" style="height: 561px">
+            <h5><%= exam.number %>번 문제</h5>
+            <p><%== exam.contents %></p>
+        </div>
+
+    <% end %>
+</div>

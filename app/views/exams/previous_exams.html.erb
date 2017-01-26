@@ -1,0 +1,62 @@
+<div class="bg-image-v1 parallaxBg" style="background-position: 50% 38px;">
+    <div class="container">
+
+        <div class="headline-center headline-light">
+            <h2>기출문제 출제 기관과 연도를 선택하여 원하는 문제를 검색하세요.</h2>
+
+            <div class="col-md-12 margin-bottom-20">
+
+                <div class="col-md-5">
+                    <select id="select_org" class="form-control margin-top-20">
+                        <option value="">기관 선택</option>
+                        <% Exam::ORG_ORG.each_pair do |key, value| %>
+                            <option <%= 'selected' if key == @org %> value="<%= key %>"><%= key %></option>
+                        <% end %>
+                    </select>
+                </div>
+
+                <div class="col-md-5">
+                    <select id="select_year" class="form-control margin-top-20">
+                        <option value="">연도 선택</option>
+                        <% Exam::YEAR_YEAR.each_pair do |key, value| %>
+                            <option <%= 'selected' if key == @year %> value="<%= value %>"><%= key %></option>
+                        <% end %>
+                    </select>
+                </div>
+
+                <div class="col-md-2 margin-top-20">
+                    <button class="btn btn-u btn-u-lg btn-u-yellow rounded-2x" onclick="search()">검색</button>
+                </div>
+
+            </div>
+        </div><!--/end Headline Center-->
+    </div>
+</div>
+
+<div class="container container-fluid margin-bottom-50">
+    <div class="content-sm">
+
+        <%= render partial: @partial unless @partial.nil? %>
+
+        <!--<div class="col-md-12">-->
+            <!--<%# unless @exams.nil? %>-->
+                <!--<%# @exams.each do |exam| %>-->
+                    <!--<div class="col-md-6">-->
+                        <!--<p><%#= exam.number %>번 <%#== exam.contents %></p><br>-->
+                    <!--</div>-->
+                <!--<%# end %>-->
+            <!--<%# end %>-->
+        <!--</div>-->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function search() {
+        var org = $('#select_org').val();
+        var year = $('#select_year').val();
+
+        var url = '/exams/previous_exams?org='+org+'&year='+year;
+        location = url;
+    }
+</script>

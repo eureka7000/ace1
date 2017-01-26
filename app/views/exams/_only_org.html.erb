@@ -1,0 +1,20 @@
+<div class="col-md-12">
+    <% Exam::YEAR.each_pair do |key, value| %>
+        <div class="col-md-3">
+            <div class="service-block service-block-<%= value %> rounded-4x" onclick="goShow('<%= @org %>', '<%= key %>')">
+                <i class="icon-custom icon-color-light rounded-x icon-line icon-diamond"></i>
+                <h2 class="heading-md"><%= key %></h2>
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<script type="text/javascript">
+    function goShow(org, year) {
+        var org = org;
+        var year = year;
+
+        var url = '/exams/previous_exams?org='+org+'&year='+year;
+        location = url;
+    }
+</script>

@@ -1,0 +1,44 @@
+<div class="container container-fluid">
+
+    <h2 class="sub-header"><span class="fa fa-book"></span> <%= @year %>년도 기출문제 </h2>
+
+    <%= link_to 'New Exam', new_exam_path(:year => @year), class: 'btn btn-u btn-u-info rounded margin-bottom-20' %>
+
+    <table class="table table-bordered table-striped" style="clear: both">
+        <tr>
+            <th>문제번호</th>
+            <th>year</th>
+            <th>month</th>
+            <th>exam_type</th>
+            <th>score</th>
+            <th>contents</th>
+            <th><i class="fa fa-cog"></i></th>
+        </tr>
+
+        <% @exams.each do |exam| %>
+            <tr>
+                <td><%= exam.number %></td>
+                <td><%= exam.year %></td>
+                <td><%= exam.month %></td>
+                <td><%= exam.exam_type %></td>
+                <td><%= exam.score %></td>
+                <td><%== exam.contents %></td>
+                <td>
+                    <%= link_to 'Show', exam %> |
+                    <%= link_to 'Edit', edit_exam_path(exam, :year => @year) %> |
+                    <%= link_to 'Destroy', exam, method: :delete, data: { confirm: 'Are you sure?' } %>
+                </td>
+            </tr>
+        <% end %>
+    </table>
+
+</div>
+
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
