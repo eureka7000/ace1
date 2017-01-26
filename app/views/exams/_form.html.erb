@@ -56,7 +56,7 @@
                 <%= f.label '출제 기관명' %><br>
                 <select name="exam[org]" class="form-control">
                     <% Exam::ORG_ORG.each_pair do |key, value| %>
-                        <option <%= 'selected' unless @exam.org != key %> value="<%= key %>" ><%= value %></option>
+                        <option <%= 'selected' unless @exam.org != key %> value="<%= key %>" ><%= key %></option>
                     <% end %>
                 </select>
                 <%#= f.text_field :org, class: 'form-control' %>
