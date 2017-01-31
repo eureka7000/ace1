@@ -36,6 +36,7 @@
                         <th>Exercise Finish</th>
                         <th>Video</th>
                         <th>Self Evaluation</th>
+                        <th>최근 학습 시간</th>
                         </tr>
                         </thead>                        
 
@@ -114,6 +115,7 @@
                         <td class="text-center"><% if study_history.exercise_finish > 0 %><i class="fa fa-check color-green"></i><% end %></td>
                         <td class="text-center"><% if study_history.video > 0 %><i class="fa fa-check color-green"></i><% end %></td>
                         <td class="text-center"><% if study_history.self_evaluation > 0 %><i class="fa fa-check color-green"></i><% end %></td>
+                        <td class="text-center"><%= study_history.updated_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M') %></td>
                         </tr>
                         <% end %>
                         </tbody>
