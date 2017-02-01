@@ -104,10 +104,11 @@ Rails.application.routes.draw do
     get  'mypages/question_list' => 'mypages#question_list'
     get  'mypages/payment' => 'mypages#payment'
     post 'mypages/user_image_upload' => 'mypages#user_image_upload'
-    get  'mypages/study_progress_check' => 'mypages#study_progress_check'
+    get  'mypages/student_management' => 'mypages#student_management'
     get  'mypages/study_progress_detail' => 'mypages#study_progress_detail'
     get  'mypages/request_textbook' => 'mypages#request_textbook'
     post 'mypages/get_textbook_price' => 'mypages#get_textbook_price'
+    post 'mypages/find_school_admin' => 'mypages#find_school_admin'
     match 'mypages/juso_popup' => 'mypages#juso_popup', via: [:get, :post]
 
     # blogs

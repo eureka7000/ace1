@@ -27,7 +27,7 @@
                             <div class="input-group col-sm-4">
                                 <select name="admin[admin_type]" id="admin_admin_type" class="form-control">
                                     <% Admin::ADMIN_TYPES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= "selected" if key == params[:admin_type] %> ><%= value %></option>
+                                    <option value="<%= key %>" <%= "selected" if key == @admin.admin_type %> ><%= value %></option>
                                     <% end %>
                                 </select>    
                             </div>                            
@@ -69,7 +69,7 @@
 
                 <footer>
                     <%= f.submit '저장', :class => 'btn btn-success' %>
-                    <%= link_to '뒤로', @admin.school, :class => 'btn btn-info' %>
+                    <%= link_to '뒤로', '/admins/users', :class => 'btn btn-info' %>
                 </footer>
 
             <% end %>

@@ -21,15 +21,18 @@ class ApplicationController < ActionController::Base
     def after_sign_in_path_for(resource)
 
         if session[:previous_url] == '/'
-            if current_user.user_types.first.user_type == 'student'
-                if current_user.study_histories.last.nil?
-                    '/'
-                else
-                    "/contents/#{current_user.study_histories.last.unit_concept_id}"
-                end
-            else
-                root_url
-            end
+
+            '/' # 학생으로 가입시 경로 설정 오류로 인해 루트 url로 일단 변경함
+
+            # if current_user.user_types.first.user_type == 'student'
+            #     if current_user.study_histories.last.nil?
+            #         '/'
+            #     else
+            #         "/contents/#{current_user.study_histories.last.unit_concept_id}"
+            #     end
+            # else
+            #     root_url
+            # end
         else
             session[:previous_url].to_s
         end

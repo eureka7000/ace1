@@ -75,7 +75,7 @@ class MypagesController < ApplicationController
     end    
 
 
-    def study_progress_check
+    def student_management
         @click = 'study_progress'
         page = params[:page].blank? ? 1 : params[:page]
         @study_histories = StudyHistory.get_study_history(current_user.id, page)
@@ -210,4 +210,15 @@ class MypagesController < ApplicationController
             end
         end
     end
+
+    def find_school_admin
+        @manager = Admin.find_by_school_id(params[:school_id].to_i)
+        email = @manager.email.to_s
+
+        respond_to do |format|
+            format.json { render :json => { email: email } }
+        end
+
+    end
+
 end

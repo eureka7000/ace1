@@ -50,9 +50,9 @@
         
     <% end %>
     
-    <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' %>
+    <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' || current_user.user_types[0].user_type == 'institute teacher' %>
         <li class="list-group-item <%= 'active' if @click == 'study_progress'%>">
-            <a href="/mypages/study_progress_check"><i class="fa fa-header"></i> 학습진도확인</a>
+            <a href="/mypages/student_management"><i class="fa fa-header"></i> 학생관리</a>
         </li>    
     <% end %>
 

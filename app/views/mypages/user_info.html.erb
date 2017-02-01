@@ -133,8 +133,8 @@
 
                                 </dl>
 
-                                <button type="button" class="btn-u btn-u-default">취소</button>
-                                <button class="btn-u" type="submit">저장</button>
+                                <button type="button" class="btn-u btn-u-default rounded">취소</button>
+                                <button class="btn-u btn-u-info rounded" type="submit">저장</button>
                                     
                             </form>
                                 
@@ -200,7 +200,7 @@
                                 <h7>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp;
                                 
                                 <% if current_user.teachers.blank? %>    
-                                    <button class="btn-u" data-toggle="modal" data-target="#responsive">확인요청</button></h7>
+                                    <button class="btn-u btn-u-blue rounded" data-toggle="modal" data-target="#responsive">확인요청</button></h7>
                                 <% else %>
                                     <% if current_user.teachers[0].confirm_yn.nil? %>
                                     <span class="label label-info">담당자 확인중 ..</span>
@@ -255,13 +255,13 @@
                                                         관리자 전자우편
                                                     </div>
                                                     <div class="col-md-9">
-                                                        <input class="form-control" type="text" id="manager_email" />
+                                                        <input class="form-control" type="text" id="manager_email" value="" />
                                                     </div>    
                                                 </div>                                                    
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn-u btn-u-primary" onclick="requestCert()" <%= 'disabled' if current_user.user_name.blank? || current_user.phone.blank? %> >요청하기</button>
+                                                <button type="button" class="btn-u btn-u-default rounded" data-dismiss="modal">닫기</button>
+                                                <button type="button" class="btn-u btn-u-primary rounded" onclick="requestCert()" <%= 'disabled' if current_user.user_name.blank? || current_user.phone.blank? %> >요청하기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -314,6 +314,27 @@
                                 	    });
                                         
                                     }
+
+                                    $('#school').change(function () {
+                                        var data = {
+                                            "school_id": $('#school').val()
+                                        };
+
+                                        $.ajax({
+                                            type: "POST",
+                                            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                                            url: "/mypages/find_school_admin",
+                                            dataType:"JSON",
+                                            data:data,
+                                            success: function(data){
+                                                $('#manager_email').val(data.email);
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError){
+                                                //alert(xhr.status);
+                                                $('#manager_email').val('');
+                                            }
+                                        });
+                                    });
                                     
                                     </script>
                                     
