@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
          
     USER_TYPES = {
         "student"           => "학생",
-        "parent"            => "부모",
+        "parent"            => "부모님",
         "school teacher"    => "학교 선생님",
         "institute teacher" => "학원 선생님",
         "school manager"    => "학교 관리자",

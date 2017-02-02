@@ -37,7 +37,9 @@ Rails.application.routes.draw do
     get 'questions/questions_list' => 'questions#questions_list'
     get 'questions/:id/like' => 'questions#like'
     resources :questions
-    
+
+    post 'user_relations/approval' => 'user_relations#approval'
+    post 'user_relations/rejection' => 'user_relations#rejection'
     resources :user_relations
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions

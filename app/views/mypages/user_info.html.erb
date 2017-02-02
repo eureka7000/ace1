@@ -173,7 +173,7 @@
                                     <% elsif user_relation.confirm_status == 'confirmed' %>
                                     <span class="badge badge-aqua rounded" >
                                     <% elsif user_relation.confirm_status == 'rejected' %>
-                                    <span class="badge badge-purple rounded">
+                                    <span class="badge badge-red rounded">
                                     <% end %>
                                     <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] unless user_relation.confirm_status.nil? %>
                                     </span>
@@ -181,13 +181,13 @@
                                 <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
                                 <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
                                 <td>
-                                    <!--<a href="javascript:destroyRelation(<%= user_relation.id %>)"><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o" title="관계 해제"></i></a>-->
+                                    <a href="javascript:destroyRelation(<%= user_relation.id %>)" ><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o" title="관계 해제"></i></a>
                                 </td>
                                 </tr>
                                 <% end %>    
 								</table>
 								
-                                <!--<button class="btn-u" type="button" onclick="openMyRelationModal()">관계 추가</button>-->
+                                <button class="btn-u btn-u-dark-blue rounded" type="button" onclick="openMyRelationModal()">관계 추가</button>
                                 
                                 <hr>
                                 
@@ -451,37 +451,37 @@
             </div>
 
             <div class="modal-body">
-                
+
                 <form action="/user_relations" id="user_relation_form" method="post" novalidate="novalidate" charset="utf-8">
-                    
+
                     <%= token_tag nil %>
-                    
+
                     <div class="row">
                         <div class="col-md-2"><p>관계구분</p></div>
                         <div class="col-md-6">
                             <select name="user_relation[relation_type]" class="form-control" id="relation_type">
-                            <option value="">---선택하세요---</option>    
+                            <option value="">---선택하세요---</option>
                             <% User::USER_TYPES.each_pair do |key, value| %>
-                                <% unless key == "school manager" || key == "institute manager" %>
+                                <% unless key == 'school manager' || key == 'institute manager' || key == 'mento' || key == current_user.user_types[0].user_type %>
                             <option value="<%= key %>"><%= value %></option>
             				    <% end %>
-            				<% end %>                            
+            				<% end %>
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="row" style="margin-top: 10px">
                         <div class="col-md-2"><p>이메일 주소</p></div>
                         <div class="col-md-6">
                             <input type="text" class="form-control" name="related_user_email" id="related_user_email" placeholder="abc@eurekamath.co.kr" />
-                        </div>    
+                        </div>
                     </div>
                 </form>
-            </div>        
-                  
+            </div>
+
             <div class="modal-footer">
-                <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
-                <button type="button" class="btn-u btn-u-blue" onclick="checkValidate()">추가</button>
+                <button type="button" class="btn-u btn-u-default rounded" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn-u btn-u-dark-blue rounded" onclick="checkValidate()">추가</button>
             </div>
         </div>
     </div>
@@ -538,30 +538,30 @@ function openMyRelationModal() {
 }
 
 function checkValidate() {
-    
+
     if ($('#relation_type').val() == "") {
         alert('관계구분을 선택하세요.');
         return false;
     }
-    
+
     if ($('#related_user_email').val() == "") {
         alert('email을 입력하세요.');
         return false;
     }
-    
+
     $('#user_relation_form').submit();
-    
+
 }
 
 function checkUserTypeValidate() {
-    
+
     if ($('#user_type_add').val() == "") {
         alert('회원타입을 선택하세요.');
         return false;
     }
-    
+
     $('#user_type_form').submit();
-    
+
 }
 
 function destroyRelation(id) {

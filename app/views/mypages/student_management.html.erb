@@ -28,7 +28,7 @@
                                 <p class="alert alert-danger"><%= alert %></p>
                             <% end %>
                             
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-header"></i> 학습진도확인</h3>
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-198"></i> 학습진도확인</h3>
                             
                             <div class="table-search-v1 margin-bottom-20">
 
@@ -49,7 +49,7 @@
                                     <tbody>
                                     <% if @study_histories.count == 0 %>
                                     <tr>
-                                    <td colspan="6" class="text-center">담당 학생이 없거나 학습한 학생이 없습니다.</td>
+                                    <td colspan="6" class="text-center">현재 담당 중인 학생이 없습니다.</td>
                                     </tr>
                                     <% end %>
                                     
@@ -76,7 +76,7 @@
 
                         <div class="profile-edit tab-pane fade in active">
 
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u fa fa-header"></i> 요청확인</h3>
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-143"></i> 신청확인</h3>
 
                             <div class="table-search-v1 margin-bottom-20">
 
@@ -87,11 +87,29 @@
                                         <tr>
                                             <th class="text-center">이름</th>
                                             <th class="text-center">학년</th>
+                                            <th class="text-center">회원등급</th>
+                                            <th class="text-center">신청된 시간</th>
+                                            <th class="text-center">승인 | 거절</th>
                                         </tr>
                                         </thead>
 
                                         <tbody>
-                                            <td colspan="6" class="text-center">요청이 없습니다.</td>
+                                            <% unless @requests.blank? %>
+                                                <% @requests.each do |request| %>
+                                                    <td class="text-center"><%= request.user.user_name %></td>
+                                                    <td class="text-center">
+                                                        <%= UnitConcept::GRADES[request.user.grade.to_i] unless request.user.grade.nil? %>
+                                                    </td>
+                                                    <td class="text-center"><%= request.user.user_auth %></td>
+                                                    <td class="text-center"><%= request.request_date.in_time_zone('Asia/Seoul').strftime('%Y-%m-%d %H:%M') %></td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-u btn-u-split-light-green btn-u-xs rounded" onclick="approval('<%= request.id %>')">수락</button> |
+                                                        <button class="btn btn-u btn-u-red btn-u-xs rounded" onclick="rejection('<%= request.id %>')">거절</button>
+                                                    </td>
+                                                <% end %>
+                                            <% else %>
+                                                <td colspan="6" class="text-center">현재 들어온 신청이 없습니다.</td>
+                                            <% end %>
                                         </tbody>
                                     </table>
 
@@ -117,6 +135,48 @@
 
 <script type="text/javascript">
 
-function initpage() {}
+    function approval(request_id) {
+        var data = {
+            "request_id": request_id
+        };
+
+        $.ajax({
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/user_relations/approval",
+            dataType:"JSON",
+            data:data,
+            success: function(data){
+                location.reload();
+            },
+            error: function(xhr, ajaxOptions, thrownError){
+                //alert(xhr.status);
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function rejection(request_id) {
+        var data = {
+            "request_id": request_id
+        };
+
+        $.ajax({
+            type: "POST",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+            },
+            url: "/user_relations/rejection",
+            dataType: "JSON",
+            data: data,
+            success: function (data) {
+                location.reload();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                //alert(xhr.status);
+                alert("try to again. please.");
+            }
+        });
+    }
     
 </script>

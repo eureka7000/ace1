@@ -47,6 +47,7 @@ class UserRelationsController < ApplicationController
         end
         
         params[:user_relation][:confirm_status] = 'requested'
+        params[:user_relation][:request_date] = Time.new
         
         unless is_error
             @user_relation = UserRelation.new(user_relation_params)
@@ -86,7 +87,7 @@ class UserRelationsController < ApplicationController
   end
 
     def destroy
-        
+
         @user_relation.destroy
         
         ret = { ret: "success" }
@@ -97,6 +98,45 @@ class UserRelationsController < ApplicationController
         
     end
 
+
+  def approval
+      @requested_user_relation = UserRelation.find(params[:request_id])
+
+      logger.info "*********************   #{params[:request_id]}   *********************"
+
+      @requested_user_relation.confirm_status = 'confirmed'
+      @requested_user_relation.confirmed_at = Time.new
+      @requested_user_relation.save
+
+      @accept_user_relation = UserRelation.new
+      @accept_user_relation.user_id = @requested_user_relation.related_user_id
+      @accept_user_relation.related_user_id = @requested_user_relation.user_id
+      @accept_user_relation.relation_type = 'student'
+      @accept_user_relation.confirm_status = 'confirmed'
+      @accept_user_relation.request_date = Time.new
+      @accept_user_relation.confirmed_at = Time.new
+      @accept_user_relation.save
+
+      ret = { ret: "success" }
+
+      respond_to do |format|
+          format.json { render json: ret }
+      end
+  end
+
+  def rejection
+      @requested_user_relation = UserRelation.find(params[:request_id])
+      @requested_user_relation.confirm_status = 'rejected'
+      @requested_user_relation.confirmed_at = Time.new
+      @requested_user_relation.save
+
+      ret = { ret: "success" }
+
+      respond_to do |format|
+          format.json { render json: ret }
+      end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_relation
@@ -105,6 +145,6 @@ class UserRelationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_relation_params
-      params.require(:user_relation).permit(:user_id, :related_user_id, :relation_type, :confirm_status, :confirmed_at)
+      params.require(:user_relation).permit(:user_id, :related_user_id, :relation_type, :confirm_status, :request_date, :confirmed_at)
     end
 end

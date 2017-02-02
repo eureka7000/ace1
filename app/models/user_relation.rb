@@ -1,7 +1,7 @@
 class UserRelation < ActiveRecord::Base
     
-    belongs_to :user
-    belongs_to :user, :foreign_key => "related_user_id"
+    belongs_to :user, :foreign_key => 'user_id'
+    # belongs_to :user, :foreign_key => 'related_user_id'
     
     validates_presence_of :user_id, :related_user_id, :relation_type, :confirm_status
     
@@ -26,6 +26,7 @@ class UserRelation < ActiveRecord::Base
             user_relation.related_user_id = target
             user_relation.relation_type = type
             user_relation.confirm_status = 'confirmed'
+            user_relation.request_date = Time.new
             user_relation.confirmed_at = Time.new
             user_relation.save
         
@@ -35,6 +36,7 @@ class UserRelation < ActiveRecord::Base
             reverse_relation.related_user_id = from
             reverse_relation.relation_type = get_reverse_type(type)
             reverse_relation.confirm_status = 'confirmed'
+            reverse_relation.request_date = Time.new
             reverse_relation.confirmed_at = Time.new
             reverse_relation.save
         
@@ -58,6 +60,6 @@ class UserRelation < ActiveRecord::Base
             'student'
         end    
         
-    end      
+    end
     
 end

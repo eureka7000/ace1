@@ -82,6 +82,9 @@ class MypagesController < ApplicationController
         if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
             @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         end
+
+        @requests = UserRelation.where('related_user_id=? and confirm_status=?', current_user.id, 'requested').order(:request_date)
+
     end    
 
 
@@ -218,7 +221,6 @@ class MypagesController < ApplicationController
         respond_to do |format|
             format.json { render :json => { email: email } }
         end
-
     end
 
 end
