@@ -58,22 +58,38 @@ class QuestionsController < ApplicationController
             if @question.save
                 
                 # Sms 발송
-                unless params[:question][:to_user_id].blank?
-                    mento = User.find(params[:question][:to_user_id])
+                # unless params[:question][:to_user_id].blank?
+                #     mento = User.find(params[:question][:to_user_id])
+                #
+                #     # unless mento.phone.nil?
+                #     #     message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
+                #     #     TwilioSms.sendSMS("+82"+mento.phone, message)
+                #     # end
+                #
+                #     # Mail 발송
+                #     if params[:concept_id].nil?
+                #         @unit_concept = UnitConcept.find(@question.unit_concept_id)
+                #         @concept = Concept.find(@unit_concept.concept_id)
+                #     else
+                #         @concept = Concept.find(params[:concept_id])
+                #     end
+                #     UserMailer.noti_question(mento, current_user, @question, @concept).deliver_later!
+                # end
 
-                    # unless mento.phone.nil?
-                    #     message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
-                    #     TwilioSms.sendSMS("+82"+mento.phone, message)
-                    # end
+                # 관계된 모든 선생님, 멘토에게 이메일 전송
+                @related_people = UserRelation.where('user_id = ? and relation_type != ?', current_user.id, 'parent')
 
-                    # Mail 발송
+                unless @related_people.blank?
                     if params[:concept_id].nil?
                         @unit_concept = UnitConcept.find(@question.unit_concept_id)
                         @concept = Concept.find(@unit_concept.concept_id)
                     else
                         @concept = Concept.find(params[:concept_id])
                     end
-                    UserMailer.noti_question(mento, current_user, @question, @concept).deliver_later!
+                    @related_people.each do |related_person|
+                        related_teacher = User.find(related_person.related_user_id)
+                        UserMailer.noti_question(related_teacher, current_user, @question, @concept).deliver_later!
+                    end
                 end
 
                 format.html { redirect_to url, notice: '질문하기가 성공적으로 등록되었습니다.' }

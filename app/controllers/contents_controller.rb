@@ -504,9 +504,7 @@ class ContentsController < ApplicationController
             elsif @step == 7
 
                 @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade <= ?', @concept_id, "exercise", @grade)
-                
-                
-                
+
                 @unit_concept_exercises.each do |unit_concept_exercise|
                     
                     @items << {
@@ -520,9 +518,7 @@ class ContentsController < ApplicationController
                         video_count: unit_concept_exercise.get_video_count
                     }
                 end
-                
-                
-                    
+
             end
             
         end

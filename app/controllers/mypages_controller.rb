@@ -65,6 +65,7 @@ class MypagesController < ApplicationController
         # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
         #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         # end
+        @questions_number = Question.get_question_number(current_user.id)
         
     end
 
@@ -79,10 +80,10 @@ class MypagesController < ApplicationController
         @click = 'study_progress'
         page = params[:page].blank? ? 1 : params[:page]
         @study_histories = StudyHistory.get_study_history(current_user.id, page)
-        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
-            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
-        end
-
+        # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+        #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        # end
+        @questions_number = Question.get_question_number(current_user.id)
     end    
 
 
@@ -107,9 +108,11 @@ class MypagesController < ApplicationController
         @payments = Payment.where('user_id = ? and payment_status = ?',current_user.id, 'paid').order(id: :desc)
 
 
-        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
-            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
-        end
+        # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+        #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        # end
+        @questions_number = Question.get_question_number(current_user.id)
+
     end
 
     def evaluation
@@ -158,9 +161,9 @@ class MypagesController < ApplicationController
         @click = 'question_list'
         @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
 
-        unless params[:student].blank?
-            @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
-        end
+        # unless params[:student].blank?
+        #     @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
+        # end
 
         unless params[:code].blank?
             @questions = @questions.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
@@ -170,13 +173,27 @@ class MypagesController < ApplicationController
         @codes = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:unit_concept_id).distinct.order(:user_id)
 
 
-        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
-            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
-        end
+        # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+        #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        # end
+
+        # @questions_number = 0
+        # @related_users = UserRelation.where('related_user_id = ?', current_user.id)
+        # @related_users.each do |related_user|
+        #     related_user.user.questions.each do |question|
+        #         if question.confirm_yn = 'N'
+        #             @questions_number += 1
+        #         end
+        #     end
+        # end
+
+        page = params[:page].blank? ? 1 : params[:page]
+
+        @questions_number = Question.get_question_number(current_user.id)
+        @questions = Question.get_questions(current_user.id, page)
+
     end
 
-
-    
     def user_info
 
         @click = 'user_info';
@@ -186,18 +203,14 @@ class MypagesController < ApplicationController
 
         @requests = UserRelation.where('related_user_id=? and confirm_status=?', current_user.id, 'requested').order(:request_date)
 
-        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
-            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
-        end
+        # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
+        #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
+        # end
+        @questions_number = Question.get_question_number(current_user.id)
 
         respond_to do |format|
             format.html
         end
-
-        if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
-            @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
-        end
-
     end
 
     def user_image_upload

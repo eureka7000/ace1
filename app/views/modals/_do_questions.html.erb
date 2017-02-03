@@ -9,7 +9,7 @@
                 <%= token_tag nil %>
 
                 <input type="hidden" name="question[unit_concept_id]" value="<%= @unit_concept.id %>" />
-                <input type="hidden" name="question[to_user_id]" value="<%= @mento.id unless @mento.nil?  %>" />
+                <input type="hidden" name="question[to_user_id]" value="<%#= @mento.id unless @mento.nil? %>" />
                 <input type="hidden" name="question[user_id]" value="<%= current_user.id %>" />
                 <input type="hidden" name="question[confirm_yn]" value="N" />
                 <input type="hidden" name="url" value="<%= request.original_url %>"/>

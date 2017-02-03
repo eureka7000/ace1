@@ -52,7 +52,6 @@
                       <table class="table table-hover tavle-bordered table-striped">
                         <thead>
                         <tr>
-                          <th class="text-center">소속</th>
                           <th class="text-center">이름</th>
                           <th class="text-center">질문 시간</th>
                           <th class="text-center">개 념</th>
@@ -64,32 +63,10 @@
                         <tbody>
 
                         <% @questions.each do |question| %>
-
-                            <!-- 공통으로 필요 -->
-                            <% unless question.user.nil? %>
-                                <% @user = User.find(question.user_id) %>
-                            <% else %>
-                                <% @user = nil %>
-                            <% end %>
-
-                            <% if current_user.user_types[0].user_type == 'mento' %>
-                                <% @school_name = '유레카매스' %><!-- 멘토 소속설정 -->
-                            <% end %>
-
-                            <% if current_user.user_types[0].user_type == 'school teacher' %>
-                                <% @school_name = @user.school.name %>
-                            <% end %>
-
-                            <% if current_user.user_types[0].user_type == 'student' %>
-                                <% @school = School.find(question.user.school_id) %>
-                                <% @school_name = @school.name %>
-                            <% end %>
-
                             <tr>
-                              <td class="text-center"><%= @school_name.blank? ? '' : @school_name %></td>
-                              <td class="text-center"><%= @user.user_name unless @user.nil? %><%= '탈퇴한 회원' if @user.nil? %></td>
-                              <td class="text-center"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
-                              <td class="text-center"><%= question.unit_concept.name %></td>
+                                <td class="text-center"><%= question.user.user_name %></td>
+                                <td class="text-center"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M:%S') %></td>
+                                <td class="text-center"><%= question.unit_concept.name %></td>
                               <td class="text-center" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title.blank? ? '제목없음' : question.title , question_path(question.id) %></td>
                               <td class="text-center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
                             </tr>
