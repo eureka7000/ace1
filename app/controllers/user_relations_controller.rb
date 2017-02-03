@@ -111,7 +111,7 @@ class UserRelationsController < ApplicationController
       @accept_user_relation = UserRelation.new
       @accept_user_relation.user_id = @requested_user_relation.related_user_id
       @accept_user_relation.related_user_id = @requested_user_relation.user_id
-      @accept_user_relation.relation_type = 'student'
+      @accept_user_relation.relation_type = @requested_user_relation.user.user_types[0].user_type
       @accept_user_relation.confirm_status = 'confirmed'
       @accept_user_relation.request_date = Time.new
       @accept_user_relation.confirmed_at = Time.new

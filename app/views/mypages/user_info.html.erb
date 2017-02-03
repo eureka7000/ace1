@@ -133,7 +133,6 @@
 
                                 </dl>
 
-                                <button type="button" class="btn-u btn-u-default rounded">취소</button>
                                 <button class="btn-u btn-u-info rounded" type="submit">저장</button>
                                     
                             </form>
@@ -165,7 +164,7 @@
                                     
                                 <% current_user.user_relations.each do | user_relation | %>    
 								<tr>
-								<td><%= user_relation.relation_type %></td>
+								<td><%= User::USER_TYPES[user_relation.relation_type] %></td>
                                 <td><%= user_relation.get_related_user_name %></td>
                                 <td>
                                     <% if user_relation.confirm_status == 'requested' %>
@@ -181,7 +180,7 @@
                                 <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
                                 <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
                                 <td>
-                                    <a href="javascript:destroyRelation(<%= user_relation.id %>)" ><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o" title="관계 해제"></i></a>
+                                    <a href="javascript:destroyRelation(<%= user_relation.id %>)" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="관계 해제" ><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o"></i></a>
                                 </td>
                                 </tr>
                                 <% end %>    
@@ -223,7 +222,7 @@
                                                 <% if current_user.user_name.blank? || current_user.phone.blank? %>
                                                 <div class="row">
                                                     <div class="alert alert-warning">
-                                                        <p>학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
+                                                        <p><span style="color:red;" class="fa fa-star"></span> 학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
                                                     </div>    
                                                 </div>
                                                 <% end %>  
@@ -344,6 +343,103 @@
                                 <% end %>
                                 
                             </div>
+
+
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <div class="profile-edit tab-pane fade in active">
+
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-143"></i> 신청확인</h3>
+
+                            <div class="table-search-v1 margin-bottom-20">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">이름</th>
+                                            <th class="text-center">학년</th>
+                                            <th class="text-center">회원등급</th>
+                                            <th class="text-center">신청된 시간</th>
+                                            <th class="text-center">승인 | 거절</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <% unless @requests.blank? %>
+                                            <% @requests.each do |request| %>
+                                                <td class="text-center"><%= request.user.user_name %></td>
+                                                <td class="text-center">
+                                                    <%= UnitConcept::GRADES[request.user.grade.to_i] unless request.user.grade.nil? %>
+                                                </td>
+                                                <td class="text-center"><%= request.user.user_auth %></td>
+                                                <td class="text-center"><%= request.request_date.in_time_zone('Asia/Seoul').strftime('%Y-%m-%d %H:%M') %></td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-u btn-u-split-light-green btn-u-xs rounded" onclick="approval('<%= request.id %>')">수락</button> |
+                                                    <button class="btn btn-u btn-u-red btn-u-xs rounded" onclick="rejection('<%= request.id %>')">거절</button>
+                                                </td>
+                                            <% end %>
+                                        <% else %>
+                                            <td colspan="6" class="text-center">현재 들어온 신청이 없습니다.</td>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <script type="text/javascript">
+
+                            function approval(request_id) {
+                                var data = {
+                                    "request_id": request_id
+                                };
+
+                                $.ajax({
+                                    type: "POST",
+                                    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                                    url: "/user_relations/approval",
+                                    dataType:"JSON",
+                                    data:data,
+                                    success: function(data){
+                                        location.reload();
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError){
+                                        //alert(xhr.status);
+                                        alert("try to again. please.");
+                                    }
+                                });
+                            }
+
+                            function rejection(request_id) {
+                                var data = {
+                                    "request_id": request_id
+                                };
+
+                                $.ajax({
+                                    type: "POST",
+                                    beforeSend: function (xhr) {
+                                        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+                                    },
+                                    url: "/user_relations/rejection",
+                                    dataType: "JSON",
+                                    data: data,
+                                    success: function (data) {
+                                        location.reload();
+                                    },
+                                    error: function (xhr, ajaxOptions, thrownError) {
+                                        //alert(xhr.status);
+                                        alert("try to again. please.");
+                                    }
+                                });
+                            }
+
+                        </script>
+
 
                             <div id="payment" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '3' %>">
                                 <h2 class="heading-md">Manage your Payment Settings</h2>
@@ -565,7 +661,7 @@ function checkUserTypeValidate() {
 }
 
 function destroyRelation(id) {
-    if (confirm('Are you sure?')) {
+    if (confirm('관계를 해제하시겠습니까?')) {
         
 	    var url = "/user_relations/" + id;
     
