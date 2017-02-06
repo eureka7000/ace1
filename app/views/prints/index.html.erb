@@ -106,7 +106,7 @@
                 src = data[i].file_name.url.replace("unit_concept_desc", "concept_exercise");
             }
             
-            img = $('<img />').attr({'src':src, 'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id, 'level':data[i].level, 'question_type':data[i].question_type })
+            img = $('<img />').attr({'src':src, 'id':'img'+i, 'data':i, 'concept_code':data[i].concept_code, 'concept_name':data[i].concept_name , 'data_id':data[i].id, 'level':data[i].level, 'question_type':data[i].question_type, 'unit_concept_exercise_yn':data[i].unit_concept_exercise_yn })
             .addClass('questions')
             .css('width','100%')
             .load(function() {
@@ -244,7 +244,9 @@
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
                 $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
                 $(get_stars($(this).attr('level'))).appendTo(question_number);
-                
+
+                $(get_unit_concept_exercise_yn($(this).attr('unit_concept_exercise_yn'))).appendTo(question_number);
+
                 $(this).appendTo($('#pane'+paneNum)); 
                 
                 stackHeight = imageHeight + 25 + 100;
@@ -256,7 +258,9 @@
                 var question_number = $('<div style="margin-left: 5px"  />').appendTo($('#pane'+paneNum));
                 $("<h4 style='color:darkgreen !important; font-family: Impact; float:left; margin-bottom: -6px; '>" + questionNumber + ".</h4>").appendTo(question_number);
                 $(get_stars($(this).attr('level'))).appendTo(question_number);
-                
+
+                $(get_unit_concept_exercise_yn($(this).attr('unit_concept_exercise_yn'))).appendTo(question_number);
+
                 $(this).appendTo($('#pane'+paneNum));
                 
                 stackHeight += imageHeight + 25 + 100; // imageheight + marginbottom;    
@@ -291,6 +295,16 @@
         
     }
 
+
+    function get_unit_concept_exercise_yn(unit_concept_exercise_yn) {
+
+        var str = unit_concept_exercise_yn;
+
+        if (str == 'similar exercise'){
+            return "<span style='color:black !important; float:left; margin-top: 7px; margin-left:10px; font-size:1px'>유사문제</span>";
+        }
+        return '';
+    }
 
     function add_pane(paneNum, paneHeight, subpage, pagePaneCount) {
         if (pagePaneCount%2 == 0) {

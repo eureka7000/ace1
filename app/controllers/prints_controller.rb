@@ -24,7 +24,7 @@ class PrintsController < ApplicationController
             @questions = UnitConceptDesc.find_by_sql(
                 "select * from (
                     select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id as concept_id, a.concept_name, a.concept_code, b.id as unit_concept_id, b.name as unit_concept_name,
-                            b.code, b.level, c.file_name, c.id, c.memo, 1 as question_type
+                            b.code, b.level, c.file_name, c.id, c.memo, 1 as question_type, b.exercise_yn as unit_concept_exercise_yn
                     from concepts a, unit_concepts b, unit_concept_descs c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'concept'
@@ -37,7 +37,7 @@ class PrintsController < ApplicationController
                     union all
 
                     select '#{Concept::SUB_CATEGORIES[params[:sub_category]]}' as sub_category_name, a.id as concept_id, '종합문제' as concept_name, a.concept_code, '' as unit_concept_id, '' as unit_concept_name, 
-                            '' as code, a.level as level, c.file_name, c.id, c.memo, 2 as question_type
+                            '' as code, a.level as level, c.file_name, c.id, c.memo, 2 as question_type, '' as unit_concept_exercise_yn
                     from concepts a, concept_exercises c
                     where a.sub_category = '#{sub_category}'
                     and a.exercise_yn = 'exercise'
