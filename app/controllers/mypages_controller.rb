@@ -159,18 +159,28 @@ class MypagesController < ApplicationController
     def question_list
 
         @click = 'question_list'
-        @questions = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+        page = params[:page].blank? ? 1 : params[:page]
 
-        # unless params[:student].blank?
-        #     @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
-        # end
+        if current_user.user_types[0].user_type == 'student'
+            @questions = Question.where('user_id = ?', current_user.id).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            @students = Question.where('user_id = ?', current_user.id).select(:user_id).distinct.order(:user_id)
+            @codes = Question.where('user_id = ?', current_user.id).select(:unit_concept_id).distinct.order(:user_id)
 
-        unless params[:code].blank?
-            @questions = @questions.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            unless params[:student].blank?
+                @questions = @questions.where('user_id = ?', params[:student]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(:created_at)
+            end
+
+            unless params[:code].blank?
+                @questions = @questions.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
+            end
+
+        elsif current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'institute teacher'
+            # @questions = Question.get_questions(current_user.id, page)
+
+            @students = Question.get_question_user(current_user.id, current_user.user_types[0].user_type)
+            @codes = Question.get_question_code(current_user.id, current_user.user_types[0].user_type)
+            @questions = Question.get_question_from_search(current_user.id, params[:student], params[:code], page)
         end
-
-        @students = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:user_id).distinct.order(:user_id)
-        @codes = Question.where('to_user_id = ? || user_id = ?', current_user.id, current_user.id).select(:unit_concept_id).distinct.order(:user_id)
 
 
         # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
@@ -187,10 +197,8 @@ class MypagesController < ApplicationController
         #     end
         # end
 
-        page = params[:page].blank? ? 1 : params[:page]
-
         @questions_number = Question.get_question_number(current_user.id)
-        @questions = Question.get_questions(current_user.id, page)
+
 
     end
 

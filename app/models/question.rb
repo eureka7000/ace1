@@ -29,4 +29,49 @@ class Question < ActiveRecord::Base
                 order by a.created_at desc"
         Question.paginate_by_sql(str, :page => page, :per_page => 20)
     end
+
+    def self.get_question_user(current_user_id, current_user_type)
+        str = "select distinct c.user_id from (select a.id, a.unit_concept_id, a.user_id , a.title, a.content, a.file_name, a.confirm_yn, a.like, a.width, a.height, a.created_at, a.updated_at
+                from questions a, user_relations b
+                where b.relation_type = '#{current_user_type}'
+                and b.related_user_id = #{current_user_id}
+                and a.user_id = b.user_id
+                order by a.created_at desc ) c"
+        students = Question.find_by_sql(str)
+
+        students
+    end
+
+    def self.get_question_code(current_user_id, current_user_type)
+        str = "select distinct c.unit_concept_id from (select a.id, a.unit_concept_id, a.user_id , a.title, a.content, a.file_name, a.confirm_yn, a.like, a.width, a.height, a.created_at, a.updated_at
+                from questions a, user_relations b
+                where b.relation_type = '#{current_user_type}'
+                and b.related_user_id = #{current_user_id}
+                and a.user_id = b.user_id
+                order by a.created_at desc ) c"
+        unit_concept = Question.find_by_sql(str)
+
+        unit_concept
+    end
+
+    def self.get_question_from_search(current_user_id, student_id, unit_concept_id, page)
+        str = "select a.id, a.unit_concept_id, a.user_id, a.title, a.content, a.file_name, a.confirm_yn, a.like, a.width, a.height, a.created_at, a.updated_at
+                from questions a, user_relations b
+                where b.related_user_id = #{current_user_id}
+                and b.user_id = a.user_id"
+
+        unless student_id.blank?
+            str += " and a.user_id = #{student_id}"
+        end
+
+        unless unit_concept_id.blank?
+            str += " and a.unit_concept_id = #{unit_concept_id}"
+        end
+
+        str += " order by a.created_at desc"
+
+
+        Question.paginate_by_sql(str, :page => page, :per_page => 20)
+    end
+
 end
