@@ -174,9 +174,7 @@ class MypagesController < ApplicationController
                 @questions = @questions.where('unit_concept_id = ?', params[:code]).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 ).order(created_at: :desc)
             end
 
-        elsif current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'institute teacher'
-            # @questions = Question.get_questions(current_user.id, page)
-
+        elsif current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'institute teacher' || current_user.user_types[0].user_type == 'mento'
             @students = Question.get_question_user(current_user.id, current_user.user_types[0].user_type)
             @codes = Question.get_question_code(current_user.id, current_user.user_types[0].user_type)
             @questions = Question.get_question_from_search(current_user.id, params[:student], params[:code], page)

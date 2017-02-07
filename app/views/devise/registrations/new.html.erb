@@ -43,7 +43,7 @@
           <div class="row" style="padding-left:20px">
             <span class="color-red">*</span>
             <% User::USER_TYPES.each_pair do |key, value| %>
-                <% unless key == "school manager" || key == "institute manager" || key == "mento"  %>
+                <% unless key == "school manager" || key == "institute manager" %>
                     <label class="radio-inline"><input type="radio" name="user_type[user_type]" value="<%= key %>" <%= "checked" if key == "student" %> ><i class="rounded-x"></i><%= value %></label>
                 <% end %>
             <% end %>

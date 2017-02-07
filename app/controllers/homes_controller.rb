@@ -9,8 +9,10 @@ class HomesController < ApplicationController
             #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count
             #     @session_yn = 'Y'
             # end
-            @questions_number = Question.get_question_number(current_user.id)
-            @session_yn = 'Y'
+            unless current_user.user_types[0].user_type == 'parent'
+                @questions_number = Question.get_question_number(current_user.id)
+                @session_yn = 'Y'
+            end
         end
         
         @unit_concept_count = UnitConcept.where('exercise_yn = ?','concept').count
