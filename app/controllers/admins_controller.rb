@@ -1,6 +1,6 @@
 class AdminsController < ApplicationController
 
-    before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy, :main]
+    before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy, :main, :main_for_manager]
     before_action :set_admin, only: [:show, :edit, :update, :destroy]
 
     layout '/layouts/admin_main'
@@ -47,6 +47,9 @@ class AdminsController < ApplicationController
             if error
                 format.html { redirect_to '/admins/login', notice: 'Email or password is wrong.' }
             else
+                if @admin.first.admin_type == 'institute manager' || @admin.first.admin_type == 'school manager'
+                    format.html { redirect_to '/admins/main_for_manager' }
+                end
                 format.html { redirect_to '/admins/main' }
             end    
         end              
@@ -62,6 +65,24 @@ class AdminsController < ApplicationController
         @new_book_orders = Payment.where("item_type='textbook' and date(convert_tz(created_at,'utc','rok')) = date(convert_tz(now(),'utc','rok'))")
         @payments_textbook_krw = Payment.select('coalesce(sum(amount),0) as amount').where("currency='KRW' and payment_status = 'paid' and item_type = 'textbook' and DATE(convert_tz(created_at,'utc','rok')) = DATE(convert_tz(now(),'utc','rok'))").first
     end
+
+    def main_for_manager
+        @teachers = Teacher.where('school_id = ?', session[:admin]['school_id'])
+
+        @students_count = 0
+        @approval_requests_count = 0
+
+        @teachers.each do |teacher|
+
+            if teacher.confirm_yn.nil?
+                @approval_requests_count = @approval_requests_count + 1
+            else
+                count = UserRelation.where('related_user_id = ?', teacher.user_id).count
+                @students_count = count + @students_count
+            end
+        end
+
+     end
 
   # GET /admins/1
   # GET /admins/1.json

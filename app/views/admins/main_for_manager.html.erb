@@ -1,0 +1,140 @@
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 main">
+
+            <h2 class="sub-header"><span class="glyphicon glyphicon-education" aria-hidden="true"></span> DashBoards </h2>
+
+            <div class="row margin-bottom-40">
+
+                <div class="col-md-6 col-sm-6">
+                    <div class="service-block service-block-red service-or rounded-4x">
+                        <div class="service-bg"></div>
+                        <i class="icon-custom icon-color-light rounded-x icon-line icon-user"></i>
+                        <h2 class="heading-md counter"><%= @teachers.count %></h2>
+                        <h2 class="heading-md"><strong>교사</strong></h2>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6">
+                    <div class="service-block service-block-orange service-or rounded-4x">
+                        <div class="service-bg"></div>
+                        <i class="icon-custom icon-color-light rounded-x icon-line icon-user-following"></i>
+                        <h2 class="heading-md counter"><%= @students_count %></h2>
+                        <h2 class="heading-md"><strong>학생</strong></h2>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6">
+                    <div class="service-block service-block-yellow service-or rounded-4x">
+                        <div class="service-bg"></div>
+                        <i class="icon-custom icon-color-light rounded-x icon-line icon-bell"></i>
+                        <h2 class="heading-md counter"><%= @approval_requests_count %></h2>
+                        <h2 class="heading-md"><strong>승인 요청</strong></h2>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="passwordModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">비밀번호를 변경해주세요.</h4>
+            </div>
+            <div class="modal-body">
+                <p class="alert alert-warning">현재 비밀번호는 초기설정을 위한 비밀번호입니다. 보안을 위해서 비밀번호를 바꿔주세요.</p>
+
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12">비밀번호</div>
+                    <div class="col-md-9 col-lg-9 col-sm-12">
+                        <input type="password" id="password" class="form-control" />
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-3 col-lg-3 col-sm-12">비밀번호 확인</div>
+                    <div class="col-md-9 col-lg-9 col-sm-12">
+                        <input type="password" id="password_confirm" class="form-control" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" onclick="changePassword()">저장</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
+
+<script type="text/javascript">
+
+    tomas = '<%=  session[:admin]['init_password_changed'] %>'
+
+    $(document).ready(function() {
+        if (tomas != 'Y') $('#passwordModal').modal();
+        App.initCounter();
+    })
+
+    function changePassword() {
+
+        if ($('#password').val() == '') {
+            alert('비밀번호를 입력하세요.');
+            $('#password').focus();
+            return false;
+        }
+
+        if ($('#password_confirm').val() == '') {
+            alert('비밀번호 확인을 입력하세요.');
+            $('#password_confirm').focus();
+            return false;
+        }
+
+        if ($('#password').val() != $('#password_confirm').val()) {
+            alert('비밀번호와 비밀번호 확인이 서로 틀립니다.');
+            return false;
+        }
+
+        if ($('#password').val().length < 8) {
+            alert('비밀번호는 8자리 이상이어야 합니다.');
+            return false;
+        }
+
+        var data = {
+            "password": $('#password').val(),
+            "admin_id": '<%= session[:admin]['id'] %>'
+        }
+
+        $.ajax({
+            type:	"POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/admins/change_password",
+            dataType:"JSON",
+            data:data,
+            success: function(data){
+                if (data.msg == "ok") {
+                    alert('정상적으로 변경되었습니다.');
+                    $('#passwordModal').modal('hide');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError){}
+        });
+    }
+
+    function initpage() {}
+
+</script>

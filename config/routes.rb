@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
 
-  resources :exam_images
-  get '/exams/previous_exams' => 'exams#previous_exams'
-  get '/exams/list'=> 'exams#list'
-  resources :exams
+    resources :exam_images
+    get '/exams/previous_exams' => 'exams#previous_exams'
+    get '/exams/list'=> 'exams#list'
+    resources :exams
     resources :textbooks
     resources :coupons
 
@@ -18,22 +18,22 @@ Rails.application.routes.draw do
     resources :unit_concept_desc_solution_links
 
     resources :blog_replies
-    
+
     get '/prints/get_question_list' => 'prints#get_question_list'
     get '/prints/solutions' => 'prints#solutions'
     get '/prints/get_solution_list' => 'prints#get_solution_list'
     get '/prints/exercises' => 'prints#exercises'
     get '/prints/get_exercise_list' => 'prints#get_exercise_list'
     resources :prints
-    
+
     get '/study_histories/detail' => 'study_histories#detail'
     resources :study_histories
-    
+
     resources :inicis_payments
     resources :user_types
     resources :concept_exercises
     resources :replies
-    
+
     get 'questions/questions_list' => 'questions#questions_list'
     get 'questions/:id/like' => 'questions#like'
     resources :questions
@@ -44,14 +44,14 @@ Rails.application.routes.draw do
     resources :unit_concept_self_evaluations
     resources :unit_concept_exercise_solutions
     resources :unit_concept_exercise_histories
-    
-    get '/grade_unit_concepts/get_chapters' => 'grade_unit_concepts#get_chapters' 
-    get '/grade_unit_concepts/get_categories' => 'grade_unit_concepts#get_categories' 
+
+    get '/grade_unit_concepts/get_chapters' => 'grade_unit_concepts#get_chapters'
+    get '/grade_unit_concepts/get_categories' => 'grade_unit_concepts#get_categories'
     get '/grade_unit_concepts/get_sub_categories' => 'grade_unit_concepts#get_sub_categories'
     get '/grade_unit_concepts/get_unit_concepts' => 'grade_unit_concepts#get_unit_concepts'
     get '/grade_unit_concepts/get_concepts' => 'grade_unit_concepts#get_concepts'
     resources :grade_unit_concepts
-    
+
     get 'concepts/:id/exercise' => 'concepts#exercise'
     # get '/unit_concept_descs/get_not_saved_images' => 'unit_concept_descs#get_not_saved_images'
     resources :unit_concept_descs
@@ -64,7 +64,7 @@ Rails.application.routes.draw do
     get '/contents/get_grade_list' => 'contents#get_grade_list'
     get 'contents/math_jax' => 'contents#math_jax'
     resources :contents
-    
+
     get '/concepts/get_concepts' => 'concepts#get_concepts'
     get '/concepts/get_unit_concepts' => 'concepts#get_unit_concepts'
     resources :concepts
@@ -80,10 +80,10 @@ Rails.application.routes.draw do
 
     get 'teachers/students_list' => 'teachers#students_list'
     resources :teachers
-  
+
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
     # match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
-  	#devise_for :users
+    #devise_for :users
 
     # sub_pages of main
     get 'homes/history_of_eureka' => 'homes#history_of_eureka'
@@ -139,14 +139,15 @@ Rails.application.routes.draw do
     get  'users/resend_mail' => 'users#resend_mail'
     post 'users/user_exist' => 'users#user_exist'
     get  'users/user_profile' => 'users#user_profile'
-    resources :users  
+    resources :users
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'
-    
+
     get 'admins/login' => 'admins#login'
     get 'admins/logout' => 'admins#logout'
     post 'admins/sign_in' => 'admins#sign_in'
     get 'admins/main' => 'admins#main'
+    get 'admins/main_for_manager' => 'admins#main_for_manager'
     post 'admins/change_password' => 'admins#change_password'
     get 'admins/users' => 'admins#users'
     resources :admins

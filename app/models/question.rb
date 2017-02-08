@@ -12,7 +12,7 @@ class Question < ActiveRecord::Base
         @related_users = UserRelation.where('related_user_id = ?', current_user_id)
         @related_users.each do |related_user|
             related_user.user.questions.each do |question|
-                if question.confirm_yn = 'N'
+                if question.confirm_yn == 'N'
                     questions_number += 1
                 end
             end

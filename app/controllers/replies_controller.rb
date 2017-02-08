@@ -8,17 +8,28 @@ class RepliesController < ApplicationController
         @reply = Reply.new(reply_params)
         @reply.user_id = current_user.id
 
-        if @reply.question.to_user_id == current_user.id
-            @question = Question.find(@reply.question_id)
-            @question.confirm_yn = 'Y'
+        # 어느 누구든 답변을 해주었을 때
+        @question = Question.find(@reply.question_id)
+        @question.confirm_yn = 'Y'
+        if @question.save
+            mentee = User.find(@question.user_id)
 
-            if @question.save
-                mentee = User.find(@question.user_id)
-                
-                # Mail 발송
-                UserMailer.noti_reply(mentee, current_user, @question).deliver_later
-            end
+            # Mail 발송
+            UserMailer.noti_reply(mentee, current_user, @question).deliver_later
         end
+
+        # 지정한 선생님에게 질문을 요청했고, 그 선생님이 답변을 해주었을 때
+        # if @reply.question.to_user_id == current_user.id
+        #     @question = Question.find(@reply.question_id)
+        #     @question.confirm_yn = 'Y'
+        #
+        #     if @question.save
+        #         mentee = User.find(@question.user_id)
+        #
+        #         # Mail 발송
+        #         UserMailer.noti_reply(mentee, current_user, @question).deliver_later
+        #     end
+        # end
 
         respond_to do |format|
             if @reply.save

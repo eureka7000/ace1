@@ -16,9 +16,11 @@ class TeachersController < ApplicationController
 
       def students_list
         schoolID = session[:admin]['school_id']
-
         @students = User.where('school_id = ?', schoolID).order(:user_name).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 )
 
+          #학생 정보 얻기
+
+          # @students =
       end
 
       # GET /teachers/1
