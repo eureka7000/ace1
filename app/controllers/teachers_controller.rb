@@ -9,18 +9,22 @@ class TeachersController < ApplicationController
       # GET /teachers
       # GET /teachers.json
       def index
+          teacher_id = params[:teacher_id]
 
           @teachers = Teacher.where('school_id = ?',session[:admin]['school_id'])
-          
+          @teachers_name = Teacher.where('school_id = ?',session[:admin]['school_id'])
+
+          unless teacher_id.blank?
+              @teachers = Teacher.where('school_id = ? and user_id = ?', session[:admin]['school_id'], teacher_id.to_i)
+          end
       end
 
       def students_list
-        schoolID = session[:admin]['school_id']
-        @students = User.where('school_id = ?', schoolID).order(:user_name).paginate( :page => params[:page].blank? ? 1 : params[:page], :per_page => 20 )
+          page = params[:page].blank? ? 1 : params[:page]
+          schoolID = session[:admin]['school_id']
 
           #학생 정보 얻기
-
-          # @students =
+          @students = Teacher.get_students(schoolID, page, params[:teacher_name], params[:student_name], params[:order])
       end
 
       # GET /teachers/1

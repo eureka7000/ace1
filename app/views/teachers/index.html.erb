@@ -1,41 +1,58 @@
-    <div class="container-fluid" style="margin-top: 50px">
-        
-        <div class="row">
-            
-            <div class="col-sm-12 col-md-12 main">
-                
-                <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 교사 목록 </h2>
-                    
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>User</th>
-                                <th>School</th>
-                                <th>Confirm yn</th>
-                                <th>Confirmed at</th>
-                                <th>Comfirmed</th>
-                                <th colspan="2"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <% @teachers.each do |teacher| %>
-                          <tr>
-                            <td><%= teacher.user.user_name %></td>
-                            <td><%= teacher.school.name %></td>
-                            <td><%= teacher.confirm_yn %></td>
-                            <td><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
-                            <td><%= teacher.confirmed_id %></td>
-                            <td><%= link_to 'Confirm', "/teachers/#{teacher.id}?confirm=Y" %> &nbsp;&nbsp;<%= link_to 'Reject',"/teachers/#{teacher.id}?confirm=N" %></td>
-                          </tr>
+<div class="container-fluid" style="margin-top: 50px">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-12 main">
+
+            <h2 class="sub-header"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 교사 목록 </h2>
+
+            <div class="col-md-12 no-margin no-padding">
+                <div class="col-md-6 col-sm-10 col-xs-10 no-margin no-padding">
+                    <select id="name_search" class="form-control">
+                        <option value="">이름 검색</option>
+                        <% @teachers_name.distinct.each do |teacher_name| %>
+                            <option value="<%= teacher_name.user_id %>"><%= teacher_name.user.user_name %></option>
                         <% end %>
-                        </tbody>
-                    </table>
+                    </select>
                 </div>
-            
+                <div class="col-md-6 col-sm-2 col-xs-2 "><button class="btn btn-u btn-u-aqua rounded" onclick="search()">검색</button></div>
             </div>
-            
+
+
+            <div class="table-responsive col-md-12 col-sm-12 col-xs-12 margin-top-20 no-margin no-padding">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">승인 상태 Y | N</th>
+                            <th class="text-center">승인일</th>
+                            <th class="text-center">관리자 번호</th>
+                            <th colspan="2" class="text-center">승인 | 거절</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% @teachers.each do |teacher| %>
+                      <tr>
+                        <td><%= teacher.user.user_name %></td>
+                        <td class="text-center"><%= teacher.user.email %></td>
+                        <td class="text-center"><%= teacher.confirm_yn %></td>
+                        <td class="text-center"><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
+                        <td class="text-center"><%= teacher.confirmed_id %></td>
+                        <td class="text-center"><%= link_to 'Confirm', "/teachers/#{teacher.id}?confirm=Y" %> &nbsp;&nbsp;<%= link_to 'Reject',"/teachers/#{teacher.id}?confirm=N" %></td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
+
     </div>
+</div>
 
-
+<script type="text/javascript">
+    function search() {
+        location = '/teachers?teacher_id=' + $('#name_search').val();
+    }
+</script>
