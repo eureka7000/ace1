@@ -219,6 +219,20 @@ class MypagesController < ApplicationController
         end
     end
 
+    def overall
+        @click = 'overall';
+        last_studied_unit_concept_id = current_user.study_histories.last.unit_concept_id
+        @last_study_histories = StudyHistory.where('user_id=? and unit_concept_id=?', current_user.id, last_studied_unit_concept_id)
+
+        # logger.info "################   #{@last_study_histories.count}   ###################"
+
+        @progress_percent = @last_study_histories.count.to_f/8 * 100
+
+        # 공지사항
+        @latest_notices = Blog.where('blog_type !=?', '8').order(id: :desc).first(10)
+
+    end
+
     def user_image_upload
 
         @user = User.find(params[:user_id])

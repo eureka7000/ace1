@@ -101,6 +101,7 @@ Rails.application.routes.draw do
     root :to => "homes#index"
 
     # Mypages
+    get  'mypages/overall' => 'mypages#overall'
     get  'mypages/evaluation' => 'mypages#evaluation'
     get  'mypages/user_info' => 'mypages#user_info'
     get  'mypages/question_list' => 'mypages#question_list'
