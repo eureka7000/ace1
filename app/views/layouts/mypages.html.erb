@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<head>
+    <title>EurekaMath</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="유레카매스는 온라인 중・고등 수학학습 서비스를 제공하는 회사입니다, 맞춤형 교육 솔루션, 중학교, 고등학교 수학, eureka math, mathmatics, 유레카 메스, 유레카 매스, 수학 동영상 강의 ">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Web Fonts -->
+    <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- CSS Header and Footer -->
+    <link rel="stylesheet" href="/assets/css/headers/header-default.css">
+    <link rel="stylesheet" href="/assets/css/footers/footer-default.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/assets/plugins/animate.css">
+    <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/plugins/scrollbar/css/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery.fileupload.css">
+    <link rel="stylesheet" href="/assets/plugins/line-icons-pro/styles.css">
+
+    <!-- CSS Page Style -->
+    <link rel="stylesheet" href="/assets/css/pages/profile.css">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
+    <%= csrf_meta_tags %>
+
+    <meta name="google-site-verification" content="Hl1qEsuAB9XnNB6zkZUBHs6psTBMGG7gis6yZAAXWTo" />
+
+    <!-- Google analytics -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-82647956-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+    <!-- Google analytics end -->
+
+    <!-- MathJAX -->
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+
+</head>
+
+<body>
+
+<div id="loading" style="display:none">
+    <img src="/assets/img/Loading.gif" />
+</div>
+
+<div class="wrapper">
+    <!--=== Header ===-->
+    <div class="header">
+
+        <div class="container" style="height: 100px;">
+
+            <!-- Logo -->
+            <a class="logo" href="/">
+                <img src="/assets/img/logo.jpg" alt="Logo" class="img-responsive">
+            </a>
+            <!-- End Logo -->
+
+            <!-- Topbar -->
+            <div class="topbar">
+
+                <ul class="loginbar pull-right">
+                    <% unless current_user.nil? %>
+                        <% unless current_user.study_histories.last.nil? %>
+                            <li>
+                                <a class="text-blue" href="/contents/<%= current_user.study_histories.last.unit_concept_id %>"  title="최근학습">
+                  <span class="label rounded-2x label-success" style="margin-left: 5px">
+                      <i class="fa fa-bookmark" style="color:white"></i>
+                      <%=  current_user.study_histories.last.unit_concept.name %>
+                  </span>
+                                </a>
+                            </li>
+                            <li class="topbar-devider"></li>
+                        <% end %>
+
+                        <li>
+                            <% if current_user.can_I_use? %>
+                                <span class="label rounded-2x label-blue" style="margin-left: 5px">Member</span>
+                            <% else %>
+                                <span class="label rounded-2x label-yellow" style="margin-left: 5px" title="Level1까지 자유롭게 사용가능">Free</span>
+                            <% end %>
+                        </li>
+                        <li class="topbar-devider"></li>
+
+                        <li><span class="label rounded-2x label-dark-blue"><%= current_user.user_types[0].user_type.humanize %></span></li>
+                        <li class="topbar-devider"></li>
+
+                        <li>
+                            <a rel="nofollow" data-method="delete" href="/users/sign_out">
+                  <span class="label rounded-2x label-dark">
+                      <i class="icon-logout"></i>
+                      로그아웃
+                  </span>
+                            </a>
+                        </li>
+
+                    <% else %>
+
+                        <li>
+                            <a href="/users/sign_in">
+                  <span class="label rounded-2x label-dark">
+                      <i class="icon-login"></i>
+                      <%= t(:log_in) %>
+                  </span>
+                            </a>
+                        </li>
+                        <li class="topbar-devider"></li>
+
+                        <li><a href="/users/sign_up"><span class="label rounded-2x label-purple"><%= t(:sign_up) %></span></a></li>
+
+                    <% end %>
+
+                </ul>
+
+            </div>
+            <!-- End Topbar -->
+
+            <!-- Toggle get grouped for better mobile display -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="fa fa-bars"></span>
+            </button>
+            <!-- End Toggle -->
+        </div><!--/end container-->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-responsive-collapse margin-right-10">
+
+            <div class="container">
+
+                <ul class="nav navbar-nav margin-right-10">
+                    <li class="<%= 'active' if @active == 'home' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/contents?view_type=1&step=1">단원별</a></li>
+                            <li><a href="/contents?view_type=2&step=1">학년별</a></li>
+                            <!--<li><a href="/exams/previous_exams">기출문제</a></li>-->
+                            <li><a href="/homes/contents_list">학습 목차 한눈에 보기</a></li>
+                            <!-- <li><a href="/contents/by_level">난위도별</a></li> -->
+                        </ul>
+                    </li>
+
+                    <li class="<%= 'active' if @active == 'mypage' %>">
+                        <% if @session_yn == 'Y' %>
+                            <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
+                                <a href="/mypages/user_info">MY PAGE&nbsp;<span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
+                            <% end %>
+                        <% else %>
+                            <a href="/mypages/overall">MY PAGE</a>
+                        <% end %>
+                    </li>
+
+                    <li class="<%= 'active' if @active == 'blog' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">BLOG</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/questions">학습문제해결</a>
+                            </li>
+                            <!--<li>
+                              <a href="/blogs/succession_case">성공사례</a>
+                            </li>-->
+                            <li>
+                                <a href="/blogs/math_story">수학이야기</a>
+                            </li>
+                        </ul>
+
+                    <li class="<%= 'active' if @active == 'about' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">ABOUT</a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="/blogs/faq">FAQ</a>
+                            </li>
+                            <li>
+                                <a href="/blogs/notice">공지사항</a>
+                            </li>
+                            <!--<li>
+                              <a href="/blogs/the_news">새소식</a>
+                            </li>-->
+                            <li>
+                                <a href="/blogs/contact_us">Contact us</a>
+                            </li>
+
+                            <!-- 회사소개 -->
+                            <li class="dropdown-submenu">
+                                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;회사소개</a>
+                                <ul class="dropdown-menu submenu-left">
+                                    <li><a href="/blogs/recommendation">- 추천사</a></li>
+                                    <li><a href="/blogs/company_introduction">- 유레카매스란?</a></li>
+                                </ul>
+                            </li>
+                            <!-- End 회사소개 -->
+
+                        </ul>
+                    </li>
+                    <!-- 임시 주석 처리
+                      <li class="<%= 'active' if @active == 'payments' %>">
+                        <a href="/payments">상품결제</a>
+                      </li>
+                      -->
+                </ul>
+            </div><!--/end container-->
+        </div><!--/navbar-collapse-->
+
+    </div>
+    <!--=== End Header ===-->
+
+    <% unless @page_name.nil? %>
+        <!--=== Breadcrumbs ===-->
+        <div class="breadcrumbs">
+            <div class="container">
+                <h1 class="pull-left"><%= @page_name %></h1>
+                <ul class="pull-right breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><%= @page_name %></li>
+                </ul>
+            </div><!--/container-->
+        </div><!--/breadcrumbs-->
+        <!--=== End Breadcrumbs ===-->
+    <% end %>
+
+    <%= yield %>
+
+</div><!--/wrapper-->
+
+<!-- JS Global Compulsory -->
+<script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
+<script type="text/javascript" src="/assets/plugins/counter/waypoints.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/counter/jquery.counterup.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/scrollbar/js/jquery.mCustomScrollbar.concat.min.js"></script>
+<!-- JS Customization -->
+<script type="text/javascript" src="/assets/js/custom.js"></script>
+<!-- JS Page Level -->
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/datepicker.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/style-switcher.js"></script>
+
+<script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+        App.initCounter();
+        App.initScrollBar();
+        Datepicker.initDatepicker();
+        StyleSwitcher.initStyleSwitcher();
+    });
+</script>
+<!--[if lt IE 9]>
+<script src="/assets/plugins/respond.js"></script>
+<script src="/assets/plugins/html5shiv.js"></script>
+<script src="/assets/plugins/placeholder-IE-fixes.js"></script>
+<![endif]-->
+
+</body>
+</html>

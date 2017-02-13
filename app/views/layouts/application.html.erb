@@ -18,13 +18,13 @@
     <!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
-    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
-    <link rel="stylesheet" href="/assets/css/pages/profile.css">
 
     <!-- CSS Header and Footer -->
     <link rel="stylesheet" href="/assets/css/headers/header-default.css">
     <link rel="stylesheet" href="/assets/css/footers/footer-default.css">
+
+    <!-- CSS Page Style -->
+    <link rel="stylesheet" href="/assets/css/pages/profile.css">
 
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="/assets/plugins/animate.css">
@@ -37,7 +37,8 @@
     <link rel="stylesheet" href="/assets/plugins/line-icons-pro/styles.css">
     <link rel="stylesheet" href="/assets/css/plugins/jquery.fileupload.css">
     <link rel="stylesheet" href="/css/multi-select.css">
-
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">
 
@@ -182,10 +183,10 @@
             <li class="<%= 'active' if @active == 'mypage' %>">
             <% if @session_yn == 'Y' %>
                 <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
-                    <a href="/mypages/user_info">MY PAGE&nbsp;<span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
+                    <a href="/mypages/overall">MY PAGE&nbsp;<span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
                 <% end %>
             <% else %>
-                <a href="/mypages/user_info">MY PAGE</a>
+                <a href="/mypages/overall">MY PAGE</a>
             <% end %>
             </li>
             

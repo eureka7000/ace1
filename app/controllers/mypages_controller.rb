@@ -66,7 +66,9 @@ class MypagesController < ApplicationController
         #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         # end
         @questions_number = Question.get_question_number(current_user.id)
-        
+
+        # multi-select가 호환되지 않아 layout을 변경
+        render layout: 'application'
     end
 
     def study_progress_detail
@@ -220,16 +222,27 @@ class MypagesController < ApplicationController
     end
 
     def overall
+
         @click = 'overall';
-        last_studied_unit_concept_id = current_user.study_histories.last.unit_concept_id
-        @last_study_histories = StudyHistory.where('user_id=? and unit_concept_id=?', current_user.id, last_studied_unit_concept_id)
+        unless current_user.study_histories.blank?
+            @last_studied_unit_concept_id = current_user.study_histories.last.unit_concept_id
+            @last_study_histories = StudyHistory.where('user_id=? and unit_concept_id=?', current_user.id, @last_studied_unit_concept_id)
+        else
+            @last_studied_unit_concept_id = 1
+            @last_study_histories = nil
+        end
 
         # logger.info "################   #{@last_study_histories.count}   ###################"
 
-        @progress_percent = @last_study_histories.count.to_f/8 * 100
+        unless @last_study_histories.nil?
+            @progress_percent = @last_study_histories.count.to_f/8 * 100
+        end
+
 
         # 공지사항
-        @latest_notices = Blog.where('blog_type !=?', '8').order(id: :desc).first(10)
+        @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(6)
+
+        @related_users = UserRelation.where('related_user_id = ?', current_user.id)
 
     end
 
