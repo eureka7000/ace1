@@ -257,12 +257,20 @@
     function pay() {
     
         var url = "/payments";
-    
+
+        var month ="";
+        if ($('#goodname').val() == '1'){
+            month = 'Month';
+        }
+        else{
+            month = 'Months'
+        }
+
         var data = {
             price: $('#price').val(),
             timestamp: $('#timestamp').val(),
             "payment" : {
-                "service_name" : $('#goodname').val(), 
+                "service_name" : $('#goodname').val() + month,
                 "amount" : $('#price').val(),
                 "oid" : $('#oid').val(),
                 "pay_method" : $('#gopaymethod').val()

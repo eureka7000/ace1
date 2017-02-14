@@ -74,4 +74,14 @@ class Question < ActiveRecord::Base
         Question.paginate_by_sql(str, :page => page, :per_page => 20)
     end
 
+    QUESTION_COUNT = {
+            1 => 'one',
+            2 => 'two',
+            3 => 'three',
+            4 => 'four',
+            5 => 'five',
+            6 => 'six',
+            7 => 'seven'
+    }
+
 end

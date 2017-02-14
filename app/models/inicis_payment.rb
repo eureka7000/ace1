@@ -7,7 +7,7 @@ class InicisPayment < ActiveRecord::Base
         'DirectBank' => '실시간계좌이체',
         'HPP' => '핸드폰',
         'OCBPoint' => 'OK Cashbag 포인트',
-        'Vbank' => '무통장입금(가상계좌)',
+        # 'Vbank' => '무통장입금(가상계좌)',
         'PhoneBill' => '폰빌, 전화결제',
         'Culture' => '문화상품권결제',
         'DGCL' => '스마트문상 결제',

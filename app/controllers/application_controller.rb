@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
         if session[:previous_url] == '/'
 
-            '/' # 학생으로 가입시 경로 설정 오류로 인해 루트 url로 일단 변경함
+            '/mypages/overall' # 로그인 시 경로 변경
 
             # if current_user.user_types.first.user_type == 'student'
             #     if current_user.study_histories.last.nil?

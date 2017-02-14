@@ -224,6 +224,8 @@ class MypagesController < ApplicationController
     def overall
 
         @click = 'overall';
+
+        # 최근 공부한 개념
         unless current_user.study_histories.blank?
             @last_studied_unit_concept_id = current_user.study_histories.last.unit_concept_id
             @last_study_histories = StudyHistory.where('user_id=? and unit_concept_id=?', current_user.id, @last_studied_unit_concept_id)
@@ -236,13 +238,26 @@ class MypagesController < ApplicationController
 
         unless @last_study_histories.nil?
             @progress_percent = @last_study_histories.count.to_f/8 * 100
+
         end
 
+        # 최근 질문들
+        if current_user.user_types[0].user_type == 'student'
+            @questions = Question.where('user_id = ?', current_user.id).order(created_at: :desc).limit(7)
+        elsif current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'institute teacher' || current_user.user_types[0].user_type == 'mento'
+
+            # @questions = Question.get_question_from_search(current_user.id, params[:student], params[:code], page)
+            # 연결된 학생들의 질문만 보여주도록 한다.
+        end
 
         # 공지사항
-        @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(6)
+        @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(7)
 
+        # 관계되 사람들
         @related_users = UserRelation.where('related_user_id = ?', current_user.id)
+
+        # 개념 자기 평가 이력들
+        @self_evaluations = UnitConceptSelfEvaluation.where(user_id: current_user.id).order(created_at: :desc).limit(5)
 
     end
 

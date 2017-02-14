@@ -22,38 +22,40 @@
                                     <table class="table table-hover table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                    <th class="col-md-3">평가일</th>
-                                    <th>개념</th>
-                                    <th>하위개념</th>
-                                    <th class="hidden-sm col-md-5">메모</th>
-                                    <th style="width: 100px;">Status</th>
+                                        <th>평가일</th>
+                                        <th class="hidden-sm">개념</th>
+                                        <th>하위개념</th>
+                                        <th>진행도</th>
+                                        <th>메모</th>
+                                        <th style="width: 100px;">Status</th>
                                     </tr>
                                     </thead>
-                                
                                     <tbody>
-                                    <% @evaluations.each do |evaluation| %>    
-                                    <tr>
-                                    <td><%= l evaluation.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></td>
-                                    <td><%= evaluation.unit_concept.concept.concept_name %></td>
-                                    <td>
-                                        <% if evaluation.unit_concept.exercise_yn == 'concept' %>
-                                        <a href="/contents/<%= evaluation.unit_concept_id %>"></a>
-                                        <% else %>
-                                        <a href="/contents/exercise?unit_concept_id=<%= evaluation.unit_concept_id %>">    
-                                        <% end %>    
-                                        <%= evaluation.unit_concept.name %></a>
-                                    </td>
-                                    <td class="td-width"><%= evaluation.comment %></td>
-                                    <td>
-                                        <% if evaluation.evaluation == 'difficult' %>
-                                        <button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i><%= evaluation.evaluation %></button>
-                                        <% elsif evaluation.evaluation == 'easy' %>
-                                        <button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i><%= evaluation.evaluation %></button>
-                                        <% elsif evaluation.evaluation == 'normal' %>
-                                        <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i><%= evaluation.evaluation %></button>
-                                        <% end %>
-                                    </td>                                
-                                    </tr>
+                                    <% @evaluations.each do |evaluation| %>
+                                        <tr>
+                                            <td><%= l evaluation.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></td>
+                                            <td class="td-width"><%= evaluation.unit_concept.concept.concept_name %></td>
+                                            <td><%= evaluation.unit_concept.name %></td>
+                                            <td>
+                                                <div class="progress progress-u progress-xxs">
+                                                    <% percentage = evaluation.unit_concept.study_histories.where('user_id = ?', current_user.id).count.to_f / 8 * 100 %>
+                                                    <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="<%= percentage %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= percentage %>%">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span><%= evaluation.comment %></span>
+                                            </td>
+                                            <td>
+                                                <% if evaluation.evaluation == 'difficult' %>
+                                                    <button class="btn-u btn-block btn-u-red btn-u-xs"><i class="fa fa-level-up margin-right-5"></i><%= evaluation.evaluation %></button>
+                                                <% elsif evaluation.evaluation == 'easy' %>
+                                                    <button class="btn-u btn-block btn-u-greed btn-u-xs"><i class="fa fa-level-down margin-right-5"></i><%= evaluation.evaluation %></button>
+                                                <% elsif evaluation.evaluation == 'normal' %>
+                                                    <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i><%= evaluation.evaluation %></button>
+                                                <% end %>
+                                            </td>
+                                        </tr>
                                     <% end %>
                                     </tbody>
                                     </table>
