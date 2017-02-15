@@ -38,7 +38,8 @@
                                             <td><%= evaluation.unit_concept.name %></td>
                                             <td>
                                                 <div class="progress progress-u progress-xxs">
-                                                    <% percentage = evaluation.unit_concept.study_histories.where('user_id = ?', current_user.id).count.to_f / 8 * 100 %>
+                                                    <% count = UnitConceptDesc.get_unit_concept_desc_count(evaluation.unit_concept.id) %>
+                                                    <% percentage = evaluation.unit_concept.study_histories.where('user_id = ?', current_user.id).count.to_f / count * 100 %>
                                                     <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="<%= percentage %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= percentage %>%">
                                                     </div>
                                                 </div>

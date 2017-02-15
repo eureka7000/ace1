@@ -247,9 +247,8 @@ class MypagesController < ApplicationController
         if current_user.user_types[0].user_type == 'student'
             @questions = Question.where('user_id = ?', current_user.id).order(created_at: :desc).limit(7)
         elsif current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'institute teacher' || current_user.user_types[0].user_type == 'mento'
-
-            # @questions = Question.get_question_from_search(current_user.id, params[:student], params[:code], page)
             # 연결된 학생들의 질문만 보여주도록 한다.
+            @questions = Question.get_question_at_overall(current_user.id)
         end
 
         # 공지사항

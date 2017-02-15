@@ -15,10 +15,6 @@ and not desc_type = 5"
 
         count = @unit_concept_desc_count.to_i
 
-        unless @unit_concept_desc_count == 1
-            count = count * 2
-        end
-
-        count
+        count * 2
     end
 end

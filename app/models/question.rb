@@ -74,6 +74,18 @@ class Question < ActiveRecord::Base
         Question.paginate_by_sql(str, :page => page, :per_page => 20)
     end
 
+    def self.get_question_at_overall(current_user_id)
+        str = "select a.id, a.unit_concept_id, a.user_id, a.title, a.content, a.file_name, a.confirm_yn, a.like, a.width, a.height, a.created_at, a.updated_at
+                from questions a, user_relations b
+                where b.related_user_id = #{current_user_id}
+                and b.user_id = a.user_id
+                order by a.created_at desc limit 7"
+
+        Question.find_by_sql(str)
+        # Question.paginate_by_sql(str, :page => page, :per_page => 20)
+    end
+
+
     QUESTION_COUNT = {
             1 => 'one',
             2 => 'two',
