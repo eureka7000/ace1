@@ -1,73 +1,78 @@
 <!--Left Sidebar-->
 <div class="col-md-3 md-margin-bottom-40 margin-top-20">
 
-  <% unless current_user.user_img.blank? %>
-      <% img_src = current_user.user_img %>
-  <% else %>
-      <% img_src = '/assets/img/user_default_img.png' %>
-  <% end %>
+    <% unless current_user.user_img.blank? %>
+        <% img_src = current_user.user_img %>
+    <% else %>
+        <% img_src = '/assets/img/user_default_img.png' %>
+    <% end %>
 
-  <form action="/mypages/user_image_upload" id="profile_image_upload" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-    <%= token_tag nil %>
+    <form action="/mypages/user_image_upload" id="profile_image_upload" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+        <%= token_tag nil %>
 
-  <div class="col-md-12 no-margin no-padding text-right margin-bottom-20">
-    <img class="img-responsive rounded center-block" style="width: 250px; height: 250px;" src= <%= img_src %>>
+        <div class="col-md-12 no-margin no-padding text-right margin-bottom-20">
+            <img class="img-responsive rounded center-block" style="width: 250px; height: 250px;" src= <%= img_src %>>
 
-    <span class="tooltips fileinput-button" data-placement="left" data-original-title="파일선택" style="color:grey;">
+            <span class="tooltips fileinput-button" data-placement="left" data-original-title="파일선택" style="color:grey;">
         <i class="fa fa-plus"></i> 프로필 사진 변경
-      <!-- The file input field used as target for the file upload widget -->
+                <!-- The file input field used as target for the file upload widget -->
           <input id="imageUpload" type="file" name="user_img">
           <input type="hidden" name="url" value="<%= request.original_url %>"/>
           <input type="hidden" id="user_id" name="user_id" value="<%= current_user.id %>" />
     </span>
-  </div>
-    <button id="img_send_btn" hidden type="submit">이미지 저장</button>
-  </form>
+        </div>
+        <button id="img_send_btn" hidden type="submit">이미지 저장</button>
+    </form>
 
-  <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
+    <ul class="list-group sidebar-nav-v1 margin-bottom-40" id="sidebar-nav-1">
 
-      <li class="list-group-item <%= 'active' if @click == 'overall'%>">
-          <a href="/mypages/overall"><i class="fa fa-th-large"></i> 전체보기</a>
-      </li>
-
-    <li class="list-group-item <%= 'active' if @click == 'user_info'%>">
-      <a href="/mypages/user_info"><i class="fa fa-user"></i> 사용자 정보</a>
-    </li>
-
-      <% unless current_user.user_types[0].user_type == 'parent' %>
-          <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
-              <a href="/mypages/question_list"><i class="fa fa-list"></i> 질문/답변 리스트  <span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
-          </li>
-      <% end %>
-
-    <% if current_user.user_types[0].user_type == 'student' %>
-    
-        <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
-          <a href="/mypages/evaluation"><i class="fa fa-cubes"></i> 자기평가</a>
+        <li class="list-group-item <%= 'active' if @click == 'overall'%>">
+            <a href="/mypages/overall"><i class="fa fa-th-large"></i> 전체보기</a>
         </li>
-        
-        <li class="list-group-item <%= 'active' if @click == 'payment'%>">
-            <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결제 정보</a>
-        </li>
-    <% end %>
-    
-    <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' || current_user.user_types[0].user_type == 'institute teacher' || current_user.user_types[0].user_type == 'parent' %>
-        <% current_user.user_types[0].user_type == 'parent' ? student_management_item_name = '자녀 관리' : student_management_item_name = '학생 관리' %>
-        <li class="list-group-item <%= 'active' if @click == 'study_progress'%>">
-            <a href="/mypages/student_management"><i class="fa fa-header"></i> <%= student_management_item_name %></a>
-        </li>    
-    <% end %>
 
-      <li class="list-group-item <%= 'active' if @click == 'textbook'%>">
-          <a href="/mypages/request_textbook"><i class="fa fa-book"></i> 교재 신청</a>
-      </li>
-  </ul>
+        <li class="list-group-item <%= 'active' if @click == 'user_info'%>">
+            <a href="/mypages/user_info"><i class="fa fa-user"></i> 사용자 정보</a>
+        </li>
+
+        <% unless current_user.user_types[0].user_type == 'parent' %>
+            <li class="list-group-item <%= 'active' if @click == 'question_list'%>">
+                <a href="/mypages/question_list"><i class="fa fa-list"></i> 질문/답변 리스트  <span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
+            </li>
+        <% end %>
+
+        <% if current_user.user_types[0].user_type == 'student' %>
+
+            <li class="list-group-item <%= 'active' if @click == 'evaluation'%>">
+                <a href="/mypages/evaluation"><i class="fa fa-cubes"></i> 자기평가</a>
+            </li>
+
+            <li class="list-group-item <%= 'active' if @click == 'payment'%>">
+                <a href="/mypages/payment"><i class="fa fa-credit-card"></i> 결제 정보</a>
+            </li>
+        <% end %>
+
+        <% if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento' || current_user.user_types[0].user_type == 'institute teacher' || current_user.user_types[0].user_type == 'parent' %>
+            <% current_user.user_types[0].user_type == 'parent' ? student_management_item_name = '자녀 관리' : student_management_item_name = '학생 관리' %>
+            <li class="list-group-item <%= 'active' if @click == 'study_progress'%>">
+                <a href="/mypages/student_management"><i class="fa fa-header"></i> <%= student_management_item_name %></a>
+            </li>
+        <% end %>
+
+        <li class="list-group-item <%= 'active' if @click == 'textbook'%>">
+            <a href="/mypages/request_textbook"><i class="fa fa-book"></i> 교재 신청</a>
+        </li>
+    </ul>
+    <!--Datepicker-->
+    <!--<form action="#" id="sky-form2" class="sky-form">-->
+        <!--<div id="inline-start"></div>-->
+    <!--</form>-->
+    <!--End Datepicker-->
 </div>
 <!--End Left Sidebar-->
 
 
 <script type="text/javascript">
-  document.getElementById("imageUpload").onchange = function() {
-    document.getElementById('profile_image_upload').submit();
-  };
+    document.getElementById("imageUpload").onchange = function() {
+        document.getElementById('profile_image_upload').submit();
+    };
 </script>

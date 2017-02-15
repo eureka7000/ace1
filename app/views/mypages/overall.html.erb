@@ -88,7 +88,7 @@
                                             <span class="profile-post-numb">0<%= number %></span>
                                             <div class="profile-post-in">
                                                 <h3 class="heading-xs"><a href="/questions/<%= question.id %>"><%= question.title %></a></h3>
-                                                <p><%== question.content.truncate(65) %> <button class="btn-u btn-u-xs rounded btn-u-<%= question.confirm_yn == 'Y' ? 'blue' : 'orange' %>" type="button"><%= question.confirm_yn %></button></p>
+                                                <p><%== question.content.truncate(65) %> <span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'u' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></p>
                                             </div>
                                         </div>
                                     <% end %>

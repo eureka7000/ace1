@@ -23,9 +23,6 @@
     <link rel="stylesheet" href="/assets/css/headers/header-default.css">
     <link rel="stylesheet" href="/assets/css/footers/footer-default.css">
 
-    <!-- CSS Page Style -->
-    <link rel="stylesheet" href="/assets/css/pages/profile.css">
-
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="/assets/plugins/animate.css">
     <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
@@ -39,6 +36,10 @@
     <link rel="stylesheet" href="/css/multi-select.css">
     <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
     <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
+
+    <!-- CSS Page Style -->
+    <link rel="stylesheet" href="/assets/css/pages/profile.css">
+
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">
 
@@ -59,8 +60,8 @@
       ga('send', 'pageview');
 
     </script>    
-    <!-- Google analytics end --> 
-    
+    <!-- Google analytics end -->
+
     <!-- JS Global Compulsory -->
     <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
@@ -310,9 +311,10 @@
     
     jQuery(document).ready(function() {
         App.init();
-        StyleSwitcher.initStyleSwitcher();
+        Datepicker.initDatepicker();
         new WOW().init();
         $('#notice_email_confirm_modal').modal();
+        StyleSwitcher.initStyleSwitcher();
         
         // $('.news-v3').hover(function() {
         //     $(this).toggleClass('shadow');

@@ -68,7 +68,7 @@
                                 <td class="text-center"><%= question.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d %H:%M:%S') %></td>
                                 <td class="text-center"><%= question.unit_concept.name %></td>
                               <td class="text-center" style="white-space: nowrap; text-overflow: ellipsis; overflow: hidden;"><%= link_to question.title.blank? ? '제목없음' : question.title , question_path(question.id) %></td>
-                              <td class="text-center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'green' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
+                              <td class="text-center"><span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'u' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></td>
                             </tr>
                         <% end %>
                         </tbody>

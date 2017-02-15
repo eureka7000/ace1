@@ -237,7 +237,9 @@ class MypagesController < ApplicationController
         # logger.info "################   #{@last_study_histories.count}   ###################"
 
         unless @last_study_histories.nil?
-            @progress_percent = @last_study_histories.count.to_f/8 * 100
+            unit_concept_id = @last_studied_unit_concept_id
+            count = UnitConceptDesc.get_unit_concept_desc_count(unit_concept_id)
+            @progress_percent = @last_study_histories.count.to_f/count * 100
 
         end
 

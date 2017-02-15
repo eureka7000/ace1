@@ -9,7 +9,7 @@ class CouponsController < ApplicationController
     # GET /coupons.json
     def index
         page = params[:page].blank? ? 1 : params[:page]
-        @coupons = Coupon.all.paginate( :page => page, :per_page => 30 )
+        @coupons = Coupon.all.order(id: :desc).paginate( :page => page, :per_page => 30 )
     end
 
     # GET /coupons/1
