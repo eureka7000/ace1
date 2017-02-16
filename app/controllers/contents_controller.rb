@@ -11,12 +11,13 @@ class ContentsController < ApplicationController
 
     def get_grade_list
 
-        query ="select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level "+
-        "from grade_unit_concepts a, concepts b, unit_concepts c "+
-        "where a.concept_id = b.id "+
-        "and b.id = c.concept_id "+
-        "and c.exercise_yn = 'concept' "+
-        "order by a.grade, a.chapter, a.category, a.sub_category"
+        query ="select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+        from grade_unit_concepts a, concepts b, unit_concepts c
+        where a.concept_id = b.id
+        and b.id = c.concept_id
+        and c.exercise_yn = 'concept'
+        and a.grade = c.grade
+        order by a.grade, a.chapter, a.category, a.sub_category"
 
         @rs = GradeUnitConcept.find_by_sql(query)
 
@@ -476,7 +477,7 @@ class ContentsController < ApplicationController
                     
                 else    
 
-                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "concept")
+                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade = ?', @concept_id, "concept", @grade)
                     @unit_concepts.each do |unit_concept|
                         @items << {
                             key: unit_concept.id,
