@@ -73,6 +73,7 @@
 </div>
 
 <div class="wrapper">
+    <%= render partial: 'modals/notice_email_confirm' if current_user.confirmed_at.nil? %>
     <!--=== Header ===-->
     <div class="header">
 
@@ -278,6 +279,7 @@
         App.initCounter();
         App.initScrollBar();
         Datepicker.initDatepicker();
+        $('#notice_email_confirm_modal').modal();
         StyleSwitcher.initStyleSwitcher();
     });
 </script>
