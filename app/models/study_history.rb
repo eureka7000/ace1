@@ -102,5 +102,23 @@ class StudyHistory < ActiveRecord::Base
         StudyHistory.paginate_by_sql(str, :page => page, :per_page => 30)                 
         
     end    
-    
+
+    def self.get_study_status(number)
+        if number == 1
+            status_str = '시작'
+        else
+            status_str = '완료'
+        end
+        status_str
+    end
+
+    def self.getBarColor(status)
+        if status == '시작'
+            color = 'warning'
+        elsif status == '완료'
+            color = 'u'
+        end
+        color
+    end
+
 end

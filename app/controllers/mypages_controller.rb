@@ -77,6 +77,31 @@ class MypagesController < ApplicationController
         @student = User.find(params[:user_id])
     end    
 
+    def self_evaluation_show
+        @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', params[:user_id], params[:unit_concept_id]).order('created_at desc limit 3')
+
+        ret = []
+
+        @self_evaluations.each do | se |
+
+            tmp = {
+                    id: se.id,
+                    unit_concept_id: se.unit_concept_id,
+                    unit_concept_name: se.unit_concept.name,
+                    evaluation: se.evaluation,
+                    comment: se.comment,
+                    date: se.created_at.in_time_zone("Asia/Seoul").strftime("%Y/%m/%d %H:%M"),
+                    # updated_at: se.updated_at,
+                    user_id: se.user_id
+            }
+
+            ret << tmp
+
+        end
+
+        render :json => ret
+
+    end
 
     def student_management
         @click = 'study_progress'

@@ -112,6 +112,7 @@ Rails.application.routes.draw do
     get  'mypages/request_textbook' => 'mypages#request_textbook'
     post 'mypages/get_textbook_price' => 'mypages#get_textbook_price'
     post 'mypages/find_school_admin' => 'mypages#find_school_admin'
+    post 'mypages/self_evaluation_show' => 'mypages#self_evaluation_show'
     match 'mypages/juso_popup' => 'mypages#juso_popup', via: [:get, :post]
 
     # blogs

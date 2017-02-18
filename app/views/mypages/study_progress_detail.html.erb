@@ -27,7 +27,7 @@
                             <% unless alert.blank? %>
                                 <p class="alert alert-danger"><%= alert %></p>
                             <% end %>
-                            
+
                             <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-073"></i> <%= @student.user_name %> 학생의 학습진도</h3>
                             
                             <div class="table-search-v1 margin-bottom-20">
@@ -39,13 +39,16 @@
                                     <tr>
                                     <th>개념</th>
                                     <th>유닛개념</th>
-                                    <th>진행도</th>
-                                    <th>개념시작</th>
-                                    <th>개념종료</th>
-                                    <th>개념해설시작</th>
-                                    <th>개념해설종료</th>
-                                    <th>개념문제시작</th>
-                                    <th>개념문제종료</th>
+                                    <th>전체 진행도</th>
+                                    <th>개념</th>
+                                    <th>개념해설</th>
+                                    <th>개념문제</th>
+                                    <!--<th>개념시작</th>-->
+                                    <!--<th>개념종료</th>-->
+                                    <!--<th>개념해설시작</th>-->
+                                    <!--<th>개념해설종료</th>-->
+                                    <!--<th>개념문제시작</th>-->
+                                    <!--<th>개념문제종료</th>-->
                                     <th>동영상</th>
                                     <th>자기평가</th>
                                     </tr>
@@ -62,37 +65,51 @@
                                         @study_histories.each do | study_history | 
                                 
                                             progress = 0.00
-                                
+                                            concept_bar = 0
+                                            concept_explaination_bar = 0
+                                            concept_exercise_bar = 0
+                                            concept_video_bar = 0
+                                            concept_self_evaluation_bar = 0
+
                                             if study_history.concept_start > 0
                                                 progress = progress + 1
+                                                concept_bar = concept_bar + 1
                                             end
                                 
                                             if study_history.concept_finish > 0
                                                 progress = progress + 1
+                                                concept_bar = concept_bar + 1
                                             end
                                 
                                             if study_history.concept_explanation_start > 0
                                                 progress = progress + 1
+                                                concept_explaination_bar = concept_explaination_bar + 1
                                             end
                                 
                                             if study_history.concept_explanation_finish > 0
                                                 progress = progress + 1
+                                                concept_explaination_bar = concept_explaination_bar + 1
                                             end
                                 
                                             if study_history.exercise_start > 0
                                                 progress = progress + 1
+                                                concept_exercise_bar = concept_exercise_bar + 1
+
                                             end
                                 
                                             if study_history.exercise_finish > 0
                                                 progress = progress + 1
+                                                concept_exercise_bar = concept_exercise_bar + 1
                                             end
                                 
                                             if study_history.video > 0
                                                 progress = progress + 1
+                                                concept_video_bar = concept_video_bar + 1
                                             end  
                                 
                                             if study_history.self_evaluation > 0
                                                 progress = progress + 1
+                                                concept_self_evaluation_bar = concept_self_evaluation_bar + 1
                                             end      
                                 
                                             progress_percent = progress/8 * 100
@@ -105,27 +122,71 @@
                                                 @bar_color = 'info'
                                             else
                                                 @bar_color = 'success'                                        
-                                            end    
-                                
+                                            end
                                     %>
                                     <tr>
                                     <td><%= study_history.concept_name %></td>
                                     <td><%= study_history.unit_concept_name %></td>
-                                    <td>
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-<%= @bar_color %>" role="progressbar" aria-valuenow="<%= progress_percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= progress_percent %>%">
-                                                <%#= progress_percent %>
+                                        <td>
+                                            <!--전체 진행도-->
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-<%= @bar_color %>" role="progressbar" aria-valuenow="<%= progress_percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= progress_percent %>%">
+                                                    <%= progress_percent.to_i %>%
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center"><% if study_history.concept_start > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.concept_finish > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.concept_explanation_start > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.concept_explanation_finish > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.exercise_start > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.exercise_finish > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.video > 0 %><i class="fa fa-check color-green"></i><% end %></td>
-                                    <td class="text-center"><% if study_history.self_evaluation > 0 %><i class="fa fa-check color-green"></i><% end %></td>
+                                        </td>
+                                        <td>
+                                            <!--개념-->
+                                            <div class="progress">
+                                                <% concept_per = concept_bar/2.0*100 %>
+                                                <% status_str = StudyHistory.get_study_status(concept_bar) %>
+                                                <div class="progress-bar progress-bar-<%= StudyHistory.getBarColor(status_str) %>" role="progressbar" aria-valuenow="<%= concept_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_per %>%"><%= status_str %></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!--개념해설-->
+                                            <div class="progress">
+                                                <% concept_explaination_per = concept_explaination_bar/2.0*100 %>
+                                                <% status_str = StudyHistory.get_study_status(concept_explaination_bar) %>
+                                                <div class="progress-bar progress-bar-<%= StudyHistory.getBarColor(status_str) %>" role="progressbar" aria-valuenow="<%= concept_explaination_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_explaination_per %>%"><%= status_str %></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!--개념문제-->
+                                            <div class="progress">
+                                                <% concept_exercise_per = concept_exercise_bar/2.0*100 %>
+                                                <% status_str = StudyHistory.get_study_status(concept_exercise_bar) %>
+                                                <div class="progress-bar progress-bar-<%= StudyHistory.getBarColor(status_str) %>" role="progressbar" aria-valuenow="<%= concept_exercise_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_exercise_per %>%"><%= status_str %></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!--동영상-->
+                                            <div class="progress">
+                                                <% concept_video_per = study_history.video.to_i/1.0*100 %>
+                                                <% if study_history.video.to_i == 1
+                                                       status_str = '완료'
+                                                end %>
+                                                <div class="progress-bar progress-bar-<%= status_str == '완료' ? 'u' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_video_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_video_per %>%"><%= status_str %></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <!--자기평가-->
+                                            <div class="progress">
+                                                <% concept_self_evaluation_per = study_history.self_evaluation.to_i/1.0*100 %>
+                                                <% if study_history.self_evaluation.to_i == 1
+                                                       status_str = '자기평가 보기'
+                                                end %>
+                                                <div class="progress-bar progress-bar-<%= status_str == '자기평가 보기' ? 'success' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_self_evaluation_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_self_evaluation_per %>%"><div onclick="self_evaluation_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>'), '<%= study_history.unit_concept_name %>'"><%= status_str %></div></div>
+                                            </div>
+                                        </td>
+                                    <!--<td class="text-center"><%# if study_history.concept_start > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.concept_finish > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.concept_explanation_start > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.concept_explanation_finish > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.exercise_start > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.exercise_finish > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.video > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
+                                    <!--<td class="text-center"><%# if study_history.self_evaluation > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
                                     </tr>
                                     <% end %>
                                     </tbody>
@@ -135,8 +196,8 @@
 
                             </div>
                             
-                        </div>    
-                        
+                        </div>
+
                         <%= link_to 'Back', "/mypages/student_management", :class => 'btn btn-default', :style => 'margin-top: 10px'  %>
                         
                     </div>
@@ -148,11 +209,60 @@
         </div>
         
     </div>
-    
-</div>                
+</div>
+
+<%= render partial: 'modals/self_evaluation_modal_for_teachers' %>
 
 <script type="text/javascript">
+    function self_evaluation_show(user_id, unit_concept_id) {
+        var url = "/mypages/self_evaluation_show";
 
-function initpage() {}
-    
+        var data = {
+            user_id: user_id,
+            unit_concept_id: unit_concept_id
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                printTable(data);
+                $('#modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + data[0].unit_concept_name);
+                $('#student_self_evaluation').modal();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function printTable(data) {
+        var root = $('#self_evaluation_table');
+        var tr;
+        var td_date;
+        var td_evaluation;
+        var td_comment;
+        var evaluation = '';
+
+        root.empty();
+
+        for (var i=0; i<data.length; i++) {
+            tr = $('<tr/>').appendTo(root);
+            td_date = $('<td/>').html(data[i].date).addClass('text-center').appendTo(tr);
+            if(data[i].evaluation == 'easy'){
+                evaluation = '쉬움';
+            }
+            else if (data[i].evaluation == 'normal'){
+                evaluation = '보통';
+            }
+            else{
+                evaluation = '어려움';
+            }
+            td_evaluation = $('<td/>').html(evaluation).addClass('text-center').appendTo(tr);
+            td_comment = $('<td/>').html(data[i].comment).appendTo(tr);
+        }
+    }
 </script>
