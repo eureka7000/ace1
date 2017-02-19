@@ -7,7 +7,7 @@
 
         <!-- Profile Content -->
         <div class="col-md-9">
-            <div class="profile-body margin-top-20">
+            <div class="profile-body margin-top-20 margin-bottom-50">
                 <!--Service Block v3-->
                 <div class="row margin-bottom-10">
                     <div class="col-sm-6 sm-margin-bottom-20">
@@ -72,7 +72,7 @@
                 <hr>
 
                 <div class="row margin-bottom-20">
-                    <!--Profile Post-->
+                    <!--최근 질문목록-->
                     <div class="col-sm-6">
                         <div class="panel panel-profile no-bg">
                             <div class="panel-heading overflow-h">
@@ -102,9 +102,9 @@
                             </div>
                         </div>
                     </div>
-                    <!--End Profile Post-->
+                    <!--최근 질문목록-->
 
-                    <!--Profile Event-->
+                    <!--공지사항-->
                     <div class="col-sm-6 md-margin-bottom-20">
                         <div class="panel panel-profile no-bg">
                             <div class="panel-heading overflow-h">
@@ -128,20 +128,26 @@
                             </div>
                         </div>
                     </div>
-
-                    <!--End Profile Event-->
+                    <!--End 공지사항-->
                 </div><!--/end row-->
 
                 <hr>
 
-                <!--Profile Blog-->
-                <div class="panel panel-profile">
-                    <div class="panel-heading overflow-h">
-                        <h2 class="panel-title heading-sm pull-left"><i class="fa fa-tasks"></i>회원님과의 관계</h2>
-                        <!--<a href="/mypages/user_info" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>-->
+                <!-- 회원님과의 관계 -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-profile no-bg">
+                            <div class="panel-heading overflow-h">
+                                <h2 class="panel-title heading-sm pull-left"><i class="fa fa-tasks"></i>회원님과의 관계</h2>
+                                <!--<a href="/mypages/user_info" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>-->
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <div class="row">
+                </div>
+                <div class="row">
+                    <div class="panel panel-profile no-bg">
+                        <div id="scrollbar3" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+
                             <% unless @related_users.blank? %>
                                 <% @related_users.each do | related_user | %>
                                     <div class="col-sm-6">
@@ -157,8 +163,6 @@
                                             <ul class="list-inline share-list">
                                                 <li><i class="fa fa-group"></i><%= related_user.user.user_relations.count %> Followers</li>
                                                 <li><i class="fa fa-envelope"></i><%= related_user.user.email %></li>
-                                                <!--<li><i class="fa fa-bell"></i><a href="#">12 Notifications</a></li>-->
-                                                <!--<li><i class="fa fa-twitter"></i><a href="#">Retweet</a></li>-->
                                             </ul>
                                         </div>
                                     </div>
@@ -172,10 +176,11 @@
                                     </div>
                                 </div>
                             <% end %>
+
                         </div>
                     </div>
                 </div>
-                <!--End Profile Blog-->
+                <!-- END 회원님과의 관계 -->
 
                 <hr>
 
@@ -187,7 +192,7 @@
                                 <h2 class="panel-title heading-sm pull-left"><i class="fa fa-send"></i> 토론방 내용 정리</h2>
                                 <a href="#" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                             </div>
-                            <div id="scrollbar3" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+                            <div id="scrollbar4" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
                                 <div class="alert-blocks alert-blocks-pending alert-dismissable">
                                     <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
                                     <img class="rounded-x" src="/assets/img/testimonials/img3.jpg" alt="">
@@ -247,7 +252,7 @@
                                 <h2 class="panel-title heading-sm pull-left"><i class="fa fa-comments-o"></i> 토론방 나의 댓글들</h2>
                                 <a href="#" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                             </div>
-                            <div id="scrollbar4" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+                            <div id="scrollbar5" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
                                 <div class="comment">
                                     <!--<img src="<%#= current_user.user_img.blank? ? '/assets/img/user_default_img.png' : related_user.user.user_img %>">-->
                                     <div class="overflow-h">
@@ -260,7 +265,6 @@
                                     </div>
                                 </div>
                                 <div class="comment">
-                                    <!--<img src="<%#= current_user.user_img.blank? ? '/assets/img/user_default_img.png' : related_user.user.user_img %>">-->
                                     <div class="overflow-h">
                                         <strong>토론방 준비중입니다<!--<small class="pull-right"> 25m</small>--></strong>
                                         <p>토론방 준비중입니다</p>
@@ -271,7 +275,6 @@
                                     </div>
                                 </div>
                                 <div class="comment">
-                                    <!--<img src="<%#= current_user.user_img.blank? ? '/assets/img/user_default_img.png' : related_user.user.user_img %>">-->
                                     <div class="overflow-h">
                                         <strong>토론방 준비중입니다<!--<small class="pull-right"> 25m</small>--></strong>
                                         <p>토론방 준비중입니다</p>
@@ -282,7 +285,6 @@
                                     </div>
                                 </div>
                                 <div class="comment">
-                                    <!--<img src="<%#= current_user.user_img.blank? ? '/assets/img/user_default_img.png' : related_user.user.user_img %>">-->
                                     <div class="overflow-h">
                                         <strong>토론방 준비중입니다<!--<small class="pull-right"> 25m</small>--></strong>
                                         <p>토론방 준비중입니다</p>
@@ -293,7 +295,6 @@
                                     </div>
                                 </div>
                                 <div class="comment">
-                                    <!--<img src="<%#= current_user.user_img.blank? ? '/assets/img/user_default_img.png' : related_user.user.user_img %>">-->
                                     <div class="overflow-h">
                                         <strong>토론방 준비중입니다<!--<small class="pull-right"> 25m</small>--></strong>
                                         <p>토론방 준비중입니다</p>
@@ -362,126 +363,6 @@
                                 <tr><td colspan="6" class="text-center">- 자기평가가 없습니다 -</td></tr>
                             <% end %>
 
-                            <!--<tr>-->
-                                <!--<td>-->
-                                    <!--<a href="#">Samsung Electronics</a>-->
-                                <!--</td>-->
-                                <!--<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor arcu.</td>-->
-                                <!--<td>-->
-                                    <!--<div class="m-marker">-->
-                                        <!--<a href="#"><i class="color-green fa fa-map-marker"></i></a>-->
-                                        <!--<a href="#" class="display-b">South Korea</a>-->
-                                        <!--<a href="#">Suwon</a>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<div class="progress progress-u progress-xxs">-->
-                                        <!--<div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" style="width: 76%">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td><button class="btn-u btn-block btn-u-dark btn-u-xs"><i class="icon-graph margin-right-5"></i> High</button></td>-->
-                                <!--<td>-->
-                                    <!--<span>1(123) 456</span>-->
-                                    <!--<span><a href="#">info@example.com</a></span>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>-->
-                                    <!--<a href="#">LG</a>-->
-                                <!--</td>-->
-                                <!--<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor arcu.</td>-->
-                                <!--<td>-->
-                                    <!--<div class="m-marker">-->
-                                        <!--<a href="#"><i class="color-green fa fa-map-marker"></i></a>-->
-                                        <!--<a href="#" class="display-b">South Korea</a>-->
-                                        <!--<a href="#">Seoul</a>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<div class="progress progress-u progress-xxs">-->
-                                        <!--<div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td><button class="btn-u btn-block btn-u-aqua btn-u-xs"><i class="fa fa-level-down margin-right-5"></i> Low</button></td>-->
-                                <!--<td>-->
-                                    <!--<span>1(123) 456</span>-->
-                                    <!--<span><a href="#">info@example.com</a></span>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>-->
-                                    <!--<a href="#">Sony Corporation</a>-->
-                                <!--</td>-->
-                                <!--<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor arcu.</td>-->
-                                <!--<td>-->
-                                    <!--<div class="m-marker">-->
-                                        <!--<a href="#"><i class="color-green fa fa-map-marker"></i></a>-->
-                                        <!--<a href="#" class="display-b">Japan</a>-->
-                                        <!--<a href="#">Tokyo</a>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<div class="progress progress-u progress-xxs">-->
-                                        <!--<div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100" style="width: 92%">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td><button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i> Middle</button></td>-->
-                                <!--<td>-->
-                                    <!--<span>1(123) 456</span>-->
-                                    <!--<span><a href="#">info@example.com</a></span>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>-->
-                                    <!--<a href="#">Lenovo Group</a>-->
-                                <!--</td>-->
-                                <!--<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor arcu.</td>-->
-                                <!--<td>-->
-                                    <!--<div class="m-marker">-->
-                                        <!--<a href="#"><i class="color-green fa fa-map-marker"></i></a>-->
-                                        <!--<a href="#" class="display-b">Chinese</a>-->
-                                        <!--<a href="#">Beijing</a>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<div class="progress progress-u progress-xxs">-->
-                                        <!--<div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td><button class="btn-u btn-block btn-u-green btn-u-xs"><i class="fa fa-level-up margin-right-5"></i> High</button></td>-->
-                                <!--<td>-->
-                                    <!--<span>1(123) 456</span>-->
-                                    <!--<span><a href="#">info@example.com</a></span>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                            <!--<tr>-->
-                                <!--<td>-->
-                                    <!--<a href="#">Acer</a>-->
-                                <!--</td>-->
-                                <!--<td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor arcu.</td>-->
-                                <!--<td>-->
-                                    <!--<div class="m-marker">-->
-                                        <!--<a href="#"><i class="color-green fa fa-map-marker"></i></a>-->
-                                        <!--<a href="#" class="display-b">Taiwan</a>-->
-                                        <!--<a href="#">Taipei</a>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td>-->
-                                    <!--<div class="progress progress-u progress-xxs">-->
-                                        <!--<div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</td>-->
-                                <!--<td><button class="btn-u btn-block btn-u-blue btn-u-xs"><i class="icon-graph margin-right-5"></i> Stabile</button></td>-->
-                                <!--<td>-->
-                                    <!--<span>1(123) 456</span>-->
-                                    <!--<span><a href="#">info@example.com</a></span>-->
-                                <!--</td>-->
-                            <!--</tr>-->
                             </tbody>
                         </table>
                     </div>
@@ -662,6 +543,8 @@
                     <!--</div>-->
                 <!--</div>-->
                 <!-- End Table Search v2 -->
+
+
             </div>
         </div>
         <!-- End Profile Content -->
