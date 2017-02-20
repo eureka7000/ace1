@@ -155,8 +155,18 @@
                                             <!--개념문제-->
                                             <div class="progress">
                                                 <% concept_exercise_per = concept_exercise_bar/2.0*100 %>
-                                                <% status_str = StudyHistory.get_study_status(concept_exercise_bar) %>
-                                                <div class="progress-bar progress-bar-<%= StudyHistory.getBarColor(status_str) %>" role="progressbar" aria-valuenow="<%= concept_exercise_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_exercise_per %>%"><%= status_str %></div>
+                                                <% if concept_exercise_bar == 2 %>
+                                                    <% status_str = '정답이력 보기' %>
+                                                <% else %>
+                                                    <% status_str = StudyHistory.get_study_status(concept_exercise_bar) %>
+                                                <% end %>
+                                                <div class="progress-bar progress-bar-<%= status_str == '정답이력 보기' ? 'success' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_exercise_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_exercise_per %>%">
+                                                    <% if status_str == '정답이력 보기' %>
+                                                        <div onclick="unit_concept_exercise_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>');"><%= status_str %></div>
+                                                    <% else %>
+                                                        <%= status_str %>
+                                                    <% end %>
+                                                </div>
                                             </div>
                                         </td>
                                         <td>
@@ -176,7 +186,9 @@
                                                 <% if study_history.self_evaluation.to_i == 1
                                                        status_str = '자기평가 보기'
                                                 end %>
-                                                <div class="progress-bar progress-bar-<%= status_str == '자기평가 보기' ? 'success' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_self_evaluation_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_self_evaluation_per %>%"><div onclick="self_evaluation_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>'), '<%= study_history.unit_concept_name %>'"><%= status_str %></div></div>
+                                                <div class="progress-bar progress-bar-<%= status_str == '자기평가 보기' ? 'success' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_self_evaluation_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_self_evaluation_per %>%">
+                                                    <div onclick="self_evaluation_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>')"><%= status_str %></div>
+                                                </div>
                                             </div>
                                         </td>
                                     <!--<td class="text-center"><%# if study_history.concept_start > 0 %><i class="fa fa-check color-green"></i><%# end %></td>-->
@@ -212,8 +224,56 @@
 </div>
 
 <%= render partial: 'modals/self_evaluation_modal_for_teachers' %>
+<%= render partial: 'modals/exercise_history_modal_for_teachers' %>
 
 <script type="text/javascript">
+    function unit_concept_exercise_show(user_id, unit_concept_id) {
+        var url = "/mypages/unit_concept_exercise_show";
+
+        var data = {
+            user_id: user_id,
+            unit_concept_id: unit_concept_id
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                exercise_history_print_table(data);
+                $('#exercise_modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + data[0].unit_concept_name);
+                $('#student_exercise_history').modal();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function exercise_history_print_table(data) {
+        var root = $('#exercise_history_table');
+        var tr;
+        var td_number;
+        var td_history;
+        var str='';
+        root.empty();
+
+        for (var i=0; i<data.length; i++) {
+            tr = $('<tr/>').appendTo(root);
+
+            td_number = $('<td/>').html('no. ' + data[i].memo.toString().substr(data[i].memo.toString().length-2)).addClass('text-center').appendTo(tr);
+
+            str = ''
+            for (var j=1; j<=data[i].history.length; j++){
+                str += data[i].history.toString().charAt(data[i].history.length - j);
+            }
+
+            td_history = $('<td/>').html(str).addClass('text-center').appendTo(tr);
+        }
+    }
+
     function self_evaluation_show(user_id, unit_concept_id) {
         var url = "/mypages/self_evaluation_show";
 
@@ -229,7 +289,7 @@
             datatype: "json",
             data: data,
             success : function(data) {
-                printTable(data);
+                self_evaluation_print_table(data);
                 $('#modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + data[0].unit_concept_name);
                 $('#student_self_evaluation').modal();
             },
@@ -239,7 +299,7 @@
         });
     }
 
-    function printTable(data) {
+    function self_evaluation_print_table(data) {
         var root = $('#self_evaluation_table');
         var tr;
         var td_date;

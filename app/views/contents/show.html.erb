@@ -112,8 +112,9 @@
     
     <!-- 연습문제 -->
     <div id="concept_exercise" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">
+        <% exercise_count = 0 %>
         <% @exercises.each_with_index do | exercise, index | %>
-
+            <% exercise_count = exercise_count + 1 %>
         <div id="concept_exercise_<%= index %>" <%= "hidden" if index > 0 %> class="col-md-12 margin-bottom-20 no-padding no-margin">
             
             <div class="col-md-6 no-padding no-margin">
@@ -147,7 +148,7 @@
                     <label class="radio-inline margin-right-10">
                         <input type="radio" id="x<%= exercise.id %>" name="exe<%=exercise.memo%>">틀림
                     </label>
-                    <button class="btn-u rounded btn-u-orange btn-u-sm margin-left-10 margin-right-10" type="button" onclick="saveOx(<%= exercise.id %>, this)">저장</button>
+                    <button class="btn-u rounded btn-u-orange btn-u-sm margin-left-10 margin-right-10" type="button" onclick="saveOx(<%= exercise.id %>, this); <%= " update_study_history('concept_exercise', 'finish');" if exercise_count == @exercises.count %>">저장</button>
 
                     <% hOX = '' %>
                     <% @unit_concepts_exercise_histories.each do |history| %>
@@ -176,11 +177,11 @@
                 button_name = '동영상'
             else
                 str_next = 'concept_exercise'
-                stat = ''
+                # stat = ''
                 button_name = 'END'
             end
         %>
-        <a id="concept_exercise_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @exercises.count > 1 %>" onclick="update_study_history('concept_exercise', 'finish'); showTab('<%= str_next %>'); update_study_history('<%= str_next %>', '<%= stat %>');"> <%= button_name %></a>
+        <a id="concept_exercise_go_btn" class="btn-u rounded btn-u-red margin-bottom-20" style="float: right; <%= "display:none;" if @exercises.count > 1 %>" onclick="showTab('<%= str_next %>');"> <%= button_name %></a>
         
     </div>
     
@@ -244,6 +245,17 @@
 <%= render partial: 'modals/do_questions' %>
 <!-- 질문하기 Modal End -->
 
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+    var iframe = document.querySelector('iframe');
+    var player = new Vimeo.Player(iframe);
+
+    player.on('play', function() {
+        console.log('played the video!');
+        update_study_history('concept_video', 'start');
+    });
+</script>
 
 <script type="text/javascript">
 

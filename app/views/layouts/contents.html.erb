@@ -86,18 +86,18 @@
                         <% unless @is_exercise == 0 %>
                         <li>
                             <i class="fa fa-tasks tooltips"></i>
-                            <a onclick="showTab('concept_desc')"> 개념설명</a>
+                            <a onclick="showTab('concept_desc'); update_study_history('concept_desc', 'start');"> 개념설명</a>
                         </li>
                         <% end %>
                         <% if @exercise_yn %>
                         <li>
                             <i class="fa fa-pencil tooltips"></i>
-                            <a onclick="showTab('concept_solution')"> 문제풀이</a>
+                            <a onclick="showTab('concept_solution');"> 문제풀이</a>
                         </li>
                         <% else %>
                         <li>
                             <i class="fa fa-pencil tooltips"></i>
-                            <a onclick="showTab('concept_exercise')"> 개념문제</a>
+                            <a onclick="showTab('concept_exercise'); update_study_history('concept_exercise', 'start');"> 개념문제</a>
                         </li>
                         <% end %>
                         <% unless @is_exercise == 0 %>                        
