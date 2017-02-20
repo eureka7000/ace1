@@ -6,38 +6,38 @@
 
         <!-- Profile Content -->
         <div class="col-md-9 margin-top-20">
-        
+
             <div class="profile-body margin-bottom-20">
-                
+
                 <div class="tab-v1">
-                    
+
                     <ul class="nav nav-justified nav-tabs">
-                    <li class="<%= 'active' if @active_tab == '2' %>"><a data-toggle="tab" href="#passwordTab">회원정보</a></li>
+                        <li class="<%= 'active' if @active_tab == '2' %>"><a data-toggle="tab" href="#passwordTab">회원정보</a></li>
                     </ul>
-                    
+
                     <div class="tab-content">
-                        
+
                         <hr class="devider devider-dotted" style="margin:10px">
-                        
+
                         <div class="profile-edit tab-pane fade in active">
-                            
+
                             <% unless notice.blank? %>
                                 <p class="alert alert-warning"><%= notice %></p>
                             <% end %>
-                            
+
                             <% unless alert.blank? %>
                                 <p class="alert alert-danger"><%= alert %></p>
                             <% end %>
-                            
+
                             <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-user"></i> 회원정보</h3>
-                            
+
                             <hr>
-                            
+
                             <form class="sky-form" id="sky-form4" action="/users/<%= current_user.id %>" method="post">
 
                                 <%= token_tag nil %>
                                 <input name="_method" type="hidden" value="put" />
-                                
+
                                 <dl class="dl-horizontal">
                                     <dt>성명</dt>
                                     <dd>
@@ -49,7 +49,7 @@
                                             </label>
                                         </section>
                                     </dd>
-                                    
+
                                     <dt>전자우편</dt>
                                     <dd>
                                         <section>
@@ -60,7 +60,7 @@
                                             </label>
                                         </section>
                                     </dd>
-                                    
+
                                     <dt>거주지역</dt>
                                     <dd>
                                         <section>
@@ -71,7 +71,7 @@
                                             </label>
                                         </section>
                                     </dd>
-                                    
+
                                     <dt>연락처</dt>
                                     <dd>
                                         <section>
@@ -82,43 +82,43 @@
                                             </label>
                                         </section>
                                     </dd>
-                                    
+
                                     <dt>회원타입</dt>
                                     <dd>
                                         <section>
                                             <p>
-                                            <% idx = 1 %>
-                                            <% current_user.user_types.each do | user_type | %>
-                                                <%= User::USER_TYPES[user_type.user_type] %><%= ',' unless idx == current_user.user_types.count %>
-                                                <% idx += 1 %>
-                                            <% end %>
-                                            &nbsp;&nbsp;
-                                            <!-- <button class="btn-u btn-u-blue btn-u-sm" type="button" title="회원타입추가" onclick="$('#addUserTypeModal').modal()"><i class="fa fa-plus"></i></button> -->
+                                                <% idx = 1 %>
+                                                <% current_user.user_types.each do | user_type | %>
+                                                    <%= User::USER_TYPES[user_type.user_type] %><%= ',' unless idx == current_user.user_types.count %>
+                                                    <% idx += 1 %>
+                                                <% end %>
+                                                &nbsp;&nbsp;
+                                                <!-- <button class="btn-u btn-u-blue btn-u-sm" type="button" title="회원타입추가" onclick="$('#addUserTypeModal').modal()"><i class="fa fa-plus"></i></button> -->
                                             </p>
                                         </section>
                                     </dd>
 
-                                  <% unless current_user.user_types[0].user_type != 'student' %>
-                                    <dt>학년</dt>
-                                    <dd>
-                                      <section>
-                                        <label class="select">
-                                          <select class="valid" name="user[grade]">
-                                            <% unless current_user.grade.nil? %>
-                                                <option selected="selected" value="<%= current_user.grade %>">현재 : <%= UnitConcept::GRADES[current_user.grade.to_i] %></option>
-                                            <% else %>
-                                                <option selected="selected">학년 선택</option>
-                                            <% end %>
+                                    <% unless current_user.user_types[0].user_type != 'student' %>
+                                        <dt>학년</dt>
+                                        <dd>
+                                            <section>
+                                                <label class="select">
+                                                    <select class="valid" name="user[grade]">
+                                                        <% unless current_user.grade.nil? %>
+                                                            <option selected="selected" value="<%= current_user.grade %>">현재 : <%= UnitConcept::GRADES[current_user.grade.to_i] %></option>
+                                                        <% else %>
+                                                            <option selected="selected">학년 선택</option>
+                                                        <% end %>
 
-                                            <% UnitConcept::GRADES.each_pair() do |key, value| %>
-                                                <option value="<%= key.to_s %>"><%= value %></option>
-                                            <% end %>
-                                          </select>
-                                          <i></i>
-                                        </label>
-                                      </section>
-                                    </dd>
-                                  <% end %>
+                                                        <% UnitConcept::GRADES.each_pair() do |key, value| %>
+                                                            <option value="<%= key.to_s %>"><%= value %></option>
+                                                        <% end %>
+                                                    </select>
+                                                    <i></i>
+                                                </label>
+                                            </section>
+                                        </dd>
+                                    <% end %>
 
                                     <dt>자기소개</dt>
                                     <dd>
@@ -134,216 +134,230 @@
                                 </dl>
 
                                 <button class="btn-u btn-u-info rounded" type="submit">저장</button>
-                                    
-                            </form>
-                                
-                        </div> 
-                        
-                        <hr class="devider devider-dotted" style="margin:10px">
-                            
-                        <div class="profile-edit tab-pane fade in active">   
-                                
-							<h2 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-users"></i> 회원님과의 관계</h2>
-								
-								<table class="table">
-                                <thead>
-                                <th>관계</th>
-                                <th>이름</th>
-                                <th>상태</th>
-                                <th>요청일</th>
-                                <th>승인일</th>
-                                <th><i class="fa fa-cog"></i></th>
-                                </thead>        
-                                
-                                    
-                                <% if current_user.user_relations.count == 0 %>
-                                <tr>
-                                <td colspan="6" class="text-center">관련된 사람이 없습니다.</td>
-                                </tr>    
-                                <% end %>
-                                    
-                                <% current_user.user_relations.each do | user_relation | %>    
-								<tr>
-								<td><%= User::USER_TYPES[user_relation.relation_type] %></td>
-                                <td><%= user_relation.get_related_user_name %></td>
-                                <td>
-                                    <% if user_relation.confirm_status == 'requested' %>
-                                    <span class="badge badge-yellow rounded">
-                                    <% elsif user_relation.confirm_status == 'confirmed' %>
-                                    <span class="badge badge-u rounded" >
-                                    <% elsif user_relation.confirm_status == 'rejected' %>
-                                    <span class="badge badge-red rounded">
-                                    <% end %>
-                                    <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] unless user_relation.confirm_status.nil? %>
-                                    </span>
-                                </td>
-                                <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
-                                <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
-                                <td>
-                                    <a href="javascript:destroyRelation(<%= user_relation.id %>)" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="관계 해제" ><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o"></i></a>
-                                </td>
-                                </tr>
-                                <% end %>    
-								</table>
-								
-                                <button class="btn-u btn-u-dark-blue rounded" type="button" onclick="openMyRelationModal()">관계 추가</button>
-                                
-                                <hr>
-                                
-                                <% if current_user.sign_in_count < 2 %>
-                                <p><span class="color-blue"><%= User::USER_TYPES[current_user.user_types.first.user_type] %></span>(으)로 회원 가입되었음을 축하합니다.</p>
-                                <% end %>
-                                
-                                <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
-                                
-                                <h7>귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp;
-                                
-                                <% if current_user.teachers.blank? %>    
-                                    <button class="btn-u btn-u-blue rounded" data-toggle="modal" data-target="#responsive">확인요청</button></h7>
-                                <% else %>
-                                    <% if current_user.teachers[0].confirm_yn.nil? %>
-                                    <span class="label label-info">담당자 확인중 ..</span>
-                                    <% elsif current_user.teachers[0].confirm_yn == 'N' %>
-                                    <span class="label label-danger">거절 <i class="fa fa-exclamation"></i></span>
-                                    <% elsif current_user.teachers[0].confirm_yn == 'Y' %>
-                                    <span class="label label-warning">확인 완료 <i class="fa fa-check"></i></span>
-                                    <% end %>
-                                <% end %>
-                                
-                                <div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title" id="myModalLabel4">확인요청</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                
-                                                <% if current_user.user_name.blank? || current_user.phone.blank? %>
-                                                <div class="row">
-                                                    <div class="alert alert-warning">
-                                                        <p><span style="color:red;" class="fa fa-star"></span> 학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
-                                                    </div>    
-                                                </div>
-                                                <% end %>  
 
-                                                <div id="alert" class="row" style="display:none">
-                                                    <div class="alert alert-warning">
-                                                        <p id="message"></p>
-                                                    </div>    
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        학교(학원)명
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <select id="school" class="form-control">
-                                                        <option value="">학교(학원)를 선택하세요.</option>
-                                                        <% @schools.each do |school| %>
-                                                        <option value="<%= school.id %>"><%= school.name %></option>
+                            </form>
+
+                        </div>
+
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <div class="profile-edit tab-pane fade in active">
+                            <h2 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-users"></i> 회원님과의 관계</h2>
+
+                            <div class="row">
+                                <div class="panel panel-profile no-bg">
+                                    <div id="scrollbar" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+
+                                        <div class="col-sm-12">
+                                            <table class="table">
+                                                <thead>
+                                                <th>관계</th>
+                                                <th>이름</th>
+                                                <th>상태</th>
+                                                <th>요청일</th>
+                                                <th>승인일</th>
+                                                <th><i class="fa fa-cog"></i></th>
+                                                </thead>
+
+
+                                                <% if current_user.user_relations.count == 0 %>
+                                                    <tr>
+                                                        <td colspan="6" class="text-center">관련된 사람이 없습니다.</td>
+                                                    </tr>
+                                                <% end %>
+
+                                                <% current_user.user_relations.each do | user_relation | %>
+                                                    <tr>
+                                                        <td><%= User::USER_TYPES[user_relation.relation_type] %></td>
+                                                        <td><%= user_relation.get_related_user_name %></td>
+                                                        <td>
+                                                            <% if user_relation.confirm_status == 'requested' %>
+                                    <span class="badge badge-yellow rounded">
+                                                            <% elsif user_relation.confirm_status == 'confirmed' %>
+                                    <span class="badge badge-u rounded" >
+                                                            <% elsif user_relation.confirm_status == 'rejected' %>
+                                    <span class="badge badge-red rounded">
+                                                            <% end %>
+                                                            <%= UserRelation::CONFIRM_STATUS[user_relation.confirm_status.to_sym] unless user_relation.confirm_status.nil? %>
+                                                            </span>
+                                                        </td>
+                                                        <td><%= user_relation.request_date.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
+                                                        <td><%= user_relation.confirmed_at.nil? ? "not Confirmed" : user_relation.confirmed_at.in_time_zone("Asia/Seoul").strftime('%m월 %d일 %l:%M %P') %></td>
+                                                        <td>
+                                                            <a href="javascript:destroyRelation(<%= user_relation.id %>)" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="관계 해제" ><i class="icon-custom icon-sm rounded-x icon-bg-red fa fa-trash-o"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <% end %>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn-u btn-u-dark-blue rounded margin-top-20 margin-left-10" type="button" onclick="openMyRelationModal()">관계 추가</button>
+
+                                            <% if current_user.sign_in_count < 2 %>
+                                                <p><span class="color-blue"><%= User::USER_TYPES[current_user.user_types.first.user_type] %></span>(으)로 회원 가입되었음을 축하합니다.</p>
+                                            <% end %>
+
+                                            <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
+
+                                                <nobr> 귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp;
+
+                                                    <% if current_user.teachers.blank? %>
+                                                        <button class="btn-u btn-u-blue rounded" data-toggle="modal" data-target="#responsive">확인요청</button>
+                                                    <% else %>
+                                                        <% if current_user.teachers[0].confirm_yn.nil? %>
+                                                            <span class="label label-info">담당자 확인중 ..</span>
+                                                        <% elsif current_user.teachers[0].confirm_yn == 'N' %>
+                                                            <span class="label label-danger">거절 <i class="fa fa-exclamation"></i></span>
+                                                        <% elsif current_user.teachers[0].confirm_yn == 'Y' %>
+                                                            <span class="label label-warning">확인 완료 <i class="fa fa-check"></i></span>
                                                         <% end %>
-                                                        </select>
-                                                    </div>    
-                                                </div>
-                                                
-                                                <hr>
-                                                
-                                                <div class="row">
-                                                    <div class="col-md-3">
-                                                        관리자 전자우편
+                                                    <% end %>
+                                                </nobr>
+
+                                                <div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 class="modal-title" id="myModalLabel4">확인요청</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <% if current_user.user_name.blank? || current_user.phone.blank? %>
+                                                                    <div class="row">
+                                                                        <div class="alert alert-warning">
+                                                                            <p><span style="color:red;" class="fa fa-star"></span> 학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                <% end %>
+
+                                                                <div id="alert" class="row" style="display:none">
+                                                                    <div class="alert alert-warning">
+                                                                        <p id="message"></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-3">
+                                                                        학교(학원)명
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <select id="school" class="form-control">
+                                                                            <option value="">학교(학원)를 선택하세요.</option>
+                                                                            <% @schools.each do |school| %>
+                                                                                <option value="<%= school.id %>"><%= school.name %></option>
+                                                                            <% end %>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr>
+
+                                                                <div class="row">
+                                                                    <div class="col-md-3">
+                                                                        관리자 전자우편
+                                                                    </div>
+                                                                    <div class="col-md-9">
+                                                                        <input class="form-control" type="text" id="manager_email" value="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn-u btn-u-default rounded" data-dismiss="modal">닫기</button>
+                                                                <button type="button" class="btn-u btn-u-primary rounded" onclick="requestCert()" <%= 'disabled' if current_user.user_name.blank? || current_user.phone.blank? %> >요청하기</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-9">
-                                                        <input class="form-control" type="text" id="manager_email" value="" />
-                                                    </div>    
-                                                </div>                                                    
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn-u btn-u-default rounded" data-dismiss="modal">닫기</button>
-                                                <button type="button" class="btn-u btn-u-primary rounded" onclick="requestCert()" <%= 'disabled' if current_user.user_name.blank? || current_user.phone.blank? %> >요청하기</button>
-                                            </div>
+
+                                                    <script type="text/javascript">
+
+                                                        function requestCert() {
+
+                                                            if ($('#school').val() == '') {
+                                                                alert('학교를 선택해 주세요.');
+                                                                return false;
+                                                            }
+
+                                                            if ($('#manager_email').val() == '') {
+                                                                alert('관리자 email이 필요합니다.');
+                                                                return false;
+                                                            }
+
+                                                            if ($('#manager_email').val() != '') {
+                                                                if (!validateEmail($('#manager_email').val())) {
+                                                                    alert('관리자 email 주소가 유효하지 않습니다.');
+                                                                    return false;
+                                                                }
+                                                            }
+
+                                                            var data = {
+                                                                "school_id": $('#school').val(),
+                                                                "manager_email": $('#manager_email').val(),
+                                                                "user_id" : <%= current_user.id %>
+                                                            }
+
+                                                            $.ajax({
+                                                                type:	"POST",
+                                                                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                                                                url: "/teachers",
+                                                                dataType:"JSON",
+                                                                data:data,
+                                                                success: function(data){
+                                                                    if(data.error != null){
+                                                                        $('#message').text(data.error);
+                                                                        $('#alert').show();
+                                                                        return false;
+                                                                    } else {
+                                                                        location.href = "/mypages/user_info?active_tab=2";
+                                                                    }
+                                                                },
+                                                                error: function(xhr, ajaxOptions, thrownError){
+                                                                    alert(xhr.status);
+                                                                }
+                                                            });
+
+                                                        }
+
+                                                        $('#school').change(function () {
+                                                            var data = {
+                                                                "school_id": $('#school').val()
+                                                            };
+
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                                                                url: "/mypages/find_school_admin",
+                                                                dataType:"JSON",
+                                                                data:data,
+                                                                success: function(data){
+                                                                    $('#manager_email').val(data.email);
+                                                                },
+                                                                error: function(xhr, ajaxOptions, thrownError){
+                                                                    //alert(xhr.status);
+                                                                    $('#manager_email').val('');
+                                                                }
+                                                            });
+                                                        });
+
+                                                    </script>
+
+                                                </div>
+
+                                            <% end %>
+
                                         </div>
                                     </div>
-                                    
-                                    <script type="text/javascript">
-                                    
-                                    function requestCert() {
-                                        
-                                        if ($('#school').val() == '') {
-                                            alert('학교를 선택해 주세요.');
-                                            return false;
-                                        }
-                                        
-                                        if ($('#manager_email').val() == '') {
-                                            alert('관리자 email이 필요합니다.');
-                                            return false;
-                                        }
-                                        
-                                        if ($('#manager_email').val() != '') {
-                                            if (!validateEmail($('#manager_email').val())) {
-                                                alert('관리자 email 주소가 유효하지 않습니다.');
-                                                return false;    
-                                            }
-                                        }
-                                        
-                                        var data = {
-                                            "school_id": $('#school').val(),
-                                            "manager_email": $('#manager_email').val(),
-                                            "user_id" : <%= current_user.id %>
-                                        }
 
-                                	    $.ajax({
-                                            type:	"POST",
-                                		    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                                		    url: "/teachers",
-                                		    dataType:"JSON",
-                                		    data:data,
-                                		    success: function(data){
-                                			    if(data.error != null){
-                                                    $('#message').text(data.error);
-                                                    $('#alert').show();
-                                				    return false;
-                                			    } else {
-                                                    location.href = "/mypages/user_info?active_tab=2";
-                                			    }
-                                	        },
-                                	        error: function(xhr, ajaxOptions, thrownError){
-                                                alert(xhr.status);
-                                   	        }
-                                	    });
-                                        
-                                    }
-
-                                    $('#school').change(function () {
-                                        var data = {
-                                            "school_id": $('#school').val()
-                                        };
-
-                                        $.ajax({
-                                            type: "POST",
-                                            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-                                            url: "/mypages/find_school_admin",
-                                            dataType:"JSON",
-                                            data:data,
-                                            success: function(data){
-                                                $('#manager_email').val(data.email);
-                                            },
-                                            error: function(xhr, ajaxOptions, thrownError){
-                                                //alert(xhr.status);
-                                                $('#manager_email').val('');
-                                            }
-                                        });
-                                    });
-                                    
-                                    </script>
-                                    
-                                    
                                 </div>
-
-                                <% end %>
-                                
                             </div>
 
+                        </div>
 
                         <hr class="devider devider-dotted" style="margin:10px">
 
@@ -443,101 +457,100 @@
                         </script>
 
 
-                            <div id="payment" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '3' %>">
-                                <h2 class="heading-md">Manage your Payment Settings</h2>
-                                <p>Below are the payment options for your account.</p>
-                                <br>
-                                <form class="sky-form" id="sky-form" action="#">
-                                    <!--Checkout-Form-->
-                                    <section>
-                                        <div class="inline-group">
-                                            <label class="radio"><input type="radio" checked="" name="radio-inline"><i class="rounded-x"></i>Visa</label>
-                                            <label class="radio"><input type="radio" name="radio-inline"><i class="rounded-x"></i>MasterCard</label>
-                                            <label class="radio"><input type="radio" name="radio-inline"><i class="rounded-x"></i>PayPal</label>
-                                        </div>
-                                    </section>
+                        <div id="payment" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '3' %>">
+                            <h2 class="heading-md">Manage your Payment Settings</h2>
+                            <p>Below are the payment options for your account.</p>
+                            <br>
+                            <form class="sky-form" id="sky-form" action="#">
+                                <!--Checkout-Form-->
+                                <section>
+                                    <div class="inline-group">
+                                        <label class="radio"><input type="radio" checked="" name="radio-inline"><i class="rounded-x"></i>Visa</label>
+                                        <label class="radio"><input type="radio" name="radio-inline"><i class="rounded-x"></i>MasterCard</label>
+                                        <label class="radio"><input type="radio" name="radio-inline"><i class="rounded-x"></i>PayPal</label>
+                                    </div>
+                                </section>
 
-                                    <section>
+                                <section>
+                                    <label class="input">
+                                        <input type="text" name="name" placeholder="Name on card">
+                                    </label>
+                                </section>
+
+                                <div class="row">
+                                    <section class="col col-10">
                                         <label class="input">
-                                            <input type="text" name="name" placeholder="Name on card">
+                                            <input type="text" name="card" id="card" placeholder="Card number">
                                         </label>
                                     </section>
+                                    <section class="col col-2">
+                                        <label class="input">
+                                            <input type="text" name="cvv" id="cvv" placeholder="CVV2">
+                                        </label>
+                                    </section>
+                                </div>
 
-                                    <div class="row">
-                                        <section class="col col-10">
-                                            <label class="input">
-                                                <input type="text" name="card" id="card" placeholder="Card number">
-                                            </label>
-                                        </section>
-                                        <section class="col col-2">
-                                            <label class="input">
-                                                <input type="text" name="cvv" id="cvv" placeholder="CVV2">
-                                            </label>
-                                        </section>
-                                    </div>
+                                <div class="row">
+                                    <label class="label col col-4">Expiration date</label>
+                                    <section class="col col-5">
+                                        <label class="select">
+                                            <select name="month">
+                                                <option disabled="" selected="" value="0">Month</option>
+                                                <option value="1">January</option>
+                                                <option value="1">February</option>
+                                                <option value="3">March</option>
+                                                <option value="4">April</option>
+                                                <option value="5">May</option>
+                                                <option value="6">June</option>
+                                                <option value="7">July</option>
+                                                <option value="8">August</option>
+                                                <option value="9">September</option>
+                                                <option value="10">October</option>
+                                                <option value="11">November</option>
+                                                <option value="12">December</option>
+                                            </select>
+                                            <i></i>
+                                        </label>
+                                    </section>
+                                    <section class="col col-3">
+                                        <label class="input">
+                                            <input type="text" placeholder="Year" id="year" name="year">
+                                        </label>
+                                    </section>
+                                </div>
+                                <button type="button" class="btn-u btn-u-default">Cancel</button>
+                                <button class="btn-u" type="submit">Save Changes</button>
+                                <!--End Checkout-Form-->
+                            </form>
+                        </div>
 
-                                    <div class="row">
-                                        <label class="label col col-4">Expiration date</label>
-                                        <section class="col col-5">
-                                            <label class="select">
-                                                <select name="month">
-                                                    <option disabled="" selected="" value="0">Month</option>
-                                                    <option value="1">January</option>
-                                                    <option value="1">February</option>
-                                                    <option value="3">March</option>
-                                                    <option value="4">April</option>
-                                                    <option value="5">May</option>
-                                                    <option value="6">June</option>
-                                                    <option value="7">July</option>
-                                                    <option value="8">August</option>
-                                                    <option value="9">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>
-                                                <i></i>
-                                            </label>
-                                        </section>
-                                        <section class="col col-3">
-                                            <label class="input">
-                                                <input type="text" placeholder="Year" id="year" name="year">
-                                            </label>
-                                        </section>
-                                    </div>
-                                    <button type="button" class="btn-u btn-u-default">Cancel</button>
-                                    <button class="btn-u" type="submit">Save Changes</button>
-                                    <!--End Checkout-Form-->
-                                </form>
-                            </div>
-
-                            <div id="settings" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '4' %>">
-                                <h2 class="heading-md">Manage your Notifications.</h2>
-                                <p>Below are the notifications you may manage.</p>
-                                <br>
-                                <form class="sky-form" id="sky-form3" action="#">
-                                    <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Email notification</label>
-                                    <hr>
-                                    <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification when a user comments on my blog</label>
-                                    <hr>
-                                    <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification for the latest update</label>
-                                    <hr>
-                                    <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification when a user sends me message</label>
-                                    <hr>
-                                    <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Receive our monthly newsletter</label>
-                                    <hr>
-                                    <button type="button" class="btn-u btn-u-default">Reset</button>
-                                    <button class="btn-u" type="submit">Save Changes</button>
-                                </form>
-                            </div>
+                        <div id="settings" class="profile-edit tab-pane fade <%= 'in active' if @active_tab == '4' %>">
+                            <h2 class="heading-md">Manage your Notifications.</h2>
+                            <p>Below are the notifications you may manage.</p>
+                            <br>
+                            <form class="sky-form" id="sky-form3" action="#">
+                                <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Email notification</label>
+                                <hr>
+                                <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification when a user comments on my blog</label>
+                                <hr>
+                                <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification for the latest update</label>
+                                <hr>
+                                <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Send me email notification when a user sends me message</label>
+                                <hr>
+                                <label class="toggle"><input type="checkbox" checked="" name="checkbox-toggle-1"><i class="no-rounded"></i>Receive our monthly newsletter</label>
+                                <hr>
+                                <button type="button" class="btn-u btn-u-default">Reset</button>
+                                <button class="btn-u" type="submit">Save Changes</button>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- End Profile Content -->    
-
+        </div>
+        <!-- End Profile Content -->
 
     </div>
-</div><!--/container-->    
+</div><!--/container-->
 
 <!-- myRelationModal Start -->
 <div class="modal fade" id="myRelationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -558,12 +571,12 @@
                         <div class="col-md-2"><p>관계구분</p></div>
                         <div class="col-md-6">
                             <select name="user_relation[relation_type]" class="form-control" id="relation_type">
-                            <option value="">---선택하세요---</option>
-                            <% User::USER_TYPES.each_pair do |key, value| %>
-                                <% unless key == 'school manager' || key == 'institute manager' || key == 'mento' || key == current_user.user_types[0].user_type %>
-                            <option value="<%= key %>"><%= value %></option>
-            				    <% end %>
-            				<% end %>
+                                <option value="">---선택하세요---</option>
+                                <% User::USER_TYPES.each_pair do |key, value| %>
+                                    <% unless key == 'school manager' || key == 'institute manager' || key == 'mento' || key == current_user.user_types[0].user_type %>
+                                        <option value="<%= key %>"><%= value %></option>
+                                    <% end %>
+                                <% end %>
                             </select>
                         </div>
                     </div>
@@ -596,29 +609,29 @@
             </div>
 
             <div class="modal-body">
-                
+
                 <form action="/user_types" id="user_type_form" method="post" novalidate="novalidate" charset="utf-8">
-                    
+
                     <%= token_tag nil %>
-                    
+
                     <div class="row">
                         <div class="col-md-2"><p style="margin-top: 8px">회원타입</p></div>
                         <div class="col-md-6">
                             <select name="user_type[user_type]" class="form-control" id="user_type_add">
-                            <option value="">---선택하세요---</option>    
-                            <% User::USER_TYPES.each_pair do |key, value| %>
-                                <% unless key == "school manager" || key == "institute manager" %>
-                            <option value="<%= key %>"><%= value %></option>
-            				    <% end %>
-            				<% end %>                            
+                                <option value="">---선택하세요---</option>
+                                <% User::USER_TYPES.each_pair do |key, value| %>
+                                    <% unless key == "school manager" || key == "institute manager" %>
+                                        <option value="<%= key %>"><%= value %></option>
+                                    <% end %>
+                                <% end %>
                             </select>
                         </div>
                     </div>
-                    
+
                 </form>
-                
-            </div>        
-                  
+
+            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn-u btn-u-default" data-dismiss="modal">닫기</button>
                 <button type="button" class="btn-u btn-u-blue" onclick="checkUserTypeValidate()">추가</button>
@@ -631,56 +644,56 @@
 
 <script type="text/javascript">
 
-function openMyRelationModal() {
-    $('#myRelationModal').modal();
-}
-
-function checkValidate() {
-
-    if ($('#relation_type').val() == "") {
-        alert('관계구분을 선택하세요.');
-        return false;
+    function openMyRelationModal() {
+        $('#myRelationModal').modal();
     }
 
-    if ($('#related_user_email').val() == "") {
-        alert('email을 입력하세요.');
-        return false;
+    function checkValidate() {
+
+        if ($('#relation_type').val() == "") {
+            alert('관계구분을 선택하세요.');
+            return false;
+        }
+
+        if ($('#related_user_email').val() == "") {
+            alert('email을 입력하세요.');
+            return false;
+        }
+
+        $('#user_relation_form').submit();
+
     }
 
-    $('#user_relation_form').submit();
+    function checkUserTypeValidate() {
 
-}
+        if ($('#user_type_add').val() == "") {
+            alert('회원타입을 선택하세요.');
+            return false;
+        }
 
-function checkUserTypeValidate() {
+        $('#user_type_form').submit();
 
-    if ($('#user_type_add').val() == "") {
-        alert('회원타입을 선택하세요.');
-        return false;
     }
 
-    $('#user_type_form').submit();
+    function destroyRelation(id) {
+        if (confirm('관계를 해제하시겠습니까?')) {
 
-}
+            var url = "/user_relations/" + id;
 
-function destroyRelation(id) {
-    if (confirm('관계를 해제하시겠습니까?')) {
-        
-	    var url = "/user_relations/" + id;
-    
-	    $.ajax({
-	        url: url,
-	        type: "DELETE",
-	        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-	        datatype: "json",
-	        success : function(data) {
-                alert('정상적으로 관계를 해제하였습니다.');
-				location.reload();
-	        },
-	        error : function(){
-	            alert("try to again. please.");
-	        }
-	    });  	        
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                success : function(data) {
+                    alert('정상적으로 관계를 해제하였습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
     }
-}
 
 </script>

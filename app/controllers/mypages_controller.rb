@@ -37,7 +37,7 @@ class MypagesController < ApplicationController
         # 공지사항
         @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(7)
 
-        # 관계되 사람들
+        # 관계된 사람들
         @related_users = UserRelation.where('related_user_id = ?', current_user.id)
 
         # 개념 자기 평가 이력들
