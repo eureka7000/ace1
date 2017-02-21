@@ -38,7 +38,7 @@ class MypagesController < ApplicationController
         @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(7)
 
         # 관계된 사람들
-        @related_users = UserRelation.where('related_user_id = ?', current_user.id)
+        @related_users = UserRelation.where('related_user_id = ? and confirmed_at != ?', current_user.id, nil?)
 
         # 개념 자기 평가 이력들
         @self_evaluations = UnitConceptSelfEvaluation.where(user_id: current_user.id).order(created_at: :desc).limit(5)
