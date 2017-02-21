@@ -133,6 +133,7 @@ Rails.application.routes.draw do
     get 'blogs/:id/like' => 'blogs#like'
     get 'blogs/how_to_purchase_textbook' => 'blogs#how_to_purchase_textbook'
     get 'blogs/how_to_purchase_membership' => 'blogs#how_to_purchase_membership'
+    get 'blogs/student_teacher_connection' => 'blogs#student_teacher_connection'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'

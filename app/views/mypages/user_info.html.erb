@@ -200,7 +200,7 @@
                                             <button class="btn-u btn-u-dark-blue rounded margin-top-20 margin-left-10" type="button" onclick="openMyRelationModal()">관계 추가</button>
 
                                             <% if current_user.sign_in_count < 2 %>
-                                                <p><span class="color-blue"><%= User::USER_TYPES[current_user.user_types.first.user_type] %></span>(으)로 회원 가입되었음을 축하합니다.</p>
+                                                <nobr><span class="color-blue">&nbsp;&nbsp;<%= User::USER_TYPES[current_user.user_types.first.user_type] %></span>(으)로 회원 가입되었음을 축하합니다.</nobr>
                                             <% end %>
 
                                             <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
