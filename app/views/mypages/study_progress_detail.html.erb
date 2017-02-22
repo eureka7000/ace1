@@ -243,7 +243,7 @@
             data: data,
             success : function(data) {
                 exercise_history_print_table(data);
-                $('#exercise_modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + data[0].unit_concept_name);
+                $('#exercise_modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + "개념문제 - " + data[0].unit_concept_name );
                 $('#student_exercise_history').modal();
             },
             error : function(){
@@ -290,7 +290,7 @@
             data: data,
             success : function(data) {
                 self_evaluation_print_table(data);
-                $('#modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + data[0].unit_concept_name);
+                $('#modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + "자기평가 - " + data[0].unit_concept_name );
                 $('#student_self_evaluation').modal();
             },
             error : function(){

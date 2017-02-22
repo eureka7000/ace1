@@ -134,6 +134,7 @@ Rails.application.routes.draw do
     get 'blogs/how_to_purchase_textbook' => 'blogs#how_to_purchase_textbook'
     get 'blogs/how_to_purchase_membership' => 'blogs#how_to_purchase_membership'
     get 'blogs/student_teacher_connection' => 'blogs#student_teacher_connection'
+    get 'blogs/student_administration' => 'blogs#student_administration'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'
