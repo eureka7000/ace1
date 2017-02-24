@@ -38,7 +38,7 @@
                         <tr>
                             <td><%= teacher.user.user_name %></td>
                             <td class="text-center"><%= teacher.user.email %></td>
-                            <td class="text-center"><%= teacher.user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
+                            <td class="text-center"><%= teacher.user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') unless teacher.user.expire_date.nil? %></td>
                             <td class="text-center"><%= teacher.confirm_yn %></td>
                             <td class="text-center"><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
                             <td class="text-center"><%= teacher.confirmed_id %></td>
