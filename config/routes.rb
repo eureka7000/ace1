@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  # resources :discussions
     resources :exam_images
     get '/exams/previous_exams' => 'exams#previous_exams'
     get '/exams/list'=> 'exams#list'
@@ -79,6 +80,7 @@ Rails.application.routes.draw do
     resources :payments
 
     get 'teachers/students_list' => 'teachers#students_list'
+    post 'teachers/membership_control' => 'teachers#membership_control'
     resources :teachers
 
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
@@ -144,6 +146,7 @@ Rails.application.routes.draw do
     get  'users/resend_mail' => 'users#resend_mail'
     post 'users/user_exist' => 'users#user_exist'
     get  'users/user_profile' => 'users#user_profile'
+    # post 'users/session_check' => 'users#session_check'
     resources :users
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'

@@ -27,6 +27,35 @@ class TeachersController < ApplicationController
           @students = Teacher.get_students(schoolID, page, params[:teacher_name], params[:student_name], params[:order])
       end
 
+      def membership_control
+          op = params[:op]
+          user = User.find(params[:user_id])
+
+          if op == 'plus'
+              # membership 기간 한 달 추가
+              if user.expire_date < DateTime.now
+                  user.expire_date = DateTime.now + 1.month
+                  user.user_auth = 'member'
+              else
+                  user.expire_date = user.expire_date + 1.month
+              end
+          else
+              # membership 기간 한 달 빼기
+              if user.expire_date - 1.month < DateTime.now
+                  user.expire_date = DateTime.now
+                  user.user_auth = 'free'
+              else
+                  user.expire_date = user.expire_date - 1.month
+              end
+          end
+
+          if user.save
+              render json: {status: 'ok'}
+          end
+
+      end
+
+
       # GET /teachers/1
       # GET /teachers/1.json
       def show
@@ -35,8 +64,13 @@ class TeachersController < ApplicationController
           teacher.confirm_yn = params[:confirm]
           teacher.confirmed_at = DateTime.now
           teacher.confirmed_id = session[:admin]['id']
+
+          user = User.find(teacher.user_id)
+          user.user_auth = 'member'
+          user.expire_date = DateTime.now + 3.months
           
           if teacher.save
+              user.save
               redirect_to '/teachers'      
           end
           

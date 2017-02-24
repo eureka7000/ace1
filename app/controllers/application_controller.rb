@@ -34,7 +34,8 @@ class ApplicationController < ActionController::Base
             #     root_url
             # end
         else
-            session[:previous_url].to_s
+            # session[:previous_url].to_s
+            '/mypages/overall'
         end
 
         # if session[:previous_url] == "/users/sign_in"

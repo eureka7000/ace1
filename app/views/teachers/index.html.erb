@@ -22,25 +22,33 @@
             <div class="table-responsive col-md-12 col-sm-12 col-xs-12 margin-top-20 no-margin no-padding">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>이름</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">승인 상태 Y | N</th>
-                            <th class="text-center">승인일</th>
-                            <th class="text-center">관리자 번호</th>
-                            <th colspan="2" class="text-center">승인 | 거절</th>
-                        </tr>
+                    <tr>
+                        <th>이름</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Membership 기간</th>
+                        <th class="text-center">승인 상태 Y | N</th>
+                        <th class="text-center">승인일</th>
+                        <th class="text-center">관리자 번호</th>
+                        <th class="text-center">맴버권한 기간설정</th>
+                        <th colspan="2" class="text-center">승인 | 거절</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <% @teachers.each do |teacher| %>
-                      <tr>
-                        <td><%= teacher.user.user_name %></td>
-                        <td class="text-center"><%= teacher.user.email %></td>
-                        <td class="text-center"><%= teacher.confirm_yn %></td>
-                        <td class="text-center"><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
-                        <td class="text-center"><%= teacher.confirmed_id %></td>
-                        <td class="text-center"><%= link_to 'Confirm', "/teachers/#{teacher.id}?confirm=Y" %> &nbsp;&nbsp;<%= link_to 'Reject',"/teachers/#{teacher.id}?confirm=N" %></td>
-                      </tr>
+                        <tr>
+                            <td><%= teacher.user.user_name %></td>
+                            <td class="text-center"><%= teacher.user.email %></td>
+                            <td class="text-center"><%= teacher.user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
+                            <td class="text-center"><%= teacher.confirm_yn %></td>
+                            <td class="text-center"><%= teacher.confirmed_at.strftime("%Y/%m/%d") unless teacher.confirmed_at.nil? %></td>
+                            <td class="text-center"><%= teacher.confirmed_id %></td>
+                            <td class="text-center">
+                                <% if teacher.confirm_yn == 'Y' %>
+                                    <button class="btn-u btn-u-sm btn-u-blue rounded" onclick="membership('<%= teacher.user_id %>', 'plus')">+ 1달</button> &nbsp; <button class="btn-u btn-u-sm btn-u-red rounded" onclick="membership('<%= teacher.user_id %>', 'minus')">- 1달</button>
+                                <% end %>
+                            </td>
+                            <td class="text-center"><%= link_to 'Confirm', "/teachers/#{teacher.id}?confirm=Y" %> &nbsp;&nbsp;<%= link_to 'Reject',"/teachers/#{teacher.id}?confirm=N" %></td>
+                        </tr>
                     <% end %>
                     </tbody>
                 </table>
@@ -54,5 +62,28 @@
 <script type="text/javascript">
     function search() {
         location = '/teachers?teacher_id=' + $('#name_search').val();
+    }
+
+    function membership(user_id, op) {
+        var url = "/teachers/membership_control";
+
+        var data = {
+            user_id: user_id,
+            op: op
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                location.reload();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
     }
 </script>
