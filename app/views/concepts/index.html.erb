@@ -39,7 +39,7 @@
 					</div>
 
                     <div class="col-md-12 margin-top-20 margin-bottom-20">
-                        <%= link_to 'New Concept', new_concept_path(:category => params[:category], :sub_category => params[:sub_category], :exercise_yn => params[:exercise_yn]), :class => 'btn btn-primary align-right' %>
+                        <%= link_to 'New Concept', new_concept_path(:category => params[:category], :sub_category => params[:sub_category], :exercise_yn => params[:exercise_yn]), :page => params[:page].blank? ? 1 : params[:page] , :class => 'btn btn-primary align-right' %>
                     </div>
                     
                     <table class="table table-striped">
@@ -134,7 +134,7 @@
 
 	function goSearch() {
 		location = "/concepts?category=" + $('#cetegory').val() + "&sub_category=" +
-		$('#sub_category').val() + "&exercise_yn=" + $('#exercise_yn').val();
+		$('#sub_category').val() + "&exercise_yn=" + $('#exercise_yn').val() + "&page=1";
 	}
 
 	<% unless params[:category].blank? %>

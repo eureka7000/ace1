@@ -221,7 +221,7 @@
 
         <footer style="float:right">
             <%= f.submit '저장', :class => 'btn btn-success' %>
-            <%= link_to '뒤로', "/concepts?page=#{params[:concept_page_num]}&#{params.to_query}", :class => 'btn btn-info' %>
+            <%= link_to '뒤로', _back_url, :class => 'btn btn-info' %>
         </footer>
 
         <% end %>
