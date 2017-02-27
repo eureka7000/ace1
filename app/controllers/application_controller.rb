@@ -1,8 +1,24 @@
 class ApplicationController < ActionController::Base
     
     protect_from_forgery with: :exception
-    before_filter :prepare_exception_notifier
-    
+    before_filter :prepare_exception_notifier, :check_concurrent_session
+
+    def check_concurrent_session
+        if is_already_logged_in?
+            sign_out_and_redirect(current_user)
+        end
+    end
+
+    def is_already_logged_in?
+        current_user && !(session[:token] == current_user.login_token)
+    end
+
+    def after_sign_out_path_for(resource)
+        # 동시 접속하여 로그아웃 되었을 때 로그아웃을 알리는 화면 보여주기
+        '/homes/log_out'
+        # root_path
+    end
+
     private
     
     def authenticate_admin_user!
@@ -19,6 +35,8 @@ class ApplicationController < ActionController::Base
     end 
     
     def after_sign_in_path_for(resource)
+
+        logger.info "$$$$$$$$$$$$$$$$$$$$      #{request.remote_ip}     &&&&&&     #{request.ip}      $$$$$$$$$$$$$$$$$$$$"
 
         if session[:previous_url] == '/'
 

@@ -51,4 +51,8 @@ class HomesController < ApplicationController
 
         @grades = GradeUnitConcept.find_by_sql(grade_query)
     end
+
+    def log_out
+
+    end
 end

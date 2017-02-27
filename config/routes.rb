@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     resources :teachers
 
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
+    # match "loggedout" => "/"
     # match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
     #devise_for :users
 
@@ -100,6 +101,7 @@ Rails.application.routes.draw do
     get 'homes/access_terms' => 'homes#access_terms'
     get 'homes/personal_info_protection' => 'homes#personal_info_protection'
     get 'homes/contents_list' => 'homes#contents_list'
+    get 'homes/log_out' => 'homes#log_out'
     root :to => "homes#index"
 
     # Mypages
