@@ -5,22 +5,22 @@ class InicisPayment < ActiveRecord::Base
     GO_PAY_METHOD = {
         'Card' => '신용카드',
         'DirectBank' => '실시간계좌이체',
-        'HPP' => '핸드폰',
-        'OCBPoint' => 'OK Cashbag 포인트',
+        # 'HPP' => '핸드폰',
+        # 'OCBPoint' => 'OK Cashbag 포인트',
         # 'Vbank' => '무통장입금(가상계좌)',
-        'PhoneBill' => '폰빌, 전화결제',
+        # 'PhoneBill' => '폰빌, 전화결제',
         'Culture' => '문화상품권결제',
-        'DGCL' => '스마트문상 결제',
-        'TeenCash' => '틴캐시',
+        # 'DGCL' => '스마트문상 결제',
+        # 'TeenCash' => '틴캐시',
         'Bcsh' => '도서문화상품권',
         'HPMN' => '해피머니상품권',
-        'YPAY' => '엘로페이',
-        'Kpay' => '케이페이',
-        'Paypin' => '페이핀',
-        'EasyPay' => '간편결제',
-        'EWallet' => '전자지갑',
-        'POINT' => '포인트',
-        'GiftCard' => '상품권'
+        # 'YPAY' => '엘로페이',
+        # 'Kpay' => '케이페이',
+        # 'Paypin' => '페이핀',
+        # 'EasyPay' => '간편결제',
+        # 'EWallet' => '전자지갑',
+        # 'POINT' => '포인트',
+        # 'GiftCard' => '상품권'
     }
     
     CARD_CODE = {
