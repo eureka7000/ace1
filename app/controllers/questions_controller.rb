@@ -76,7 +76,7 @@ class QuestionsController < ApplicationController
                 #     UserMailer.noti_question(mento, current_user, @question, @concept).deliver_later!
                 # end
 
-                # 관계된 모든 선생님, 멘토에게 이메일 전송
+                # 관계된 모든 선생님, 멘토에게 Email, SMS 전송
                 @related_people = UserRelation.where('user_id = ? and relation_type != ?', current_user.id, 'parent')
 
                 unless @related_people.blank?
@@ -88,7 +88,15 @@ class QuestionsController < ApplicationController
                     end
                     @related_people.each do |related_person|
                         related_teacher = User.find(related_person.related_user_id)
+
+                        # Sending Email
                         UserMailer.noti_question(related_teacher, current_user, @question, @concept).deliver_later!
+
+                        # Sening SMS
+                        unless related_teacher.phone.blank?
+                            message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
+                            TwilioSms.sendSMS("+82"+related_teacher.phone, message)
+                        end
                     end
                 end
 
