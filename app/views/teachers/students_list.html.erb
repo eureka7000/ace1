@@ -38,6 +38,7 @@
                             <th class="text-center">학생 이메일(EMAIL)</th>
                             <th class="text-center">접속횟수</th>
                             <th class="text-center">학생 가입일</th>
+                            <th class="text-center">맴버 여부</th>
                             <th colspan="2" class="text-center"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 학생정보</th>
                         </tr>
                         </thead>
@@ -49,6 +50,7 @@
                                 <td class="text-center"><%= student.student_email %></td>
                                 <td class="text-center"><%= student.sign_in_count %></td>
                                 <td class="text-center"><%= student.created_at.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') %></td>
+                                <td class="text-center"><%= student.user_auth unless student.user_auth.nil? %></td>
                                 <td class="text-center"><a href="/users/<%= student.student_id %>">show</a></td>
                             </tr>
                         <% end %>
