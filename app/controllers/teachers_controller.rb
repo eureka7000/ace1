@@ -68,7 +68,8 @@ class TeachersController < ApplicationController
           user = User.find(teacher.user_id)
           user.user_auth = 'member'
           user.expire_date = DateTime.now + 3.months
-          
+          user.school_id = teacher.school_id
+
           if teacher.save
               user.save
               redirect_to '/teachers'      
