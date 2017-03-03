@@ -3,6 +3,7 @@ class MypagesController < ApplicationController
     before_filter :authenticate_user!
     skip_before_filter :verify_authenticity_token, :only => [:payment_return, :juso_popup]
 
+    layout '/layouts/mypages'
 
     def overall
 
@@ -237,8 +238,6 @@ class MypagesController < ApplicationController
         # end
         @questions_number = Question.get_question_number(current_user.id)
 
-        # multi-select가 호환되지 않아 layout을 변경
-        render layout: 'application'
     end
 
     def payment

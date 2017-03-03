@@ -36,8 +36,6 @@ class ApplicationController < ActionController::Base
     
     def after_sign_in_path_for(resource)
 
-        logger.info "$$$$$$$$$$$$$$$$$$$$      #{request.remote_ip}     &&&&&&     #{request.ip}      $$$$$$$$$$$$$$$$$$$$"
-
         if session[:previous_url] == '/'
 
             '/mypages/overall' # 로그인 시 경로 변경
