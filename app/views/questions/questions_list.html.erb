@@ -39,7 +39,6 @@
             <th>개념 코드</th>
             <th>개념 이름</th>
             <th>학생</th>
-            <th>선생님 / 멘토</th>
             <th>제목</th>
             <th>등록일</th>
             <th>댓글 수</th>
@@ -55,12 +54,6 @@
                     <td><%= question.user.user_name %></td>
                 <% else %>
                     <td>--- 탈퇴한 회원입니다 ---</td>
-                <% end %>
-                <% unless question.to_user_id.blank?%>
-                    <% @teacher_or_mento = User.find(question.to_user_id) %>
-                    <td><%= @teacher_or_mento.user_name %></td>
-                <% else %>
-                    <td><%= '' %></td>
                 <% end %>
 
                 <% unless question.title.blank? %>
