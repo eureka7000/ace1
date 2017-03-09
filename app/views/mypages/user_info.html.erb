@@ -33,7 +33,7 @@
 
                             <hr>
 
-                            <form class="sky-form" id="sky-form4" action="/users/<%= current_user.id %>" method="post">
+                            <form class="sky-form" id="user_information" action="/users/<%= current_user.id %>" method="post">
 
                                 <%= token_tag nil %>
                                 <input name="_method" type="hidden" value="put" />
@@ -44,7 +44,7 @@
                                         <section>
                                             <label class="input">
                                                 <i class="icon-append fa fa-user"></i>
-                                                <input type="text" placeholder="성명" name="user[user_name]" value="<%= current_user.user_name %>">
+                                                <input type="text" placeholder="성명" id="user_name" name="user[user_name]" value="<%= current_user.user_name %>">
                                                 <b class="tooltip tooltip-bottom-right">회원님의 성함을 적어주십시요.</b>
                                             </label>
                                         </section>
@@ -55,7 +55,7 @@
                                         <section>
                                             <label class="input">
                                                 <i class="icon-append fa fa-envelope"></i>
-                                                <input type="email" placeholder="Email address" name="user[email]" value="<%= current_user.email %>">
+                                                <input disabled type="email" placeholder="Email address" name="user[email]" value="<%= current_user.email %>">
                                                 <b class="tooltip tooltip-bottom-right">로그인할 때 필요합니다.</b>
                                             </label>
                                         </section>
@@ -133,7 +133,7 @@
 
                                 </dl>
 
-                                <button class="btn-u btn-u-info rounded" type="submit">저장</button>
+                                <input type="button" class="btn-u btn-u-info rounded" onclick="user_info_check()" value="저장">
 
                             </form>
 
@@ -643,6 +643,14 @@
 
 
 <script type="text/javascript">
+
+    function user_info_check() {
+        if ($('#user_name').val() == ''){
+            alert('이름을 입력해주세요.');
+            return false;
+        }
+        $('#user_information').submit();
+    }
 
     function openMyRelationModal() {
         $('#myRelationModal').modal();

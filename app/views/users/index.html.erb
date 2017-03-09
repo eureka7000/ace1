@@ -16,7 +16,9 @@
                         <select id="user_type" class="form-control col-md-2" >
     					<option value="">----사용자타입----</option>
                         <% User::USER_TYPES.each_pair do |key, value| %>
+                                <% unless key.to_s.include? 'manager' %>
                         <option value="<%= key %>" <%= "selected" if key == params[:user_type]%> ><%= key %></option>
+                                <% end %>
                         <% end %>
                         </select>
     				</div>
