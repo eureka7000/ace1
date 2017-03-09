@@ -2,34 +2,34 @@
 <html>
 <head>
     <title>EurekaMath</title>
-	
+
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
     <!-- Favicon -->
     <link rel="shortcut icon" href="/favicon.ico">
-	
+
     <!-- Web Fonts -->
-    <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>		
-		
+    <link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
     <!-- CSS Global Compulsory -->
     <link rel="stylesheet" href="/assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/admins.css">
-    <link rel="stylesheet" href="/assets/css/style.css">		
-	
+    <link rel="stylesheet" href="/assets/css/style.css">
+
     <!-- CSS Header and Footer -->
     <link rel="stylesheet" href="/assets/css/headers/header-default.css">
     <link rel="stylesheet" href="/assets/css/footers/footer-v1.css">
-	
+
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="/assets/plugins/animate.css">
     <link rel="stylesheet" href="/assets/plugins/line-icons/line-icons.css">
-    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css"> 
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
-    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">  
+    <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
     <link rel="stylesheet" href="/assets/plugins/cube-portfolio/cubeportfolio/css/cubeportfolio.min.css">
     <link rel="stylesheet" href="/assets/plugins/cube-portfolio/cubeportfolio/custom/custom-cubeportfolio.css">
     <link rel="stylesheet" href="/css/multi-select.css">
@@ -38,63 +38,64 @@
     <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css" rel="stylesheet">
 
     <!-- CSS Customization -->
-    <link rel="stylesheet" href="/assets/css/custom.css">    
-    
+    <link rel="stylesheet" href="/assets/css/custom.css">
+
     <%= csrf_meta_tags %>
-    
+
     <script type="text/javascript" src="/assets/plugins/jquery/jquery.min.js"></script>
-    
+
 </head>
 
 <body>
 
-    <div id="loading" style="display:none">
-        <img src="/assets/img/Loading.gif" />
-    </div>    
-    
-    <nav class="navbar navbar-inverse" style="border-radius: 0px; ">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+<div id="loading" style="display:none">
+    <img src="/assets/img/Loading.gif" />
+</div>
+
+<nav class="navbar navbar-inverse" style="border-radius: 0px; ">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
+                <a class="navbar-brand" href="<%= '/admins/main_for_manager'  %>">Eureka Math</a>
+            <% else %>
+                <a class="navbar-brand" href="<%= '/admins/main'  %>">Eureka Math</a>
+            <% end %>
+        </div>
+
+        <p class="navbar-text">안녕하세요. <%= session[:admin]['org_name'] %> <%= session[:admin]['name'] %>님.</p>
+
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
                 <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
-                    <a class="navbar-brand" href="<%= '/admins/main_for_manager'  %>">Eureka Math</a>
-                <% else %>
-                    <a class="navbar-brand" href="<%= '/admins/main'  %>">Eureka Math</a>
-                <% end %>
-            </div>
-            
-            <p class="navbar-text">안녕하세요. <%= session[:admin]['org_name'] %> <%= session[:admin]['name'] %>님.</p>
-                       
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
                     <li><a href="/teachers/students_list">학생 목록</a></li>
-                    <% else %>
+                    <!--<li><a href="/discussions">토론방</a></li>-->
+                <% else %>
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">출력 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                        <li><a href="/prints">문제출력</a></li>
-                        <li><a href="/prints/solutions">해답출력</a></li>
-                        <li><a href="/prints/exercises">Exercise 해답출력</a></li>
+                            <li><a href="/prints">문제출력</a></li>
+                            <li><a href="/prints/solutions">해답출력</a></li>
+                            <li><a href="/prints/exercises">Exercise 해답출력</a></li>
                         </ul>
                     </li>
                     <li><a href="/study_histories">학습이력</a></li>
                     <li><a href="/payments">결제 관리</a></li>
 
-                        <li class="dropdown">
-                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">컨텐츠 관리 <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/concepts">단원별 관리</a></li>
-                                <li><a href="/grade_unit_concepts">학년별 관리</a></li>
-                                <li><a href="/exams">기출문제 관리</a> </li>
-                            </ul>
-                        </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">컨텐츠 관리 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/concepts">단원별 관리</a></li>
+                            <li><a href="/grade_unit_concepts">학년별 관리</a></li>
+                            <li><a href="/exams">기출문제 관리</a> </li>
+                        </ul>
+                    </li>
 
                     <li><a href="/blogs">블로그 관리</a></li>
                     <li><a href="/textbooks">교재 관리</a></li>
@@ -103,48 +104,48 @@
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">User <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                        <li><a href="/schools">학교(학원)</a></li>
-                        <li><a href="/admins/users">관리자</a></li>
-                        <li><a href="/users">사용자</a></li>
-                        <li><a href="/coupons">쿠폰</a></li>
-                        </ul>                        
-                    </li>    
-                        
+                            <li><a href="/schools">학교(학원)</a></li>
+                            <li><a href="/admins/users">관리자</a></li>
+                            <li><a href="/users">사용자</a></li>
+                            <li><a href="/coupons">쿠폰</a></li>
+                        </ul>
+                    </li>
+
                     <!--<li><a href="/codes">코드</a></li>-->
-                    <% end %>
-                    <li><a href="/admins/logout">logout</a></li>
-                </ul>
-            </div>
+                <% end %>
+                <li><a href="/admins/logout">logout</a></li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <%= yield %>
+<%= yield %>
 
-    <script src="/js/libs/jquery_ujs.js"></script>
-    <script src="/js/libs/jquery.form.js"></script>   
+<script src="/js/libs/jquery_ujs.js"></script>
+<script src="/js/libs/jquery.form.js"></script>
 
-    <!-- JS Global Compulsory -->
-    <script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
-    <script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <!-- JS Implementing Plugins -->
-    <script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
-    <script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
-    <script type="text/javascript" src="/assets/plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
-    <!-- JS Customization -->
-    <script type="text/javascript" src="/assets/js/custom.js"></script>
-    <!-- JS Page Level -->
-    <script type="text/javascript" src="/assets/js/app.js"></script>
-    <script type="text/javascript" src="/assets/js/plugins/cube-portfolio/cube-portfolio-4-fw-tx.js"></script>
+<!-- JS Global Compulsory -->
+<script type="text/javascript" src="/assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/assets/plugins/smoothScroll.js"></script>
+<script type="text/javascript" src="/assets/plugins/cube-portfolio/cubeportfolio/js/jquery.cubeportfolio.min.js"></script>
+<!-- JS Customization -->
+<script type="text/javascript" src="/assets/js/custom.js"></script>
+<!-- JS Page Level -->
+<script type="text/javascript" src="/assets/js/app.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/cube-portfolio/cube-portfolio-4-fw-tx.js"></script>
 
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
-    <script src="/js/jquery.multi-select.js" type="text/javascript"></script>
-    <script src="/js/jquery.quicksearch.js" type="text/javascript"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js"></script>
+<script src="/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="/js/jquery.quicksearch.js" type="text/javascript"></script>
 
-    <script>
-        jQuery(document).ready(function() {
-            initpage();
-        });
-    </script>
+<script>
+    jQuery(document).ready(function() {
+        initpage();
+    });
+</script>
 </body>
 </html>
 

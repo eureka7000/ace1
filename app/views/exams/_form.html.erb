@@ -15,7 +15,7 @@
             </div>
         <% end %>
 
-        <input hidden name="exam[exam_image_id]" id="exam_image_id" value="">
+        <input hidden name="exam_image_id" id="exam_image_id" value="">
 
         <div class="col-md-2">
             <div class="field">
@@ -84,6 +84,8 @@
 </div>
 
 <script type="text/javascript">
+    var image_ids = '';
+
     $(document).ready(function() {
         $('#summernote').summernote({
             height: 400,
@@ -116,7 +118,8 @@
                 img.src = data.url;
                 //$('#summernote').summernote('insertText', data);
                 $('#summernote').summernote('insertNode', img);
-                $('#exam_image_id').val(data.id);
+                image_ids += data.id+',';
+                $('#exam_image_id').val(image_ids);
             }
         });
     }

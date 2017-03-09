@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  organizer: 1
+  leader: 1
+  manage_type: MyString
+  participant_id: 1
+  observer_yn: MyString
+  title: MyText
+  content: MyString
+  core_unit_concept: 1
+  related_unit_concept: 1
+  title_explanation: MyText
+  answer: MyText
+  grade: MyString
+  expiration_date: 2017-02-23
+  interim_report: MyText
+  final_report: MyText
+
+two:
+  organizer: 1
+  leader: 1
+  manage_type: MyString
+  participant_id: 1
+  observer_yn: MyString
+  title: MyText
+  content: MyString
+  core_unit_concept: 1
+  related_unit_concept: 1
+  title_explanation: MyText
+  answer: MyText
+  grade: MyString
+  expiration_date: 2017-02-23
+  interim_report: MyText
+  final_report: MyText

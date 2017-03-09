@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
 
-  # resources :discussions
+  resources :discussion_images
+    get 'discussions/select_leader' => 'discussions#select_leader'
+    post 'discussions/create_staff' => 'discussions#create_staff'
+    post 'discussions/get_concepts' => 'discussions#get_concepts'
+    post 'discussions/get_unit_concepts' => 'discussions#get_unit_concepts'
+    resources :discussions
     resources :exam_images
     get '/exams/previous_exams' => 'exams#previous_exams'
     get '/exams/list'=> 'exams#list'
@@ -84,7 +89,6 @@ Rails.application.routes.draw do
     resources :teachers
 
     devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", omniauth_callbacks: 'omniauth_callbacks'}
-    # match "loggedout" => "/"
     # match 'users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
     #devise_for :users
 
@@ -148,7 +152,6 @@ Rails.application.routes.draw do
     get  'users/resend_mail' => 'users#resend_mail'
     post 'users/user_exist' => 'users#user_exist'
     get  'users/user_profile' => 'users#user_profile'
-    # post 'users/session_check' => 'users#session_check'
     resources :users
     post 'users/cert_teacher' => 'users#cert_teacher'
     post 'users/create' => 'users#create'

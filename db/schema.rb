@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129065417) do
+ActiveRecord::Schema.define(version: 20170307090742) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -65,6 +65,13 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.datetime "updated_at",                           null: false
   end
 
+  create_table "concept_exercise_solution_links", force: :cascade do |t|
+    t.integer  "concept_exercise_id",    limit: 4
+    t.string   "unit_concept_linked_id", limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
   create_table "concept_exercises", force: :cascade do |t|
     t.integer "concept_id", limit: 4
     t.string  "file_name",  limit: 255
@@ -77,19 +84,22 @@ ActiveRecord::Schema.define(version: 20161129065417) do
   end
 
   create_table "concepts", force: :cascade do |t|
-    t.string   "category",        limit: 255
-    t.string   "sub_category",    limit: 255
-    t.string   "concept_code",    limit: 255
-    t.string   "concept_name",    limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.string   "exercise_yn",     limit: 255
-    t.integer  "grade",           limit: 4
-    t.integer  "level",           limit: 4
-    t.string   "past_test_year",  limit: 255
-    t.string   "past_test_month", limit: 255
-    t.string   "past_test_type",  limit: 255
-    t.string   "past_test_org",   limit: 255
+    t.string   "category",           limit: 255
+    t.string   "sub_category",       limit: 255
+    t.string   "concept_code",       limit: 255
+    t.string   "concept_name",       limit: 255
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "exercise_yn",        limit: 255
+    t.integer  "grade",              limit: 4
+    t.integer  "level",              limit: 4
+    t.string   "past_test_year",     limit: 255
+    t.string   "past_test_month",    limit: 255
+    t.string   "past_test_type",     limit: 255
+    t.string   "past_test_org",      limit: 255
+    t.string   "past_test_score",    limit: 255
+    t.string   "past_test_number",   limit: 255
+    t.string   "past_test_examiner", limit: 255
   end
 
   create_table "coupons", force: :cascade do |t|
@@ -102,6 +112,54 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.text     "issued_reason",         limit: 65535
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+  end
+
+  create_table "discussion_images", force: :cascade do |t|
+    t.integer  "discussion_id", limit: 4
+    t.string   "filename",      limit: 255
+    t.integer  "width",         limit: 4
+    t.integer  "height",        limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  create_table "discussions", force: :cascade do |t|
+    t.integer  "organizer",         limit: 4
+    t.integer  "leader",            limit: 4
+    t.string   "manage_type",       limit: 255
+    t.string   "observer_yn",       limit: 255
+    t.text     "title",             limit: 65535
+    t.string   "content",           limit: 255
+    t.text     "title_explanation", limit: 65535
+    t.text     "answer",            limit: 65535
+    t.string   "grade",             limit: 255
+    t.date     "expiration_date"
+    t.text     "interim_report",    limit: 65535
+    t.text     "final_report",      limit: 65535
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "unit_concept_id",   limit: 4
+  end
+
+  create_table "exam_images", force: :cascade do |t|
+    t.string   "filename",   limit: 255
+    t.integer  "width",      limit: 4
+    t.integer  "height",     limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "exam_id",    limit: 4
+  end
+
+  create_table "exams", force: :cascade do |t|
+    t.integer  "year",       limit: 4
+    t.integer  "month",      limit: 4
+    t.string   "exam_type",  limit: 255
+    t.integer  "number",     limit: 4
+    t.integer  "score",      limit: 4
+    t.text     "contents",   limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "org",        limit: 255
   end
 
   create_table "explanations", force: :cascade do |t|
@@ -158,6 +216,13 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.datetime "updated_at",                               null: false
   end
 
+  create_table "participants", force: :cascade do |t|
+    t.integer  "discussion_id", limit: 4
+    t.integer  "user_id",       limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "payment_logs", force: :cascade do |t|
     t.integer  "user_id",        limit: 4
     t.string   "pg",             limit: 255
@@ -170,20 +235,22 @@ ActiveRecord::Schema.define(version: 20161129065417) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer  "amount",          limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "user_id",         limit: 4
-    t.string   "service_name",    limit: 255
-    t.string   "payment_status",  limit: 255
-    t.string   "oid",             limit: 255
-    t.string   "pay_method",      limit: 255
-    t.string   "paypal_token",    limit: 255
-    t.string   "paypal_payer_id", limit: 255
-    t.string   "pay_gateway",     limit: 255
-    t.string   "currency",        limit: 255
-    t.string   "item_type",       limit: 255
-    t.string   "item_list_pay",   limit: 255
+    t.integer  "amount",           limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "user_id",          limit: 4
+    t.string   "service_name",     limit: 255
+    t.string   "payment_status",   limit: 255
+    t.string   "oid",              limit: 255
+    t.string   "pay_method",       limit: 255
+    t.string   "paypal_token",     limit: 255
+    t.string   "paypal_payer_id",  limit: 255
+    t.string   "pay_gateway",      limit: 255
+    t.string   "currency",         limit: 255
+    t.string   "item_type",        limit: 255
+    t.string   "item_list_pay",    limit: 255
+    t.string   "shipping_address", limit: 255
+    t.string   "postcode",         limit: 255
   end
 
   create_table "questions", force: :cascade do |t|
@@ -226,6 +293,14 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.string   "is_school",  limit: 255
   end
 
+  create_table "staffs", force: :cascade do |t|
+    t.integer  "user_id",      limit: 4
+    t.integer  "user_type_id", limit: 4
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.integer  "admin_id",     limit: 4
+  end
+
   create_table "study_histories", force: :cascade do |t|
     t.integer  "user_id",         limit: 4
     t.integer  "unit_concept_id", limit: 4
@@ -261,6 +336,22 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
     t.integer  "confirmed_id", limit: 4
+  end
+
+  create_table "textbooks", force: :cascade do |t|
+    t.string   "name",         limit: 255
+    t.integer  "price",        limit: 4
+    t.integer  "grade",        limit: 4
+    t.string   "sub_category", limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "unit_concept_desc_solution_links", force: :cascade do |t|
+    t.integer  "unit_concept_desc_id",   limit: 4
+    t.string   "unit_concept_linked_id", limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
   end
 
   create_table "unit_concept_descs", force: :cascade do |t|
@@ -383,6 +474,7 @@ ActiveRecord::Schema.define(version: 20161129065417) do
     t.integer  "height",                 limit: 4
     t.integer  "coupon_id",              limit: 4
     t.string   "coupon_code",            limit: 255
+    t.string   "login_token",            limit: 255
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

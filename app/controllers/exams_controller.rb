@@ -64,15 +64,20 @@ class ExamsController < ApplicationController
   # POST /exams.json
   def create
     @exam = Exam.new(exam_params)
-
-    unless @exam.exam_image_id.blank?
-      @exam_image = ExamImage.find(@exam.exam_image_id)
-      @exam_image.exam_id = @exam_image.id
-      @exam_image.save
-    end
+    exam_image_ids = params[:exam_image_id]
 
     respond_to do |format|
       if @exam.save
+
+        unless exam_image_ids.blank?
+          images = exam_image_ids.to_s.split(',')
+          images.each do |image|
+            exam_image = ExamImage.find(image)
+            exam_image.exam_id = @exam.id
+            exam_image.save
+          end
+        end
+
         format.html { redirect_to @exam, notice: 'Exam was successfully created.' }
         format.json { render :show, status: :created, location: @exam }
       else

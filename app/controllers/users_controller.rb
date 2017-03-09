@@ -46,6 +46,11 @@ class UsersController < ApplicationController
         users.each do |id|
             user = User.find(id)
             user.expire_date = user.get_expire_date(month)
+            if user.can_I_use?
+                user.user_auth = 'member'
+            else
+              user.user_auth = 'free'
+            end
             user.save
         end    
         

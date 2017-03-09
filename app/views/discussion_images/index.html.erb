@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Discussion Images</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Discussion</th>
+      <th>Filename</th>
+      <th>Width</th>
+      <th>Height</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @discussion_images.each do |discussion_image| %>
+      <tr>
+        <td><%= discussion_image.discussion_id %></td>
+        <td><%= discussion_image.filename %></td>
+        <td><%= discussion_image.width %></td>
+        <td><%= discussion_image.height %></td>
+        <td><%= link_to 'Show', discussion_image %></td>
+        <td><%= link_to 'Edit', edit_discussion_image_path(discussion_image) %></td>
+        <td><%= link_to 'Destroy', discussion_image, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Discussion image', new_discussion_image_path %>

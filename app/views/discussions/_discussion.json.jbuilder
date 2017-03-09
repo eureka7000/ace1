@@ -1,0 +1,2 @@
+json.extract! discussion, :id, :organizer, :leader, :manage_type, :participant_id, :observer_yn, :title, :content, :core_unit_concept, :related_unit_concept, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :created_at, :updated_at
+json.url discussion_url(discussion, format: :json)

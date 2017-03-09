@@ -1,0 +1,1 @@
+json.partial! "discussion_images/discussion_image", discussion_image: @discussion_image

@@ -1,0 +1,412 @@
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<div class="row">
+    <!-- Begin Content -->
+    <div class="col-md-12 margin-bottom-50">
+        <!-- Contacts -->
+        <div class="sky-form">
+            <%= form_for(@discussion) do |f| %>
+
+            <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id %>">
+            <input hidden name="discussion_image_id" id="discussion_image_id" value="">
+
+            <header>Discussion form</header>
+            <fieldset>
+                <p><span style="color: red">*</span> 필수입력</p>
+                <div class="row">
+                    <section class="col col-4">
+                        <label class="label">토론방 리더<span style="color: red">*</span></label>
+                        <label class="input">
+                            <select class="form-control" name="discussion[leader]" id="leader">
+                                <% @leader.each do |leader| %>
+                                    <option value="<%= leader.user_id %>"><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
+                                <% end %>
+                            </select>
+                        </label>
+                    </section>
+                    <section class="col col-4">
+                        <label class="label">운영타입<span style="color: red">*</span></label>
+                        <label class="input">
+                            <select class="form-control" name="discussion[manage_type]" id="manage_type">
+                                <% if @admin_type == 'admin' %>
+                                    <% Discussion::MANAGE_TYPE.each do |key, value| %>
+                                        <option value="<%= value %>"<%= 'selected' unless @discussion.manage_type != value %>><%= value %></option>
+                                    <% end %>
+                                <% else %>
+                                    <option value="<%= @manage_type %>"<%= 'selected' unless @discussion.manage_type != @manage_type %>><%= @manage_type %></option>
+                                <% end %>
+                            </select>
+                        </label>
+                    </section>
+                    <section class="col col-4">
+                        <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
+                        <div class="inline-group">
+                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
+                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col col-3">
+                        <label class="label">Category</label>
+                        <select class="form-control" id="category" onchange="selectCategory()">
+                            <% if @discussion_form_id.include? 'edit' %>
+                                <% Concept::CATEGORIES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.category %>><%= value %></option>
+                                <% end %>
+                            <% else %>
+                                <option>선택하세요</option>
+                                <% Concept::CATEGORIES.each_pair do |key, value| %>
+                                    <option value="<%= key %>"><%= value %></option>
+                                <% end %>
+                            <% end %>
+                        </select>
+                    </section>
+
+                    <section class="col col-3">
+                        <label class="label">Sub Category</label>
+                        <select class="form-control" id="sub_category" onchange="selectSubCategory()">
+                            <% if @discussion_form_id.include? 'edit' %>
+                                <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                    <% if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
+                                        <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.sub_category %>><%= value %></option>
+                                    <% end %>
+                                <% end %>
+                            <% end %>
+                        </select>
+                    </section>
+
+                    <section class="col col-3">
+                        <label class="label">Concept</label>
+                        <select class="form-control" id="concept" onchange="selectConcept()">
+                            <% if @discussion_form_id.include? 'edit' %>
+                                <% @concepts.each do |concept| %>
+                                    <option value="<%= concept.concept_code %>" <%= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%= concept.concept_name %></option>
+                                <% end %>
+                            <% end %>
+                        </select>
+                    </section>
+
+                    <section class="col col-3">
+                        <label class="label">핵심 개념<span style="color: red">*</span></label>
+                        <select class="form-control" name="discussion[unit_concept_id]" id="unit_concept_id">
+                            <% if @discussion_form_id.include? 'edit' %>
+                                <% @unit_concepts.each do |unit_concept| %>
+                                    <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion.unit_concept_id %>><%= unit_concept.name %></option>
+                                <% end %>
+                            <% end %>
+                        </select>
+                    </section>
+
+                </div>
+
+                <div class="row">
+                    <input type="text" class="form-control hidden" name="discussion[grade]" id="grade" value="">
+                    <section class="col col-6">
+                        <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
+                        <div class="inline-group">
+                            <% UnitConcept::GRADES.each do |key, value| %>
+                                <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
+                            <% end %>
+                        </div>
+                    </section>
+
+                    <section class="col col-6">
+                        <label class="label">토론 기간 (현재부터~까지)<span style="color: red">*</span></label>
+                        <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
+                    </section>
+                </div>
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">주제<span style="color: red">*</span></label>
+                        <input class="form-control" type="text" name="discussion[title]" id="title" value="<%= @discussion.title unless @discussion.title.nil? %>">
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">주제 설명<span style="color: red">*</span></label>
+                        <textarea class="form-control" name="discussion[title_explanation]" id="title_explanation"><%= @discussion.title_explanation unless @discussion.title_explanation.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">본문 내용<span style="color: red">*</span></label>
+                        <textarea class="form-control" name="discussion[content]" id="content"><%= @discussion.content unless @discussion.content.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">중간보고서</label>
+                        <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">최종보고서</label>
+                        <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">해답</label>
+                        <textarea class="form-control" name="discussion[answer]" id="answer"><%= @discussion.answer unless @discussion.answer.nil? %></textarea>
+                    </section>
+                </div>
+            </fieldset>
+
+            <footer class="text-right">
+                <input class="btn-u btn-u-info rounded" type="button" onclick="beforeCheckAndSend('<%= @discussion_form_id %>')" value='입력완료'> |
+                <%= link_to 'Back', discussions_path, :class => 'btn-u btn-u-red rounded' %>
+                <% unless params[:id].nil? %>
+                    &nbsp;|&nbsp;<%= link_to 'Show', @discussion, :class => 'btn-u btn-u-yellow rounded' %>
+                <% end %>
+            </footer>
+
+            <div class="message">
+                <i class="rounded-x fa fa-check"></i>
+                <p>Your message was successfully sent!</p>
+            </div>
+            <% end %>
+        </div>
+        <!-- Contacts -->
+    </div>
+    <!-- End Content -->
+</div>
+
+<script type="text/javascript">
+    var image_ids = '';
+
+    function beforeCheckAndSend(discussion_form_id) {
+        var grade = "";
+        var observer_is_check = false;
+        $('input:radio[name="discussion[observer_yn]"]').each(function () {
+            if ($(this).is(':checked')){
+                observer_is_check = true;
+            }
+        });
+
+        if (observer_is_check == false){
+            alert('외부 참가자 여부를 선택해주세요.');
+            return false;
+        }
+
+        $('input:checkbox[name="grade"]').each(function() {
+            if ($(this).is(':checked')){
+                grade += $(this).val() +',';
+            }
+        });
+
+        if (grade == ''){
+            alert('학년을 선택해주세요.');
+            return false;
+        }
+
+        grade = grade.slice(0, -1);
+        $("#grade").val(grade);
+
+        if ($('#expiration_date').val() == ''){
+            alert('토론 기간을 선택해주세요.');
+            return false;
+        }
+
+        if ($('#title').val() == ''){
+            alert('주제를 입력해주세요.');
+            return false;
+        }
+
+        if ($('#title_explanation').val() == ''){
+            alert('주제 설명을 입력해주세요.');
+            return false;
+        }
+
+        if ($('#content').val() == ''){
+            alert('본문 내용을 입력해주세요.');
+            return false;
+        }
+
+        // form submit() 하기
+        $('#'+discussion_form_id).submit();
+    }
+
+    $(document).ready(function() {
+        $('#title_explanation').summernote({
+            height: 200,
+            placeholder: '제목 설명을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#content').summernote({
+            height: 300,
+            placeholder: '본문 내용을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'content');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#interim_report').summernote({
+            height: 200,
+            placeholder: '중간보고서를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#final_report').summernote({
+            height: 200,
+            placeholder: '최종보고서를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#answer').summernote({
+            height: 200,
+            placeholder: '해답을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'answer');
+                }
+            }
+        });
+    });
+    function sendFile(file, editor, welEditable, id_name) {
+        var data = new FormData();
+        data.append("discussion_image[filename]", file);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussion_images",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                var img = document.createElement('img');
+                img.setAttribute('id', data.id);
+                img.src = data.url;
+                //$('#summernote').summernote('insertText', data);
+                $("#" + id_name).summernote('insertNode', img);
+                image_ids += data.id+',';
+                $('#discussion_image_id').val(image_ids);
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    <% sub_index = 0 %>
+
+    var subCategory_options = [
+        <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+        <% sub_index = sub_index + 1 %>
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless sub_index == Concept::SUB_CATEGORIES.count  %>
+        <% end %>
+    ]
+
+    function selectCategory() {
+        var category = $('#category').val().slice(0, 2);
+
+        $('#sub_category').empty();
+
+        $.each(subCategory_options, function(i) {
+            if (subCategory_options[i].values.substring(0,2) == category) {
+                $('#sub_category').append( $('<option>').text(subCategory_options[i].text).attr('value',subCategory_options[i].values));
+            }
+        });
+
+        selectSubCategory();
+    }
+
+    function selectSubCategory() {
+        var sub_category = $('#sub_category').val().slice(0, 3);
+        $('#concept').empty();
+
+        var data = new FormData();
+        data.append("key", sub_category);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/get_concepts",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    $('#concept').append( $('<option>').text(data[i].text).attr('value',data[i].values));
+                });
+                selectConcept();
+            }
+        });
+
+//        $.each(concept_options, function(i) {
+//            if (concept_options[i].values.substring(0,3) == sub_category) {
+//                $('#concept').append( $('<option>').text(concept_options[i].text).attr('value',concept_options[i].values));
+//            }
+//        });
+//
+
+    }
+
+    function selectConcept() {
+        var concept = $('#concept').val().slice(0, 4);
+        $('#unit_concept_id').empty();
+
+        var data = new FormData();
+        data.append("key", concept);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/get_unit_concepts",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value',data[i].values));
+                });
+            }
+        });
+
+//        $.each(unit_concept_options, function(i) {
+//            if (unit_concept_options[i].values.substr(0,4) == concept){
+//                $('#unit_concept_id').append( $('<option>').text(unit_concept_options[i].text).attr('value',unit_concept_options[i].id));
+//            }
+//        });
+    }
+</script>

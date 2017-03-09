@@ -1,0 +1,69 @@
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<div class="container container-fluid">
+    <h1>Listing Discussions</h1>
+    <%= link_to '토론방 개설', new_discussion_path, :class => 'btn-u btn-u-red rounded' %> |
+    <%= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>개설자</th>
+            <th>리더</th>
+            <th>관리유형</th>
+            <th>전체공개</th>
+            <th>제목</th>
+            <th>제목설명</th>
+            <th>내용</th>
+            <th>핵심개념</th>
+            <!--<th>관계된 개념</th>-->
+            <th>대상학년</th>
+            <th>종료일</th>
+            <th>참가자 수</th>
+            <th>중간보고</th>
+            <th>최종보고</th>
+            <th>해답</th>
+            <th colspan="3"><i class="fa fa-cog"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @discussions.each do |discussion| %>
+            <tr>
+                <td><%= discussion.organizer unless discussion.organizer.nil? %></td>
+                <td><%= discussion.leader unless discussion.leader.nil? %></td>
+                <td><%= discussion.manage_type unless discussion.manage_type.nil? %></td>
+                <td><%= discussion.observer_yn unless discussion.observer_yn.nil? %></td>
+                <td><%= discussion.title unless discussion.title.nil? %></td>
+                <td><%== discussion.title_explanation unless discussion.title_explanation.nil? %></td>
+                <td><%== discussion.content unless discussion.content.nil? %></td>
+                <td><%= UnitConcept.find(discussion.unit_concept_id).name unless discussion.unit_concept_id.nil? %></td>
+                <!--<td>-->
+                    <!--<%# unless discussion.unit_concept_id.nil? %>-->
+                        <!--<%# discussion.unit_concept.unit_concept_descs.each do |ucd| %>-->
+                            <!--<%# if ucd.desc_type == '5' %>-->
+                                <!--<%#= ucd.link %>-->
+                            <!--<%# end %>-->
+                        <!--<%# end %>-->
+                    <!--<%# end %>-->
+                <!--</td>-->
+                <td><%= discussion.grade unless discussion.grade.nil? %></td>
+                <td><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>
+                <td><%= discussion.participants.count unless discussion.participants.nil? %></td>
+                <td><%== discussion.interim_report unless discussion.interim_report.nil? %></td>
+                <td><%== discussion.final_report unless discussion.final_report.nil? %></td>
+                <td><%== discussion.answer unless discussion.answer.nil? %></td>
+                <td><%= link_to 'Show', discussion %></td>
+                <td><%= link_to 'Edit', edit_discussion_path(discussion) %></td>
+                <td><%= link_to 'Destroy', discussion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+</div>

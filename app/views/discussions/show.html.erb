@@ -1,0 +1,78 @@
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Organizer:</strong>
+  <%= @discussion.organizer %>
+</p>
+
+<p>
+  <strong>Leader:</strong>
+  <%= @discussion.leader %>
+</p>
+
+<p>
+  <strong>Manage type:</strong>
+  <%= @discussion.manage_type %>
+</p>
+
+<p>
+  <strong>Observer yn:</strong>
+  <%= @discussion.observer_yn %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @discussion.title %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%== @discussion.content %>
+</p>
+
+<p>
+  <strong>Unit concept:</strong>
+  <%= @discussion.unit_concept_id %>
+</p>
+
+<p>
+  <strong>Title explanation:</strong>
+  <%== @discussion.title_explanation %>
+</p>
+
+<p>
+  <strong>Answer:</strong>
+  <%== @discussion.answer %>
+</p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @discussion.grade %>
+</p>
+
+<p>
+  <strong>Expiration date:</strong>
+  <%= @discussion.expiration_date %>
+</p>
+
+<p>
+  <strong>Interim report:</strong>
+  <%= @discussion.interim_report %>
+</p>
+
+<p>
+  <strong>Final report:</strong>
+  <%= @discussion.final_report %>
+</p>
+
+<%= link_to 'Edit', edit_discussion_path(@discussion) %> |
+<%= link_to 'Back', discussions_path %>

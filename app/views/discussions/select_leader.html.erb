@@ -1,0 +1,119 @@
+<div class="container container-fluid">
+    <h1>Leader Selection</h1>
+    <form id="multi_auth" class="sky-form" action="/discussions/create_staff" method="post">
+
+        <%= token_tag nil %>
+
+        <div class="col-md-12 margin-bottom-40">
+            <select multiple="multiple" id="my-select" name="user_types[]" size="15">
+                <optgroup label='학교 선생님'>
+                    <% @school_teachers.each do |school_teacher| %>
+                        <option value="<%= school_teacher.id %>" <%= school_teacher.is_selected?(session[:admin]['id']) ? 'selected' : ''%>>
+                            <%= school_teacher.user.user_name unless school_teacher.user.user_name.nil? %>
+                            [<%= school_teacher.user.school.name unless school_teacher.user.school_id.nil? %>]
+                            [<%= school_teacher.user.user_auth unless school_teacher.user.user_auth.nil? %>]
+                            [<%= school_teacher.user.expire_date.in_time_zone('Asia/Seoul').strftime('%Y/%m/%d') unless school_teacher.user.expire_date.nil? %>]
+                        </option>
+                    <% end %>
+                </optgroup>
+                <optgroup label='학원 선생님'>
+                    <% @institute_teachers.each do |institute_teacher| %>
+                        <option value="<%= institute_teacher.id %>" <%= institute_teacher.is_selected?(session[:admin]['id']) ? 'selected' : ''%>>
+                            <%= institute_teacher.user.user_name unless institute_teacher.user.user_name.nil? %>
+                            [<%= institute_teacher.user.school.name unless institute_teacher.user.school_id.nil? %>]
+                            [<%= institute_teacher.user.user_auth unless institute_teacher.user.user_auth.nil? %>]
+                            [<%= institute_teacher.user.expire_date.in_time_zone('Asia/Seoul').strftime('%Y/%m/%d') unless institute_teacher.user.expire_date.nil? %>]
+                        </option>
+                    <% end %>
+                </optgroup>
+                <optgroup label='멘토'>
+                    <% @mentos.each do |mento| %>
+                        <option value="<%= mento.id %>" <%= mento.is_selected?(session[:admin]['id']) ? 'selected' : ''%>>
+                            <%= mento.user.user_name unless mento.user.user_name.nil? %>
+                            [<%= mento.user.user_auth unless mento.user.user_auth.nil? %>]
+                            [<%= mento.user.expire_date.in_time_zone('Asia/Seoul').strftime('%Y/%m/%d') unless mento.user.expire_date.nil? %>]
+                        </option>
+                    <% end %>
+                </optgroup>
+            </select>
+        </div>
+
+        <!--<div class="col-md-12" style="margin-top: 50px;">-->
+            <!--<section>-->
+                <!--<div class="inline-group">-->
+                    <!--<label class="radio" style="color:blue !important"><input type="radio" name="month" checked="" value="1" ><i class="rounded-x"></i>+1 Month</label>-->
+                    <!--<label class="radio" style="color:blue !important"><input type="radio" name="month" value="2"><i class="rounded-x"></i>+2 Month</label>-->
+                    <!--<label class="radio" style="color:blue !important"><input type="radio" name="month" value="3"><i class="rounded-x"></i>+3 Month</label>-->
+                    <!--<label class="radio" style="color:red !important"><input type="radio" name="month" value="-1" ><i class="rounded-x"></i>-1 Month</label>-->
+                    <!--<label class="radio" style="color:red !important"><input type="radio" name="month" value="-2"><i class="rounded-x"></i>-2 Month</label>-->
+                    <!--<label class="radio" style="color:red !important"><input type="radio" name="month" value="-3"><i class="rounded-x"></i>-3 Month</label>-->
+                <!--</div>-->
+            <!--</section>-->
+        <!--</div>-->
+
+        <div class="col-md-6">
+            <button id="select-all" class="btn-u btn-u-success rounded">Select All</button>
+            <button id="deselect-all" class="btn-u btn-u-red rounded">Deselect All</button>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <button type="submit" class="btn-u btn-u-success rounded">Do it</button>
+            <a href="/discussions" type="button" class="btn-u btn-u-red rounded">BACK</a>
+        </div>
+
+    </form>
+
+</div>
+
+<script type="text/javascript">
+
+    function initpage() {
+
+        $('#my-select').multiSelect({
+            selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
+            selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+            afterInit: function(ms){
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e){
+                        if (e.which === 40){
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e){
+                        if (e.which == 40){
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+    }
+
+    $('#select-all').click(function(){
+        $('#my-select').multiSelect('select_all');
+        return false;
+    });
+
+    $('#deselect-all').click(function(){
+        $('#my-select').multiSelect('deselect_all');
+        return false;
+    });
+
+</script>

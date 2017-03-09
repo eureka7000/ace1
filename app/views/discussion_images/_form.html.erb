@@ -1,0 +1,33 @@
+<%= form_for(@discussion_image) do |f| %>
+  <% if @discussion_image.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@discussion_image.errors.count, "error") %> prohibited this discussion_image from being saved:</h2>
+
+      <ul>
+      <% @discussion_image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :discussion_id %><br>
+    <%= f.number_field :discussion_id %>
+  </div>
+  <div class="field">
+    <%= f.label :filename %><br>
+    <%= f.text_field :filename %>
+  </div>
+  <div class="field">
+    <%= f.label :width %><br>
+    <%= f.number_field :width %>
+  </div>
+  <div class="field">
+    <%= f.label :height %><br>
+    <%= f.number_field :height %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

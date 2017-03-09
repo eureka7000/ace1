@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Discussion:</strong>
+  <%= @discussion_image.discussion_id %>
+</p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @discussion_image.filename %>
+</p>
+
+<p>
+  <strong>Width:</strong>
+  <%= @discussion_image.width %>
+</p>
+
+<p>
+  <strong>Height:</strong>
+  <%= @discussion_image.height %>
+</p>
+
+<%= link_to 'Edit', edit_discussion_image_path(@discussion_image) %> |
+<%= link_to 'Back', discussion_images_path %>

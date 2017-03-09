@@ -11,7 +11,9 @@ class User < ActiveRecord::Base
     has_many :study_histories
     has_many :replies
     has_many :identities, :dependent => :delete_all
+    has_many :staffs, :dependent => :delete_all
 
+    belongs_to :discussion
     belongs_to :school
     belongs_to :admin, :foreign_key => "join_channel_sales_id"
 
@@ -132,7 +134,7 @@ class User < ActiveRecord::Base
         expire_date = Time.new
     
         if self.expire_date.nil?
-            expire_date = expire_date + month.months  
+            expire_date = expire_date + month.months
         else
             if self.expire_date < expire_date
                 expire_date = expire_date + month.months
