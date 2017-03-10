@@ -152,14 +152,17 @@
             </button>
             <ul class="dropdown-menu col-md-10 col-sm-10 col-xs-10" role="menu">
                 <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
+                    <% if r_concept.id != @unit_concept.id %>
                     <li>
                         <% if @view_type == '2' %><!-- 유사문제 경로 설정 -->
                             <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>&view_type=<%= @view_type %>&step=8&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&exercise_type=unit_concept_exercise">
                         <% else %>
                             <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>">
                         <% end %>
-                        <% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
+                        <!--<%# if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><%# end %> -->
+                        <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
                     </li>
+                    <% end %>
                 <% end %>
             </ul>
         <% end %>
