@@ -1,7 +1,9 @@
+<div class="sm-margin-bottom-50"></div>
+<div class="margin-top-20">
 <h3 style="float:left; margin-top: 10px;">
     <span style="color:darkblue;"><%= @exercise_type == 'concept_exercise' ? @unit_concept.concept_code.upcase : @unit_concept.code.upcase %></span> <%= @unit_concept_name %>
 </h3>
-
+</div>
 <% unless @unit_concept.level.nil? %>
     <% rst = 5 - @unit_concept.level %>
 <span style="color:orangered; float:left; margin-top: 15px; margin-left: 10px">
@@ -15,51 +17,6 @@
     <% end %>
 </span>
 <% end %>
-
-<!-- 유사문제 -->
-<div class="btn-group" style="position:relative; top: 13px; left: 10px">
-
-    <% if @exercise_type == 'unit_concept_exercise' %>
-        <button type="button" class="btn-u btn-u-blue btn-u-xs">
-            <i class="fa fa-cloud"></i>
-            유사문제
-        </button>
-
-        <button type="button" class="btn-u btn-u-blue btn-u-xs btn-u-split-blue dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-angle-down"></i>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-
-        <ul class="dropdown-menu" role="menu">
-            <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
-                <li>
-                    <% if @view_type == '2' %><!-- 유사문제 경로 설정 -->
-                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>&view_type=<%= @view_type %>&step=8&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&exercise_type=unit_concept_exercise">
-                    <% else %>
-                        <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>">
-                    <% end %>
-                    <% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
-                </li>
-            <% end %>
-        </ul>
-    <% end %>
-
-    <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
-        <% if @unit_concept.get_next_exercise_at_view_type_2.blank? %>
-            <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% else %>
-            <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% end %>
-    <% else %>
-        <% if @unit_concept.get_next_exercise.blank? %>
-            <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% else %>
-            <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-xs btn-u-orange" style="margin-left: 10px"><i class="fa fa-arrow-right"></i> 다음 문제</a>
-        <% end %>
-    <% end %>
-
-
-</div>
 
 <div id="btn_tree" class="pull-right" style="display:none">
     <a id="btn_question" href="#m" data-toggle="modal" class="btn btn-danger btn-sm rounded pull-right" style="margin-top: 10px; margin-left: 10px; ">질문하기</a>
@@ -82,141 +39,146 @@
 
 <% else %>
 
-<div class="row" style="height:calc(100% - 50px)">
-
-    <div id="concept_main" class="col-md-6 col-sm-6 col-xs-12 tabs">
+<div class="row">
+    <!--문제이미지-->
+    <div id="concept_main" class="col-md-6 col-sm-6 col-xs-12 tabs exercise_main">
         <% @concepts.each_with_index do | concept, index | %>
-        <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />
+            <img id="concept_<%= index %>" src="<%= concept.file_name %>" <%= "hidden" if index > 0 %> />
         <% end %>
+    </div>
 
-        <a href="javascript:viewSolution()" class="btn-u rounded btn-u-orange margin-top-20" id="viewSolutionBtn">정답 보기</a>
-        <a id="concept_go_btn" class="btn-u rounded btn-u-red" onclick="showTab('<%= @is_exercise == 0 ? "concept_solution" : "concept_desc" %>')"> <%= @is_exercise == 0 ? "문제풀이" : "개념설명" %></a>
-
+    <!--문제 관련 버튼들 및 관련 이미지-->
+    <div id="concept_desc" class="col-md-6 col-sm-6 col-xs-12 tabs exercise_main">
+        <!--정답 버튼-->
+        <button class="btn-u rounded btn-u-purple margin-top-20 col-md-12 col-sm-12 col-xs-12 text-center" id="viewSolutionBtn" onclick="show_images('answers')">정답 보기</button><br>
         <% @concept_answers.each do | concept_answer | %>
-        <img hidden class="solution" src="<%= concept_answer.file_name %>" />
+            <img hidden class="answers" src="<%= concept_answer.file_name %>" />
         <% end %>
 
-        <a href="#s" data-toggle="modal" style="display:none" class="btn-u rounded btn-u-yellow margin-top-20 margin-bottom-20 solution">자기 평가</a>
-
-    </div>
-
-    <div id="concept_desc" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">
-        <% @concept_descs.each_with_index do | concept_desc, index | %>
-        <img id="concept_desc_<%= index %>" src="<%= concept_desc.file_name %>" <%= "hidden" if index > 0 %> />
+        <!--문제 설명 버튼-->
+        <% unless @concept_descs.blank? %>
+            <a id="concept_go_btn" class="btn-u rounded btn-u-yellow margin-top-20 col-md-12 col-sm-12 col-xs-12 text-center" onclick="show_images('concept_explanation')"> <%= @is_exercise == 0 ? "문제풀이" : "개념설명" %></a>
         <% end %>
+        <div hidden class="concept_explanation">
+            <% @concept_descs.each_with_index do | concept_desc, index | %>
+                <img id="concept_desc_<%= index %>" src="<%= concept_desc.file_name %>" <%= "hidden" if index > 0 %> />
+            <% end %>
 
-        <button id="concept_desc_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
-            다음
-            <span id="concept_desc_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
-        </button>
+            <button id="concept_desc_btn" class="btn-u rounded btn-u-yellow" style="float: right; <%= "display:none" if @concept_descs.count < 2 %>" type="button" onclick="next('concept_desc', <%= @concept_descs.count %>)" >
+                다음
+                <span id="concept_desc_badge" class="badge badge-brown rounded-2x" style="float:right; margin-left: 5px" ><%= @concept_descs.count - 1 %></span>
+            </button>
+        </div>
 
-        <a id="concept_desc_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20" <% if @concept_descs.count > 1 %>style="display:none"<% end %> onclick="showTab('concept_solution')"> 문제풀이</a>
-    </div>
-
-    <!-- 문제풀이 -->
-    <div id="concept_solution" class="col-md-6 col-sm-6 col-xs-12 tabs" style="display:none">
-        <% @solutions.each_with_index do | solution, index | %>
-        <div class="col-md-12 no-margin no-padding margin-bottom-20 margin-top-20" id="concept_solution_<%= index %>" <%= "hidden" if index > 0 %> >
-            <img src="<%= solution.file_name %>" class="img-responsive" style="width:100%;"/>
-            <%# unless solution.link.blank?
+        <!-- 문제풀이 버튼 -->
+        <a id="concept_desc_go_btn" class="btn-u rounded btn-u-default margin-bottom-20 margin-top-20 col-md-12 col-sm-12 col-xs-12 text-center" onclick="show_images('mathematical_problem_explain')">문제풀이</a>
+        <div hidden class="mathematical_problem_explain">
+            <% @solutions.each_with_index do | solution, index | %>
+                <div class="margin-bottom-20 margin-top-20" id="concept_solution_<%= index %>" <%= "hidden" if index > 0 %> >
+                    <img src="<%= solution.file_name %>" class="img-responsive" style="width:100%;"/>
+                    <%# unless solution.link.blank?
                 ret_unit_concept = UnitConcept.find(solution.link)
-            %>
+                    %>
 
-            <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
-                <label class="radio-inline"><input type="radio" id="o<%= solution.id %>" name="exe<%= solution.memo %>"> 맞음</label>
-                <label class="radio-inline"><input type="radio" id="x<%= solution.id %>" name="exe<%=solution.memo%>"> 틀림</label>
-            </label>
+                    <label class="margin-left-10 margin-right-10"><i class="fa fa-puzzle-piece tooltips" data-toggle="tooltips" data-placement="right" data-original-title="이해여부" style="color: lightcoral"></i> : &nbsp;
+                        <label class="radio-inline"><input type="radio" id="o<%= solution.id %>" name="exe<%= solution.memo %>"> 맞음</label>
+                        <label class="radio-inline"><input type="radio" id="x<%= solution.id %>" name="exe<%=solution.memo%>"> 틀림</label>
+                    </label>
 
-            <button class="btn-u btn-u-sm rounded btn-u-orange margin-top-20 margin-left-10" type="button" onclick="saveOx(<%= solution.id %>, this)">저장</button>
+                    <button class="btn-u btn-u-sm rounded btn-u-default margin-top-20 margin-left-10" type="button" onclick="saveOx(<%= solution.id %>, this)">저장</button>
 
-                <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: solution).order(created_at: :desc) %>
-                <% unless recent_unit_concept_exercise_history.empty? %>
-            <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해 : <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %></label>
-                <% end %>
-
-            <% if @exercise_type == 'concept_exercise' %>
-                <% @unit_concept_exercises_solution_links = ConceptExerciseSolutionLink.where('concept_exercise_id = ?', solution.id) %>
-            <% else %>
-                <% @unit_concept_exercises_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', solution.id) %>
-            <% end %>
-
-            <% unless @unit_concept_exercises_solution_links.nil? %>
-                <br/>
-                <%# solution에 연결된 unit_concept들을 불러온다 %>
-                <% unless @unit_concept_exercises_solution_links.each do |unit_concept_exercises_solution_link| %>
-                    <% unless unit_concept_exercises_solution_link.unit_concept_linked_id.blank? %>
-                        <%@linked_unit_concept = UnitConcept.find(unit_concept_exercises_solution_link.unit_concept_linked_id) %>
-                        <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= @linked_unit_concept.id %>" target="_blank" ><%= @linked_unit_concept.name %></a></label>
+                    <% recent_unit_concept_exercise_history = UnitConceptExerciseHistory.where(user_id: current_user.id, unit_concept_desc: solution).order(created_at: :desc) %>
+                    <% unless recent_unit_concept_exercise_history.empty? %>
+                        <label style="font-weight: bold" class="margin-top-20 margin-left-10">최근 나의 이해 : <%= recent_unit_concept_exercise_history.first.ox == "X" ? "틀림" : "맞음" %></label>
                     <% end %>
+
+                    <% if @exercise_type == 'concept_exercise' %>
+                        <% @unit_concept_exercises_solution_links = ConceptExerciseSolutionLink.where('concept_exercise_id = ?', solution.id) %>
+                    <% else %>
+                        <% @unit_concept_exercises_solution_links = UnitConceptDescSolutionLink.where('unit_concept_desc_id = ?', solution.id) %>
+                    <% end %>
+
+                    <% unless @unit_concept_exercises_solution_links.nil? %>
+                        <br/>
+                        <%# solution에 연결된 unit_concept들을 불러온다 %>
+                        <% unless @unit_concept_exercises_solution_links.each do |unit_concept_exercises_solution_link| %>
+                            <% unless unit_concept_exercises_solution_link.unit_concept_linked_id.blank? %>
+                                <%@linked_unit_concept = UnitConcept.find(unit_concept_exercises_solution_link.unit_concept_linked_id) %>
+                                <label class="margin-left-10"><i class="fa fa-link tooltips" data-toggle="tooltips" data-placement="right" data-original-title="관련개념" style="color: green"></i> : <a href="/contents/<%= @linked_unit_concept.id %>" target="_blank" ><%= @linked_unit_concept.name %></a></label>
+                            <% end %>
+                        <% end %>
+                        <% end %>
+                        <hr class="no-margin margin-top-20 devider devider-dotted">
+
+                    <% end %>
+                </div>
+            <% end %>
+
+            <button id="concept_solution_btn" class="btn-u rounded btn-u-default margin-bottom-20" style="float: right; <%= "display:none" if @solutions.count < 2 %>" type="button" onclick="next('concept_solution', <%= @solutions.count %>)" >
+                다음
+                <span id="concept_solution_badge" class="badge badge-brown rounded-2x" style="float:right; margin-left: 5px" ><%= @solutions.count - 1 %></span>
+            </button>
+        </div>
+        <!-- Tab 문제풀이 END -->
+
+        <!--동영상 버튼-->
+        <% unless @videos.blank? %>
+            <a id="video_button" class="btn-u rounded btn-u-info margin-bottom-20 col-md-12 col-sm-12 col-xs-12 text-center" onclick="show_images('video_lecture')">동영상</a>
+        <% end %>
+
+        <!--자기평가-->
+        <a href="#s" data-toggle="modal" class="btn-u rounded btn-u-blue margin-bottom-20 col-md-12 col-sm-12 col-xs-12 text-center solution">자기 평가</a>
+
+
+        <!-- 유사문제 및 다음 문제 -->
+        <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
+            <% if @unit_concept.get_next_exercise_at_view_type_2.blank? %>
+                <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+            <% else %>
+                <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+            <% end %>
+        <% else %>
+            <% if @unit_concept.get_next_exercise.blank? %>
+                <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+            <% else %>
+                <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+            <% end %>
+        <% end %>
+
+        <% if @exercise_type == 'unit_concept_exercise' %>
+            <button type="button" class="btn-u btn-u-purple rounded margin-top-20 col-md-12 col-sm-12 col-xs-12 dropdown-toggle" data-toggle="dropdown">
+                유사문제 <i class="fa fa-angle-down"></i>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu col-md-10 col-sm-10 col-xs-10" role="menu">
+                <% @unit_concept.get_similar_exercise_list.each do | r_concept | %>
+                    <li>
+                        <% if @view_type == '2' %><!-- 유사문제 경로 설정 -->
+                            <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>&view_type=<%= @view_type %>&step=8&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&exercise_type=unit_concept_exercise">
+                        <% else %>
+                            <a href="/contents/exercise?unit_concept_id=<%= r_concept.id %>">
+                        <% end %>
+                        <% if r_concept.id == @unit_concept.id %><i class="fa fa-check"></i><% end %> <%= r_concept.name %> <%= raw r_concept.get_level_star %></a>
+                    </li>
                 <% end %>
-            <% end %>
-            <hr class="no-margin margin-top-20 devider devider-dotted">
-
-            <% end %>
-        </div>
+            </ul>
         <% end %>
-
-        <button id="concept_solution_btn" class="btn-u rounded btn-u-blue" style="float: right; <%= "display:none" if @solutions.count < 2 %>" type="button" onclick="next('concept_solution', <%= @solutions.count %>)" >
-            다음
-            <span id="concept_solution_badge" class="badge badge-dark-blue rounded-2x" style="float:right; margin-left: 5px" ><%= @solutions.count - 1 %></span>
-        </button>
-
-        <a id="concept_solution_go_btn" class="btn-u rounded btn-u-red pull-right margin-bottom-20"  style="display:none" onclick="showTab('concept_video')"> 동영상</a>
+        <!--END 유사문제 및 다음 문제 -->
 
     </div>
-    <!-- Tab 문제풀이 END -->
 
-    <!-- Video -->
-    <div id="concept_video" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">
+    <!--동영상 강의 보여지는 부분-->
+    <div hidden class="video_lecture col-md-12 margin-top-20 margin-bottom-20">
+        <a id="video_button" class="btn-u rounded btn-u-info margin-bottom-30 col-md-12 col-sm-12 col-xs-12 text-center" onclick="show_images('video_lecture')"><i class="icon icon-action-undo"></i> 뒤로가기</a>
+        <div class="margin-bottom-20"></div>
         <% @videos.each do | video | %>
-        <div class="responsive-video">
-            <iframe id="vimeo-player" src="https://player.vimeo.com/video/<%= video.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
-            <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
-        </div>
+            <div class="responsive-video margin-top-20">
+                <iframe id="vimeo-player" class="margin-top-20" src="https://player.vimeo.com/video/<%= video.video %>" width="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>
+                <p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+            </div>
         <% end %>
     </div>
-    <!-- Video End -->
-
-    <!-- Print -->
-    <div id="concept_print" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">
-
-        <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
-
-            <% @concepts.each do | concept | %>
-            <img src="<%= concept.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 10px;"/>
-            <% end %>
-
-            <br/>
-
-            <% @links.each do | link | %>
-            &nbsp;&nbsp;<span class="item" style="-webkit-text-fill-color: #3eadff; display: inline;">
-                <i class="fa fa-circle"></i>&nbsp;
-                <span style="-webkit-text-fill-color: #fc4674"><%= link.code %> </span>
-                <span style="-webkit-text-fill-color: #020202"> : <%= link.name %> </span>
-            </span>
-            <br>
-            <% end %>
-            <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
-
-        </div>
-
-        <div class="col-md-6 col-ms-6 col-xs-6 no-margin no-padding">
-
-            <% @concept_descs.each do | concept_desc | %>
-            <img src="<%= concept_desc.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
-            <% end %>
-
-            <% @solutions.each do | solution | %>
-            <img src="<%= solution.file_name %>" class="img-responsive" style="width:100%; height:100%; margin-top: 5px;"/>
-            <% end %>
-            <img class="watermark img-responsive" src="/assets/img/logo_watermark.png">
-        </div>
-
-        <input type="button" id="printBtn" onclick="printing('concept_print')" value="프린트하기" class="btn-u rounded btn-u-orange" style="float:right"/>
-
-    </div>
-    <!-- Print End -->
-
+    <!--END 동영상 강의 보여지는 부분-->
 </div>
 
 <!-- 관련개념 Modal -->
@@ -230,7 +192,6 @@
 <!-- no more exercise -->
 <%= render partial: 'modals/notice_no_exercise' %>
 <%= render partial: 'modals/notice_no_exercise_at_view_type_2' if @view_type == '2' %>
-
 
     <!-- 질문하기 Modal -->
 <%= render partial: 'modals/do_questions' %>
@@ -261,6 +222,13 @@
 
     });
 
+    function show_images(class_value) {
+        if(class_value == 'video_lecture'){
+            $(".exercise_main").toggle();
+        }
+
+        $('.'+class_value).toggle();
+    }
 
     function next(opt, count) {
         $("#" + opt + "_" + NUMS[opt]).show();
@@ -272,13 +240,6 @@
             $('#' + opt + "_go_btn").show();
             //update_study_history(opt, 'finish');
         }
-    }
-
-    function viewSolution() {
-        // $('#viewSolutionBtn').hide();
-        // $('#concept_go_btn').hide();
-
-        $('.solution').show();
     }
 
     function saveOx(unit_concept_desc_id, t) {

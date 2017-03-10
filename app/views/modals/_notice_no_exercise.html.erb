@@ -13,7 +13,9 @@
                 <% unless @unit_concept.get_next_concept.nil? %>
                     <% next_unit_concept = @unit_concept.get_next_concept.unit_concepts.where(exercise_yn: 'concept').order(:code).first %>
                     <% unless next_unit_concept.nil? %>
-                <p><a href="/contents/<%= next_unit_concept.id %>"><%= next_unit_concept.name %></a>를 학습하시겠습니까? </p>
+                <p><a href="/contents/<%= next_unit_concept.id %>"><strong><%= next_unit_concept.name %></strong></a> 을(를) 학습하시겠습니까?
+                    &nbsp;&nbsp;<a href="/contents/<%= next_unit_concept.id %>"><button class="btn-u btn-u-default btn-u-sm rounded">YES</button></a>
+                </p>
                     <% end %>
                 <% end %>
             </div>
