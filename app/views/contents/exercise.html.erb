@@ -127,8 +127,9 @@
         <% end %>
 
         <!--자기평가-->
+        <% unless current_user.user_types[0].user_type != 'student' %>
         <a href="#s" data-toggle="modal" class="btn-u rounded btn-u-blue margin-bottom-20 col-md-12 col-sm-12 col-xs-12 text-center solution">자기 평가</a>
-
+        <% end %>
 
         <!-- 유사문제 및 다음 문제 -->
         <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
