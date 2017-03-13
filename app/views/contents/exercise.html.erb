@@ -128,26 +128,28 @@
 
         <!--자기평가-->
         <% unless current_user.user_types[0].user_type != 'student' %>
+            <% unless @exercise_yn == true %>
         <a href="#s" data-toggle="modal" class="btn-u rounded btn-u-blue margin-bottom-20 col-md-12 col-sm-12 col-xs-12 text-center solution">자기 평가</a>
+            <% end %>
         <% end %>
 
         <!-- 유사문제 및 다음 문제 -->
         <% if @view_type == '2' %> <!-- 다음 문제 버튼 경로 설정 -->
             <% if @unit_concept.get_next_exercise_at_view_type_2.blank? %>
-                <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+                <a href="#notice_no_exercise_at_view_type_2" data-toggle="modal" class="btn-u btn-u-purple col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
             <% else %>
-                <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+                <a href="<%= @unit_concept.get_next_exercise_at_view_type_2 %>&view_type=<%= @view_type %>&step=<%= @step %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=<%= @concept_id %>&level=<%= @level %>" class="btn-u btn-u-purple col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
             <% end %>
         <% else %>
             <% if @unit_concept.get_next_exercise.blank? %>
-                <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+                <a href="#notice_no_exercise" data-toggle="modal" class="btn-u btn-u-purple col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
             <% else %>
-                <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-default col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
+                <a href="<%= @unit_concept.get_next_exercise %>" class="btn-u btn-u-purple col-md-12 col-sm-12 col-xs-12 text-center rounded"><i class="fa fa-arrow-right"></i> 다음 문제</a>
             <% end %>
         <% end %>
 
         <% if @exercise_type == 'unit_concept_exercise' %>
-            <button type="button" class="btn-u btn-u-purple rounded margin-top-20 col-md-12 col-sm-12 col-xs-12 dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn-u btn-u-default rounded margin-top-20 col-md-12 col-sm-12 col-xs-12 dropdown-toggle" data-toggle="dropdown">
                 유사문제 <i class="fa fa-angle-down"></i>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>

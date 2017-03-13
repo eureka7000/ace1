@@ -111,10 +111,12 @@
                         </li>
                         <% end %>
                         <% unless current_user.user_types[0].user_type != 'student' %>
+                            <% unless @exercise_yn == true %>
                         <li>
                             <i class="fa fa-pencil-square-o tooltips"></i>
                             <a href="#s" data-toggle="modal" onclick="videoPause()"> 자기평가</a>
                         </li>
+                            <% end %>
                         <% end %>
                         <li>
                             <i class="fa fa-print tooltips"></i>
