@@ -313,6 +313,7 @@
 
                 <hr>
 
+                <% unless current_user.user_types[0].user_type != 'student' %>
                 <!--Table Search v1-->
                 <div class="panel-heading overflow-h">
                     <h2 class="panel-title heading-sm pull-left"><i class="fa fa-pencil-square-o"></i>개념 자기평가</h2>
@@ -370,6 +371,7 @@
                     </div>
                 </div>
                 <!--End Table Search v1-->
+                <% end %>
 
                 <!-- Begin Table Search v2 -->
                 <!--<div class="table-search-v2">-->
