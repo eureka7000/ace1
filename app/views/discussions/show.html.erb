@@ -7,72 +7,130 @@
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 </script>
 
-<p id="notice"><%= notice %></p>
+<div class="container">
+    <div class="col-md-12 bg-color-white">
+        <div class="col-md-12 margin-top-20"></div>
+        <div class="col-md-4">
+            <p>
+                <strong>개설자:</strong>
+                <%= Admin.find(@discussion.organizer).name %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>토론방 리더:</strong>
+                <%= @leader.user_name %> <%= "(#{User::USER_TYPES[@leader.user_types.first.user_type]})" %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>운영타입:</strong>
+                <%= @discussion.manage_type %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>외부 참가자가 여부:</strong>
+                <%= @discussion.observer_yn == 'Y' ? 'YES' : 'NO' %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>핵심 개념:</strong>
+                <%= @unit_concept.name %>
+                (<% (1..@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star" style="color: red"></i>
+                <% end %>
+                <% (1..5-@unit_concept.level).each do |idx| %>
+                    <i class="fa fa-star-o" style="color: red"></i>
+                <% end %>)
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>관련 개념:</strong>
+                <span style="color:red"><%= ' | ' %></span>
+                <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+                    <% unless unit_concept_desc.desc_type != '5' %>
+                        <%= UnitConcept.find(unit_concept_desc.link).name %>
+                        <span style="color:red"><%= ' | ' %></span>
+                    <% end %>
+                <% end %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>선택 학년:</strong>
+                <%= @discussion.grade %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>토론 종료일:</strong>
+                <%= @discussion.expiration_date %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>참가자 수:</strong>
+                <%= @discussion.participants.count %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>주제:</strong>
+                <%= @discussion.title %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>주제 설명:</strong>
+                <%== @discussion.title_explanation %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>본문 내용:</strong>
+                <%== @discussion.content %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>문제 풀이:</strong>
+                <%== @discussion.solution %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>해답:</strong>
+                <%== @discussion.answer %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>중간 보고서:</strong>
+                <%= @discussion.interim_report %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>최종 보고서:</strong>
+                <%= @discussion.final_report %>
+            </p>
+        </div>
 
-<p>
-  <strong>Organizer:</strong>
-  <%= @discussion.organizer %>
-</p>
+        <div class="col-md-12 margin-bottom-50">
+            <hr>
+            <%= link_to 'Edit', edit_discussion_path(@discussion), :class => 'btn-u btn-u-red rounded' %> |
+            <%= link_to 'Back', discussions_path, :class => 'btn-u btn-u-info rounded margin-bottom-30' %>
+        </div>
 
-<p>
-  <strong>Leader:</strong>
-  <%= @discussion.leader %>
-</p>
-
-<p>
-  <strong>Manage type:</strong>
-  <%= @discussion.manage_type %>
-</p>
-
-<p>
-  <strong>Observer yn:</strong>
-  <%= @discussion.observer_yn %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @discussion.title %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%== @discussion.content %>
-</p>
-
-<p>
-  <strong>Unit concept:</strong>
-  <%= @discussion.unit_concept_id %>
-</p>
-
-<p>
-  <strong>Title explanation:</strong>
-  <%== @discussion.title_explanation %>
-</p>
-
-<p>
-  <strong>Answer:</strong>
-  <%== @discussion.answer %>
-</p>
-
-<p>
-  <strong>Grade:</strong>
-  <%= @discussion.grade %>
-</p>
-
-<p>
-  <strong>Expiration date:</strong>
-  <%= @discussion.expiration_date %>
-</p>
-
-<p>
-  <strong>Interim report:</strong>
-  <%= @discussion.interim_report %>
-</p>
-
-<p>
-  <strong>Final report:</strong>
-  <%= @discussion.final_report %>
-</p>
-
-<%= link_to 'Edit', edit_discussion_path(@discussion) %> |
-<%= link_to 'Back', discussions_path %>
+    </div>
+</div>

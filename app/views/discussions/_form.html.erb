@@ -99,7 +99,21 @@
                             <% end %>
                         </select>
                     </section>
+                </div>
 
+                <div class="row">
+                    <section class="col col-6">
+                        <label class="label">종합문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('concept')"></label>
+                        <select class="form-control" id="concept_exercise">
+                            <option>Sub Category 선택하기</option>
+                        </select>
+                    </section>
+                    <section class="col col-6">
+                        <label class="label">유형문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('unit_concept')"></label>
+                        <select class="form-control" id="unit_concept_exercise">
+                            <option>Concept 선택하기</option>
+                        </select>
+                    </section>
                 </div>
 
                 <div class="row">
@@ -118,6 +132,7 @@
                         <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
                     </section>
                 </div>
+
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">주제<span style="color: red">*</span></label>
@@ -141,6 +156,20 @@
 
                 <div class="row">
                     <section class="col-md-12">
+                        <label class="label">문제풀이</label>
+                        <textarea class="form-control" name="discussion[solution]" id="solution"><%= @discussion.solution unless @discussion.solution.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">해답</label>
+                        <textarea class="form-control" name="discussion[answer]" id="answer"><%= @discussion.answer unless @discussion.answer.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
                         <label class="label">중간보고서</label>
                         <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
                     </section>
@@ -150,13 +179,6 @@
                     <section class="col-md-12">
                         <label class="label">최종보고서</label>
                         <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">해답</label>
-                        <textarea class="form-control" name="discussion[answer]" id="answer"><%= @discussion.answer unless @discussion.answer.nil? %></textarea>
                     </section>
                 </div>
             </fieldset>
@@ -180,6 +202,7 @@
     <!-- End Content -->
 </div>
 
+<!--summernote 및 필터링 검사-->
 <script type="text/javascript">
     var image_ids = '';
 
@@ -260,6 +283,30 @@
     });
 
     $(document).ready(function() {
+        $('#solution').summernote({
+            height: 300,
+            placeholder: '풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'solution');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#answer').summernote({
+            height: 200,
+            placeholder: '해답을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'answer');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
         $('#interim_report').summernote({
             height: 200,
             placeholder: '중간보고서를 입력하세요.',
@@ -283,17 +330,6 @@
         });
     });
 
-    $(document).ready(function() {
-        $('#answer').summernote({
-            height: 200,
-            placeholder: '해답을 입력하세요.',
-            callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'answer');
-                }
-            }
-        });
-    });
     function sendFile(file, editor, welEditable, id_name) {
         var data = new FormData();
         data.append("discussion_image[filename]", file);
@@ -320,6 +356,7 @@
     }
 </script>
 
+<!--핵심 개념 선택-->
 <script type="text/javascript">
     <% sub_index = 0 %>
 
@@ -349,7 +386,9 @@
 
     function selectSubCategory() {
         var sub_category = $('#sub_category').val().slice(0, 3);
+
         $('#concept').empty();
+        $('#concept_exercise').empty();
 
         var data = new FormData();
         data.append("key", sub_category);
@@ -365,7 +404,12 @@
             processData: false,
             success: function(data) {
                 $.each(data, function(i) {
-                    $('#concept').append( $('<option>').text(data[i].text).attr('value',data[i].values));
+                    if (data[i].exercise_yn == 'concept'){
+                        $('#concept').append( $('<option>').text(data[i].text).attr('value', data[i].values));
+                    }
+                    else {
+                        $('#concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].id));
+                    }
                 });
                 selectConcept();
             }
@@ -376,13 +420,14 @@
 //                $('#concept').append( $('<option>').text(concept_options[i].text).attr('value',concept_options[i].values));
 //            }
 //        });
-//
 
     }
 
     function selectConcept() {
         var concept = $('#concept').val().slice(0, 4);
+
         $('#unit_concept_id').empty();
+        $('#unit_concept_exercise').empty();
 
         var data = new FormData();
         data.append("key", concept);
@@ -398,7 +443,12 @@
             processData: false,
             success: function(data) {
                 $.each(data, function(i) {
-                    $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value',data[i].values));
+                    if (data[i].exercise_yn == 'concept'){
+                        $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value', data[i].values));
+                    }
+                    else {
+                        $('#unit_concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].values));
+                    }
                 });
             }
         });
@@ -408,5 +458,56 @@
 //                $('#unit_concept_id').append( $('<option>').text(unit_concept_options[i].text).attr('value',unit_concept_options[i].id));
 //            }
 //        });
+    }
+</script>
+
+<!--종합문제 & 유형문제 선택 후 summernote editor에 이미지 삽입-->
+<script type="text/javascript">
+    function insertImagesToEditor(name) {
+
+        if (name == 'concept'){
+            var id = $('#concept_exercise').val();
+            var url = '/discussions/get_concept_exercise'
+        }
+        else{
+            var id = $('#unit_concept_exercise').val();
+            var url = '/discussions/get_unit_concept_exercise'
+        }
+
+        var data = new FormData();
+        data.append("id", id);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    if (data[i].type == '1'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#content").summernote('insertNode', img);
+                    }
+                    else if (data[i].type == '3'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#solution").summernote('insertNode', img);
+                    }
+                    else if (data[i].type == '7'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#answer").summernote('insertNode', img);
+                    }
+                });
+            }
+        });
     }
 </script>

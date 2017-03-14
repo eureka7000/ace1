@@ -5,6 +5,8 @@ Rails.application.routes.draw do
     post 'discussions/create_staff' => 'discussions#create_staff'
     post 'discussions/get_concepts' => 'discussions#get_concepts'
     post 'discussions/get_unit_concepts' => 'discussions#get_unit_concepts'
+    post 'discussions/get_concept_exercise' => 'discussions#get_concept_exercise'
+    post 'discussions/get_unit_concept_exercise' => 'discussions#get_unit_concept_exercise'
     resources :discussions
     resources :exam_images
     get '/exams/previous_exams' => 'exams#previous_exams'

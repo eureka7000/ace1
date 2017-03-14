@@ -3,15 +3,52 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def get_concept_exercise
+    @concept_exercises = ConceptExercise.where(:concept_id => params[:id]).order(:desc_type, :file_name)
+    ret = []
+    @concept_exercises.each do |concept_exercise|
+      if concept_exercise.desc_type != '4' && concept_exercise.desc_type != '5'
+        ret << {
+            type: concept_exercise.desc_type,
+            filename: concept_exercise.file_name.to_s()
+        }
+      end
+    end
+    respond_to do |format|
+      format.json { render :json => ret }
+    end
+  end
+
+  def get_unit_concept_exercise
+    @unit_concept_exercises = UnitConceptDesc.where(:unit_concept_id => params[:id]).order(:desc_type, :file_name)
+    ret = []
+    @unit_concept_exercises.each do |unit_concept_exercise|
+      if unit_concept_exercise.desc_type != '4' && unit_concept_exercise.desc_type != '5'
+        ret << {
+            type: unit_concept_exercise.desc_type,
+            filename: unit_concept_exercise.file_name.to_s()
+        }
+      end
+    end
+    respond_to do |format|
+      format.json { render :json => ret }
+    end
+  end
+
   def get_concepts
     key = params[:key]
-    @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
-
+    # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
+    @concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
     ret = []
     @concepts.each do |concept|
       ret << {
           values: concept.concept_code,
-          text: concept.concept_name
+          text: concept.concept_name,
+          exercise_yn: concept.exercise_yn,
+          grade: concept.grade,
+          level: concept.level,
+          code: concept.concept_code,
+          id: concept.id
       }
     end
 
@@ -22,13 +59,17 @@ class DiscussionsController < ApplicationController
 
   def get_unit_concepts
     key = params[:key]
-    @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{key}%")
+    @unit_concepts = UnitConcept.where('code like ?', "#{key}%")
 
     ret = []
     @unit_concepts.each do |unit_concept|
       ret << {
           values: unit_concept.id,
-          text: unit_concept.name
+          text: unit_concept.name,
+          exercise_yn: unit_concept.exercise_yn,
+          grade: unit_concept.grade,
+          level: unit_concept.level,
+          code: unit_concept.code
       }
     end
 
@@ -76,7 +117,8 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1
   # GET /discussions/1.json
   def show
-
+    @leader = User.find(@discussion.leader)
+    @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
   end
 
   # GET /discussions/new
@@ -191,6 +233,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :leader, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report)
+      params.require(:discussion).permit(:organizer, :leader, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution)
     end
 end
