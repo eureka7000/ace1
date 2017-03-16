@@ -10,31 +10,31 @@
 <div class="container">
     <div class="col-md-12 bg-color-white">
         <div class="col-md-12 margin-top-20"></div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>개설자:</strong>
                 <%= Admin.find(@discussion.organizer).name %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>토론방 리더:</strong>
                 <%= @leader.user_name %> <%= "(#{User::USER_TYPES[@leader.user_types.first.user_type]})" %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>운영타입:</strong>
                 <%= @discussion.manage_type %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>외부 참가자가 여부:</strong>
                 <%= @discussion.observer_yn == 'Y' ? 'YES' : 'NO' %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>핵심 개념:</strong>
                 <%= @unit_concept.name %>
@@ -46,7 +46,7 @@
                 <% end %>)
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>관련 개념:</strong>
                 <span style="color:red"><%= ' | ' %></span>
@@ -58,19 +58,25 @@
                 <% end %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>선택 학년:</strong>
                 <%= @discussion.grade %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <p>
+                <strong>Level:</strong>
+                <%= @discussion.level %>
+            </p>
+        </div>
+        <div class="col-md-3">
             <p>
                 <strong>토론 종료일:</strong>
                 <%= @discussion.expiration_date %>
             </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <p>
                 <strong>참가자 수:</strong>
                 <%= @discussion.participants.count %>
@@ -88,6 +94,13 @@
             <p>
                 <strong>주제 설명:</strong>
                 <%== @discussion.title_explanation %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>개념 설명:</strong>
+                <%== @discussion.concept_explanation %>
             </p>
         </div>
         <div class="col-md-12">

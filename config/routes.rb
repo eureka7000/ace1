@@ -2,6 +2,8 @@ Rails.application.routes.draw do
 
   resources :discussion_images
     get 'discussions/select_leader' => 'discussions#select_leader'
+    get 'discussions/give_authority' => 'discussions#give_authority'
+    post 'discussions/create_give_authority' => 'discussions#create_give_authority'
     post 'discussions/create_staff' => 'discussions#create_staff'
     post 'discussions/get_concepts' => 'discussions#get_concepts'
     post 'discussions/get_unit_concepts' => 'discussions#get_unit_concepts'

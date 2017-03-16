@@ -3,6 +3,47 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def give_authority
+    @admin_type = session[:admin]['admin_type']
+
+    if @admin_type == 'admin'
+      @school_teachers = UserType.where(:user_type => 'school teacher')
+      @institute_teachers = UserType.where(:user_type => 'institute teacher')
+      @mentos = UserType.where(:user_type => 'mento')
+    end
+
+    if @admin_type == 'institute manager'
+      @institute_teachers = UserType.get_my_authority_member(session[:admin]['school_id'])
+    end
+
+    if @admin_type == 'school manager'
+      @school_teachers = UserType.get_my_authority_member(session[:admin]['school_id'])
+    end
+  end
+
+  # give_authority 에서 multi_select 으로 인한 discussion_authority 생성
+  def create_give_authority
+    user_types = params[:user_types]
+    # month = params[:month].to_i
+
+    @tmp_authority = DiscussionAuthority.where(:admin_id => session[:admin]['id'])
+    @tmp_authority.delete_all
+
+    unless user_types.nil?
+      user_types.each do |user_type|
+        u_type = UserType.find(user_type)
+        authority = DiscussionAuthority.new
+        authority.user_id = u_type.user_id
+        authority.admin_id = session[:admin]['id']
+        authority.save
+      end
+    end
+
+    respond_to do |format|
+      format.html { redirect_to '/discussions/give_authority' }
+    end
+  end
+
   def get_concept_exercise
     @concept_exercises = ConceptExercise.where(:concept_id => params[:id]).order(:desc_type, :file_name)
     ret = []
@@ -111,7 +152,14 @@ class DiscussionsController < ApplicationController
   # GET /discussions
   # GET /discussions.json
   def index
-    @discussions = Discussion.all
+    @admin_type = session[:admin]['admin_type']
+
+    if @admin_type == 'admin'
+      @discussions = Discussion.all
+    elsif @admin_type == 'school manager' || @admin_type == 'institute manager'
+      @discussions = Discussion.get_org_list(session[:admin]['school_id'])
+    end
+
   end
 
   # GET /discussions/1
@@ -233,6 +281,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :leader, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution)
+      params.require(:discussion).permit(:organizer, :leader, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type)
     end
 end

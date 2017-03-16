@@ -9,6 +9,7 @@
             <%= form_for(@discussion) do |f| %>
 
             <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id %>">
+            <input hidden type="text" name="discussion[organizer_type]" value="admin">
             <input hidden name="discussion_image_id" id="discussion_image_id" value="">
 
             <header>Discussion form</header>
@@ -25,7 +26,7 @@
                             </select>
                         </label>
                     </section>
-                    <section class="col col-4">
+                    <section hidden class="col col-4">
                         <label class="label">운영타입<span style="color: red">*</span></label>
                         <label class="input">
                             <select class="form-control" name="discussion[manage_type]" id="manage_type">
@@ -43,7 +44,7 @@
                         <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
                         <div class="inline-group">
                             <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
-                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' if @discussion.observer_yn.nil? %><%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
                         </div>
                     </section>
                 </div>
@@ -103,13 +104,13 @@
 
                 <div class="row">
                     <section class="col col-6">
-                        <label class="label">종합문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('concept')"></label>
+                        <div class="label">종합문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('concept')"></div>
                         <select class="form-control" id="concept_exercise">
                             <option>Sub Category 선택하기</option>
                         </select>
                     </section>
                     <section class="col col-6">
-                        <label class="label">유형문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('unit_concept')"></label>
+                        <div class="label">유형문제 가져오기 <input type="button" value="적용" onclick="insertImagesToEditor('unit_concept')"></div>
                         <select class="form-control" id="unit_concept_exercise">
                             <option>Concept 선택하기</option>
                         </select>
@@ -128,6 +129,19 @@
                     </section>
 
                     <section class="col col-6">
+                        <label class="label">Level 선택<span style="color: red">*</span></label>
+                        <div class="inline-group">
+                            <% val_num = 1 %>
+                            <% (1..5).each do |idx| %>
+                                <label class="radio"><input type="radio" name="discussion[level]" value="<%= val_num %>" <%= 'checked' unless @discussion.level != val_num %>><i class="rounded-x"></i><%= val_num %></label>
+                                <% val_num = val_num + 1 %>
+                            <% end %>
+                        </div>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col col-6">
                         <label class="label">토론 기간 (현재부터~까지)<span style="color: red">*</span></label>
                         <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
                     </section>
@@ -142,8 +156,15 @@
 
                 <div class="row">
                     <section class="col-md-12">
-                        <label class="label">주제 설명<span style="color: red">*</span></label>
+                        <label class="label">주제 설명</label>
                         <textarea class="form-control" name="discussion[title_explanation]" id="title_explanation"><%= @discussion.title_explanation unless @discussion.title_explanation.nil? %></textarea>
+                    </section>
+                </div>
+
+                <div class="row">
+                    <section class="col-md-12">
+                        <label class="label">개념 설명<span style="color: red">*</span></label>
+                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%= @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
                     </section>
                 </div>
 
@@ -234,6 +255,11 @@
         grade = grade.slice(0, -1);
         $("#grade").val(grade);
 
+        if ($('unit_concept_id').val() == ''){
+            alert('핵심개념을 선택해주세요.');
+            return false;
+        }
+
         if ($('#expiration_date').val() == ''){
             alert('토론 기간을 선택해주세요.');
             return false;
@@ -241,11 +267,6 @@
 
         if ($('#title').val() == ''){
             alert('주제를 입력해주세요.');
-            return false;
-        }
-
-        if ($('#title_explanation').val() == ''){
-            alert('주제 설명을 입력해주세요.');
             return false;
         }
 
@@ -265,6 +286,18 @@
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#concept_explanation').summernote({
+            height: 300,
+            placeholder: '개념 설명을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'solution');
                 }
             }
         });
@@ -308,7 +341,7 @@
 
     $(document).ready(function() {
         $('#interim_report').summernote({
-            height: 200,
+            height: 300,
             placeholder: '중간보고서를 입력하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -320,7 +353,7 @@
 
     $(document).ready(function() {
         $('#final_report').summernote({
-            height: 200,
+            height: 300,
             placeholder: '최종보고서를 입력하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -493,6 +526,12 @@
                         img.src = data[i].filename;
                         //$('#summernote').summernote('insertText', data);
                         $("#content").summernote('insertNode', img);
+                    }
+                    else if (data[i].type == '2'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#concept_explanation").summernote('insertNode', img);
                     }
                     else if (data[i].type == '3'){
                         var img = document.createElement('img');

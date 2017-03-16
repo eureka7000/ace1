@@ -22,4 +22,28 @@ class UserType < ActiveRecord::Base
     ret
   end
 
+  def given_authority?(admin_id)
+    ret = false
+
+    unless self.user.discussion_authorities.nil?
+      self.user.discussion_authorities.each do |authority|
+        if authority.admin_id == admin_id
+          ret = true
+        end
+      end
+    end
+
+    ret
+  end
+
+  def self.get_my_authority_member(school_id)
+    query = "select a.id, a.user_id, a.user_type, a.created_at, a.updated_at
+                from user_types a, users b
+                where b.school_id = #{school_id}
+                and a.user_id = b.id"
+    @institute_teachers = UserType.find_by_sql(query)
+
+    @institute_teachers
+  end
+
 end

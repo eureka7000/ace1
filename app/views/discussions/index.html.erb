@@ -9,8 +9,11 @@
 
 <div class="container container-fluid">
     <h1>Listing Discussions</h1>
-    <%= link_to '토론방 개설', new_discussion_path, :class => 'btn-u btn-u-red rounded' %> |
-    <%= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %>
+    <% unless session[:admin]['admin_type'] != 'admin' %>
+        <%= link_to '토론방 개설', new_discussion_path, :class => 'btn-u btn-u-red rounded' %> |
+        <%= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %> |
+    <% end %>
+    <%= link_to '토론방 개설 권한 부여하기', discussions_give_authority_path, :class => 'btn-u btn-u-dark-info rounded' %>
 
     <table class="table table-striped">
         <thead>
@@ -26,6 +29,7 @@
             <th class="text-center">개념 Level</th>
             <!--<th class="text-center">관계된 개념</th>-->
             <th class="text-center">대상학년</th>
+            <th class="text-center">Level</th>
             <th class="text-center">종료일</th>
             <th class="text-center">참가자 수</th>
             <!--<th class="text-center">중간보고</th>-->
@@ -44,7 +48,7 @@
                 <td><%= discussion.title unless discussion.title.nil? %></td>
                 <!--<td><%#== discussion.title_explanation unless discussion.title_explanation.nil? %></td>-->
                 <!--<td><%#== discussion.content unless discussion.content.nil? %></td>-->
-                <% unit_concept = UnitConcept.find(discussion.unit_concept_id) %>
+                <% unit_concept = UnitConcept.find(discussion.unit_concept_id) unless discussion.unit_concept_id.nil? %>
                 <td class="text-center"><%= unit_concept.name unless discussion.unit_concept_id.nil? %></td>
                 <td class="text-center"><%= unit_concept.level %></td>
                 <!--<td>-->
@@ -57,6 +61,7 @@
                     <!--<%# end %>-->
                 <!--</td>-->
                 <td class="text-center"><%= discussion.grade unless discussion.grade.nil? %></td>
+                <td class="text-center"><%= discussion.level unless discussion.level.nil? %></td>
                 <td class="text-center"><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>
                 <td class="text-center"><%= discussion.participants.count unless discussion.participants.nil? %></td>
                 <!--<td><%#== discussion.interim_report unless discussion.interim_report.nil? %></td>-->
