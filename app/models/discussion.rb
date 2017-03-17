@@ -1,8 +1,9 @@
 class Discussion < ActiveRecord::Base
-    has_many :users
+
     has_many :participants, :dependent => :delete_all
     has_many :discussion_images, :dependent => :delete_all
-    # has_many :unit_concepts
+    belongs_to :user
+    belongs_to :unit_concept
 
     MANAGE_TYPE = {
         'admin' => 'EurekaMath',

@@ -42,7 +42,7 @@
         <% @discussions.each do |discussion| %>
             <tr>
                 <td class="text-center"><%= Admin.find(discussion.organizer).name unless discussion.organizer.nil? %></td>
-                <td class="text-center"><%= User.find(discussion.leader).user_name unless discussion.leader.nil? %></td>
+                <td class="text-center"><%= discussion.user.user_name unless discussion.user.user_name.nil? %></td>
                 <td class="text-center"><%= discussion.manage_type unless discussion.manage_type.nil? %></td>
                 <td class="text-center"><%= discussion.observer_yn unless discussion.observer_yn.nil? %></td>
                 <td><%= discussion.title unless discussion.title.nil? %></td>

@@ -19,7 +19,7 @@
         <div class="col-md-3">
             <p>
                 <strong>토론방 리더:</strong>
-                <%= @leader.user_name %> <%= "(#{User::USER_TYPES[@leader.user_types.first.user_type]})" %>
+                <%= @discussion.user.user_name %> <%= "(#{User::USER_TYPES[@discussion.user.user_types.first.user_type]})" %>
             </p>
         </div>
         <div class="col-md-3">

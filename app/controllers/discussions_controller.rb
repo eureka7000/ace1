@@ -1,7 +1,15 @@
 class DiscussionsController < ApplicationController
+  before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy, :select_leader, :give_authority]
+  before_filter :authenticate_user!, only: [:discussion_list]
   before_action :set_discussion, only: [:show, :edit, :update, :destroy]
 
   layout 'admin_main'
+
+  def discussion_list
+    @discussions = Discussion.all
+
+    render layout: 'application'
+  end
 
   def give_authority
     @admin_type = session[:admin]['admin_type']
@@ -165,7 +173,6 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1
   # GET /discussions/1.json
   def show
-    @leader = User.find(@discussion.leader)
     @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
   end
 
@@ -281,6 +288,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :leader, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type, :user_id)
     end
 end

@@ -16,10 +16,10 @@
             <fieldset>
                 <p><span style="color: red">*</span> 필수입력</p>
                 <div class="row">
-                    <section class="col col-4">
+                    <section class="col col-3">
                         <label class="label">토론방 리더<span style="color: red">*</span></label>
                         <label class="input">
-                            <select class="form-control" name="discussion[leader]" id="leader">
+                            <select class="form-control" name="discussion[user_id]" id="leader">
                                 <% @leader.each do |leader| %>
                                     <option value="<%= leader.user_id %>"><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
                                 <% end %>
@@ -40,11 +40,20 @@
                             </select>
                         </label>
                     </section>
-                    <section class="col col-4">
+                    <section class="col col-3">
                         <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
                         <div class="inline-group">
                             <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
                             <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' if @discussion.observer_yn.nil? %><%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                        </div>
+                    </section>
+                    <input type="text" class="form-control hidden" name="discussion[grade]" id="grade" value="">
+                    <section class="col col-6">
+                        <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
+                        <div class="inline-group">
+                            <% UnitConcept::GRADES.each do |key, value| %>
+                                <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
+                            <% end %>
                         </div>
                     </section>
                 </div>
@@ -118,29 +127,17 @@
                 </div>
 
                 <div class="row">
-                    <input type="text" class="form-control hidden" name="discussion[grade]" id="grade" value="">
-                    <section class="col col-6">
-                        <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
-                        <div class="inline-group">
-                            <% UnitConcept::GRADES.each do |key, value| %>
-                                <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
-                            <% end %>
-                        </div>
-                    </section>
-
                     <section class="col col-6">
                         <label class="label">Level 선택<span style="color: red">*</span></label>
                         <div class="inline-group">
                             <% val_num = 1 %>
                             <% (1..5).each do |idx| %>
-                                <label class="radio"><input type="radio" name="discussion[level]" value="<%= val_num %>" <%= 'checked' unless @discussion.level != val_num %>><i class="rounded-x"></i><%= val_num %></label>
+                                <label class="radio"><input type="radio" name="discussion[level]" value="<%= val_num %>" <%='checked' if @discussion.nil? || val_num == 1 %> <%= 'checked' unless @discussion.level != val_num %>><i class="rounded-x"></i><%= val_num %></label>
                                 <% val_num = val_num + 1 %>
                             <% end %>
                         </div>
                     </section>
-                </div>
 
-                <div class="row">
                     <section class="col col-6">
                         <label class="label">토론 기간 (현재부터~까지)<span style="color: red">*</span></label>
                         <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
@@ -163,7 +160,7 @@
 
                 <div class="row">
                     <section class="col-md-12">
-                        <label class="label">개념 설명<span style="color: red">*</span></label>
+                        <label class="label">개념 설명</label>
                         <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%= @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
                     </section>
                 </div>
@@ -255,7 +252,7 @@
         grade = grade.slice(0, -1);
         $("#grade").val(grade);
 
-        if ($('unit_concept_id').val() == ''){
+        if ($('#unit_concept_id').val() == null){
             alert('핵심개념을 선택해주세요.');
             return false;
         }

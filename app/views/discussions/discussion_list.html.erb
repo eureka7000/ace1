@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/assets/plugins/brand-buttons/brand-buttons.css">
+<link rel="stylesheet" href="/assets/plugins/brand-buttons/brand-buttons-inversed.css">
+
+<div class="container container-fluid">
+    <% @discussions.each do |discussion| %>
+        <div class="col-md-6">
+            <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1">
+
+                <div class="news-v3-in">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-3">
+                            <img src="<%= discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion.user.user_img %>" class="rounded" style="width: 60px; height: 60px;">
+                        </div>
+                        <div class="col-md-10 col-sm-10 col-xs-9">
+                            <ul class="list-inline posted-info">
+                                <li><%= discussion.manage_type %></li>
+                                <li><%= discussion.user.user_name %> 선생님</li>
+                                <li>대상학년 : <%= discussion.grade %></li>
+                                <li>핵심개념 : <%= discussion.unit_concept.name %></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2"></div>
+                        <div class="col-md-10 col-sm-10 col-xs-12">
+                            <ul class="list-inline posted-info">
+                                <li>토론기간 : <%= discussion.created_at.to_date() %> ~ <%= discussion.expiration_date %></li>
+                            </ul>
+                            <h3><%= discussion.title %></h3>
+                            <p><%== discussion.title_explanation %></p>
+                        </div>
+                    </div>
+
+                    <ul class="post-shares text-right">
+                        <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee">20</span></li>
+                        <li><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee">11</span></li>
+                    </ul>
+
+                    <button class="btn btn-block btn-windows margin-top-20">더보기</button>
+                </div>
+
+            </div>
+        </div>
+    <% end %>
+</div>
