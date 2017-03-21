@@ -3,7 +3,7 @@
 
 <div class="container container-fluid">
     <% @discussions.each do |discussion| %>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1">
 
                 <div class="news-v3-in">
@@ -27,7 +27,7 @@
                                 <li>토론기간 : <%= discussion.created_at.to_date() %> ~ <%= discussion.expiration_date %></li>
                             </ul>
                             <h3><%= discussion.title %></h3>
-                            <p><%== discussion.title_explanation %></p>
+                            <!--<p><%#== discussion.title_explanation %></p>-->
                         </div>
                     </div>
 

@@ -174,6 +174,7 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1.json
   def show
     @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
+    @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_id = ?', @discussion.id)
   end
 
   # GET /discussions/new
@@ -199,6 +200,8 @@ class DiscussionsController < ApplicationController
     # 공통필요부분
     # @concepts = Concept.where(:exercise_yn => 'concept').order(:concept_code)
     # @unit_concepts = UnitConcept.where(:exercise_yn => 'concept').order(:code)
+
+    @related_unit_concepts = UnitConcept.all
 
   end
 
@@ -228,6 +231,10 @@ class DiscussionsController < ApplicationController
     concept_code = @unit_concept.code.slice(0, 3)
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
     @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
+
+    @related_unit_concepts = UnitConcept.all
+
+    @discussion_title_explanations = DiscussionTitleExplanation.find_by_discussion_id(@discussion.id)
   end
 
   # POST /discussions
@@ -236,14 +243,35 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.new(discussion_params)
     discussion_image_ids = params[:discussion_image_id]
 
+    # nested params coding for save discussion_title_explanation
+    @title_explanations = params[:title_explanation]
+    @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
+
     respond_to do |format|
       if @discussion.save
+
         unless discussion_image_ids.blank?
           images = discussion_image_ids.to_s.split(',')
           images.each do |image|
             discussion_image = DiscussionImage.find(image)
             discussion_image.discussion_id = @discussion.id
             discussion_image.save
+          end
+        end
+
+        unless @title_explanations.blank?
+          count = 0
+          (0..@title_explanations.count).each do |idx|
+            logger.info "###########    #{@title_explanations[count]}, #{@title_explanation_unit_concept_ids[count]}    ############"
+
+            unless @title_explanations[count].blank?
+              @discussion_title_explanation = DiscussionTitleExplanation.new
+              @discussion_title_explanation.discussion_id = @discussion.id
+              @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
+              @discussion_title_explanation.content = @title_explanations[count]
+              @discussion_title_explanation.save
+            end
+            count = count+1
           end
         end
 
@@ -288,6 +316,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :title_explanation, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type, :user_id)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type, :user_id)
     end
 end

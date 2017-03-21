@@ -1,6 +1,9 @@
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
+<link href="/css/select2.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/select2.min.js"></script>
+
 <div class="row">
     <!-- Begin Content -->
     <div class="col-md-12 margin-bottom-50">
@@ -151,17 +154,56 @@
                     </section>
                 </div>
 
-                <div class="row">
+                <!--주제 설명 부분-->
+                <% if @discussion_form_id == 'new_discussion' %>
+                    <div class="row">
+                        <section class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="label">주제 설명</label>
+                            <input type="text" class="form-control" name="title_explanation[]" value="">
+                        </section>
+                        <section class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="label">관련 개념 검색</label>
+                            <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                <% @related_unit_concepts.each do |related_unit_concept| %>
+                                    <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
+                                <% end %>
+                            </select>
+                        </section>
+                    </div>
+                <% else %>
+                    <% label_check = 0 %>
+                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                        <div class="row">
+                            <section class="col-md-6 col-sm-6 col-xs-12">
+                                <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
+                                <input type="text" class="form-control" name="title_explanation[]" value="<%= title_explanation.content %>">
+                            </section>
+                            <section class="col-md-6 col-sm-6 col-xs-12">
+                                <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
+                                <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                    <% @related_unit_concepts.each do |related_unit_concept| %>
+                                        <option value="<%= related_unit_concept.id %>" <%= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
+                                    <% end %>
+                                </select>
+                            </section>
+                        </div>
+                        <% label_check = 1 %>
+                    <% end %>
+                <% end %>
+
+                <div id="add_search_section"></div>
+
+                <div class="row margin-bottom-20">
                     <section class="col-md-12">
-                        <label class="label">주제 설명</label>
-                        <textarea class="form-control" name="discussion[title_explanation]" id="title_explanation"><%= @discussion.title_explanation unless @discussion.title_explanation.nil? %></textarea>
+                        <input class="btn-u btn-u-info rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 주제 설명 & 관련 개념 검색 추가하기" onclick="addRelated()">
                     </section>
                 </div>
+                <!--주제 설명 부분 END-->
 
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">개념 설명</label>
-                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%= @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
+                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%#= @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
                     </section>
                 </div>
 
@@ -220,6 +262,48 @@
     <!-- End Content -->
 </div>
 
+<!--select2-->
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".select2-search-box").select2();
+    });
+
+    <% index = 0 %>
+
+    var options = [
+        <% @related_unit_concepts.each do |related_unit_concept| %>
+        <% index = index + 1 %>
+        {
+            id: '<%= related_unit_concept.id %>', name: '<%= related_unit_concept.name %>'
+        }
+        <%= ',' unless index == @related_unit_concepts.count  %>
+        <% end %>
+    ]
+
+    function addRelated(){
+        var root = $('#add_search_section');
+
+        var row = $('<div>').addClass('row');
+        var title_explanation_part = $('<section>').addClass('col-md-6 col-sm-6 col-xs-12');
+        var related_unit_concept_part = $('<section>').addClass('col-md-6 col-sm-6 col-xs-12');
+
+        title_explanation_part.append( $('<input>').attr('type', 'text').addClass('form-control').attr('name', 'title_explanation[]').attr('value', ""));
+
+        var select_box = $('<select>').addClass('select2-search-box').attr('name', 'title_explanation_unit_concept_id[]').attr('value', "");
+
+        $.each(options, function(i) {
+            select_box.append( $('<option>').attr('value', options[i].id).text(options[i].name));
+        });
+
+        related_unit_concept_part.append(select_box);
+
+        row.append(title_explanation_part).append(related_unit_concept_part).appendTo(root);
+
+        $(".select2-search-box").select2();
+    }
+</script>
+
 <!--summernote 및 필터링 검사-->
 <script type="text/javascript">
     var image_ids = '';
@@ -276,17 +360,17 @@
         $('#'+discussion_form_id).submit();
     }
 
-    $(document).ready(function() {
-        $('#title_explanation').summernote({
-            height: 200,
-            placeholder: '제목 설명을 입력하세요.',
-            callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'title_explanation');
-                }
-            }
-        });
-    });
+//    $(document).ready(function() {
+//        $('#title_explanation').summernote({
+//            height: 200,
+//            placeholder: '주제 설명을 입력하세요.',
+//            callbacks: {
+//                onImageUpload: function(files, editor, welEditable) {
+//                    sendFile(files[0], editor, welEditable, 'title_explanation');
+//                }
+//            }
+//        });
+//    });
 
     $(document).ready(function() {
         $('#concept_explanation').summernote({
