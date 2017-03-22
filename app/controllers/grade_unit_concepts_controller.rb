@@ -153,9 +153,9 @@ class GradeUnitConceptsController < ApplicationController
         page = params[:page].blank? ? 1 : params[:page]         
         
         if params[:grade].blank?
-            @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => page, :per_page => 30 ).order(:chapter, :category, :sub_category, :code)
+            @grade_unit_concepts = GradeUnitConcept.all.paginate( :page => page, :per_page => 30 ).order(:chapter, :category, :sub_category)
         else
-            @grade_unit_concepts = GradeUnitConcept.where('grade = ?', params[:grade]).paginate( :page => page, :per_page => 30 ).order(:chapter, :category, :sub_category, :code)            
+            @grade_unit_concepts = GradeUnitConcept.where('grade = ?', params[:grade]).paginate( :page => page, :per_page => 30 ).order(:chapter, :category, :sub_category)
         end        
     end
     
