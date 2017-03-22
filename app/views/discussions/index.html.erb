@@ -30,6 +30,7 @@
             <!--<th class="text-center">관계된 개념</th>-->
             <th class="text-center">대상학년</th>
             <th class="text-center">Level</th>
+            <th class="text-center">시작일</th>
             <th class="text-center">종료일</th>
             <th class="text-center">참가자 수</th>
             <!--<th class="text-center">중간보고</th>-->
@@ -62,6 +63,7 @@
                 <!--</td>-->
                 <td class="text-center"><%= discussion.grade unless discussion.grade.nil? %></td>
                 <td class="text-center"><%= discussion.level unless discussion.level.nil? %></td>
+                <td class="text-center"><%= discussion.start_date unless discussion.start_date.nil? %></td>
                 <td class="text-center"><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>
                 <td class="text-center"><%= discussion.participants.count unless discussion.participants.nil? %></td>
                 <!--<td><%#== discussion.interim_report unless discussion.interim_report.nil? %></td>-->

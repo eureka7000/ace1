@@ -130,7 +130,7 @@
                 </div>
 
                 <div class="row">
-                    <section class="col col-6">
+                    <section class="col-md-12">
                         <label class="label">Level 선택<span style="color: red">*</span></label>
                         <div class="inline-group">
                             <% val_num = 1 %>
@@ -140,9 +140,15 @@
                             <% end %>
                         </div>
                     </section>
+                </div>
 
+                <div class="row">
                     <section class="col col-6">
-                        <label class="label">토론 기간 (현재부터~까지)<span style="color: red">*</span></label>
+                        <label class="label">토론 시작일<span style="color: red">*</span></label>
+                        <input class="form-control" type="date" name="discussion[start_date]" id="start_date" value="<%= @discussion.start_date unless @discussion.start_date.nil? %>">
+                    </section>
+                    <section class="col col-6">
+                        <label class="label">토론 만료일<span style="color: red">*</span></label>
                         <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
                     </section>
                 </div>
@@ -309,6 +315,7 @@
     var image_ids = '';
 
     function beforeCheckAndSend(discussion_form_id) {
+
         var grade = "";
         var observer_is_check = false;
         $('input:radio[name="discussion[observer_yn]"]').each(function () {
@@ -341,8 +348,18 @@
             return false;
         }
 
+        if ($('#start_date').val() == ''){
+            alert('토론 시작일을 선택해주세요.');
+            return false;
+        }
+
         if ($('#expiration_date').val() == ''){
-            alert('토론 기간을 선택해주세요.');
+            alert('토론 만료일을 선택해주세요.');
+            return false;
+        }
+
+        if ($('#expiration_date').val() < $('#start_date').val()){
+            alert('토론 만료일을 시작일 이후로 날짜로 다시 선택해주세요.');
             return false;
         }
 
