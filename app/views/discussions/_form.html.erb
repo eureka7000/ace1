@@ -24,7 +24,7 @@
                         <label class="input">
                             <select class="form-control" name="discussion[user_id]" id="leader">
                                 <% @leader.each do |leader| %>
-                                    <option value="<%= leader.user_id %>"><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
+                                    <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
                                 <% end %>
                             </select>
                         </label>
@@ -141,8 +141,8 @@
                         </div>
                     </section>
                     <section class="col-md-6">
-                        <label class="label">Think time</label>
-                        <input type="number" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
+                        <label class="label">Think time(분)</label>
+                        <input type="number" class="form-control" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
                     </section>
                 </div>
 
