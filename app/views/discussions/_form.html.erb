@@ -167,11 +167,11 @@
                 <!--주제 설명 부분-->
                 <% if @discussion_form_id == 'new_discussion' %>
                     <div class="row">
-                        <section class="col-md-6 col-sm-6 col-xs-12">
+                        <section class="col-md-8 col-sm-8 col-xs-12">
                             <label class="label">주제 설명</label>
-                            <input type="text" class="form-control" name="title_explanation[]" value="">
+                            <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
                         </section>
-                        <section class="col-md-6 col-sm-6 col-xs-12">
+                        <section class="col-md-4 col-sm-4 col-xs-12">
                             <label class="label">관련 개념 검색</label>
                             <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                 <% @related_unit_concepts.each do |related_unit_concept| %>
@@ -184,11 +184,11 @@
                     <% label_check = 0 %>
                     <% @discussion.discussion_title_explanations.each do |title_explanation| %>
                         <div class="row">
-                            <section class="col-md-6 col-sm-6 col-xs-12">
+                            <section class="col-md-8 col-sm-8 col-xs-12">
                                 <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
-                                <input type="text" class="form-control" name="title_explanation[]" value="<%= title_explanation.content %>">
+                                <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
                             </section>
-                            <section class="col-md-6 col-sm-6 col-xs-12">
+                            <section class="col-md-4 col-sm-4 col-xs-12">
                                 <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
                                 <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                     <% @related_unit_concepts.each do |related_unit_concept| %>
@@ -213,7 +213,7 @@
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">개념 설명</label>
-                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%#= @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
+                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%== @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
                     </section>
                 </div>
 
@@ -295,10 +295,10 @@
         var root = $('#add_search_section');
 
         var row = $('<div>').addClass('row');
-        var title_explanation_part = $('<section>').addClass('col-md-6 col-sm-6 col-xs-12');
-        var related_unit_concept_part = $('<section>').addClass('col-md-6 col-sm-6 col-xs-12');
+        var title_explanation_part = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var related_unit_concept_part = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
 
-        title_explanation_part.append( $('<input>').attr('type', 'text').addClass('form-control').attr('name', 'title_explanation[]').attr('value', ""));
+        title_explanation_part.append( $('<textarea>').attr('type', 'text').addClass('form-control title_explanation_summernote').attr('name', 'title_explanation[]').attr('value', ""));
 
         var select_box = $('<select>').addClass('select2-search-box').attr('name', 'title_explanation_unit_concept_id[]').attr('value', "");
 
@@ -309,6 +309,19 @@
         related_unit_concept_part.append(select_box);
 
         row.append(title_explanation_part).append(related_unit_concept_part).appendTo(root);
+
+        $('.title_explanation_summernote').summernote({
+            height: 50,
+            placeholder: '주제 설명 및 발문 입력란',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
 
         $(".select2-search-box").select2();
     }
@@ -392,6 +405,21 @@
 //            }
 //        });
 //    });
+
+    $(document).ready(function() {
+        $('.title_explanation_summernote').summernote({
+            height: 50,
+            placeholder: '주제 설명 및 발문 입력란',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
+    });
 
     $(document).ready(function() {
         $('#concept_explanation').summernote({

@@ -201,7 +201,7 @@ class DiscussionsController < ApplicationController
     # @concepts = Concept.where(:exercise_yn => 'concept').order(:concept_code)
     # @unit_concepts = UnitConcept.where(:exercise_yn => 'concept').order(:code)
 
-    @related_unit_concepts = UnitConcept.all
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
   end
 
@@ -232,7 +232,7 @@ class DiscussionsController < ApplicationController
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
     @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
 
-    @related_unit_concepts = UnitConcept.all
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
     @discussion_title_explanations = DiscussionTitleExplanation.find_by_discussion_id(@discussion.id)
   end

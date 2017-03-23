@@ -106,7 +106,7 @@
             <p>
                 <strong>주제 설명:</strong>
                 <% @discussion_title_explanations.each do |discussion_title_explanation| %>
-                <p><span style="color: red">|</span> <%= discussion_title_explanation.content %> <span style="color: red">|</span> <%= discussion_title_explanation.unit_concept.name %> <span style="color: red">|</span></p>
+                <p><span style="color: red">|</span> <%== discussion_title_explanation.content %> <span style="color: red">|</span> <%= discussion_title_explanation.unit_concept.name %> <span style="color: red">|</span></p>
                 <% end %>
             </p>
         </div>
