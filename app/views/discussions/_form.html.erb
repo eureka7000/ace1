@@ -224,10 +224,31 @@
                     </section>
                 </div>
 
-                <div class="row">
+                <% if @discussion_form_id == 'new_discussion' %>
+                    <div class="row">
+                        <section class="col-md-12">
+                            <label class="label">문제풀이</label>
+                            <textarea class="form-control solution_summernote" name="solution[]" id="solution_1"></textarea>
+                        </section>
+                    </div>
+                <% else %>
+                    <% solution_check = 0 %>
+                    <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                        <div class="row">
+                            <section class="col-md-12">
+                                <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
+                                <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
+                            </section>
+                        </div>
+                        <% solution_check = solution_check + 1 %>
+                    <% end %>
+                <% end %>
+
+                <div id="add_solution_section"></div>
+
+                <div class="row margin-bottom-20">
                     <section class="col-md-12">
-                        <label class="label">문제풀이</label>
-                        <textarea class="form-control" name="discussion[solution]" id="solution"><%= @discussion.solution unless @discussion.solution.nil? %></textarea>
+                        <input class="btn-u btn-u-orange rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
                     </section>
                 </div>
 
@@ -311,7 +332,7 @@
         row.append(title_explanation_part).append(related_unit_concept_part).appendTo(root);
 
         $('.title_explanation_summernote').summernote({
-            height: 50,
+            height: 100,
             placeholder: '주제 설명 및 발문 입력란',
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -326,6 +347,45 @@
         $(".select2-search-box").select2();
     }
 </script>
+
+<!--문제풀이 summernote editor 추가하기-->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.solution_summernote').summernote({
+            height: 200,
+            placeholder: '문제 풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    var solution_num = 2;
+    function addSolution() {
+
+        var root = $('#add_solution_section');
+
+        var row = $('<div>').addClass('row');
+        var solution = $('<section>').addClass('col-md-12');
+
+        solution.append( $('<textarea>').attr('type', 'text').attr('id', 'solution_'+ solution_num++).addClass('form-control solution_summernote').attr('name', 'solution[]').attr('value', ""));
+
+        row.append(solution).appendTo(root);
+
+        $('.solution_summernote').summernote({
+            height: 200,
+            placeholder: '문제 풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    }
+</script>
+<!--END 문제풀이 summernote editor 추가하기-->
 
 <!--summernote 및 필터링 검사-->
 <script type="text/javascript">
@@ -394,25 +454,12 @@
         $('#'+discussion_form_id).submit();
     }
 
-//    $(document).ready(function() {
-//        $('#title_explanation').summernote({
-//            height: 200,
-//            placeholder: '주제 설명을 입력하세요.',
-//            callbacks: {
-//                onImageUpload: function(files, editor, welEditable) {
-//                    sendFile(files[0], editor, welEditable, 'title_explanation');
-//                }
-//            }
-//        });
-//    });
-
     $(document).ready(function() {
         $('.title_explanation_summernote').summernote({
-            height: 50,
+            height: 100,
             placeholder: '주제 설명 및 발문 입력란',
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
@@ -423,13 +470,8 @@
 
     $(document).ready(function() {
         $('#concept_explanation').summernote({
-            height: 300,
+            height: 200,
             placeholder: '개념 설명을 입력하세요.',
-            callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'solution');
-                }
-            }
         });
     });
 
@@ -445,17 +487,17 @@
         });
     });
 
-    $(document).ready(function() {
-        $('#solution').summernote({
-            height: 300,
-            placeholder: '풀이를 입력하세요.',
-            callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'solution');
-                }
-            }
-        });
-    });
+//    $(document).ready(function() {
+//        $('#solution').summernote({
+//            height: 300,
+//            placeholder: '풀이를 입력하세요.',
+//            callbacks: {
+//                onImageUpload: function(files, editor, welEditable) {
+//                    sendFile(files[0], editor, welEditable, 'solution');
+//                }
+//            }
+//        });
+//    });
 
     $(document).ready(function() {
         $('#answer').summernote({
@@ -626,6 +668,8 @@
 
 <!--종합문제 & 유형문제 선택 후 summernote editor에 이미지 삽입-->
 <script type="text/javascript">
+    var solution_editor_count = 1;
+
     function insertImagesToEditor(name) {
 
         if (name == 'concept'){
@@ -667,7 +711,15 @@
                         var img = document.createElement('img');
                         img.src = data[i].filename;
                         //$('#summernote').summernote('insertText', data);
-                        $("#solution").summernote('insertNode', img);
+                        if (solution_editor_count == 1){
+                            $("#solution_"+solution_editor_count).summernote('insertNode', img);
+                            solution_editor_count++;
+                        }
+                        else{
+                            addSolution();
+                            $("#solution_"+solution_editor_count).summernote('insertNode', img);
+                            solution_editor_count++;
+                        }
                     }
                     else if (data[i].type == '7'){
                         var img = document.createElement('img');

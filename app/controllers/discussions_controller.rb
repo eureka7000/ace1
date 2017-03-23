@@ -234,7 +234,6 @@ class DiscussionsController < ApplicationController
 
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
-    @discussion_title_explanations = DiscussionTitleExplanation.find_by_discussion_id(@discussion.id)
   end
 
   # POST /discussions
@@ -246,6 +245,9 @@ class DiscussionsController < ApplicationController
     # nested params coding for save discussion_title_explanation
     @title_explanations = params[:title_explanation]
     @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
+
+    # nested params coding for save discussion_solution
+    @solutions = params[:solution]
 
     respond_to do |format|
       if @discussion.save
@@ -272,6 +274,19 @@ class DiscussionsController < ApplicationController
               @discussion_title_explanation.save
             end
             count = count+1
+          end
+        end
+
+        unless @solutions.blank?
+          count = 0
+          (0..@solutions.count).each do |idx|
+            unless @solutions[count].blank?
+              @discussion_solution = DiscussionSolution.new
+              @discussion_solution.content = @solutions[count]
+              @discussion_solution.discussion_id = @discussion.id
+              @discussion_solution.save
+            end
+            count = count + 1
           end
         end
 
@@ -316,6 +331,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :solution, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time)
     end
 end

@@ -106,7 +106,14 @@
             <p>
                 <strong>주제 설명:</strong>
                 <% @discussion_title_explanations.each do |discussion_title_explanation| %>
-                <p><span style="color: red">|</span> <%== discussion_title_explanation.content %> <span style="color: red">|</span> <%= discussion_title_explanation.unit_concept.name %> <span style="color: red">|</span></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <%== discussion_title_explanation.content %>
+                        </div>
+                        <div class="col-md-6">
+                            <%= discussion_title_explanation.unit_concept.name %>
+                        </div>
+                    </div>
                 <% end %>
             </p>
         </div>
@@ -128,7 +135,9 @@
             <hr>
             <p>
                 <strong>문제 풀이:</strong>
-                <%== @discussion.solution %>
+                <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                    <%== discussion_solution.content %>
+                <% end %>
             </p>
         </div>
         <div class="col-md-12">
