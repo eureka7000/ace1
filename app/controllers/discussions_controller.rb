@@ -5,6 +5,23 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def discussion_new
+    @discussion = Discussion.new
+    @discussion_form_id = 'new_discussion'
+    @leader = Teacher.where('user_id = ?', current_user.id)
+    @user_type = 'user'
+
+    if current_user.user_types[0].user_type == 'school teacher'
+      @manage_type = '학교'
+    elsif current_user.user_types[0].user_type == 'institute teacher'
+      @manage_type = '학원'
+    end
+
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+
+    render layout: 'application'
+  end
+
   def discussion_list
     @discussions = Discussion.all
 
@@ -182,7 +199,7 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.new
     @discussion_form_id = 'new_discussion'
     @admin_id = session[:admin]['id']
-    @admin_type = session[:admin]['admin_type']
+    @user_type = 'admin'
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
@@ -197,10 +214,6 @@ class DiscussionsController < ApplicationController
       end
     end
 
-    # 공통필요부분
-    # @concepts = Concept.where(:exercise_yn => 'concept').order(:concept_code)
-    # @unit_concepts = UnitConcept.where(:exercise_yn => 'concept').order(:code)
-
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
   end
@@ -209,7 +222,11 @@ class DiscussionsController < ApplicationController
   def edit
     @discussion_form_id = 'edit_discussion_' + @discussion.id.to_s
     @admin_id = session[:admin]['id']
-    @admin_type = session[:admin]['admin_type']
+    unless session[:admin]['admin_type'].nil?
+      @user_type = 'admin'
+    else
+      @user_type = 'user'
+    end
     @checked_grade = @discussion.grade.split(',')
 
     unless session[:admin]['admin_type'] != 'admin'
@@ -248,6 +265,12 @@ class DiscussionsController < ApplicationController
 
     # nested params coding for save discussion_solution
     @solutions = params[:solution]
+
+    unless session[:admin].nil?
+      is_admin = true
+    else
+      is_admin = false
+    end
 
     respond_to do |format|
       if @discussion.save
@@ -290,8 +313,15 @@ class DiscussionsController < ApplicationController
           end
         end
 
-        format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
-        format.json { render :show, status: :created, location: @discussion }
+
+
+        if is_admin == true
+          format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
+          format.json { render :show, status: :created, location: @discussion }
+        else
+          format.html { redirect_to '/discussions/discussion_list', notice: 'Discussion was successfully created.' }
+        end
+
       else
         format.html { render :new }
         format.json { render json: @discussion.errors, status: :unprocessable_entity }

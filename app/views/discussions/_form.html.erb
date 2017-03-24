@@ -11,15 +11,15 @@
         <div class="sky-form">
             <%= form_for(@discussion) do |f| %>
 
-            <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id %>">
-            <input hidden type="text" name="discussion[organizer_type]" value="admin">
+            <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
+            <input hidden type="text" name="discussion[organizer_type]" value="<%= @user_type %>">
             <input hidden name="discussion_image_id" id="discussion_image_id" value="">
 
             <header>Discussion form</header>
             <fieldset>
                 <p><span style="color: red">*</span> 필수입력</p>
                 <div class="row">
-                    <section class="col col-3">
+                    <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
                         <label class="label">토론방 리더<span style="color: red">*</span></label>
                         <label class="input">
                             <select class="form-control" name="discussion[user_id]" id="leader">
@@ -33,7 +33,7 @@
                         <label class="label">운영타입<span style="color: red">*</span></label>
                         <label class="input">
                             <select class="form-control" name="discussion[manage_type]" id="manage_type">
-                                <% if @admin_type == 'admin' %>
+                                <% if @user_type == 'admin' %>
                                     <% Discussion::MANAGE_TYPE.each do |key, value| %>
                                         <option value="<%= value %>"<%= 'selected' unless @discussion.manage_type != value %>><%= value %></option>
                                     <% end %>
@@ -487,18 +487,6 @@
         });
     });
 
-//    $(document).ready(function() {
-//        $('#solution').summernote({
-//            height: 300,
-//            placeholder: '풀이를 입력하세요.',
-//            callbacks: {
-//                onImageUpload: function(files, editor, welEditable) {
-//                    sendFile(files[0], editor, welEditable, 'solution');
-//                }
-//            }
-//        });
-//    });
-
     $(document).ready(function() {
         $('#answer').summernote({
             height: 200,
@@ -619,13 +607,6 @@
                 selectConcept();
             }
         });
-
-//        $.each(concept_options, function(i) {
-//            if (concept_options[i].values.substring(0,3) == sub_category) {
-//                $('#concept').append( $('<option>').text(concept_options[i].text).attr('value',concept_options[i].values));
-//            }
-//        });
-
     }
 
     function selectConcept() {
@@ -657,12 +638,6 @@
                 });
             }
         });
-
-//        $.each(unit_concept_options, function(i) {
-//            if (unit_concept_options[i].values.substr(0,4) == concept){
-//                $('#unit_concept_id').append( $('<option>').text(unit_concept_options[i].text).attr('value',unit_concept_options[i].id));
-//            }
-//        });
     }
 </script>
 
