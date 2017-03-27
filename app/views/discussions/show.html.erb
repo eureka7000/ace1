@@ -13,7 +13,11 @@
         <div class="col-md-4">
             <p>
                 <strong>개설자:</strong>
-                <%= Admin.find(@discussion.organizer).name %>
+                <% if @discussion.organizer_type == 'admin' %>
+                    <%= Admin.find(@discussion.organizer).name %>
+                <% else %>
+                    <%= User.find(@discussion.organizer).user_name %>
+                <% end %>
             </p>
         </div>
         <div class="col-md-4">

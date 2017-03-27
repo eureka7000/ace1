@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  resources :discussion_images
+    resources :discussion_images
+    get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
+    get 'discussions/:id/like' => 'discussions#like'
     get 'discussions/discussion_new' => 'discussions#discussion_new'
     get 'discussions/discussion_list' => 'discussions#discussion_list'
     get 'discussions/select_leader' => 'discussions#select_leader'

@@ -145,4 +145,14 @@ class User < ActiveRecord::Base
         end
     end
 
+    def can_I_create_a_discussion?
+        ret = false
+
+        discussion_authority = DiscussionAuthority.where('user_id = ?', self.id)
+        unless discussion_authority.blank?
+            ret = true
+        end
+
+        ret
+    end
 end

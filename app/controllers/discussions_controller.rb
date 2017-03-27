@@ -1,9 +1,25 @@
 class DiscussionsController < ApplicationController
-  before_action :authenticate_admin_user!, only: [:index, :show, :edit, :update, :destroy, :select_leader, :give_authority]
+  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room]
+  before_action :authenticate_admin_user!, only: [:index, :edit, :update, :destroy, :select_leader, :give_authority]
   before_filter :authenticate_user!, only: [:discussion_list]
-  before_action :set_discussion, only: [:show, :edit, :update, :destroy]
 
   layout 'admin_main'
+
+  def discussion_room
+    
+    render layout: 'application'
+  end
+
+  def like
+    if @discussion.like.nil?
+      @discussion.like = 1
+    else
+      @discussion.like = @discussion.like + 1
+    end
+    @discussion.save
+    ret = { status: "ok" }
+    render :json => ret
+  end
 
   def discussion_new
     @discussion = Discussion.new
@@ -23,7 +39,7 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_list
-    @discussions = Discussion.all
+    @discussions = Discussion.all.order(:created_at => :desc)
 
     render layout: 'application'
   end
@@ -361,6 +377,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time, :like)
     end
 end
