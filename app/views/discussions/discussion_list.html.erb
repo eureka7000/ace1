@@ -17,7 +17,7 @@
     <!--토론방 개설 권한 있는 유저에게만 보이기-->
     <% if current_user.can_I_create_a_discussion? %>
         <div class="col-md-12">
-            <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn-u btn-u-blue rounded col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20' %>
+            <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20' %>
         </div>
     <% end %>
 
@@ -28,7 +28,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20">
                     <h3>주제 : <%= discussion.title %></h3>
                     <ul class="list-inline posted-info">
-                        <li>리더 : <span style="color: #1d78cb;"><%= discussion.user.user_name %></span> 선생님</li>
+                        <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name %></span> 선생님</li>
                         <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.grade %></span></li>
                     </ul>
                     <ul class="list-inline posted-info">
@@ -45,8 +45,8 @@
                         <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
                     </ul>
                 </div>
+                <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
 
-                <a href="/discussions/discussion_room/<%= discussion.id %>"><button class="btn btn-block btn-windows margin-top-20">참여하기</button></a>
             </div>
         </div>
     <% end %>
@@ -74,5 +74,9 @@
             }
         });
         <% end %>
+    }
+
+    function participate(discussion_id) {
+        location = "/discussions/discussion_room/" + discussion_id
     }
 </script>

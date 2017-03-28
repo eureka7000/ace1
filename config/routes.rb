@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     get 'discussions/discussion_list' => 'discussions#discussion_list'
     get 'discussions/select_leader' => 'discussions#select_leader'
     get 'discussions/give_authority' => 'discussions#give_authority'
+    post 'discussions/save_discussion_solution_history' => 'discussions#save_discussion_solution_history'
+    post 'discussions/save_title_explanation_history' => 'discussions#save_title_explanation_history'
     post 'discussions/create_give_authority' => 'discussions#create_give_authority'
     post 'discussions/create_staff' => 'discussions#create_staff'
     post 'discussions/get_concepts' => 'discussions#get_concepts'

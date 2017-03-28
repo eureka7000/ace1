@@ -5,8 +5,44 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def save_discussion_solution_history
+    solution_yn = params[:solution_yn]
+    solution_id = params[:solution_id]
+
+    @discussion_solution_history = DiscussionSolutionHistory.new
+
+    @discussion_solution_history.user_id = current_user.id
+    @discussion_solution_history.discussion_solution_id = solution_id
+    @discussion_solution_history.know_yn = solution_yn
+
+    if @discussion_solution_history.save
+      ret = { status: "ok" }
+      respond_to do |format|
+        format.json { render :json => ret }
+      end
+    end
+  end
+
+  def save_title_explanation_history
+    title_explanation_yn = params[:title_explanation_yn]
+    title_explanation_id = params[:title_explanation_id]
+
+    @discussion_title_explanation_history = DiscussionTitleExplanationHistory.new
+
+    @discussion_title_explanation_history.user_id = current_user.id
+    @discussion_title_explanation_history.discussion_title_explanation_id = title_explanation_id
+    @discussion_title_explanation_history.know_yn = title_explanation_yn
+
+    if @discussion_title_explanation_history.save
+      ret = { status: "ok" }
+      respond_to do |format|
+        format.json { render :json => ret }
+      end
+    end
+  end
+
   def discussion_room
-    
+
     render layout: 'application'
   end
 

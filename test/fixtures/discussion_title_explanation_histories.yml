@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  discussion_title_explanation_id: 1
+  user_id: 1
+  know_yn: MyString
+
+two:
+  discussion_title_explanation_id: 1
+  user_id: 1
+  know_yn: MyString

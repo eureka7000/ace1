@@ -1,0 +1,173 @@
+<div class="breadcrumbs col-md-12">
+    <div class="container">
+        <h1 class="pull-left">토론방</h1>
+        <ul class="pull-right breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li>STUDY</li>
+            <li class="active"><a href="/discussions/discussion_list">토론방</a></li>
+        </ul>
+    </div><!--/container-->
+</div>
+
+<div class="container container-fluid">
+    <!--주제-->
+    <div class="row blog-page">
+        <div class="col-md-12 margin-top-20">
+            <h2>주제 : <em><%= @discussion.title %></em></h2>
+        </div>
+    </div>
+
+    <div class="blog-post-tags">
+        <ul class="list-unstyled list-inline blog-info">
+            <li><i class="fa fa-uesr"></i>방장 : <span style="color: #5aa0f8"><%= @discussion.user.user_name %></span> 선생님</li>
+            <li><i class="fa fa-calendar"></i> 토론 기간 : <span style="color: #5aa0f8"><%= @discussion.start_date %></span> ~ <span style="color: #5aa0f8"><%= @discussion.expiration_date %></span></li>
+            <li>Level : <span style="color: #5aa0f8"><%= @discussion.level %></span></li>
+        </ul>
+        <ul class="list-unstyled list-inline blog-tags">
+            <li>핵심개념 : </li>
+            <a href="/contents/<%= @discussion.unit_concept_id %>"><%= @discussion.unit_concept.name %></a>
+            <span style="color:#5aa0f8">|</span>
+            <li>관련개념 : </li>
+            <% @discussion.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+                <% unless unit_concept_desc.desc_type != '5' %>
+                    <a href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                <% end %>
+            <% end %>
+        </ul>
+    </div>
+
+    <!--주제 해설-->
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            <h3>*<em>개념 해설 (발문)</em></h3>
+            <div class="row sky-form" style="border: none">
+                <fieldset>
+                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                        <section>
+                            <div class="inline-group">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <em><%== title_explanation.content %></em>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                                    <label class="radio"><button class="btn btn-windows rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
+                                </div>
+                            </div>
+                        </section>
+                    <% end %>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <!--개념 설명-->
+    <% unless @discussion.concept_explanation.blank? %>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>*<em>개념 설명</em></h3>
+                <%== @discussion.concept_explanation %>
+            </div>
+        </div>
+    <% end %>
+
+    <!--본문 내용-->
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>*<em>본문 내용</em></h3>
+            <%== @discussion.content %>
+        </div>
+    </div>
+
+    <!--문제풀이-->
+    <% unless @discussion.discussion_solutions.nil? %>
+        <hr>
+
+        <div class="row sky-form" style="border: none">
+            <div class="col-md-12">
+                <h3>*<em>문제풀이</em></h3>
+
+                <fieldset>
+                    <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                        <section>
+                            <div class="inline-group">
+                                <div class="col-md-8 col-sm-12 col-xs-12">
+                                    <%== discussion_solution.content %>
+                                </div>
+                                <div class="col-md-4 col-sm-12 col-xs-12">
+                                    <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                                    <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                                    <label class="radio"><button class="btn btn-windows rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>
+                                </div>
+                            </div>
+                        </section>
+                    <% end %>
+                </fieldset>
+
+            </div>
+        </div>
+    <% end %>
+</div>
+
+<script type="text/javascript">
+    function saveTitleExplanationHistory(id) {
+
+        var radioName = document.getElementsByName('title_explanation_radio_'+id);
+
+        var radioValue = '';
+
+        for( var i=0; i<radioName.length; i++ ) {
+            if(radioName[i].checked) {
+                radioValue = radioName[i].value;
+            }
+        }
+
+        var data = new FormData();
+        data.append("title_explanation_yn", radioValue);
+        data.append('title_explanation_id', id);
+        document.getElementById("btn_"+id).disabled = true;
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/save_title_explanation_history",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+            }
+        });
+    }
+
+    function saveSolutionHistory(id) {
+        var radioName = document.getElementsByName('solution_radio_'+id);
+
+        var radioValue = '';
+
+        for( var i=0; i<radioName.length; i++ ) {
+            if(radioName[i].checked) {
+                radioValue = radioName[i].value;
+            }
+        }
+
+        var data = new FormData();
+        data.append("solution_yn", radioValue);
+        data.append('solution_id', id);
+        document.getElementById("solution_btn_"+id).disabled = true;
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/save_discussion_solution_history",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+            }
+        });
+    }
+</script>
