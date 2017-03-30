@@ -276,7 +276,11 @@
 
             <footer class="text-right">
                 <input class="btn-u btn-u-info rounded" type="button" onclick="beforeCheckAndSend('<%= @discussion_form_id %>')" value='입력완료'> |
-                <%= link_to 'Back', discussions_path, :class => 'btn-u btn-u-red rounded' %>
+                <% unless @user_type !='admin' %>
+                    <%= link_to 'Back', discussions_path, :class => 'btn-u btn-u-red rounded' %>
+                <% else %>
+                    <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn-u btn-u-red rounded' %>
+                <% end %>
                 <% unless params[:id].nil? %>
                     &nbsp;|&nbsp;<%= link_to 'Show', @discussion, :class => 'btn-u btn-u-yellow rounded' %>
                 <% end %>

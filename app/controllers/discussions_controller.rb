@@ -42,6 +42,7 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_room
+    @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
 
     render layout: 'application'
   end

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+    resources :discussion_reply
+
     resources :discussion_images
     get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
     get 'discussions/:id/like' => 'discussions#like'

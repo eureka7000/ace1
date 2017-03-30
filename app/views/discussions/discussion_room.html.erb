@@ -1,3 +1,6 @@
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
 <div class="breadcrumbs col-md-12">
     <div class="container">
         <h1 class="pull-left">토론방</h1>
@@ -19,19 +22,26 @@
 
     <div class="blog-post-tags">
         <ul class="list-unstyled list-inline blog-info">
-            <li><i class="fa fa-uesr"></i>방장 : <span style="color: #5aa0f8"><%= @discussion.user.user_name %></span> 선생님</li>
-            <li><i class="fa fa-calendar"></i> 토론 기간 : <span style="color: #5aa0f8"><%= @discussion.start_date %></span> ~ <span style="color: #5aa0f8"><%= @discussion.expiration_date %></span></li>
-            <li>Level : <span style="color: #5aa0f8"><%= @discussion.level %></span></li>
+            <li><i class="fa fa-uesr"></i>방장 : <span style="color: #33b2f8"><%= @discussion.user.user_name %></span> 선생님</li>
+            <span style="color:#5aa0f8">|</span>
+            <li><i class="fa fa-calendar"></i> 토론 기간 : <span style="color: #55b3f8"><%= @discussion.start_date %></span> ~ <span style="color: #55b3f8"><%= @discussion.expiration_date %></span></li>
+            <span style="color:#5aa0f8">|</span>
+            <li>Level : <span style="color: #55b3f8"><%= @discussion.level %></span></li>
         </ul>
         <ul class="list-unstyled list-inline blog-tags">
             <li>핵심개념 : </li>
-            <a href="/contents/<%= @discussion.unit_concept_id %>"><%= @discussion.unit_concept.name %></a>
+            <a target="_blank" href="/contents/<%= @discussion.unit_concept_id %>"><%= @discussion.unit_concept.name %></a>
             <span style="color:#5aa0f8">|</span>
             <li>관련개념 : </li>
             <% @discussion.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
                 <% unless unit_concept_desc.desc_type != '5' %>
-                    <a href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                    <a target="_blank" href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
                 <% end %>
+            <% end %>
+            <span style="color:#5aa0f8">|</span>
+            <li>참가학년 : </li>
+            <% @discussion.grade.split(',').each do |grade| %>
+                <a><%= grade %></a>
             <% end %>
         </ul>
     </div>
@@ -40,23 +50,20 @@
     <div class="row margin-top-20">
         <div class="col-md-12">
             <h3>*<em>개념 해설 (발문)</em></h3>
-            <div class="row sky-form" style="border: none">
-                <fieldset>
-                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
-                        <section>
-                            <div class="inline-group">
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <em><%== title_explanation.content %></em>
-                                </div>
-                                <div class="col-md-6 col-sm-6 col-xs-6">
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
-                                    <label class="radio"><button class="btn btn-windows rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
-                                </div>
-                            </div>
-                        </section>
-                    <% end %>
-                </fieldset>
+            <div class="row sky-form no-padding no-margin" style="border: none">
+                <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                    <div class="inline-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
+                            <em><%== title_explanation.content %></em>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
+                            <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                            <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                            <label class="radio"><button class="btn btn-windows btn-sm rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
+                            <label class="radio"><button class="btn btn-dropbox btn-sm rounded" onclick="moveToStudyRoom('<%= title_explanation.unit_concept_id %>')">개념보기</button></label>
+                        </div>
+                    </div>
+                <% end %>
             </div>
         </div>
     </div>
@@ -82,36 +89,200 @@
     </div>
 
     <!--문제풀이-->
-    <% unless @discussion.discussion_solutions.nil? %>
+    <% unless @discussion.discussion_solutions.blank? %>
         <hr>
 
         <div class="row sky-form" style="border: none">
-            <div class="col-md-12">
+            <div class="col-md-12 no-padding no-margin">
                 <h3>*<em>문제풀이</em></h3>
-
-                <fieldset>
-                    <% @discussion.discussion_solutions.each do |discussion_solution| %>
-                        <section>
-                            <div class="inline-group">
-                                <div class="col-md-8 col-sm-12 col-xs-12">
-                                    <%== discussion_solution.content %>
-                                </div>
-                                <div class="col-md-4 col-sm-12 col-xs-12">
-                                    <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
-                                    <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>
-                                    <label class="radio"><button class="btn btn-windows rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>
-                                </div>
-                            </div>
-                        </section>
-                    <% end %>
-                </fieldset>
-
+                <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                    <div class="inline-group">
+                        <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
+                            <%== discussion_solution.content %>
+                        </div>
+                        <div class="col-md-4 col-sm-12 col-xs-12 no-padding no-margin">
+                            <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                            <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                            <label class="radio"><button class="btn btn-windows btn-sm rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>
+                        </div>
+                    </div>
+                <% end %>
             </div>
         </div>
     <% end %>
+
+    <!--해답-->
+    <% unless @discussion.answer.blank? %>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>*<em>해답</em></h3>
+                <%== @discussion.answer %>
+            </div>
+        </div>
+    <% end %>
+
+    <!--중간보고서-->
+    <% unless @discussion.interim_report.blank? %>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>*<em>중간보고서</em></h3>
+                <%== @discussion.interim_report %>
+            </div>
+        </div>
+    <% end %>
+
+    <!--최종보고서-->
+    <% unless @discussion.final_report.blank? %>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>*<em>최종보고서</em></h3>
+                <%== @discussion.final_report %>
+            </div>
+        </div>
+    <% end %>
+
+    <!--댓글달기-->
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>*<em>의견달기</em></h3>
+            <form action="/discussion_reply" id="discussion_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                <%= token_tag nil %>
+                <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                <input hidden name="discussion_reply[group_id]" value="0">
+                <input hidden name="discussion_reply[group_no]" value="0">
+                <textarea class="post_reply_summernote" id="post_reply" name="discussion_reply[comment]"></textarea>
+                <input type="submit" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" value="의견 저장">
+            </form>
+        </div>
+    </div>
+
+    <!--댓글 나열-->
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>*<em>댓글</em></h3>
+
+            <% unless @discussion_replies.nil? %>
+                <% reply1 = 1 %>
+                <% @discussion_replies.each do |discussion_reply| %>
+
+                    <% @discussion_replies_2 = DiscussionReply.where('group_id = ?', discussion_reply.id ).order(:group_no) %>
+
+                    <div class="row blog-comments margin-bottom-20">
+                        <div class="col-sm-1 sm-margin-bottom-10">
+                            <img src="<%= discussion_reply.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_reply.user.user_img %>" class="img-responsive rounded">
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="comments-itself">
+                                <!--댓글 단 유저 이름-->
+                                <h4>
+                                    <%= discussion_reply.user.user_name %>
+                                    <!--<span>5 hours ago / <a href="#">Reply</a></span>-->
+                                </h4>
+
+                                <!--댓글내용-->
+                                <%== discussion_reply.comment %>
+
+                                <div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>
+
+                                <!--대댓글 달기-->
+                                <form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                                    <%= token_tag nil %>
+                                    <br>
+                                    <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                    <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                    <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply.id %>">
+                                    <input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_2.count + 1 %>">
+                                    <!--버튼 클릭시 대댓글 저장-->
+                                    <textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20"></textarea>
+                                    <button type="submit" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12">댓글 저장</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% unless @discussion_replies_2.nil? %>
+                        <% @discussion_replies_2.each do |discussion_reply_2| %>
+                            <div class="row blog-comments blog-comments-reply margin-bottom-30">
+                                <div class="col-sm-1 sm-margin-bottom-10">
+                                    <img src="<%= discussion_reply_2.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_reply_2.user.user_img %>" class="img-responsive rounded">
+                                </div>
+                                <div class="col-sm-11">
+                                    <div class="comments-itself">
+                                        <!--댓글 단 유저 이름-->
+                                        <h4>
+                                            <%= discussion_reply_2.user.user_name %>
+                                            <!--<span>6 hours ago / <a href="#">Reply</a></span>-->
+                                        </h4>
+
+                                        <!--댓글내용-->
+                                        <%== discussion_reply_2.comment %>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
+
+                    <% reply1 = reply1 + 1 %>
+                <% end %>
+
+            <% end %>
+        </div>
+    </div>
+
 </div>
 
+<!--summernote editor-->
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        $('.post_reply_summernote').summernote({
+            height: 200,
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    function sendFile(file, editor, welEditable, id_name) {
+        var data = new FormData();
+        data.append("discussion_image[filename]", file);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussion_images",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                var img = document.createElement('img');
+                img.setAttribute('id', data.id);
+                img.src = data.url;
+                //$('#summernote').summernote('insertText', data);
+                $("#" + id_name).summernote('insertNode', img);
+                image_ids += data.id+',';
+                $('#discussion_image_id').val(image_ids);
+            }
+        });
+    }
+</script>
+
+<!--save histories-->
+<script type="text/javascript">
+
     function saveTitleExplanationHistory(id) {
 
         var radioName = document.getElementsByName('title_explanation_radio_'+id);
@@ -169,5 +340,34 @@
             success: function(data) {
             }
         });
+    }
+</script>
+
+<script type="text/javascript">
+    function moveToStudyRoom(unit_concept_id) {
+        window.open('/contents/'+unit_concept_id);
+    }
+
+    function toggleReplyForm(id) {
+        $('#'+id).toggle();
+
+        $(document).ready(function() {
+            $('.post_reply_summernote').summernote({
+                height: 200,
+                callbacks: {
+                    onImageUpload: function(files, editor, welEditable) {
+                        sendFile(files[0], editor, welEditable, this.id);
+                    }
+                }
+            });
+        });
+
+    }
+</script>
+
+<!--form check-->
+<script type="text/javascript">
+    function formCheck() {
+        alert($('#post_reply').val());
     }
 </script>

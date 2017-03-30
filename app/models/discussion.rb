@@ -4,6 +4,7 @@ class Discussion < ActiveRecord::Base
     has_many :discussion_images, :dependent => :delete_all
     has_many :discussion_title_explanations, :dependent => :delete_all
     has_many :discussion_solutions, :dependent => :delete_all
+    has_many :discussion_replies, :dependent => :delete_all
 
     belongs_to :user
     belongs_to :unit_concept
