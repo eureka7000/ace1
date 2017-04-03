@@ -2635,7 +2635,7 @@
 
 .blog-comments .comments-itself span {
   color: #999;
-  float: right;
+  /*float: right;*/
   font-size: 13px;
 }
 
@@ -3150,7 +3150,7 @@
 
 .blog-comments .comments-itself span {
   color: #555;
-  float: right;
+  /*float: right;*/
   font-size: 13px;
 }
 
