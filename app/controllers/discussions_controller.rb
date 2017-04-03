@@ -44,6 +44,20 @@ class DiscussionsController < ApplicationController
   def discussion_room
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
 
+    @participant = Participant.where('discussion_id = ? and user_id = ?', @discussion.id, current_user.id)
+
+    @participant_before_check = true
+
+    if @participant.blank?
+      @participant = Participant.new
+      @participant.discussion_id = @discussion.id
+      @participant.user_id = current_user.id
+
+      if @participant.save
+        @participant_before_check = false
+      end
+    end
+
     render layout: 'application'
   end
 
@@ -385,6 +399,65 @@ class DiscussionsController < ApplicationController
   # PATCH/PUT /discussions/1
   # PATCH/PUT /discussions/1.json
   def update
+    discussion_image_ids = params[:discussion_image_id]
+
+    # nested params coding for save discussion_title_explanation
+    @title_explanations = params[:title_explanation]
+    @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
+
+    # nested params coding for save discussion_solution
+    @solutions = params[:solution]
+
+    # unless session[:admin].nil?
+    #   is_admin = true
+    # else
+    #   is_admin = false
+    # end
+
+    unless discussion_image_ids.blank?
+      DiscussionImage.where('discussion_id = ?', @discussion.id).delete_all
+      images = discussion_image_ids.to_s.split(',')
+      images.each do |image|
+        discussion_image = DiscussionImage.find(image)
+        discussion_image.discussion_id = @discussion.id
+        discussion_image.save
+      end
+    end
+
+    unless @title_explanations.blank?
+      DiscussionTitleExplanation.where('discussion_id = ?', @discussion.id).delete_all
+      count = 0
+      (0..@title_explanations.count).each do |idx|
+        # logger.info "###########    #{@title_explanations[count]}, #{@title_explanation_unit_concept_ids[count]}    ############"
+
+        unless @title_explanations[count].blank?
+          @discussion_title_explanation = DiscussionTitleExplanation.new
+          @discussion_title_explanation.discussion_id = @discussion.id
+          @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
+          @discussion_title_explanation.content = @title_explanations[count]
+          @discussion_title_explanation.save
+        end
+        count = count+1
+      end
+    end
+
+    unless @solutions.blank?
+      DiscussionSolution.where('discussion_id = ?', @discussion.id).delete_all
+
+      count = 0
+      (0..@solutions.count).each do |idx|
+        unless @solutions[count].blank?
+          logger.info "##########    #{@solutions[count]}    ##########"
+          @discussion_solution = DiscussionSolution.new
+          @discussion_solution.content = @solutions[count]
+          @discussion_solution.discussion_id = @discussion.id
+          @discussion_solution.save
+        end
+        count = count + 1
+      end
+    end
+
+
     respond_to do |format|
       if @discussion.update(discussion_params)
         format.html { redirect_to @discussion, notice: 'Discussion was successfully updated.' }

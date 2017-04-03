@@ -149,11 +149,11 @@
                 <div class="row">
                     <section class="col col-6">
                         <label class="label">토론 시작일<span style="color: red">*</span></label>
-                        <input class="form-control" type="date" name="discussion[start_date]" id="start_date" value="<%= @discussion.start_date unless @discussion.start_date.nil? %>">
+                        <input class="form-control" type="text" name="discussion[start_date]" id="start_date" value="<%= @discussion.start_date unless @discussion.start_date.nil? %>">
                     </section>
                     <section class="col col-6">
                         <label class="label">토론 만료일<span style="color: red">*</span></label>
-                        <input class="form-control" type="date" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
+                        <input class="form-control" type="text" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
                     </section>
                 </div>
 
@@ -183,7 +183,7 @@
                 <% else %>
                     <% label_check = 0 %>
                     <% @discussion.discussion_title_explanations.each do |title_explanation| %>
-                        <div class="row">
+                        <div class="row" id="title_explanation_<%= title_explanation.id %>">
                             <section class="col-md-8 col-sm-8 col-xs-12">
                                 <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
                                 <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
@@ -275,16 +275,17 @@
                 </div>
             </fieldset>
 
-            <footer class="text-right">
-                <input class="btn-u btn-u-info rounded" type="button" onclick="beforeCheckAndSend('<%= @discussion_form_id %>')" value='입력완료'> |
-                <% unless @user_type !='admin' %>
-                    <%= link_to 'Back', discussions_path, :class => 'btn-u btn-u-red rounded' %>
-                <% else %>
-                    <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn-u btn-u-red rounded' %>
-                <% end %>
+            <footer class="text-center">
                 <% unless params[:id].nil? %>
-                    &nbsp;|&nbsp;<%= link_to 'Show', @discussion, :class => 'btn-u btn-u-yellow rounded' %>
+                    <%= link_to 'Show', @discussion, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
                 <% end %>
+                <% unless @user_type !='admin' %>
+                    <%= link_to 'Back', discussions_path, :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                <% else %>
+                    <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                <% end %>
+                <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                <input class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5" type="button" onclick="beforeCheckAndSend('<%= @discussion_form_id %>')" value='입력완료'>
             </footer>
 
             <div class="message">
@@ -711,4 +712,29 @@
             }
         });
     }
+</script>
+
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $( function() {
+
+        $('#start_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_from').datepicker('option', 'minDate', selectedDate);
+            }
+        });
+
+        $('#expiration_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_to').datepicker('option', 'maxDate', selectedDate);
+            }
+        });
+
+    } );
 </script>

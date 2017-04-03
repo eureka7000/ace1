@@ -41,8 +41,9 @@
 
                     <ul class="post-shares">
                         <li><img src="<%= discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion.user.user_img %>" class="rounded-x img-center" style="width: 40px; height: 40px; margin-bottom: 10px; background: #eee"></li>
-                        <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee">20</span></li>
+                        <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee"><%= discussion.discussion_replies.count %></span></li>
                         <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
+                        <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                     </ul>
                 </div>
                 <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
