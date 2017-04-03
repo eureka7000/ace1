@@ -1,6 +1,15 @@
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
 <div class="breadcrumbs col-md-12">
     <div class="container">
         <h1 class="pull-left">토론방</h1>
@@ -46,7 +55,17 @@
         </ul>
     </div>
 
-    <!--주제 해설-->
+    <!--본문 내용-->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>*<em>본문 내용</em></h3>
+            <%== @discussion.content %>
+        </div>
+    </div>
+
+    <% unless @discussion.discussion_title_explanations.blank? %>
+    <hr>
+    <!--개념 해설-->
     <div class="row margin-top-20">
         <div class="col-md-12">
             <h3>*<em>개념 해설 (발문)</em></h3>
@@ -67,6 +86,7 @@
             </div>
         </div>
     </div>
+    <% end %>
 
     <!--개념 설명-->
     <% unless @discussion.concept_explanation.blank? %>
@@ -79,16 +99,7 @@
         </div>
     <% end %>
 
-    <hr>
     <div hidden id="timer">
-        <!--본문 내용-->
-        <div class="row">
-            <div class="col-md-12">
-                <h3>*<em>본문 내용</em></h3>
-                <%== @discussion.content %>
-            </div>
-        </div>
-
         <!--문제풀이-->
         <% unless @discussion.discussion_solutions.blank? %>
             <hr>
@@ -160,7 +171,7 @@
                     <input hidden name="discussion_reply[group_id]" value="0">
                     <input hidden name="discussion_reply[group_no]" value="0">
                     <textarea class="post_reply_summernote" id="post_reply" name="discussion_reply[comment]"></textarea>
-                    <input type="submit" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" value="의견 저장">
+                    <input type="button" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" onclick="commentFilter('post_reply')" value="의견 저장">
                 </form>
             </div>
         </div>
@@ -185,10 +196,10 @@
                             <div class="col-sm-11">
                                 <div class="comments-itself">
                                     <!--댓글 단 유저 이름-->
-                                    <h4>
-                                        <%= discussion_reply.user.user_name %>
+                                    <h5>
+                                        <i class="fa fa-pencil"></i><%= discussion_reply.user.user_name %>
                                         <!--<span>5 hours ago / <a href="#">Reply</a></span>-->
-                                    </h4>
+                                    </h5>
 
                                     <!--댓글내용-->
                                     <%== discussion_reply.comment %>
@@ -204,8 +215,8 @@
                                         <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply.id %>">
                                         <input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_2.count + 1 %>">
                                         <!--버튼 클릭시 대댓글 저장-->
-                                        <textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20"></textarea>
-                                        <button type="submit" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12">댓글 저장</button>
+                                        <textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20" id="post_reply_<%= reply1 %>"></textarea>
+                                        <input type="button" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12" onclick="commentFilter('<%= reply1 %>')" value="댓글 저장">
                                     </form>
                                 </div>
                             </div>
@@ -220,10 +231,10 @@
                                     <div class="col-sm-11">
                                         <div class="comments-itself">
                                             <!--댓글 단 유저 이름-->
-                                            <h4>
-                                                <%= discussion_reply_2.user.user_name %>
+                                            <h5>
+                                                <i class="fa fa-pencil-square-o"></i><%= discussion_reply_2.user.user_name %>
                                                 <!--<span>6 hours ago / <a href="#">Reply</a></span>-->
-                                            </h4>
+                                            </h5>
 
                                             <!--댓글내용-->
                                             <%== discussion_reply_2.comment %>
@@ -237,6 +248,9 @@
                     <% end %>
 
                 <% end %>
+
+                <hr>
+                <a href="/discussions/discussion_list"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
             </div>
         </div>
     </div>
@@ -369,10 +383,30 @@
 
 <!--form check-->
 <script type="text/javascript">
-    function formCheck() {
-        alert($('#post_reply').val());
+    function commentFilter(id) {
+        if (id == 'post_reply'){
+            if ($('#post_reply').val() != ''){
+                $('#discussion_reply').submit();
+            }
+            else {
+                alert('의견을 입력해주세요');
+                return false;
+            }
+        }
+        else {
+            if ($('#post_reply_'+id).val() != ''){
+                $('#discussion_reply_'+id).submit();
+            }
+            else{
+                alert('댓글을 입력해주세요');
+                return false;
+            }
+        }
     }
-
-     var time = <%= @discussion.think_time %>  * 60000;
-    setTimeout(function(){ $('#timer').show(); }, time);
+    <% if @participant_before_check == false %>
+        var time = <%= @discussion.think_time %>  * 60000;
+        setTimeout(function(){ $('#timer').show(); }, time);
+    <% else %>
+        $('#timer').show();
+    <% end %>
 </script>
