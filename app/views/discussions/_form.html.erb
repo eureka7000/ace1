@@ -478,6 +478,11 @@
         $('#concept_explanation').summernote({
             height: 200,
             placeholder: '개념 설명을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'concept_explanation');
+                }
+            }
         });
     });
 

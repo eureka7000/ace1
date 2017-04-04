@@ -273,6 +273,7 @@
     function sendFile(file, editor, welEditable, id_name) {
         var data = new FormData();
         data.append("discussion_image[filename]", file);
+        data.append('discussion_image[discussion_id]', <%= @discussion.id %>);
 
         $.ajax({
             data: data,
