@@ -1,6 +1,6 @@
 class DiscussionsController < ApplicationController
   before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room, :discussion_edit]
-  before_action :authenticate_admin_user!, only: [:index, :edit, :destroy, :select_leader, :give_authority]
+  before_action :authenticate_admin_user!, only: [:index, :edit, :select_leader, :give_authority]
   before_filter :authenticate_user!, only: [:discussion_list, :discussion_room, :discussion_new, :discussion_edit]
 
   layout 'admin_main'
@@ -496,10 +496,24 @@ class DiscussionsController < ApplicationController
   # DELETE /discussions/1
   # DELETE /discussions/1.json
   def destroy
+
+    unless session[:admin].nil?
+      is_admin = true
+    else
+      is_admin = false
+    end
+
     @discussion.destroy
+
+    ret = { ret: "success" }
+
     respond_to do |format|
-      format.html { redirect_to discussions_url, notice: 'Discussion was successfully destroyed.' }
-      format.json { head :no_content }
+      if is_admin == true
+        format.html { redirect_to discussions_url, notice: 'Discussion was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.json { render json: ret }
+      end
     end
   end
 

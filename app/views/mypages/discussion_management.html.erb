@@ -32,7 +32,8 @@
                                             <th class="text-center">핵심개념</th>
                                             <th class="text-center">토론기간</th>
                                             <th class="text-center">참가자 수</th>
-                                            <th class="text-center" colspan="2"><i class="fa fa-cog"></i></th>
+                                            <!--<th class="text-center">개설자</th>-->
+                                            <th class="text-center"><i class="fa fa-cog"></i></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -42,8 +43,12 @@
                                                 <td class="text-center"><%= discussion.unit_concept.name %></td>
                                                 <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
                                                 <td class="text-center"><%= discussion.participants.count %></td>
-                                                <td class="text-center"><button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button></td>
-                                                <td class="text-center"><button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button></td>
+                                                <!--<td class="text-center"><%#= discussion.organizer_type %></td>-->
+                                                <td class="text-center">
+                                                    <button class="btn btn-pinterest rounded btn-xs" <%= "disabled='ture'" unless discussion.organizer_type != 'admin' %> onclick="destroyDiscussion('<%= discussion.id %>')">삭제</button>
+                                                    | <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button>
+                                                    | <button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button>
+                                                </td>
                                             </tr>
                                         <% end %>
                                         </tbody>
@@ -84,5 +89,26 @@
 <script type="text/javascript">
     function move(url) {
         location = url;
+    }
+
+    function destroyDiscussion(id) {
+        if (confirm('해당 토론방을 삭제하시겠습니까?')) {
+
+            var url = "/discussions/" + id;
+
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                success : function(data) {
+                    alert('정상적으로 관계를 해제하였습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
     }
 </script>
