@@ -13,7 +13,7 @@
                 <!--토론방 개설 권한 있는 유저에게만 보이기-->
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20">
-                        <% if current_user.can_I_create_a_discussion? %>
+                        <% if current_user.can_I_manage_discussion_rooms? %>
                             <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-xing rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
                         <% end %>
                     </div>
@@ -21,33 +21,42 @@
 
                 <div class="tab-content">
                     <div class="profile-edit tab-pane fade in active">
-                        <div class="table-search-v1 margin-bottom-20">
-                            <div class="table-responsive">
-                                <table class="table text-center">
-                                    <thead>
-                                    <tr>
-                                        <th class="text-center">주제</th>
-                                        <!--<th>핵심개념</th>-->
-                                        <th class="text-center">토론기간</th>
-                                        <th class="text-center">참가자 수</th>
-                                        <th class="text-center" colspan="2"><i class="fa fa-cog"></i></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <% @discussions.each do |discussion| %>
+
+                        <% unless @discussions.blank? %>
+                            <div class="table-search-v1 margin-bottom-20">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
                                         <tr>
-                                            <td><%= discussion.title %></td>
-                                            <!--<td><%#= discussion.unit_concept.name %></td>-->
-                                            <td><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
-                                            <td><%= discussion.participants.count %></td>
-                                            <td><button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button></td>
-                                            <td><button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button></td>
+                                            <th class="text-center">주제</th>
+                                            <th class="text-center">핵심개념</th>
+                                            <th class="text-center">토론기간</th>
+                                            <th class="text-center">참가자 수</th>
+                                            <th class="text-center" colspan="2"><i class="fa fa-cog"></i></th>
                                         </tr>
-                                    <% end %>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        <% @discussions.each do |discussion| %>
+                                            <tr>
+                                                <td><%= discussion.title %></td>
+                                                <td class="text-center"><%= discussion.unit_concept.name %></td>
+                                                <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
+                                                <td class="text-center"><%= discussion.participants.count %></td>
+                                                <td class="text-center"><button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button></td>
+                                                <td class="text-center"><button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button></td>
+                                            </tr>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
+                        <% else %>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h3>- 관리중인 토론방이 없습니다. -</h3>
+                                </div>
+                            </div>
+                        <% end %>
                     </div>
                 </div>
             </div>

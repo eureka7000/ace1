@@ -75,13 +75,15 @@ class DiscussionsController < ApplicationController
   def discussion_new
     @discussion = Discussion.new
     @discussion_form_id = 'new_discussion'
-    @leader = Teacher.where('user_id = ?', current_user.id)
     @user_type = 'user'
+    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
 
     if current_user.user_types[0].user_type == 'school teacher'
       @manage_type = '학교'
     elsif current_user.user_types[0].user_type == 'institute teacher'
       @manage_type = '학원'
+    elsif current_user.user_types[0].user_type == 'mento'
+      @manage_type = 'EurekaMath'
     end
 
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
@@ -94,7 +96,7 @@ class DiscussionsController < ApplicationController
     @user_type = 'user'
     @checked_grade = @discussion.grade.split(',')
     @manage_type = @discussion.manage_type
-    @leader = Teacher.where('user_id = ?', current_user.id)
+    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
 
     # 선택 상태 유지
     @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
@@ -286,17 +288,21 @@ class DiscussionsController < ApplicationController
     @discussion_form_id = 'new_discussion'
     @admin_id = session[:admin]['id']
     @user_type = 'admin'
+    @manage_type = 'EurekaMath'
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
       @leader = Staff.where(:admin_id => session[:admin]['id'])
-      @manage_type = 'EurekaMath'
     else
-      @leader = Teacher.where(:school_id => session[:admin]['school_id'])
-      if session[:admin]['admin_type'] == 'school manager'
-        @manage_type = '학교'
+      if current_user.user_types[0].user_type == 'mento'
+        @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
       else
-        @manage_type = '학원'
+        @leader = Teacher.where(:school_id => session[:admin]['school_id'])
+        if session[:admin]['admin_type'] == 'school manager'
+          @manage_type = '학교'
+        else
+          @manage_type = '학원'
+        end
       end
     end
 

@@ -145,24 +145,12 @@ class User < ActiveRecord::Base
         end
     end
 
-    # 토론방 생성 자격이 있나?
-    def can_I_create_a_discussion?
-        ret = false
-
-        discussion_authority = DiscussionAuthority.where('user_id = ?', self.id)
-        unless discussion_authority.blank?
-            ret = true
-        end
-
-        ret
-    end
-
     # 토론방 관리 자격이 있나?
     def can_I_manage_discussion_rooms?
         ret = false
 
-        discussions = Discussion.where('user_id = ?', self.id)
-        unless discussions.blank?
+         discussion_authorities = DiscussionAuthority.where('user_id = ?', self.id)
+        unless discussion_authorities.blank?
             ret = true
         end
 

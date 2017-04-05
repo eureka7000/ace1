@@ -60,7 +60,7 @@
 
         <% if current_user.can_I_manage_discussion_rooms? %>
             <li class="list-group-item <%= 'active' if @click == 'discussion_management'%>">
-                <a href="/mypages/discussion_management"><i class="fa fa-university"></i> 토론방</a>
+                <a href="/mypages/discussion_management"><i class="fa fa-university"></i> 토론방 관리</a>
             </li>
         <% end %>
         <li class="list-group-item <%= 'active' if @click == 'textbook'%>">
