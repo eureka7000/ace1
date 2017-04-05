@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :discussion_reply
 
     resources :discussion_images
+    get 'discussions/:id/discussion_edit' => 'discussions#discussion_edit'
     get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
     get 'discussions/:id/like' => 'discussions#like'
     get 'discussions/discussion_new' => 'discussions#discussion_new'
@@ -121,6 +122,7 @@ Rails.application.routes.draw do
     root :to => "homes#index"
 
     # Mypages
+    get  'mypages/discussion_management' => 'mypages#discussion_management'
     get  'mypages/overall' => 'mypages#overall'
     get  'mypages/evaluation' => 'mypages#evaluation'
     get  'mypages/user_info' => 'mypages#user_info'

@@ -14,13 +14,6 @@
 
 <div class="container container-fluid margin-bottom-50">
 
-    <!--토론방 개설 권한 있는 유저에게만 보이기-->
-    <% if current_user.can_I_create_a_discussion? %>
-        <div class="col-md-12">
-            <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 margin-top-20 margin-bottom-20' %>
-        </div>
-    <% end %>
-
     <% @discussions.each do |discussion| %>
         <div class="col-md-6">
             <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1">

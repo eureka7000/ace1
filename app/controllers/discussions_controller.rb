@@ -1,7 +1,7 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room]
-  before_action :authenticate_admin_user!, only: [:index, :edit, :update, :destroy, :select_leader, :give_authority]
-  before_filter :authenticate_user!, only: [:discussion_list]
+  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room, :discussion_edit]
+  before_action :authenticate_admin_user!, only: [:index, :edit, :destroy, :select_leader, :give_authority]
+  before_filter :authenticate_user!, only: [:discussion_list, :discussion_room, :discussion_new, :discussion_edit]
 
   layout 'admin_main'
 
@@ -83,6 +83,25 @@ class DiscussionsController < ApplicationController
     elsif current_user.user_types[0].user_type == 'institute teacher'
       @manage_type = '학원'
     end
+
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+
+    render layout: 'application'
+  end
+
+  def discussion_edit
+    @discussion_form_id = 'edit_discussion_' + @discussion.id.to_s
+    @user_type = 'user'
+    @checked_grade = @discussion.grade.split(',')
+    @manage_type = @discussion.manage_type
+    @leader = Teacher.where('user_id = ?', current_user.id)
+
+    # 선택 상태 유지
+    @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
+    unit_concept_code = @unit_concept.code.slice(0, 4)
+    concept_code = @unit_concept.code.slice(0, 3)
+    @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
+    @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
 
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
@@ -295,18 +314,13 @@ class DiscussionsController < ApplicationController
       @user_type = 'user'
     end
     @checked_grade = @discussion.grade.split(',')
+    @manage_type = @discussion.manage_type
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
       @leader = Staff.where(:admin_id => session[:admin]['id'])
-      @manage_type = 'EurekaMath'
     else
       @leader = Teacher.where(:school_id => session[:admin]['school_id'])
-      if session[:admin]['admin_type'] == 'school manager'
-        @manage_type = '학교'
-      else
-        @manage_type = '학원'
-      end
     end
 
     # 선택 상태 유지
@@ -317,7 +331,6 @@ class DiscussionsController < ApplicationController
     @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
 
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
-
   end
 
   # POST /discussions
@@ -408,11 +421,11 @@ class DiscussionsController < ApplicationController
     # nested params coding for save discussion_solution
     @solutions = params[:solution]
 
-    # unless session[:admin].nil?
-    #   is_admin = true
-    # else
-    #   is_admin = false
-    # end
+    unless session[:admin].nil?
+      is_admin = true
+    else
+      is_admin = false
+    end
 
     unless discussion_image_ids.blank?
       DiscussionImage.where('discussion_id = ?', @discussion.id).delete_all
@@ -460,8 +473,13 @@ class DiscussionsController < ApplicationController
 
     respond_to do |format|
       if @discussion.update(discussion_params)
-        format.html { redirect_to @discussion, notice: 'Discussion was successfully updated.' }
-        format.json { render :show, status: :ok, location: @discussion }
+
+        if is_admin == true
+          format.html { redirect_to @discussion, notice: 'Discussion was successfully updated.' }
+          format.json { render :show, status: :ok, location: @discussion }
+        else
+          format.html { redirect_to '/mypages/discussion_management', notice: 'Discussion was successfully updated.' }
+        end
       else
         format.html { render :edit }
         format.json { render json: @discussion.errors, status: :unprocessable_entity }
