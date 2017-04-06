@@ -24,7 +24,6 @@ class MypagesController < ApplicationController
             unit_concept_id = @last_studied_unit_concept_id
             count = UnitConceptDesc.get_unit_concept_desc_count(unit_concept_id)
             @progress_percent = @last_study_histories.count.to_f/count * 100
-
         end
 
         # 최근 질문들
@@ -43,6 +42,9 @@ class MypagesController < ApplicationController
 
         # 개념 자기 평가 이력들
         @self_evaluations = UnitConceptSelfEvaluation.where(user_id: current_user.id).order(created_at: :desc).limit(5)
+
+        # 최근 참여한 토론방
+        @discussion_rooms = DiscussionHistory.where('user_id = ?', current_user.id)
 
     end
 

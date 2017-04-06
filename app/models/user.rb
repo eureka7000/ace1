@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
     has_many :staffs, :dependent => :delete_all
     has_many :discussion_authorities, :dependent => :delete_all
     has_many :discussions
+    has_many :discussion_histories
 
     belongs_to :school
     belongs_to :admin, :foreign_key => "join_channel_sales_id"

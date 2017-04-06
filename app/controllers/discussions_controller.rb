@@ -1,7 +1,7 @@
 class DiscussionsController < ApplicationController
   before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room, :discussion_edit]
   before_action :authenticate_admin_user!, only: [:index, :edit, :select_leader, :give_authority]
-  before_filter :authenticate_user!, only: [:discussion_list, :discussion_room, :discussion_new, :discussion_edit]
+  before_filter :authenticate_user!, only: [:past_discussions_list, :discussion_list, :discussion_room, :discussion_new, :discussion_edit]
 
   layout 'admin_main'
 
@@ -58,6 +58,21 @@ class DiscussionsController < ApplicationController
       end
     end
 
+    # 토론방 이력 저장.
+    discussion_history = DiscussionHistory.where('user_id = ? and discussion_id = ?', current_user.id, @discussion.id)
+
+    if discussion_history.count > 0
+      discussion_history[0].discussion_count = discussion_history[0].discussion_count + 1
+      discussion_history[0].save
+    else
+      discussion_history = DiscussionHistory.new
+      discussion_history.user_id = current_user.id
+      discussion_history.discussion_id = @discussion.id
+      discussion_history.discussion_count = 1
+      discussion_history.save
+    end
+    # 토론방 이력 저장 끝.
+
     render layout: 'application'
   end
 
@@ -111,7 +126,13 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_list
-    @discussions = Discussion.all.order(:created_at => :desc)
+    @discussions = Discussion.where('expiration_date >= ?', Date.today).order(:created_at => :desc)
+
+    render layout: 'application'
+  end
+
+  def past_discussions_list
+    @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
 
     render layout: 'application'
   end
@@ -405,7 +426,7 @@ class DiscussionsController < ApplicationController
           format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
           format.json { render :show, status: :created, location: @discussion }
         else
-          format.html { redirect_to '/discussions/discussion_list', notice: 'Discussion was successfully created.' }
+          format.html { redirect_to '/discussions/discussion_management', notice: 'Discussion was successfully created.' }
         end
 
       else

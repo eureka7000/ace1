@@ -173,8 +173,16 @@
                             <li><a href="/contents?view_type=2&step=1">학년별</a></li>
                             <!--<li><a href="/exams/previous_exams">기출문제</a></li>-->
                             <li><a href="/homes/contents_list">학습 목차 한눈에 보기</a></li>
-                            <li><a href="/discussions/discussion_list">토론방</a></li>
+                            <!--<li><a href="/discussions/discussion_list">토론방</a></li>-->
                             <!-- <li><a href="/contents/by_level">난위도별</a></li> -->
+                        </ul>
+                    </li>
+
+                    <li class="<%= 'active' if @active == 'discussionRoom' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">토론방</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/discussions/discussion_list">진행중인 토론방</a></li>
+                            <li><a href="/discussions/past_discussions_list">지난 토론방</a></li>
                         </ul>
                     </li>
 

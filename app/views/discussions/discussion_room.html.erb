@@ -13,11 +13,6 @@
 <div class="breadcrumbs col-md-12">
     <div class="container">
         <h1 class="pull-left">토론방</h1>
-        <ul class="pull-right breadcrumb">
-            <li><a href="/">Home</a></li>
-            <li>STUDY</li>
-            <li class="active"><a href="/discussions/discussion_list">토론방</a></li>
-        </ul>
     </div><!--/container-->
 </div>
 
@@ -64,28 +59,30 @@
     </div>
 
     <% unless @discussion.discussion_title_explanations.blank? %>
-    <hr>
-    <!--개념 해설-->
-    <div class="row margin-top-20">
-        <div class="col-md-12">
-            <h3>*<em>개념 해설 (발문)</em></h3>
-            <div class="row sky-form no-padding no-margin" style="border: none">
-                <% @discussion.discussion_title_explanations.each do |title_explanation| %>
-                    <div class="inline-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
-                            <em><%== title_explanation.content %></em>
+        <hr>
+        <!--개념 해설-->
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <h3>*<em>개념 해설 (발문)</em></h3>
+                <div class="row sky-form no-padding no-margin" style="border: none">
+                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                        <div class="row">
+                            <div class="inline-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
+                                    <em><%== title_explanation.content %></em>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                                    <label class="radio"><button class="btn btn-windows btn-sm rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
+                                    <label class="radio"><button class="btn btn-dropbox btn-sm rounded" onclick="moveToStudyRoom('<%= title_explanation.unit_concept_id %>')">개념보기</button></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 no-padding no-margin">
-                            <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
-                            <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
-                            <label class="radio"><button class="btn btn-windows btn-sm rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
-                            <label class="radio"><button class="btn btn-dropbox btn-sm rounded" onclick="moveToStudyRoom('<%= title_explanation.unit_concept_id %>')">개념보기</button></label>
-                        </div>
-                    </div>
-                <% end %>
+                    <% end %>
+                </div>
             </div>
         </div>
-    </div>
     <% end %>
 
     <!--개념 설명-->
@@ -405,9 +402,9 @@
         }
     }
     <% if @participant_before_check == false %>
-        var time = <%= @discussion.think_time %>  * 60000;
-        setTimeout(function(){ $('#timer').show(); }, time);
+    var time = <%= @discussion.think_time %>  * 60000;
+    setTimeout(function(){ $('#timer').show(); }, time);
     <% else %>
-        $('#timer').show();
+    $('#timer').show();
     <% end %>
 </script>
