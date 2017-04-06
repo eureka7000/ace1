@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="col-sm-6">
-                        <div class="service-block-v3 service-block-blue" onclick="go_discussion_room(<%= @discussion_rooms.last.discussion_id %>)">
+                        <div class="service-block-v3 service-block-blue" onclick="go_discussion_room('<%= @discussion_rooms.blank? ? '' : @discussion_rooms.last.discussion_id %>')">
                             <i class="icon-education-024"></i>
                             <span class="service-heading">최근 참여한 토론방</span>
                             <h3 style="color: white"><%= @discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.title %></h3>
@@ -528,6 +528,8 @@
     }
 
     function go_discussion_room(discussion_id) {
-        location = '/discussions/discussion_room/' + discussion_id;
+        if (discussion_id != ''){
+            location = '/discussions/discussion_room/' + discussion_id;
+        }
     }
 </script>
