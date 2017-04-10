@@ -201,7 +201,7 @@
                                 <% @discussion_rooms.each do |discussion_room| %>
                                 <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[color] %> alert-dismissable">
                                     <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
-                                    <img class="rounded-x" src="<%= discussion_room.discussion.user.nil? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
+                                    <img class="rounded-x" src="<%= discussion_room.discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
                                     <div class="overflow-h">
                                         <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
                                         <p>참가자 수: <%= discussion_room.discussion.participants.count %> &nbsp;&nbsp;댓글 수: <%= discussion_room.discussion.discussion_replies.count %> &nbsp;&nbsp;likes: <%= discussion_room.discussion.like.nil? ? '0' : discussion_room.discussion.like %></p>
