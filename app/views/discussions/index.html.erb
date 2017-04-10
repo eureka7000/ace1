@@ -54,13 +54,13 @@
                 <td class="text-center"><%= unit_concept.name unless discussion.unit_concept_id.nil? %></td>
                 <td class="text-center"><%= unit_concept.level %></td>
                 <!--<td>-->
-                    <!--<%# unless discussion.unit_concept_id.nil? %>-->
-                        <!--<%# discussion.unit_concept.unit_concept_descs.each do |ucd| %>-->
-                            <!--<%# if ucd.desc_type == '5' %>-->
-                                <!--<%#= ucd.link %>-->
-                            <!--<%# end %>-->
-                        <!--<%# end %>-->
-                    <!--<%# end %>-->
+                <!--<%# unless discussion.unit_concept_id.nil? %>-->
+                <!--<%# discussion.unit_concept.unit_concept_descs.each do |ucd| %>-->
+                <!--<%# if ucd.desc_type == '5' %>-->
+                <!--<%#= ucd.link %>-->
+                <!--<%# end %>-->
+                <!--<%# end %>-->
+                <!--<%# end %>-->
                 <!--</td>-->
                 <td class="text-center"><%= discussion.grade unless discussion.grade.nil? %></td>
                 <td class="text-center"><%= discussion.level unless discussion.level.nil? %></td>
@@ -71,9 +71,11 @@
                 <!--<td><%#== discussion.interim_report unless discussion.interim_report.nil? %></td>-->
                 <!--<td><%#== discussion.final_report unless discussion.final_report.nil? %></td>-->
                 <!--<td><%#== discussion.answer unless discussion.answer.nil? %></td>-->
-                <td class="text-center"><%= link_to 'Show', discussion %></td>
-                <td class="text-center"><%= link_to 'Edit', edit_discussion_path(discussion) %></td>
-                <td class="text-center"><%= link_to 'Destroy', discussion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                <td class="text-center"><%= link_to 'Show', discussion, class: 'btn btn-windows rounded btn-xs' %></td>
+                <% unless @admin_type != 'admin' %>
+                    <td class="text-center"><%= link_to 'Edit', edit_discussion_path(discussion), class: 'btn btn-podcast rounded btn-xs' %></td>
+                    <td class="text-center"><%= link_to 'Destroy', discussion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-youtube rounded btn-xs' %></td>
+                <% end %>
             </tr>
         <% end %>
         </tbody>

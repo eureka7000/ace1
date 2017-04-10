@@ -376,20 +376,24 @@
                                         <tbody>
                                         <% unless @requests.blank? %>
                                             <% @requests.each do |request| %>
-                                                <td class="text-center"><%= request.user.user_types[0].user_type %></td>
-                                                <td class="text-center"><%= request.user.user_name %></td>
-                                                <td class="text-center">
-                                                    <%= UnitConcept::GRADES[request.user.grade.to_i] unless request.user.grade.nil? %>
-                                                </td>
-                                                <td class="text-center"><%= request.user.user_auth %></td>
-                                                <td class="text-center"><%= request.request_date.in_time_zone('Asia/Seoul').strftime('%Y-%m-%d %H:%M') %></td>
-                                                <td class="text-center">
-                                                    <button class="btn btn-u btn-u-split-light-green btn-u-xs rounded" onclick="approval('<%= request.id %>')">수락</button> |
-                                                    <button class="btn btn-u btn-u-red btn-u-xs rounded" onclick="rejection('<%= request.id %>')">거절</button>
-                                                </td>
+                                                <tr>
+                                                    <td class="text-center"><%= request.user.user_types[0].user_type %></td>
+                                                    <td class="text-center"><%= request.user.user_name %></td>
+                                                    <td class="text-center">
+                                                        <%= UnitConcept::GRADES[request.user.grade.to_i] unless request.user.grade.nil? %>
+                                                    </td>
+                                                    <td class="text-center"><%= request.user.user_auth %></td>
+                                                    <td class="text-center"><%= request.request_date.in_time_zone('Asia/Seoul').strftime('%Y-%m-%d %H:%M') %></td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-u btn-u-split-light-green btn-u-xs rounded" onclick="approval('<%= request.id %>')">수락</button> |
+                                                        <button class="btn btn-u btn-u-red btn-u-xs rounded" onclick="rejection('<%= request.id %>')">거절</button>
+                                                    </td>
+                                                </tr>
                                             <% end %>
                                         <% else %>
-                                            <td colspan="6" class="text-center">현재 들어온 신청이 없습니다.</td>
+                                            <tr>
+                                                <td colspan="6" class="text-center">현재 들어온 신청이 없습니다.</td>
+                                            </tr>
                                         <% end %>
                                         </tbody>
                                     </table>
@@ -565,7 +569,7 @@
                             <select name="user_relation[relation_type]" class="form-control" id="relation_type">
                                 <option value="">---선택하세요---</option>
                                 <% User::USER_TYPES.each_pair do |key, value| %>
-                                    <% unless key == 'school manager' || key == 'institute manager' || key == 'mento' || key == current_user.user_types[0].user_type %>
+                                    <% unless key == 'school manager' || key == 'institute manager' || key == current_user.user_types[0].user_type %>
                                         <option value="<%= key %>"><%= value %></option>
                                     <% end %>
                                 <% end %>

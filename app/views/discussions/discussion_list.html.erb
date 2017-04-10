@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="/assets/plugins/brand-buttons/brand-buttons.css">
 <link rel="stylesheet" href="/assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
+<link href="/css/select2.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/select2.min.js"></script>
+
 <div class="breadcrumbs col-md-12">
     <div class="container">
         <h1 class="pull-left">진행중인 토론방</h1>
@@ -12,7 +15,22 @@
     </div><!--/container-->
 </div>
 
-<div class="container container-fluid margin-bottom-50">
+<!--리더 검색 기능-->
+<div class="container col-md-12 margin-top-20">
+    <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
+        <select class="select2-search-box" style="width: 100%;" id="leaderSearch" name="" value="">
+            <option value="">방장검색</option>
+            <% @discussions.select(:user_id).distinct.each do |leader| %>
+                <option value="<%= leader.user_id %>"><%= leader.user.user_name %></option>
+            <% end %>
+        </select>
+    </div>
+    <div class="col-md-6 col-sm-12 col-xs-12">
+        <button class="btn btn-podcast btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="leaderSearch()">찾기</button>
+    </div>
+</div>
+
+<div class="container container-fluid">
 
     <% @discussions.each do |discussion| %>
         <div class="col-md-6">
@@ -47,6 +65,11 @@
 </div>
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".select2-search-box").select2();
+    });
+
     function discussionLike(discussion_id) {
 
         <% if current_user.nil? %>
@@ -72,5 +95,9 @@
 
     function participate(discussion_id) {
         location = "/discussions/discussion_room/" + discussion_id
+    }
+
+    function leaderSearch() {
+        location = '/discussions/discussion_list?leader=' + $('#leaderSearch option:selected').val();
     }
 </script>

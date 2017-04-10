@@ -194,9 +194,10 @@
                         <div class="panel panel-profile">
                             <div class="panel-heading overflow-h">
                                 <h2 class="panel-title heading-sm pull-left"><i class="fa fa-university"></i> 참여한 토론방</h2>
-                                <a href="/discussions/past_discussions_list" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
+                                <a href="/discussions/discussion_list" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                             </div>
                             <div id="scrollbar4" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                <% unless @discussion_rooms.blank? %>
                                 <% color = 0 %>
                                 <% @discussion_rooms.each do |discussion_room| %>
                                 <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[color] %> alert-dismissable">
@@ -208,6 +209,13 @@
                                     </div>
                                 </div>
                                     <% color = (color + 1) % 5 %>
+                                <% end %>
+                                <% else %>
+                                    <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[5] %> alert-dismissable">
+                                        <div class="overflow-h text-center">
+                                            <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>">- 현재 참가한 토론방이 없습니다. -</strong>
+                                        </div>
+                                    </div>
                                 <% end %>
                             </div>
                         </div>

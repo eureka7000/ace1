@@ -126,13 +126,27 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_list
-    @discussions = Discussion.where('expiration_date >= ?', Date.today).order(:created_at => :desc)
+    leader = params[:leader]
+    unless leader.blank?
+      @discussions = Discussion.where('expiration_date >= ? and user_id = ?', Date.today, leader).order(:created_at => :desc)
+    else
+      @discussions = Discussion.where('expiration_date >= ?', Date.today).order(:created_at => :desc)
+    end
+
+    @leaders = Discussion.where('expiration_date >= ?', Date.today).select(:user_id).distinct
 
     render layout: 'application'
   end
 
   def past_discussions_list
-    @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
+    leader = params[:leader]
+    unless leader.blank?
+      @discussions = Discussion.where('expiration_date < ? and user_id = ?', Date.today, leader).order(:created_at => :desc)
+    else
+      @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
+    end
+
+    @leaders = Discussion.where('expiration_date < ?', Date.today).select(:user_id).distinct
 
     render layout: 'application'
   end
@@ -426,7 +440,7 @@ class DiscussionsController < ApplicationController
           format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
           format.json { render :show, status: :created, location: @discussion }
         else
-          format.html { redirect_to '/discussions/discussion_management', notice: 'Discussion was successfully created.' }
+          format.html { redirect_to '/mypages/discussion_management', notice: 'Discussion was successfully created.' }
         end
 
       else
