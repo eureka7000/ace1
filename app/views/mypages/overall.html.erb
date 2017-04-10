@@ -108,31 +108,40 @@
                     </div>
                     <!--최근 질문목록-->
 
-                    <!--공지사항-->
+                    <!--참여한 토론방-->
                     <div class="col-sm-6 md-margin-bottom-20">
-                        <div class="panel panel-profile no-bg">
+
+                        <div class="panel panel-profile">
                             <div class="panel-heading overflow-h">
-                                <h2 class="panel-title heading-sm pull-left"><i class="fa fa-bullhorn"></i>공지사항</h2>
-                                <!--<a href="#"><i class="fa fa-cog pull-right"></i></a>-->
-                                <a href="/blogs/notice" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
+                                <h2 class="panel-title heading-sm pull-left"><i class="fa fa-university"></i> 참여한 토론방</h2>
+                                <a href="/discussions/discussion_list" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                             </div>
-                            <div id="scrollbar2" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                <% @latest_notices.each do |notice| %>
-                                    <div class="profile-event">
-                                        <div class="date-formats">
-                                            <span><%= notice.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
-                                            <small><%= notice.created_at.in_time_zone("Asia/Seoul").strftime('%m, %Y') %></small>
+                            <div id="scrollbar4" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                <% unless @discussion_rooms.blank? %>
+                                    <% color = 0 %>
+                                    <% @discussion_rooms.each do |discussion_room| %>
+                                        <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[color] %> alert-dismissable">
+                                            <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
+                                            <img class="rounded-x" src="<%= discussion_room.discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
+                                            <div class="overflow-h">
+                                                <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
+                                                <p>참가자 수: <%= discussion_room.discussion.participants.count %> &nbsp;&nbsp;댓글 수: <%= discussion_room.discussion.discussion_replies.count %> &nbsp;&nbsp;likes: <%= discussion_room.discussion.like.nil? ? '0' : discussion_room.discussion.like %></p>
+                                            </div>
                                         </div>
-                                        <div class="overflow-h">
-                                            <h3 class="heading-xs"><a href="/blogs/<%= notice.id %>"><%= notice.title %></a></h3>
-                                            <p><%== notice.content.truncate(70) %></p>
+                                        <% color = (color + 1) % 5 %>
+                                    <% end %>
+                                <% else %>
+                                    <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[5] %> alert-dismissable">
+                                        <div class="overflow-h text-center">
+                                            <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>">- 현재 참가한 토론방이 없습니다. -</strong>
                                         </div>
                                     </div>
                                 <% end %>
                             </div>
                         </div>
+
                     </div>
-                    <!--End 공지사항-->
+                    <!--End 참여한 토론방-->
                 </div><!--/end row-->
 
                 <hr>
@@ -189,38 +198,31 @@
                 <hr>
 
                 <div class="row">
-                    <!--Alert-->
+                    <!--공지사항-->
                     <div class="col-sm-12 sm-margin-bottom-30">
-                        <div class="panel panel-profile">
+                        <div class="panel panel-profile no-bg">
                             <div class="panel-heading overflow-h">
-                                <h2 class="panel-title heading-sm pull-left"><i class="fa fa-university"></i> 참여한 토론방</h2>
-                                <a href="/discussions/discussion_list" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
+                                <h2 class="panel-title heading-sm pull-left"><i class="fa fa-bullhorn"></i>공지사항</h2>
+                                <!--<a href="#"><i class="fa fa-cog pull-right"></i></a>-->
+                                <a href="/blogs/notice" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                             </div>
-                            <div id="scrollbar4" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
-                                <% unless @discussion_rooms.blank? %>
-                                <% color = 0 %>
-                                <% @discussion_rooms.each do |discussion_room| %>
-                                <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[color] %> alert-dismissable">
-                                    <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
-                                    <img class="rounded-x" src="<%= discussion_room.discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
-                                    <div class="overflow-h">
-                                        <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
-                                        <p>참가자 수: <%= discussion_room.discussion.participants.count %> &nbsp;&nbsp;댓글 수: <%= discussion_room.discussion.discussion_replies.count %> &nbsp;&nbsp;likes: <%= discussion_room.discussion.like.nil? ? '0' : discussion_room.discussion.like %></p>
-                                    </div>
-                                </div>
-                                    <% color = (color + 1) % 5 %>
-                                <% end %>
-                                <% else %>
-                                    <div class="alert-blocks alert-blocks-<%= Discussion::OVERALL_COLOR_1[5] %> alert-dismissable">
-                                        <div class="overflow-h text-center">
-                                            <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>">- 현재 참가한 토론방이 없습니다. -</strong>
+                            <div id="scrollbar2" class="panel-body no-padding mCustomScrollbar" data-mcs-theme="minimal-dark">
+                                <% @latest_notices.each do |notice| %>
+                                    <div class="profile-event">
+                                        <div class="date-formats">
+                                            <span><%= notice.created_at.in_time_zone("Asia/Seoul").strftime('%d') %></span>
+                                            <small><%= notice.created_at.in_time_zone("Asia/Seoul").strftime('%m, %Y') %></small>
+                                        </div>
+                                        <div class="overflow-h">
+                                            <h3 class="heading-xs"><a href="/blogs/<%= notice.id %>"><%= notice.title %></a></h3>
+                                            <p><%== notice.content.truncate(70) %></p>
                                         </div>
                                     </div>
                                 <% end %>
                             </div>
                         </div>
                     </div>
-                    <!--End Alert-->
+                    <!--End 공지사항-->
 
                     <!--<div class="col-sm-5">-->
                         <!--<div class="panel panel-profile">-->
