@@ -40,7 +40,10 @@
                     <h3>주제 : <%= discussion.title %></h3>
                     <ul class="list-inline posted-info">
                         <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name unless discussion.user.nil? %></span> 선생님</li>
+                    </ul>
+                    <ul class="list-inline posted-info">
                         <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.grade %></span></li>
+                        <li>생각시간 : <span style="color: #1d78cb;"><%= discussion.think_time %>분</span></li>
                     </ul>
                     <ul class="list-inline posted-info">
                         <li>핵심개념 : <span style="color: #1d78cb"><%= discussion.unit_concept.name %></span></li>
@@ -57,11 +60,15 @@
                         <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                     </ul>
                 </div>
-                <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
-
+                <% if Discussion.is_a_mentee_of_leader?(discussion.user_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
+                    <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
+                <% else %>
+                    <button class="btn btn-block btn-default margin-top-20 rounded"><i class="fa fa-lock"></i></button>
+                <% end %>
             </div>
         </div>
     <% end %>
+    <div class="col-md-12 margin-bottom-50"></div>
 </div>
 
 <script type="text/javascript">

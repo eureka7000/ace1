@@ -40,4 +40,22 @@ class Discussion < ActiveRecord::Base
 
       @discussions
     end
+
+    def self.is_a_mentee_of_leader?(leader_id, student_id, observer_yn, user_type)
+      if user_type == 'student'
+        if observer_yn == 'Y'
+          true
+        else
+          @user_relation = UserRelation.where('user_id = ? and related_user_id = ?', leader_id, student_id)
+          unless @user_relation.blank?
+            true
+          else
+            false
+          end
+        end
+      else
+        true
+      end
+    end
+
 end
