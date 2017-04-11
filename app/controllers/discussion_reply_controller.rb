@@ -37,6 +37,6 @@ class DiscussionReplyController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def discussion_reply_params
-    params.require(:discussion_reply).permit(:discussion_id, :user_id, :comment, :group_id, :group_no)
+    params.require(:discussion_reply).permit(:discussion_id, :user_id, :comment, :group_id, :group_no, :depth)
   end
 end
