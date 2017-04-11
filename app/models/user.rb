@@ -150,13 +150,13 @@ class User < ActiveRecord::Base
     def can_I_manage_discussion_rooms?
         ret = false
 
-         discussion_authorities = DiscussionAuthority.where('user_id = ?', self.id)
+        discussion_authorities = DiscussionAuthority.where('user_id = ?', self.id)
+
         unless discussion_authorities.blank?
             ret = true
         end
 
         ret
-
     end
 
 end

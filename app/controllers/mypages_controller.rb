@@ -312,7 +312,7 @@ class MypagesController < ApplicationController
 
     def discussion_management
         @click = 'discussion_management'
-        @discussions = Discussion.where('user_id = ?', current_user.id).order(:start_date => :desc)
+        @discussions = Discussion.where('user_id = ? or sub_leader = ?', current_user.id, current_user.id).order(:start_date => :desc)
     end
 
     def user_image_upload

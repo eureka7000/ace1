@@ -18,6 +18,7 @@
             <header>Discussion form</header>
             <fieldset>
                 <p><span style="color: red">*</span> 필수입력</p>
+
                 <div class="row">
                     <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
                         <label class="label">토론방 리더<span style="color: red">*</span></label>
@@ -29,6 +30,21 @@
                             </select>
                         </label>
                     </section>
+
+                    <section class="col col-3">
+                        <label class="label">토론방 부리더<span style="color: red">*</span></label>
+                        <label class="input">
+                            <select class="form-control" name="discussion[sub_leader]" id="leader">
+                                <% @sub_leader.each do |sub_leader| %>
+                                    <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                <% end %>
+                            </select>
+                        </label>
+                    </section>
+
+                </div>
+
+                <div class="row">
                     <section hidden class="col col-4">
                         <label class="label">운영타입<span style="color: red">*</span></label>
                         <label class="input">

@@ -92,6 +92,7 @@ class DiscussionsController < ApplicationController
     @discussion_form_id = 'new_discussion'
     @user_type = 'user'
     @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
+    @sub_leader = DiscussionAuthority.all
 
     if current_user.user_types[0].user_type == 'school teacher'
       @manage_type = '학교'
@@ -112,6 +113,7 @@ class DiscussionsController < ApplicationController
     @checked_grade = @discussion.grade.split(',')
     @manage_type = @discussion.manage_type
     @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
+    @sub_leader = DiscussionAuthority.all
 
     # 선택 상태 유지
     @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
@@ -324,6 +326,7 @@ class DiscussionsController < ApplicationController
     @admin_id = session[:admin]['id']
     @user_type = 'admin'
     @manage_type = 'EurekaMath'
+    @sub_leader = DiscussionAuthority.all
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
@@ -356,6 +359,7 @@ class DiscussionsController < ApplicationController
     end
     @checked_grade = @discussion.grade.split(',')
     @manage_type = @discussion.manage_type
+    @sub_leader = DiscussionAuthority.all
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
@@ -433,8 +437,6 @@ class DiscussionsController < ApplicationController
             count = count + 1
           end
         end
-
-
 
         if is_admin == true
           format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
@@ -560,6 +562,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time, :like)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader)
     end
 end

@@ -26,6 +26,16 @@
                 <%= @discussion.user.user_name %> <%= "(#{User::USER_TYPES[@discussion.user.user_types.first.user_type]})" %>
             </p>
         </div>
+
+        <div class="col-md-4">
+            <% @sub_leader = User.find(@discussion.sub_leader) %>
+            <p>
+                <strong>토론방 부리더:</strong>
+                <%= @sub_leader.user_name %> <%= "(#{User::USER_TYPES[@sub_leader.user_types.first.user_type]})" %>
+            </p>
+        </div>
+
+
         <div class="col-md-4">
             <p>
                 <strong>운영타입:</strong>
