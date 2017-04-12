@@ -50,8 +50,8 @@ class UserRelation < ActiveRecord::Base
         related_id = self.related_user_id
         user_relation = UserRelation.where('related_user_id = ? and user_id = ?', self.user_id, self.related_user_id)
         user_relation.destroy_all
-    end     
-    
+    end
+
     private
     
     def self.get_reverse_type(type)

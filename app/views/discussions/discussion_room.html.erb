@@ -72,10 +72,13 @@
                                     <em><%== title_explanation.content %></em>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="N"><i class="rounded-x"></i>NO</label>
-                                    <label class="radio"><button class="btn btn-windows btn-xs rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button></label>
-                                    <label class="radio"><button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= title_explanation.unit_concept_id %>')">개념보기</button></label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="easy" checked=""><i class="rounded-x"></i>쉬움</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="normal"><i class="rounded-x"></i>보통</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="difficult"><i class="rounded-x"></i>어려움</label>
+                                    <div>
+                                        <button class="btn btn-windows btn-xs rounded" id="btn_<%= title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= title_explanation.id %>')">Save</button>
+                                         | <button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= title_explanation.unit_concept_id %>')">개념보기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
