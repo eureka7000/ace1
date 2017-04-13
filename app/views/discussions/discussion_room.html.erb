@@ -198,7 +198,7 @@
                                 <div class="comments-itself">
                                     <!--댓글 단 유저 이름-->
                                     <h5>
-                                        <i class="fa fa-pencil"></i><%= discussion_reply.user.user_name %>
+                                        <i class="fa fa-pencil"></i><%= discussion_reply.user.nickname.blank? ? discussion_reply.user.user_name : discussion_reply.user.nickname %>
                                         <!--<span>5 hours ago / <a href="#">Reply</a></span>-->
                                     </h5>
 
@@ -238,7 +238,7 @@
                                         <div class="comments-itself">
                                             <!--댓글 단 유저 이름-->
                                             <h5>
-                                                <i class="fa fa-pencil-square-o"></i><%= discussion_reply_2.user.user_name %>
+                                                <i class="fa fa-pencil-square-o"></i><%= discussion_reply_2.user.nickname.blank? ? discussion_reply_2.user.user_name : discussion_reply_2.user.nickname %>
                                                 <!--<span>6 hours ago / <a href="#">Reply</a></span>-->
                                             </h5>
 
@@ -278,7 +278,7 @@
                                                 <div class="comments-itself">
                                                     <!--댓글 단 유저 이름-->
                                                     <h5>
-                                                        <i class="fa fa-pencil-square-o"></i><%= discussion_reply_3.user.user_name %>
+                                                        <i class="fa fa-pencil-square-o"></i><%= discussion_reply_3.user.nickname.blank? ? discussion_reply_3.user.user_name : discussion_reply_3.user.nickname %>
                                                         <!--<span>6 hours ago / <a href="#">Reply</a></span>-->
                                                     </h5>
 
