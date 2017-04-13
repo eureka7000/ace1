@@ -45,11 +45,11 @@
                                 <%= user.user_name %> | <%= user.email %>
                                 <%=" | #{user.user_types.first.user_type}" unless user.user_types.blank? %>
                                 <%= " | #{user.school.name}" unless user.school.nil? %>
-                                <%= " | #{user.school_name}" unless user.school_name.nil? and user.school_name.blank? %>
-                                <%= " | #{user.school_class}반" unless user.school_class.nil? and user.school_class.blank? %>
-                                <%= " | #{user.institute_name}" unless user.institute_name.nil? and user.institute_name.blank? %>
-                                <%= " | #{user.institute_class}" unless user.institute_class.nil? and user.institute_class.blank? %>
-                                <%= " | #{user.nickname}" unless user.nickname.nil? and user.nickname.blank? %>
+                                <%= " | #{user.school_name}" unless user.school_name.nil? or user.school_name.blank? %>
+                                <%= " | #{user.school_class}반" unless user.school_class.nil? or user.school_class.blank? %>
+                                <%= " | #{user.institute_name}" unless user.institute_name.nil? or user.institute_name.blank? %>
+                                <%= " | #{user.institute_class}" unless user.institute_class.nil? or user.institute_class.blank? %>
+                                <%= " | #{user.nickname}" unless user.nickname.nil? or user.nickname.blank? %>
                                 <%= " | #{user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d')}" unless user.expire_date.nil? %>
                             </option>
                         <% end %>
