@@ -1,0 +1,101 @@
+<div class="breadcrumbs col-md-12 margin-bottom-20">
+    <div class="container">
+        <h1 class="pull-left"><%= @group.name %> 설정</h1>
+    </div>
+</div>
+
+<div class="container container-fluid">
+    <form id="save_users" class="sky-form" action="/groups/save_users" method="post">
+
+        <%= token_tag nil %>
+
+        <input hidden name="group_id" value="<%= @group.id %>">
+        <div class="col-md-12 margin-bottom-40">
+            <select multiple="multiple" id="my-select" name="groups_users[]" size="15">
+                <% unless @user_relations.blank? %>
+                    <optgroup label='학생'>
+                        <% @user_relations.each do |user_relation| %>
+                            <option value="<%= user_relation.user_id %>" <%= user_relation.user.am_I_in_this_group?(@group.id) ? 'selected' : '' %>>
+                                <%= user_relation.user.user_name unless user_relation.user.user_name.nil? %>
+                                <%= "| #{user_relation.user.school_name}" unless user_relation.user.school_name.nil? or user_relation.user.school_name.blank? %>
+                                <%= "| #{user_relation.user.school_class}반" unless user_relation.user.school_class.nil? or user_relation.user.school_class.blank? %>
+                                <%= "| #{user_relation.user.institute_name}" unless user_relation.user.institute_name.nil? or user_relation.user.institute_name.blank? %>
+                                <%= "| #{user_relation.user.institute_class}" unless user_relation.user.institute_class.nil? or user_relation.user.institute_class.blank? %>
+                            </option>
+                        <% end %>
+                    </optgroup>
+                <% end %>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <button id="select-all" class="btn-u btn-u-success rounded">전체선택</button>
+            <button id="deselect-all" class="btn-u btn-u-red rounded">전체해제</button>
+        </div>
+
+        <div class="col-md-6 text-right">
+            <button type="submit" class="btn-u btn-u-success rounded">Do it</button>
+            <a href="/mypages/student_management" type="button" class="btn-u btn-u-red rounded">BACK</a>
+        </div>
+
+    </form>
+
+</div>
+
+<script type="text/javascript">
+
+    function initpage() {
+
+        $('#my-select').multiSelect({
+            selectableHeader: "<div class='custom-header text-center'><h4><strong><i>선택 전</i></strong></h4></div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
+            selectionHeader: "<div class='custom-header text-center'><h4><strong><i>선택 후</i></strong></h4></div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+            afterInit: function(ms){
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e){
+                        if (e.which === 40){
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e){
+                        if (e.which == 40){
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function(){
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+    }
+
+    $('#select-all').click(function(){
+        $('#my-select').multiSelect('select_all');
+        return false;
+    });
+
+    $('#deselect-all').click(function(){
+        $('#my-select').multiSelect('deselect_all');
+        return false;
+    });
+</script>
+
+<script>
+    jQuery(document).ready(function() {
+        initpage();
+    });
+</script>

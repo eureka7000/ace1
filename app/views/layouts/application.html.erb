@@ -33,7 +33,6 @@
     <link rel="stylesheet" href="/assets/plugins/image-hover/css/img-hover.css">
     <link rel="stylesheet" href="/assets/plugins/line-icons-pro/styles.css">
     <link rel="stylesheet" href="/assets/css/plugins/jquery.fileupload.css">
-    <!--<link rel="stylesheet" href="/css/multi-select.css">-->
     <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/css/sky-forms.css">
     <link rel="stylesheet" href="/assets/plugins/sky-forms-pro/skyforms/custom/custom-sky-forms.css">
     <link rel="stylesheet" href="/assets/plugins/brand-buttons/brand-buttons.css">
@@ -42,6 +41,7 @@
     <!-- CSS Page Style -->
     <link rel="stylesheet" href="/assets/css/pages/profile.css">
     <link rel="stylesheet" href="/assets/css/pages/blog.css">
+    <link rel="stylesheet" href="/css/multi-select.css">
 
     <!-- CSS Customization -->
     <link rel="stylesheet" href="/assets/css/custom.css">
@@ -286,11 +286,12 @@
 <script type="text/javascript" src="/assets/plugins/image-hover/js/touch.js"></script>
 <script type="text/javascript" src="/assets/plugins/image-hover/js/modernizr.js"></script>
 
-<!--<script src="/js/jquery.multi-select.js" type="text/javascript"></script>-->
-
 <script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="/assets/plugins/sky-forms-pro/skyforms/js/jquery.maskedinput.min.js"></script>
+
+<script src="/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="/js/jquery.quicksearch.js" type="text/javascript"></script>
 
 <script type="text/javascript">
   WebFontConfig = {
@@ -310,19 +311,14 @@
 </script>
 
 <script>
-    
+
     jQuery(document).ready(function() {
         App.init();
         new WOW().init();
         $('#notice_email_confirm_modal').modal();
         StyleSwitcher.initStyleSwitcher();
-        
-        // $('.news-v3').hover(function() {
-        //     $(this).toggleClass('shadow');
-        // });
-        
     });
-  
+
 </script>
 
 <!--[if lt IE 9]>

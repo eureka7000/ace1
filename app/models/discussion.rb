@@ -6,6 +6,7 @@ class Discussion < ActiveRecord::Base
     has_many :discussion_solutions, :dependent => :delete_all
     has_many :discussion_replies, :dependent => :delete_all
     has_many :discussion_histories, :dependent => :delete_all
+    has_many :groups
 
     belongs_to :user
     belongs_to :unit_concept
@@ -41,13 +42,14 @@ class Discussion < ActiveRecord::Base
       @discussions
     end
 
-    def self.is_a_mentee_of_leader?(leader_id, student_id, observer_yn, user_type)
+    def self.can_I_join_this_room?(group_id, student_id, observer_yn, user_type)
+
       if user_type == 'student'
         if observer_yn == 'Y'
           true
         else
-          @user_relation = UserRelation.where('user_id = ? and related_user_id = ?', leader_id, student_id)
-          unless @user_relation.blank?
+          @groups_users = GroupsUser.where('group_id = ? and user_id = ?', group_id, student_id)
+          unless @groups_users.blank?
             true
           else
             false
@@ -56,6 +58,7 @@ class Discussion < ActiveRecord::Base
       else
         true
       end
+
     end
 
 end

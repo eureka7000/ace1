@@ -63,9 +63,73 @@
 
                             </div>
                             
-                        </div>    
-                        
+                        </div>
 
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <!--group-->
+                        <div class="profile-edit tab-pane fade in active">
+
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-finance-005"></i> 그룹설정</h3>
+
+                            <div class="table-search-v1 margin-bottom-50">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>그룹이름</th>
+                                            <th class="text-center">인원</th>
+                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <% unless @groups.blank? %>
+                                            <% @groups.each do |group| %>
+                                                <tr>
+                                                    <td><%= group.name %></td>
+                                                    <td class="text-center"><%= group.users.count() %></td>
+                                                    <td class="text-center"><button class="btn btn-dribbble btn-xs rounded" onclick="destroyGroup('<%= group.id %>')">삭제</button>
+                                                        | <a href="/groups/<%= group.id %>" type="button" class="btn btn-podcast btn-xs rounded">설정</a>
+                                                    </td>
+                                                </tr>
+                                            <% end %>
+                                        <% else %>
+                                            <tr>
+                                                <td colspan="6" class="text-center">현재 생성된 그룹이 없습니다.</td>
+                                            </tr>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <hr>
+                                <button class="btn btn-xing btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="showForm()">Group 추가</button>
+
+                                <form hidden action="/groups" id="new_group" class="sky-form margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                                    <%= token_tag nil %>
+                                    <!--<header>General Unify Forms</header>-->
+                                    <input type="hidden" name="group[user_id]" value="<%= current_user.id %>">
+                                    <fieldset>
+                                        <section>
+                                            <label class="label">그룹이름</label>
+                                            <label class="input">
+                                                <input type="text" id="group_name" name="group[name]">
+                                            </label>
+                                        </section>
+                                    </fieldset>
+
+                                    <footer class="text-right">
+                                        <input type="button" class="btn btn-dribbble btn-sm rounded" value="Group 생성" onclick="formCheck()">
+                                    </footer>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!--group end-->
 
                     </div>
                     
@@ -78,3 +142,40 @@
     </div>
     
 </div>
+
+<script type="text/javascript">
+    function showForm() {
+        $('#new_group').toggle();
+    }
+
+    function formCheck() {
+        if($('#group_name').val() == ''){
+            alert('Group 이름을 입력해주세요.');
+            return false;
+        }
+        else{
+            $('#new_group').submit();
+        }
+    }
+
+    function destroyGroup(id) {
+        if (confirm('해당 토론방을 삭제하시겠습니까?')) {
+
+            var url = "/groups/" + id;
+
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                success : function(data) {
+                    alert('정상적으로 삭제하였습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
+    }
+</script>

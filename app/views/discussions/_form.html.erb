@@ -20,6 +20,7 @@
                 <p><span style="color: red">*</span> 필수입력</p>
 
                 <div class="row">
+
                     <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
                         <label class="label">토론방 리더<span style="color: red">*</span></label>
                         <label class="input">
@@ -32,12 +33,18 @@
                     </section>
 
                     <section class="col col-3">
-                        <label class="label">토론방 부리더<span style="color: red">*</span></label>
+                        <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
+                        <div class="inline-group">
+                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
+                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                        </div>
+                    </section>
+
+                    <section class="col col-3" hidden id="group_section">
+                        <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
                         <label class="input">
-                            <select class="form-control" name="discussion[sub_leader]" id="leader">
-                                <% @sub_leader.each do |sub_leader| %>
-                                    <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
-                                <% end %>
+                            <select class="form-control" name="discussion[group_id]" id="group_id">
+
                             </select>
                         </label>
                     </section>
@@ -59,13 +66,18 @@
                             </select>
                         </label>
                     </section>
+
                     <section class="col col-3">
-                        <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
-                        <div class="inline-group">
-                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
-                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
-                        </div>
+                        <label class="label">토론방 부리더<span style="color: red">*</span></label>
+                        <label class="input">
+                            <select class="form-control" name="discussion[sub_leader]" id="leader">
+                                <% @sub_leader.each do |sub_leader| %>
+                                    <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                <% end %>
+                            </select>
+                        </label>
                     </section>
+
                     <input type="text" class="form-control hidden" name="discussion[grade]" id="grade" value="">
                     <section class="col col-6">
                         <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
@@ -758,4 +770,49 @@
         });
 
     } );
+</script>
+
+<!--참여 그룹 선택-->
+<script type="text/javascript">
+    $('input:radio[name="discussion[observer_yn]"]').change(function () {
+        if($(this).val() == 'Y'){
+            $('#group_id').empty();
+            $('#group_section').hide();
+        }
+        else{
+            get_groups();
+            $('#group_section').show();
+        }
+    });
+
+    function get_groups() {
+
+        var data = new FormData();
+        data.append("leader_id", $('#leader').val());
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/groups/get_groups",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                if (data == null){
+                    $('#group_id').empty();
+                }
+                else {
+                    $.each(data, function(i) {
+                        $('#group_id').append( $('<option>').text(data[i].name).attr('value', data[i].id));
+                    });
+                }
+            }
+        });
+    }
+
+    $('#leader').change(function () {
+       get_groups();
+    });
 </script>

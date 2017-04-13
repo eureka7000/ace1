@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+    post 'groups/get_groups' => 'groups#get_groups'
+    post 'groups/save_users' => 'groups#save_users'
+    resources :groups
     resources :discussion_reply
 
     resources :discussion_images

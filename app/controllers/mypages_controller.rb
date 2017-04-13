@@ -174,6 +174,8 @@ class MypagesController < ApplicationController
         #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         # end
         @questions_number = Question.get_question_number(current_user.id)
+
+        @groups = Group.where('user_id = ?', current_user.id)
     end
 
     def get_textbook_price

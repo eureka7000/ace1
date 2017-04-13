@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
     has_many :discussion_authorities, :dependent => :delete_all
     has_many :discussions
     has_many :discussion_histories
+    has_and_belongs_to_many :groups
 
     belongs_to :school
     belongs_to :admin, :foreign_key => "join_channel_sales_id"
@@ -157,6 +158,16 @@ class User < ActiveRecord::Base
         end
 
         ret
+    end
+
+    def am_I_in_this_group?(group_id)
+        @groupsUser = GroupsUser.where('group_id = ? and user_id = ?', group_id, self.id)
+
+        unless @groupsUser.blank?
+            return true
+        else
+          return false
+        end
     end
 
 end
