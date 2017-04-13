@@ -87,10 +87,11 @@ class UsersController < ApplicationController
                 str += " and schools.name like '#{school}%' "
             end        
         end    
-            
-        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
-            .joins("left outer join user_types on user_types.user_id = users.id")
-            .joins("left join schools on schools.id = users.school_id").where(str).order(id: :desc)
+
+        @users = User.all
+        # @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+        #     .joins("left outer join user_types on user_types.user_id = users.id")
+        #     .joins("left join schools on schools.id = users.school_id").where(str).order(id: :desc)
         
         render :layout => 'layouts/admin_main'        
     end    
@@ -233,6 +234,12 @@ class UsersController < ApplicationController
         @user.phone = params[:user][:phone]
         @user.grade = params[:user][:grade]
         @user.user_desc = params[:user][:user_desc]
+        @user.school_name = params[:user][:school_name]
+        @user.school_class = params[:user][:school_class]
+        @user.institute_name = params[:user][:institute_name]
+        @user.institute_class = params[:user][:institute_class]
+        @user.nickname = params[:user][:nickname]
+        @user.etc = params[:user][:etc]
 
         respond_to do |format|
             if @user.save

@@ -38,15 +38,25 @@
 
                 <%= token_tag nil %>
 
-                <div class="col-md-12">
-                    <select multiple="multiple" id="my-select" name="users[]" size="15">
+                <div class="col-md-12 margin-bottom-100">
+                    <select multiple="multiple" id="my-select" name="users[]" size="12">
                         <% @users.each do |user| %>
-                            <option value="<%= user.id %>"><%= user.user_name %>(<%= user.email %>), <%= user.user_type %>, <%= user.school_name %>, <%= user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d') unless user.expire_date.nil? %></option>
+                            <option value="<%= user.id %>">
+                                <%= user.user_name %> | <%= user.email %>
+                                <%=" | #{user.user_types.first.user_type}" unless user.user_types.blank? %>
+                                <%= " | #{user.school.name}" unless user.school.nil? %>
+                                <%= " | #{user.school_name}" unless user.school_name.nil? and user.school_name.blank? %>
+                                <%= " | #{user.school_class}반" unless user.school_class.nil? and user.school_class.blank? %>
+                                <%= " | #{user.institute_name}" unless user.institute_name.nil? and user.institute_name.blank? %>
+                                <%= " | #{user.institute_class}" unless user.institute_class.nil? and user.institute_class.blank? %>
+                                <%= " | #{user.nickname}" unless user.nickname.nil? and user.nickname.blank? %>
+                                <%= " | #{user.expire_date.in_time_zone("Asia/Seoul").strftime('%Y/%m/%d')}" unless user.expire_date.nil? %>
+                            </option>
                         <% end %>
                     </select>
                 </div>
 
-                <div class="col-md-12" style="margin-top: 50px;">
+                <div class="col-md-12 margin-top-20">
                     <section>
                         <div class="inline-group">
                             <label class="radio" style="color:blue !important"><input type="radio" name="month" checked="" value="1" ><i class="rounded-x"></i>+1 Month</label>
@@ -88,8 +98,8 @@
     function initpage() {
 
         $('#my-select').multiSelect({
-            selectableHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
-            selectionHeader: "<input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
+            selectableHeader: "<div class='custom-header text-center form-class margin-bottom-10'><h4>선택 전</h4></div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px' >",
+            selectionHeader: "<div class='custom-header text-center form-class margin-bottom-10'><h4>선택 후</h4></div> <input type='text' class='form-control' autocomplete='off' placeholder='검색어..' style='margin-bottom:5px'>",
             afterInit: function(ms){
                 var that = this,
                     $selectableSearch = that.$selectableUl.prev(),
