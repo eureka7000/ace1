@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
     post 'groups/get_groups' => 'groups#get_groups'
     post 'groups/save_users' => 'groups#save_users'
+    post 'groups/:id' => 'groups#updateName'
     resources :groups
     resources :discussion_reply
 

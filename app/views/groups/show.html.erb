@@ -29,13 +29,13 @@
         </div>
 
         <div class="col-md-6">
-            <button id="select-all" class="btn-u btn-u-success rounded">전체선택</button>
-            <button id="deselect-all" class="btn-u btn-u-red rounded">전체해제</button>
+            <button id="select-all" class="btn btn-bitbucket rounded col-md-5 col-sm-5 col-xs-5">전체선택</button>
+            <button id="deselect-all" class="btn btn-amazon rounded col-md-5 col-sm-5 col-xs-5 col-md-offset-1 col-sm-offset-2 col-xs-offset-2">전체해제</button>
         </div>
 
         <div class="col-md-6 text-right">
-            <button type="submit" class="btn-u btn-u-success rounded">Do it</button>
-            <a href="/mypages/student_management" type="button" class="btn-u btn-u-red rounded">BACK</a>
+            <button type="submit" class="btn btn-windows rounded col-md-5 col-sm-5 col-xs-5 col-md-offset-1">저장</button>
+            <button type="button" class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5 col-md-offset-1 col-sm-offset-2 col-xs-offset-2" onclick="move('/mypages/student_management')">뒤로가기</button>
         </div>
 
     </form>
@@ -43,6 +43,10 @@
 </div>
 
 <script type="text/javascript">
+
+    function move(url) {
+        location = url;
+    }
 
     function initpage() {
 

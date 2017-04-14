@@ -88,11 +88,12 @@
                                         <tbody>
                                         <% unless @groups.blank? %>
                                             <% @groups.each do |group| %>
+                                                <input hidden type="text" value="<%= group.name %>" id="preserved_<%= group.id %>">
                                                 <tr>
-                                                    <td><%= group.name %></td>
+                                                    <td id="group_name_<%= group.id %>"><strong onclick="updateGroupName( '<%= group.id %>', '<%= group.name %>')"><%= group.name %></strong></td>
                                                     <td class="text-center"><%= group.users.count() %></td>
                                                     <td class="text-center"><button class="btn btn-dribbble btn-xs rounded" onclick="destroyGroup('<%= group.id %>')">삭제</button>
-                                                        | <a href="/groups/<%= group.id %>" type="button" class="btn btn-podcast btn-xs rounded">설정</a>
+                                                        | <button type="button" class="btn btn-podcast btn-xs rounded" onclick="moveToSetGroup('/groups/<%= group.id %>')">학생추가</button>
                                                     </td>
                                                 </tr>
                                             <% end %>
@@ -140,10 +141,69 @@
         </div>
         
     </div>
-    
+
 </div>
 
 <script type="text/javascript">
+
+    function updateGroupName(group_id) {
+        var root = $('#group_name_'+group_id);
+        var input_name = $('<input>').addClass('form-class').attr('type', 'text').attr('value', $('#preserved_'+group_id).val()).attr('id', 'name_'+group_id);
+        var submitButton = $('<button>').attr('type', 'button').addClass('btn btn-windows btn-xs rounded').text('저장').attr('id', 'submit_'+group_id).attr('onclick', "setSubmitButton("+group_id+")");
+        var cancelButton = $('<button>').attr('type', 'button').addClass('btn btn-dribbble btn-xs rounded').text('취소').attr('id', 'cancel_'+group_id).attr('onclick', "setCancelButton("+group_id+")");
+
+        root.empty();
+
+        input_name.appendTo(root);
+        submitButton.appendTo(root);
+        cancelButton.appendTo(root);
+
+    }
+
+    function setSubmitButton(group_id) {
+
+        if ($('#name_'+group_id).val() != ''){
+            var value = $('#name_'+group_id).val();
+
+            var url = "/groups/" + group_id;
+            var data = new FormData();
+            data.append('name', value);
+
+            $.ajax({
+                type: "POST",
+                data: data,
+                dataType: "json",
+                url: url,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                success : function() {
+                    alert('그룹명이 변경되었습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
+        else {
+            alert('그룹이름을 입력해주세요');
+        }
+    }
+
+    function setCancelButton(group_id) {
+        var root = $('#group_name_'+group_id);
+        var strong = $('<strong>').attr('onclick', "updateGroupName("+group_id+")").text($('#preserved_'+group_id).val());
+
+        root.empty();
+        strong.appendTo(root);
+    }
+
+    function moveToSetGroup(url) {
+        location = url;
+    }
+
     function showForm() {
         $('#new_group').toggle();
     }

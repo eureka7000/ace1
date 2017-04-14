@@ -1,6 +1,18 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
 
+  def updateName
+    name = params[:name]
+    @group = Group.find(params[:id])
+    @group.name = name
+    @group.save
+
+    ret = { ret: "success" }
+    respond_to do |format|
+      format.json { render json: ret }
+    end
+  end
+
   def get_groups
     leader_id = params[:leader_id]
     @groups = Group.where(:user_id => leader_id)
