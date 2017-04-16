@@ -114,6 +114,7 @@ class DiscussionsController < ApplicationController
     @manage_type = @discussion.manage_type
     @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
     @sub_leader = DiscussionAuthority.all
+    @groups = Group.where('user_id = ?', @discussion.user_id)
 
     # 선택 상태 유지
     @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
@@ -360,7 +361,8 @@ class DiscussionsController < ApplicationController
     @checked_grade = @discussion.grade.split(',')
     @manage_type = @discussion.manage_type
     @sub_leader = DiscussionAuthority.all
-
+    @groups = Group.where('user_id = ?', @discussion.user_id)
+    
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
       @leader = Staff.where(:admin_id => session[:admin]['id'])

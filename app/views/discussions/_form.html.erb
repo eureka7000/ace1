@@ -40,10 +40,16 @@
                         </div>
                     </section>
 
-                    <section class="col col-3" hidden id="group_section">
+                    <section class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
                         <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
                         <label class="input">
                             <select class="form-control" name="discussion[group_id]" id="group_id">
+                                <!--edit일 경우 표시 선택된 Group 표시-->
+                                <% unless @groups.blank? %>
+                                    <% @groups.each do |group| %>
+                                        <option value="<%= group.id %>" <%= 'selected' unless @discussion.group_id == group.id %>><%= group.name %></option>
+                                    <% end %>
+                                <% end %>
 
                             </select>
                         </label>
@@ -440,6 +446,14 @@
             return false;
         }
 
+        if ($('input:radio[name="discussion[observer_yn]"]:checked').val()=='N'){
+
+            if ($('#group_id').val() == null){
+                alert('그룹 설정 후 이용해주세요.');
+                return false;
+            }
+        }
+
         $('input:checkbox[name="grade"]').each(function() {
             if ($(this).is(':checked')){
                 grade += $(this).val() +',';
@@ -681,6 +695,7 @@
 </script>
 
 <!--종합문제 & 유형문제 선택 후 summernote editor에 이미지 삽입-->
+
 <script type="text/javascript">
     var solution_editor_count = 1;
 
@@ -815,4 +830,5 @@
     $('#leader').change(function () {
        get_groups();
     });
+
 </script>
