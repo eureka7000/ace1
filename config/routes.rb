@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :discussion_templets
     post 'groups/get_groups' => 'groups#get_groups'
     post 'groups/save_users' => 'groups#save_users'
     post 'groups/:id' => 'groups#updateName'

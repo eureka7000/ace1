@@ -110,14 +110,14 @@ class DiscussionsController < ApplicationController
   def discussion_edit
     @discussion_form_id = 'edit_discussion_' + @discussion.id.to_s
     @user_type = 'user'
-    @checked_grade = @discussion.grade.split(',')
+    @checked_grade = @discussion.discussion_templet.grade.split(',')
     @manage_type = @discussion.manage_type
     @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
     @sub_leader = DiscussionAuthority.all
     @groups = Group.where('user_id = ?', @discussion.user_id)
 
     # 선택 상태 유지
-    @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
+    @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
     unit_concept_code = @unit_concept.code.slice(0, 4)
     concept_code = @unit_concept.code.slice(0, 3)
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
@@ -316,8 +316,8 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1
   # GET /discussions/1.json
   def show
-    @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
-    @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_id = ?', @discussion.id)
+    @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
+    @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
   end
 
   # GET /discussions/new
@@ -358,11 +358,11 @@ class DiscussionsController < ApplicationController
     else
       @user_type = 'user'
     end
-    @checked_grade = @discussion.grade.split(',')
+    @checked_grade = @discussion.discussion_templet.grade.split(',')
     @manage_type = @discussion.manage_type
     @sub_leader = DiscussionAuthority.all
     @groups = Group.where('user_id = ?', @discussion.user_id)
-    
+
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
       @leader = Staff.where(:admin_id => session[:admin]['id'])
@@ -371,7 +371,7 @@ class DiscussionsController < ApplicationController
     end
 
     # 선택 상태 유지
-    @unit_concept = UnitConcept.find(@discussion.unit_concept_id)
+    @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
     unit_concept_code = @unit_concept.code.slice(0, 4)
     concept_code = @unit_concept.code.slice(0, 3)
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
@@ -385,6 +385,11 @@ class DiscussionsController < ApplicationController
   def create
     @discussion = Discussion.new(discussion_params)
     discussion_image_ids = params[:discussion_image_id]
+
+    @discussion_templet = DiscussionTemplet.new(discussion_templet_params)
+    @discussion_templet.save
+
+    @discussion.discussion_templet_id = @discussion_templet.id
 
     # nested params coding for save discussion_title_explanation
     @title_explanations = params[:title_explanation]
@@ -406,7 +411,7 @@ class DiscussionsController < ApplicationController
           images = discussion_image_ids.to_s.split(',')
           images.each do |image|
             discussion_image = DiscussionImage.find(image)
-            discussion_image.discussion_id = @discussion.id
+            discussion_image.discussion_templet_id = @discussion_templet.id
             discussion_image.save
           end
         end
@@ -418,7 +423,7 @@ class DiscussionsController < ApplicationController
 
             unless @title_explanations[count].blank?
               @discussion_title_explanation = DiscussionTitleExplanation.new
-              @discussion_title_explanation.discussion_id = @discussion.id
+              @discussion_title_explanation.discussion_templet_id = @discussion_templet.id
               @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
               @discussion_title_explanation.content = @title_explanations[count]
               @discussion_title_explanation.save
@@ -433,7 +438,7 @@ class DiscussionsController < ApplicationController
             unless @solutions[count].blank?
               @discussion_solution = DiscussionSolution.new
               @discussion_solution.content = @solutions[count]
-              @discussion_solution.discussion_id = @discussion.id
+              @discussion_solution.discussion_templet_id = @discussion_templet.id
               @discussion_solution.save
             end
             count = count + 1
@@ -472,6 +477,7 @@ class DiscussionsController < ApplicationController
       is_admin = false
     end
 
+    # 중간보고서, 최종보고서에 쓰인 이미지
     unless discussion_image_ids.blank?
       DiscussionImage.where('discussion_id = ?', @discussion.id).delete_all
       images = discussion_image_ids.to_s.split(',')
@@ -483,14 +489,14 @@ class DiscussionsController < ApplicationController
     end
 
     unless @title_explanations.blank?
-      DiscussionTitleExplanation.where('discussion_id = ?', @discussion.id).delete_all
+      DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id).delete_all
       count = 0
       (0..@title_explanations.count).each do |idx|
         # logger.info "###########    #{@title_explanations[count]}, #{@title_explanation_unit_concept_ids[count]}    ############"
 
         unless @title_explanations[count].blank?
           @discussion_title_explanation = DiscussionTitleExplanation.new
-          @discussion_title_explanation.discussion_id = @discussion.id
+          @discussion_title_explanation.discussion_templet_id = @discussion.discussion_templet_id
           @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
           @discussion_title_explanation.content = @title_explanations[count]
           @discussion_title_explanation.save
@@ -500,7 +506,7 @@ class DiscussionsController < ApplicationController
     end
 
     unless @solutions.blank?
-      DiscussionSolution.where('discussion_id = ?', @discussion.id).delete_all
+      DiscussionSolution.where('discussion_templet_id = ?', @discussion.discussion_templet_id).delete_all
 
       count = 0
       (0..@solutions.count).each do |idx|
@@ -508,7 +514,7 @@ class DiscussionsController < ApplicationController
           logger.info "##########    #{@solutions[count]}    ##########"
           @discussion_solution = DiscussionSolution.new
           @discussion_solution.content = @solutions[count]
-          @discussion_solution.discussion_id = @discussion.id
+          @discussion_solution.discussion_templet_id = @discussion.discussion_templet_id
           @discussion_solution.save
         end
         count = count + 1
@@ -564,6 +570,10 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :title, :content, :unit_concept_id, :answer, :grade, :expiration_date, :interim_report, :final_report, :concept_explanation, :level, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader, :group_id)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :expiration_date, :interim_report, :final_report, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader, :group_id)
+    end
+
+    def discussion_templet_params
+      params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
     end
 end

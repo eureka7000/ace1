@@ -1,0 +1,45 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Discussion Templets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Concept explanation</th>
+      <th>Unit concept</th>
+      <th>Answer</th>
+      <th>Level</th>
+      <th>Grade</th>
+      <th>User</th>
+      <th>Creator type</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @discussion_templets.each do |discussion_templet| %>
+      <tr>
+        <td><%= discussion_templet.code %></td>
+        <td><%= discussion_templet.title %></td>
+        <td><%= discussion_templet.content %></td>
+        <td><%= discussion_templet.concept_explanation %></td>
+        <td><%= discussion_templet.unit_concept_id %></td>
+        <td><%= discussion_templet.answer %></td>
+        <td><%= discussion_templet.level %></td>
+        <td><%= discussion_templet.grade %></td>
+        <td><%= discussion_templet.user_id %></td>
+        <td><%= discussion_templet.creator_type %></td>
+        <td><%= link_to 'Show', discussion_templet %></td>
+        <td><%= link_to 'Edit', edit_discussion_templet_path(discussion_templet) %></td>
+        <td><%= link_to 'Destroy', discussion_templet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Discussion templet', new_discussion_templet_path %>

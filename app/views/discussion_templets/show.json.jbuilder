@@ -1,0 +1,1 @@
+json.partial! "discussion_templets/discussion_templet", discussion_templet: @discussion_templet

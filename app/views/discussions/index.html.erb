@@ -47,11 +47,11 @@
                 <td class="text-center"><%= discussion.user.user_name unless discussion.user.user_name.nil? %></td>
                 <td class="text-center"><%= discussion.manage_type unless discussion.manage_type.nil? %></td>
                 <td class="text-center"><%= discussion.observer_yn unless discussion.observer_yn.nil? %></td>
-                <td><%= discussion.title unless discussion.title.nil? %></td>
+                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.title.nil? %></td>
                 <!--<td><%#== discussion.title_explanation unless discussion.title_explanation.nil? %></td>-->
                 <!--<td><%#== discussion.content unless discussion.content.nil? %></td>-->
-                <% unit_concept = UnitConcept.find(discussion.unit_concept_id) unless discussion.unit_concept_id.nil? %>
-                <td class="text-center"><%= unit_concept.name unless discussion.unit_concept_id.nil? %></td>
+                <% unit_concept = UnitConcept.find(discussion.discussion_templet.unit_concept_id) unless discussion.discussion_templet.unit_concept_id.nil? %>
+                <td class="text-center"><%= unit_concept.name unless discussion.discussion_templet.unit_concept_id.nil? %></td>
                 <td class="text-center"><%= unit_concept.level %></td>
                 <!--<td>-->
                 <!--<%# unless discussion.unit_concept_id.nil? %>-->
@@ -62,8 +62,8 @@
                 <!--<%# end %>-->
                 <!--<%# end %>-->
                 <!--</td>-->
-                <td class="text-center"><%= discussion.grade unless discussion.grade.nil? %></td>
-                <td class="text-center"><%= discussion.level unless discussion.level.nil? %></td>
+                <td class="text-center"><%= discussion.discussion_templet.grade unless discussion.discussion_templet.grade.nil? %></td>
+                <td class="text-center"><%= discussion.discussion_templet.level unless discussion.discussion_templet.level.nil? %></td>
                 <td class="text-center"><%= discussion.think_time unless discussion.think_time.nil? %></td>
                 <td class="text-center"><%= discussion.start_date unless discussion.start_date.nil? %></td>
                 <td class="text-center"><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>

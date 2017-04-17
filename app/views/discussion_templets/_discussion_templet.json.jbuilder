@@ -1,0 +1,2 @@
+json.extract! discussion_templet, :id, :code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type, :created_at, :updated_at
+json.url discussion_templet_url(discussion_templet, format: :json)

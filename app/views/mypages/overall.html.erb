@@ -44,7 +44,7 @@
                         <div class="service-block-v3 service-block-blue" onclick="go_discussion_room('<%= @discussion_rooms.blank? ? '' : @discussion_rooms.last.discussion_id %>')">
                             <i class="icon-education-024"></i>
                             <span class="service-heading">최근 참여한 토론방</span>
-                            <h3 style="color: white"><%= @discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.title %></h3>
+                            <h3 style="color: white"><%= @discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.discussion_templet.title %></h3>
 
                             <!--<div class="statistics">-->
                                 <!--<h3 class="heading-xs">최근 토론의 참여도 <span class="pull-right">0%</span></h3>-->
@@ -124,7 +124,7 @@
                                             <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
                                             <img class="rounded-x" src="<%= discussion_room.discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
                                             <div class="overflow-h">
-                                                <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
+                                                <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.discussion_templet.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
                                                 <p>참가자 수: <%= discussion_room.discussion.participants.count %> &nbsp;&nbsp;댓글 수: <%= discussion_room.discussion.discussion_replies.count %> &nbsp;&nbsp;likes: <%= discussion_room.discussion.like.nil? ? '0' : discussion_room.discussion.like %></p>
                                             </div>
                                         </div>

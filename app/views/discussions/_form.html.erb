@@ -11,6 +11,10 @@
         <div class="sky-form">
             <%= form_for(@discussion) do |f| %>
 
+                <!--discussion_templet-->
+                <input hidden type="text" name="discussion_templet[user_id]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
+                <input hidden type="text" name="discussion_templet[creator_type]" value="<%= @user_type %>">
+
             <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
             <input hidden type="text" name="discussion[organizer_type]" value="<%= @user_type %>">
             <input hidden name="discussion_image_id" id="discussion_image_id" value="">
@@ -84,7 +88,7 @@
                         </label>
                     </section>
 
-                    <input type="text" class="form-control hidden" name="discussion[grade]" id="grade" value="">
+                    <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
                     <section class="col col-6">
                         <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
                         <div class="inline-group">
@@ -138,10 +142,10 @@
 
                     <section class="col col-3">
                         <label class="label">핵심 개념<span style="color: red">*</span></label>
-                        <select class="form-control" name="discussion[unit_concept_id]" id="unit_concept_id">
+                        <select class="form-control" name="discussion_templet[unit_concept_id]" id="unit_concept_id">
                             <% if @discussion_form_id.include? 'edit' %>
                                 <% @unit_concepts.each do |unit_concept| %>
-                                    <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion.unit_concept_id %>><%= unit_concept.name %></option>
+                                    <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion.discussion_templet.unit_concept_id %>><%= unit_concept.name %></option>
                                 <% end %>
                             <% end %>
                         </select>
@@ -169,7 +173,7 @@
                         <div class="inline-group">
                             <% val_num = 1 %>
                             <% (1..5).each do |idx| %>
-                                <label class="radio"><input type="radio" name="discussion[level]" value="<%= val_num %>" <%='checked' if @discussion.nil? || val_num == 1 %> <%= 'checked' unless @discussion.level != val_num %>><i class="rounded-x"></i><%= val_num %></label>
+                                <label class="radio"><input type="radio" name="discussion_templet[level]" value="<%= val_num %>" <%='checked' if @discussion.discussion_templet.nil? || val_num == 1 %>><i class="rounded-x"></i><%= val_num %></label>
                                 <% val_num = val_num + 1 %>
                             <% end %>
                         </div>
@@ -194,7 +198,7 @@
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">주제<span style="color: red">*</span></label>
-                        <input class="form-control" type="text" name="discussion[title]" id="title" value="<%= @discussion.title unless @discussion.title.nil? %>">
+                        <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %>">
                     </section>
                 </div>
 
@@ -216,7 +220,7 @@
                     </div>
                 <% else %>
                     <% label_check = 0 %>
-                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                    <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
                         <div class="row" id="title_explanation_<%= title_explanation.id %>">
                             <section class="col-md-8 col-sm-8 col-xs-12">
                                 <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
@@ -248,14 +252,14 @@
                     <section class="col-md-12">
                         <label class="label">개념 설명</label>
                         <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
-                        <textarea class="form-control" name="discussion[concept_explanation]" id="concept_explanation"><%== @discussion.concept_explanation unless @discussion.concept_explanation.nil? %></textarea>
+                        <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion.discussion_templet.concept_explanation unless @discussion.discussion_templet.nil? %></textarea>
                     </section>
                 </div>
 
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">본문 내용<span style="color: red">*</span></label>
-                        <textarea class="form-control" name="discussion[content]" id="content"><%= @discussion.content unless @discussion.content.nil? %></textarea>
+                        <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
                     </section>
                 </div>
 
@@ -268,7 +272,7 @@
                     </div>
                 <% else %>
                     <% solution_check = 0 %>
-                    <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                    <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                         <div class="row">
                             <section class="col-md-12">
                                 <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
@@ -290,7 +294,7 @@
                 <div class="row">
                     <section class="col-md-12">
                         <label class="label">해답</label>
-                        <textarea class="form-control" name="discussion[answer]" id="answer"><%= @discussion.answer unless @discussion.answer.nil? %></textarea>
+                        <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
                     </section>
                 </div>
 
@@ -795,6 +799,7 @@
             $('#group_section').hide();
         }
         else{
+            $('#group_id').empty();
             get_groups();
             $('#group_section').show();
         }

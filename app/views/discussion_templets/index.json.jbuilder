@@ -1,0 +1,1 @@
+json.array! @discussion_templets, partial: 'discussion_templets/discussion_templet', as: :discussion_templet

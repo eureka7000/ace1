@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @discussion_templet.code %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @discussion_templet.title %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @discussion_templet.content %>
+</p>
+
+<p>
+  <strong>Concept explanation:</strong>
+  <%= @discussion_templet.concept_explanation %>
+</p>
+
+<p>
+  <strong>Unit concept:</strong>
+  <%= @discussion_templet.unit_concept_id %>
+</p>
+
+<p>
+  <strong>Answer:</strong>
+  <%= @discussion_templet.answer %>
+</p>
+
+<p>
+  <strong>Level:</strong>
+  <%= @discussion_templet.level %>
+</p>
+
+<p>
+  <strong>Grade:</strong>
+  <%= @discussion_templet.grade %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @discussion_templet.user_id %>
+</p>
+
+<p>
+  <strong>Creator type:</strong>
+  <%= @discussion_templet.creator_type %>
+</p>
+
+<%= link_to 'Edit', edit_discussion_templet_path(@discussion_templet) %> |
+<%= link_to 'Back', discussion_templets_path %>

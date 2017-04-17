@@ -38,17 +38,17 @@
                 <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1">
 
                     <div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20">
-                        <h3>주제 : <%= discussion.title %></h3>
+                        <h3>주제 : <%= discussion.discussion_templet.title %></h3>
                         <ul class="list-inline posted-info">
                             <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name unless discussion.user.nil? %></span> 선생님</li>
                         </ul>
                         <ul class="list-inline posted-info">
-                            <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.grade %></span></li>
+                            <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
                             <li>생각시간 : <span style="color: #1d78cb;"><%= discussion.think_time %>분</span></li>
                         </ul>
                         <ul class="list-inline posted-info">
-                            <li>핵심개념 : <span style="color: #1d78cb"><%= discussion.unit_concept.name %></span></li>
-                            <li>LEVEL : <span style="color: red;"><%= discussion.level %></span></li>
+                            <li>핵심개념 : <span style="color: #1d78cb"><%= discussion.discussion_templet.unit_concept.name %></span></li>
+                            <li>LEVEL : <span style="color: red;"><%= discussion.discussion_templet.level %></span></li>
                         </ul>
                         <ul class="list-inline posted-info">
                             <li>토론기간 : <span style="color: #1d78cb;"><%= discussion.created_at.to_date %></span> ~ <span style="color: #1d78cb;"><%= discussion.expiration_date %></span></li>

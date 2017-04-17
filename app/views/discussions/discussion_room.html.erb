@@ -20,7 +20,7 @@
     <!--주제-->
     <div class="row blog-page">
         <div class="col-md-12 margin-top-20">
-            <h2>주제 : <em><%= @discussion.title %></em></h2>
+            <h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>
         </div>
     </div>
 
@@ -30,21 +30,21 @@
             <span style="color:#5aa0f8">|</span>
             <li><i class="fa fa-calendar"></i> 토론 기간 : <span style="color: #55b3f8"><%= @discussion.start_date %></span> ~ <span style="color: #55b3f8"><%= @discussion.expiration_date %></span></li>
             <span style="color:#5aa0f8">|</span>
-            <li>Level : <span style="color: #55b3f8"><%= @discussion.level %></span></li>
+            <li>Level : <span style="color: #55b3f8"><%= @discussion.discussion_templet.level %></span></li>
         </ul>
         <ul class="list-unstyled list-inline blog-tags">
             <li>핵심개념 : </li>
-            <a target="_blank" href="/contents/<%= @discussion.unit_concept_id %>"><%= @discussion.unit_concept.name %></a>
+            <a target="_blank" href="/contents/<%= @discussion.discussion_templet.unit_concept_id %>"><%= @discussion.discussion_templet.unit_concept.name %></a>
             <span style="color:#5aa0f8">|</span>
             <li>관련개념 : </li>
-            <% @discussion.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+            <% @discussion.discussion_templet.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
                 <% unless unit_concept_desc.desc_type != '5' %>
                     <a target="_blank" href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
                 <% end %>
             <% end %>
             <span style="color:#5aa0f8">|</span>
             <li>참가학년 : </li>
-            <% @discussion.grade.split(',').each do |grade| %>
+            <% @discussion.discussion_templet.grade.split(',').each do |grade| %>
                 <a><%= grade %></a>
             <% end %>
         </ul>
@@ -54,18 +54,18 @@
     <div class="row">
         <div class="col-md-12">
             <h3>*<em>본문 내용</em></h3>
-            <%== @discussion.content %>
+            <%== @discussion.discussion_templet.content %>
         </div>
     </div>
 
-    <% unless @discussion.discussion_title_explanations.blank? %>
+    <% unless @discussion.discussion_templet.discussion_title_explanations.blank? %>
         <hr>
         <!--개념 해설-->
         <div class="row margin-top-20">
             <div class="col-md-12">
                 <h3>*<em>개념 해설 (발문)</em></h3>
                 <div class="row sky-form" style="border: none">
-                    <% @discussion.discussion_title_explanations.each do |title_explanation| %>
+                    <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
                         <div class="row col-md-12">
                             <div class="inline-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -89,25 +89,25 @@
     <% end %>
 
     <!--개념 설명-->
-    <% unless @discussion.concept_explanation.blank? %>
+    <% unless @discussion.discussion_templet.concept_explanation.blank? %>
         <hr>
         <div class="row">
             <div class="col-md-12">
                 <h3>*<em>개념 설명</em></h3>
-                <%== @discussion.concept_explanation %>
+                <%== @discussion.discussion_templet.concept_explanation %>
             </div>
         </div>
     <% end %>
 
     <div hidden id="timer">
         <!--문제풀이-->
-        <% unless @discussion.discussion_solutions.blank? %>
+        <% unless @discussion.discussion_templet.discussion_solutions.blank? %>
             <hr>
 
             <div class="row sky-form" style="border: none">
                 <div class="col-md-12 no-padding no-margin">
                     <h3>*<em>문제풀이</em></h3>
-                    <% @discussion.discussion_solutions.each do |discussion_solution| %>
+                    <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                         <div class="inline-group">
                             <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
                                 <%== discussion_solution.content %>
@@ -124,13 +124,13 @@
         <% end %>
 
         <!--해답-->
-        <% unless @discussion.answer.blank? %>
+        <% unless @discussion.discussion_templet.answer.blank? %>
             <hr>
 
             <div class="row">
                 <div class="col-md-12">
                     <h3>*<em>해답</em></h3>
-                    <%== @discussion.answer %>
+                    <%== @discussion.discussion_templet.answer %>
                 </div>
             </div>
         <% end %>

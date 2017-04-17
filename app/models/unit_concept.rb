@@ -8,7 +8,7 @@ class UnitConcept < ActiveRecord::Base
     has_many :questions
     has_many :unit_concept_exercise_solutions
     has_many :study_histories
-    has_many :discussions
+    has_many :discussion_templets
     has_many :discussion_title_explanations
 
     DESC_TYPES = {

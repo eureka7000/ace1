@@ -1,0 +1,57 @@
+<%= form_for(@discussion_templet) do |f| %>
+  <% if @discussion_templet.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@discussion_templet.errors.count, "error") %> prohibited this discussion_templet from being saved:</h2>
+
+      <ul>
+      <% @discussion_templet.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :code %><br>
+    <%= f.text_field :code %>
+  </div>
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_area :title %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br>
+    <%= f.text_area :content %>
+  </div>
+  <div class="field">
+    <%= f.label :concept_explanation %><br>
+    <%= f.text_area :concept_explanation %>
+  </div>
+  <div class="field">
+    <%= f.label :unit_concept_id %><br>
+    <%= f.number_field :unit_concept_id %>
+  </div>
+  <div class="field">
+    <%= f.label :answer %><br>
+    <%= f.text_area :answer %>
+  </div>
+  <div class="field">
+    <%= f.label :level %><br>
+    <%= f.number_field :level %>
+  </div>
+  <div class="field">
+    <%= f.label :grade %><br>
+    <%= f.text_field :grade %>
+  </div>
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :creator_type %><br>
+    <%= f.text_field :creator_type %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

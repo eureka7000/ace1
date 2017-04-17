@@ -2,14 +2,12 @@ class Discussion < ActiveRecord::Base
 
     has_many :participants, :dependent => :delete_all
     has_many :discussion_images, :dependent => :delete_all
-    has_many :discussion_title_explanations, :dependent => :delete_all
-    has_many :discussion_solutions, :dependent => :delete_all
     has_many :discussion_replies, :dependent => :delete_all
     has_many :discussion_histories, :dependent => :delete_all
     has_many :groups
 
     belongs_to :user
-    belongs_to :unit_concept
+    belongs_to :discussion_templet
 
     MANAGE_TYPE = {
         'admin' => 'EurekaMath',

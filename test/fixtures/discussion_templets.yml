@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  code: MyString
+  title: MyText
+  content: MyText
+  concept_explanation: MyText
+  unit_concept_id: 1
+  answer: MyText
+  level: 1
+  grade: MyString
+  user_id: 1
+  creator_type: MyString
+
+two:
+  code: MyString
+  title: MyText
+  content: MyText
+  concept_explanation: MyText
+  unit_concept_id: 1
+  answer: MyText
+  level: 1
+  grade: MyString
+  user_id: 1
+  creator_type: MyString
