@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :discussion_templets
+    get 'discussion_templets/edit_for_admin' => 'discussion_templets#edit_for_admin'
+    get 'discussion_templets/new_for_admin' => 'discussion_templets#new_for_admin'
+    get 'discussion_templets/list' => 'discussion_templets#list'
+    resources :discussion_templets
+
     post 'groups/get_groups' => 'groups#get_groups'
     post 'groups/save_users' => 'groups#save_users'
     post 'groups/:id' => 'groups#updateName'

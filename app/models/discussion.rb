@@ -31,7 +31,7 @@ class Discussion < ActiveRecord::Base
     }
 
     def self.get_org_list(school_id)
-      query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.title, a.content, a.answer, a.grade, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.unit_concept_id, a.concept_explanation, a.level, a.organizer_type, a.think_time, a.like, a.start_date
+      query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.organizer_type, a.think_time, a.like, a.start_date, a.sub_leader, a.group_id, a.discussion_templet_id
                 from discussions a, users b
                 where b.school_id = #{school_id}
                 and a.user_id = b.id"

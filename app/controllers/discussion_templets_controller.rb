@@ -1,6 +1,42 @@
 class DiscussionTempletsController < ApplicationController
-  before_action :set_discussion_templet, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!
+  before_action :set_discussion_templet, only: [:show, :edit, :update, :destroy, :edit_for_admin]
+  before_filter :authenticate_admin_user!, only: [:list, :new_for_admin, :edit_for_admin]
+  before_filter :authenticate_user!, only: [:index, :new, :edit]
+
+  def new_for_admin
+    @discussion_templet = DiscussionTemplet.new
+    @admin_type = session[:admin]['admin_type']
+    @admin_id = session[:admin]['id']
+    @user_type = 'admin'
+    @discussion_templet_form_id = 'new_discussion_templet'
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+
+    render layout: 'admin_main'
+  end
+
+  def edit_for_admin
+    @admin_type = session[:admin]['admin_type']
+    @admin_id = session[:admin]['id']
+    @user_type = 'admin'
+    @discussion_templet_form_id = 'edit_discussion_templet_' + @discussion_templet.id.to_s
+    @checked_grade = @discussion_templet.grade.split(',')
+
+    @unit_concept = UnitConcept.find(@discussion_templet.unit_concept_id)
+    unit_concept_code = @unit_concept.code.slice(0, 4)
+    concept_code = @unit_concept.code.slice(0, 3)
+    @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
+    @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
+
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+
+    render layout: 'admin_main'
+  end
+
+  def list
+    @discussion_templets = DiscussionTemplet.all
+
+    render layout: 'admin_main'
+  end
 
   # GET /discussion_templets
   # GET /discussion_templets.json
@@ -11,6 +47,9 @@ class DiscussionTempletsController < ApplicationController
   # GET /discussion_templets/1
   # GET /discussion_templets/1.json
   def show
+    unless session[:admin].nil?
+      render layout: 'admin_main'
+    end
   end
 
   # GET /discussion_templets/new
