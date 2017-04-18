@@ -128,6 +128,7 @@ Rails.application.routes.draw do
     root :to => "homes#index"
 
     # Mypages
+    get  'mypages/discussion_topics_management' => 'mypages#discussion_topics_management'
     get  'mypages/discussion_management' => 'mypages#discussion_management'
     get  'mypages/overall' => 'mypages#overall'
     get  'mypages/evaluation' => 'mypages#evaluation'

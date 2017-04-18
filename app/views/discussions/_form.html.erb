@@ -6,7 +6,7 @@
 
 <div class="row">
     <!-- Begin Content -->
-    <div class="col-md-12 margin-bottom-50">
+    <div class="col-md-12 margin-bottom-50 margin-top-20">
         <!-- Contacts -->
         <div class="sky-form">
             <%= form_for(@discussion) do |f| %>
@@ -15,321 +15,335 @@
                 <input hidden type="text" name="discussion_templet[user_id]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
                 <input hidden type="text" name="discussion_templet[creator_type]" value="<%= @user_type %>">
 
-            <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
-            <input hidden type="text" name="discussion[organizer_type]" value="<%= @user_type %>">
-            <input hidden name="discussion_image_id" id="discussion_image_id" value="">
+                <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
+                <input hidden type="text" name="discussion[organizer_type]" value="<%= @user_type %>">
+                <input hidden name="discussion_image_id" id="discussion_image_id" value="">
 
-            <header>Discussion form</header>
-            <fieldset>
-                <p><span style="color: red">*</span> 필수입력</p>
+                <header>Discussion form</header>
+                <fieldset>
+                    <p><span style="color: red">*</span> 필수입력</p>
 
-                <div class="row">
-
-                    <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
-                        <label class="label">토론방 리더<span style="color: red">*</span></label>
-                        <label class="input">
-                            <select class="form-control" name="discussion[user_id]" id="leader">
-                                <% @leader.each do |leader| %>
-                                    <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
-                                <% end %>
-                            </select>
-                        </label>
-                    </section>
-
-                    <section class="col col-3">
-                        <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
-                        <div class="inline-group">
-                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
-                            <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
-                        </div>
-                    </section>
-
-                    <section class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
-                        <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
-                        <label class="input">
-                            <select class="form-control" name="discussion[group_id]" id="group_id">
-                                <!--edit일 경우 표시 선택된 Group 표시-->
-                                <% unless @groups.blank? %>
-                                    <% @groups.each do |group| %>
-                                        <option value="<%= group.id %>" <%= 'selected' unless @discussion.group_id == group.id %>><%= group.name %></option>
-                                    <% end %>
-                                <% end %>
-
-                            </select>
-                        </label>
-                    </section>
-
-                </div>
-
-                <div class="row">
-                    <section hidden class="col col-4">
-                        <label class="label">운영타입<span style="color: red">*</span></label>
-                        <label class="input">
-                            <select class="form-control" name="discussion[manage_type]" id="manage_type">
-                                <% if @user_type == 'admin' %>
-                                    <% Discussion::MANAGE_TYPE.each do |key, value| %>
-                                        <option value="<%= value %>"<%= 'selected' unless @discussion.manage_type != value %>><%= value %></option>
-                                    <% end %>
-                                <% else %>
-                                    <option value="<%= @manage_type %>"<%= 'selected' unless @discussion.manage_type != @manage_type %>><%= @manage_type %></option>
-                                <% end %>
-                            </select>
-                        </label>
-                    </section>
-
-                    <section class="col col-3">
-                        <label class="label">토론방 부리더<span style="color: red">*</span></label>
-                        <label class="input">
-                            <select class="form-control" name="discussion[sub_leader]" id="leader">
-                                <% @sub_leader.each do |sub_leader| %>
-                                    <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
-                                <% end %>
-                            </select>
-                        </label>
-                    </section>
-
-                    <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
-                    <section class="col col-6">
-                        <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
-                        <div class="inline-group">
-                            <% UnitConcept::GRADES.each do |key, value| %>
-                                <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
-                            <% end %>
-                        </div>
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col col-3">
-                        <label class="label">Category</label>
-                        <select class="form-control" id="category" onchange="selectCategory()">
-                            <% if @discussion_form_id.include? 'edit' %>
-                                <% Concept::CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.category %>><%= value %></option>
-                                <% end %>
-                            <% else %>
-                                <option>선택하세요</option>
-                                <% Concept::CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>"><%= value %></option>
-                                <% end %>
-                            <% end %>
-                        </select>
-                    </section>
-
-                    <section class="col col-3">
-                        <label class="label">Sub Category</label>
-                        <select class="form-control" id="sub_category" onchange="selectSubCategory()">
-                            <% if @discussion_form_id.include? 'edit' %>
-                                <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-                                    <% if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
-                                        <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.sub_category %>><%= value %></option>
-                                    <% end %>
-                                <% end %>
-                            <% end %>
-                        </select>
-                    </section>
-
-                    <section class="col col-3">
-                        <label class="label">Concept</label>
-                        <select class="form-control" id="concept" onchange="selectConcept()">
-                            <% if @discussion_form_id.include? 'edit' %>
-                                <% @concepts.each do |concept| %>
-                                    <option value="<%= concept.concept_code %>" <%= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%= concept.concept_name %></option>
-                                <% end %>
-                            <% end %>
-                        </select>
-                    </section>
-
-                    <section class="col col-3">
-                        <label class="label">핵심 개념<span style="color: red">*</span></label>
-                        <select class="form-control" name="discussion_templet[unit_concept_id]" id="unit_concept_id">
-                            <% if @discussion_form_id.include? 'edit' %>
-                                <% @unit_concepts.each do |unit_concept| %>
-                                    <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion.discussion_templet.unit_concept_id %>><%= unit_concept.name %></option>
-                                <% end %>
-                            <% end %>
-                        </select>
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col col-6">
-                        <div class="label">종합문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('concept')"></div>
-                        <select class="form-control" id="concept_exercise">
-                            <option>Sub Category 선택하기</option>
-                        </select>
-                    </section>
-                    <section class="col col-6">
-                        <div class="label">유형문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('unit_concept')"></div>
-                        <select class="form-control" id="unit_concept_exercise">
-                            <option>Concept 선택하기</option>
-                        </select>
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col-md-6">
-                        <label class="label">Level 선택<span style="color: red">*</span></label>
-                        <div class="inline-group">
-                            <% val_num = 1 %>
-                            <% (1..5).each do |idx| %>
-                                <label class="radio"><input type="radio" name="discussion_templet[level]" value="<%= val_num %>" <%='checked' if @discussion.discussion_templet.nil? || val_num == 1 %>><i class="rounded-x"></i><%= val_num %></label>
-                                <% val_num = val_num + 1 %>
-                            <% end %>
-                        </div>
-                    </section>
-                    <section class="col-md-6">
-                        <label class="label">Think time(분)</label>
-                        <input type="number" class="form-control" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col col-6">
-                        <label class="label">토론 시작일<span style="color: red">*</span></label>
-                        <input class="form-control" type="text" name="discussion[start_date]" id="start_date" value="<%= @discussion.start_date unless @discussion.start_date.nil? %>">
-                    </section>
-                    <section class="col col-6">
-                        <label class="label">토론 만료일<span style="color: red">*</span></label>
-                        <input class="form-control" type="text" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">주제<span style="color: red">*</span></label>
-                        <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %>">
-                    </section>
-                </div>
-
-                <!--주제 설명 부분-->
-                <% if @discussion_form_id == 'new_discussion' %>
                     <div class="row">
-                        <section class="col-md-8 col-sm-8 col-xs-12">
-                            <label class="label">주제 설명</label>
-                            <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
+
+                        <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
+                            <label class="label">토론방 리더<span style="color: red">*</span></label>
+                            <label class="input">
+                                <select class="form-control" name="discussion[user_id]" id="leader">
+                                    <% @leader.each do |leader| %>
+                                        <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
+                                    <% end %>
+                                </select>
+                            </label>
                         </section>
-                        <section class="col-md-4 col-sm-4 col-xs-12">
-                            <label class="label">관련 개념 검색</label>
-                            <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
-                                <% @related_unit_concepts.each do |related_unit_concept| %>
-                                    <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
+
+                        <section class="col col-3">
+                            <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
+                            <div class="inline-group">
+                                <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
+                                <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                            </div>
+                        </section>
+
+                        <section class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
+                            <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
+                            <label class="input">
+                                <select class="form-control" name="discussion[group_id]" id="group_id">
+                                    <!--edit일 경우 표시 선택된 Group 표시-->
+                                    <% unless @groups.blank? %>
+                                        <% @groups.each do |group| %>
+                                            <option value="<%= group.id %>" <%= 'selected' unless @discussion.group_id != group.id %>><%= group.name %></option>
+                                        <% end %>
+                                    <% end %>
+
+                                </select>
+                            </label>
+                        </section>
+
+                    </div>
+
+                    <div class="row">
+                        <section hidden class="col col-4">
+                            <label class="label">운영타입<span style="color: red">*</span></label>
+                            <label class="input">
+                                <select class="form-control" name="discussion[manage_type]" id="manage_type">
+                                    <% if @user_type == 'admin' %>
+                                        <% Discussion::MANAGE_TYPE.each do |key, value| %>
+                                            <option value="<%= value %>"<%= 'selected' unless @discussion.manage_type != value %>><%= value %></option>
+                                        <% end %>
+                                    <% else %>
+                                        <option value="<%= @manage_type %>"<%= 'selected' unless @discussion.manage_type != @manage_type %>><%= @manage_type %></option>
+                                    <% end %>
+                                </select>
+                            </label>
+                        </section>
+
+                        <section class="col col-3">
+                            <label class="label">토론방 부리더<span style="color: red">*</span></label>
+                            <label class="input">
+                                <select class="form-control" name="discussion[sub_leader]" id="leader">
+                                    <% @sub_leader.each do |sub_leader| %>
+                                        <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                    <% end %>
+                                </select>
+                            </label>
+                        </section>
+
+                        <section class="col-md-3">
+                            <label class="label">Think time(분)</label>
+                            <input type="number" class="form-control" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
+                        </section>
+
+                    </div>
+
+                    <div class="row">
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Category</label>
+                            <select class="form-control" id="category" onchange="selectCategory()">
+                                <% if @discussion_form_id.include? 'edit' %>
+                                    <%# Concept::CATEGORIES.each_pair do |key, value| %>
+                                        <!--<option value="<%#= key %>" <%#= 'selected' if key == @unit_concept.concept.category %>><%#= value %></option>-->
+                                    <%# end %>
+                                <% else %>
+                                    <option>선택하세요</option>
+                                    <% Concept::CATEGORIES.each_pair do |key, value| %>
+                                        <option value="<%= key %>"><%= value %></option>
+                                    <% end %>
                                 <% end %>
+                            </select>
+                        </section>
+
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Sub Category</label>
+                            <select class="form-control" id="sub_category" onchange="selectSubCategory()">
+                                <%# if @discussion_form_id.include? 'edit' %>
+                                    <%# Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                        <%# if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
+                                            <!--<option value="<%#= key %>" <%#= 'selected' if key == @unit_concept.concept.sub_category %>><%#= value %></option>-->
+                                        <%# end %>
+                                    <%# end %>
+                                <%# end %>
+                            </select>
+                        </section>
+
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Concept</label>
+                            <select class="form-control" id="concept" onchange="selectConcept()">
+                                <%# if @discussion_form_id.include? 'edit' %>
+                                    <%# @concepts.each do |concept| %>
+                                        <!--<option value="<%#= concept.concept_code %>" <%#= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%#= concept.concept_name %></option>-->
+                                    <%# end %>
+                                <%# end %>
+                            </select>
+                        </section>
+
+                        <!--discussion_templet-->
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">핵심 개념<span style="color: red">*</span></label>
+                            <select class="form-control" name="discussion_templet[unit_concept_id]" id="unit_concept_id">
+                                <%# if @discussion_form_id.include? 'edit' %>
+                                    <%# @unit_concepts.each do |unit_concept| %>
+                                        <!--<option value="<%#= unit_concept.id %>" <%#= 'selected' unless unit_concept.id != @discussion.discussion_templet.unit_concept_id %>><%#= unit_concept.name %></option>-->
+                                    <%# end %>
+                                <%# end %>
                             </select>
                         </section>
                     </div>
-                <% else %>
-                    <% label_check = 0 %>
-                    <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
-                        <div class="row" id="title_explanation_<%= title_explanation.id %>">
+
+                    <div class="row discussion_templet">
+                        <section class="col col-6">
+                            <div class="label">종합문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('concept')"></div>
+                            <select class="form-control" id="concept_exercise">
+                                <option>Sub Category 선택하기</option>
+                            </select>
+                        </section>
+                        <section class="col col-6">
+                            <div class="label">유형문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('unit_concept')"></div>
+                            <select class="form-control" id="unit_concept_exercise">
+                                <option>Concept 선택하기</option>
+                            </select>
+                        </section>
+                    </div>
+
+                    <div class="row">
+                        <!--discussion_templet-->
+                        <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
+                        <section class="col col-6 discussion_templet">
+                            <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
+                            <div class="inline-group">
+                                <% UnitConcept::GRADES.each do |key, value| %>
+                                    <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
+                                <% end %>
+                            </div>
+                        </section>
+
+                        <section class="col-md-4 discussion_templet">
+                            <label class="label">Code<span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion.discussion_templet.code.to_s.split('-', 3).last() unless @discussion.discussion_templet.nil? %>">
+                        </section>
+                    </div>
+
+                    <!--discussion_templet-->
+                    <div class="row">
+                        <section class="col-md-5 discussion_templet">
+                            <label class="label">Level 선택<span style="color: red">*</span></label>
+                            <div class="inline-group">
+                                <% val_num = 1 %>
+                                <% (1..5).each do |idx| %>
+                                    <label class="radio"><input type="radio" name="discussion_templet[level]" value="<%= val_num %>" <%='checked' if @discussion.nil? || val_num == 1 %><%='checked' if !@discussion.discussion_templet.nil? && @discussion.discussion_templet.level == val_num %>><i class="rounded-x"></i><%= val_num %></label>
+                                    <% val_num = val_num + 1 %>
+                                <% end %>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div class="row">
+                        <section class="col col-6">
+                            <label class="label">토론 시작일<span style="color: red">*</span></label>
+                            <input class="form-control" type="text" name="discussion[start_date]" id="start_date" value="<%= @discussion.start_date unless @discussion.start_date.nil? %>">
+                        </section>
+                        <section class="col col-6">
+                            <label class="label">토론 종료일<span style="color: red">*</span></label>
+                            <input class="form-control" type="text" name="discussion[expiration_date]" id="expiration_date" value="<%= @discussion.expiration_date unless @discussion.expiration_date.nil? %>">
+                        </section>
+                    </div>
+
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">주제<span style="color: red">*</span></label>
+                            <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %>">
+                        </section>
+                    </div>
+
+                    <!--주제 설명 부분-->
+                    <% if @discussion_form_id == 'new_discussion' %>
+                        <div class="row">
                             <section class="col-md-8 col-sm-8 col-xs-12">
-                                <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
-                                <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
+                                <label class="label">주제 설명</label>
+                                <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
-                                <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
+                                <label class="label">관련 개념 검색</label>
                                 <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                     <% @related_unit_concepts.each do |related_unit_concept| %>
-                                        <option value="<%= related_unit_concept.id %>" <%= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
+                                        <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
                                     <% end %>
                                 </select>
                             </section>
                         </div>
-                        <% label_check = 1 %>
+                    <% else %>
+                        <% label_check = 0 %>
+                        <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
+                            <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
+                                <section class="col-md-8 col-sm-8 col-xs-12">
+                                    <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
+                                    <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
+                                </section>
+                                <section class="col-md-4 col-sm-4 col-xs-12">
+                                    <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
+                                    <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                        <%# @related_unit_concepts.each do |related_unit_concept| %>
+                                            <!--<option value="<%#= related_unit_concept.id %>" <%#= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%#= related_unit_concept.name %></option>-->
+                                        <%# end %>
+                                    </select>
+                                </section>
+                            </div>
+                            <% label_check = 1 %>
+                        <% end %>
                     <% end %>
-                <% end %>
 
-                <div id="add_search_section"></div>
+                    <div id="add_search_section"></div>
 
-                <div class="row margin-bottom-20">
-                    <section class="col-md-12">
-                        <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 주제 설명 & 관련 개념 검색 추가하기" onclick="addRelated()">
-                    </section>
-                </div>
-                <!--주제 설명 부분 END-->
-
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">개념 설명</label>
-                        <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
-                        <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion.discussion_templet.concept_explanation unless @discussion.discussion_templet.nil? %></textarea>
-                    </section>
-                </div>
-
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">본문 내용<span style="color: red">*</span></label>
-                        <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
-                    </section>
-                </div>
-
-                <% if @discussion_form_id == 'new_discussion' %>
-                    <div class="row">
+                    <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">문제풀이</label>
-                            <textarea class="form-control solution_summernote" name="solution[]" id="solution_1"></textarea>
+                            <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 주제 설명 & 관련 개념 검색 추가하기" onclick="addRelated()">
                         </section>
                     </div>
-                <% else %>
-                    <% solution_check = 0 %>
-                    <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
+                    <!--주제 설명 부분 END-->
+
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">개념 설명</label>
+                            <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
+                            <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion.discussion_templet.concept_explanation unless @discussion.discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
+
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">본문 내용<span style="color: red">*</span></label>
+                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
+
+                    <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
                             <section class="col-md-12">
-                                <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
-                                <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
+                                <label class="label">문제풀이</label>
+                                <textarea class="form-control solution_summernote" name="solution[]" id="solution_1"></textarea>
                             </section>
                         </div>
-                        <% solution_check = solution_check + 1 %>
+                    <% else %>
+                        <% solution_check = 0 %>
+                        <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
+                            <div class="row discussion_templet">
+                                <section class="col-md-12">
+                                    <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
+                                    <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
+                                </section>
+                            </div>
+                            <% solution_check = solution_check + 1 %>
+                        <% end %>
                     <% end %>
-                <% end %>
 
-                <div id="add_solution_section"></div>
+                    <div id="add_solution_section"></div>
 
-                <div class="row margin-bottom-20">
-                    <section class="col-md-12">
-                        <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
-                    </section>
-                </div>
+                    <div class="row margin-bottom-20 discussion_templet">
+                        <section class="col-md-12">
+                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
+                        </section>
+                    </div>
 
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">해답</label>
-                        <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
-                    </section>
-                </div>
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">해답</label>
+                            <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
 
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">중간보고서</label>
-                        <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
-                    </section>
-                </div>
+                    <div class="row">
+                        <section class="col-md-12">
+                            <label class="label">중간보고서</label>
+                            <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
+                        </section>
+                    </div>
 
-                <div class="row">
-                    <section class="col-md-12">
-                        <label class="label">최종보고서</label>
-                        <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
-                    </section>
-                </div>
-            </fieldset>
+                    <div class="row">
+                        <section class="col-md-12">
+                            <label class="label">최종보고서</label>
+                            <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
+                        </section>
+                    </div>
+                </fieldset>
 
-            <footer class="text-center">
-                <% unless params[:id].nil? %>
-                    <%= link_to 'Show', @discussion, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
-                <% end %>
-                <% unless @user_type !='admin' %>
-                    <%= link_to 'Back', discussions_path, :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
-                <% else %>
-                    <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
-                <% end %>
-                <div class="col-md-2 col-sm-2 col-xs-2"></div>
-                <input class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5" type="button" onclick="beforeCheckAndSend('<%= @discussion_form_id %>')" value='입력완료'>
-            </footer>
-
-            <div class="message">
-                <i class="rounded-x fa fa-check"></i>
-                <p>Your message was successfully sent!</p>
-            </div>
+                <footer class="text-center">
+                    <% unless params[:id].nil? %>
+                        <% unless @user_type !='admin' %>
+                            <%= link_to 'Show', @discussion, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                        <% else %>
+                            <%= link_to 'Show', '/discussions/discussion_room/'+ params[:id], :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                        <% end %>
+                    <% end %>
+                    <% unless @user_type !='admin' %>
+                        <%= link_to 'Back', discussions_path, :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                    <% else %>
+                        <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                    <% end %>
+                    <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                    <input class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5" type="button" onclick="<%= @discussion_form_id == 'new_discussion' ? "beforeNewCheckAndSend('#{@discussion_form_id}')" : "beforeEditCheckAndSend('#{@discussion_form_id}')" %>" value='입력완료'>
+                </footer>
             <% end %>
         </div>
         <!-- Contacts -->
@@ -346,6 +360,7 @@
 
     <% index = 0 %>
 
+    <% unless @related_unit_concepts.blank? %>
     var options = [
         <% @related_unit_concepts.each do |related_unit_concept| %>
         <% index = index + 1 %>
@@ -355,6 +370,7 @@
         <%= ',' unless index == @related_unit_concepts.count  %>
         <% end %>
     ]
+    <% end %>
 
     function addRelated(){
         var root = $('#add_search_section');
@@ -435,7 +451,7 @@
 <script type="text/javascript">
     var image_ids = '';
 
-    function beforeCheckAndSend(discussion_form_id) {
+    function beforeNewCheckAndSend(discussion_form_id) {
 
         var grade = "";
         var observer_is_check = false;
@@ -472,6 +488,13 @@
         grade = grade.slice(0, -1);
         $("#grade").val(grade);
 
+        if ($('#code').val() == ''){
+            alert('Code를 입력해주세요.');
+            return false;
+        }
+
+        setCodeValue();
+
         if ($('#unit_concept_id').val() == null){
             alert('핵심개념을 선택해주세요.');
             return false;
@@ -499,6 +522,46 @@
 
         if ($('#content').val() == ''){
             alert('본문 내용을 입력해주세요.');
+            return false;
+        }
+
+        // form submit() 하기
+        $('#'+discussion_form_id).submit();
+    }
+
+    function beforeEditCheckAndSend(discussion_form_id) {
+        var observer_is_check = false;
+        $('input:radio[name="discussion[observer_yn]"]').each(function () {
+            if ($(this).is(':checked')){
+                observer_is_check = true;
+            }
+        });
+
+        if (observer_is_check == false){
+            alert('외부 참가자 여부를 선택해주세요.');
+            return false;
+        }
+
+        if ($('input:radio[name="discussion[observer_yn]"]:checked').val()=='N'){
+
+            if ($('#group_id').val() == null){
+                alert('그룹 설정 후 이용해주세요.');
+                return false;
+            }
+        }
+
+        if ($('#start_date').val() == ''){
+            alert('토론 시작일을 선택해주세요.');
+            return false;
+        }
+
+        if ($('#expiration_date').val() == ''){
+            alert('토론 만료일을 선택해주세요.');
+            return false;
+        }
+
+        if ($('#expiration_date').val() < $('#start_date').val()){
+            alert('토론 만료일을 시작일 이후로 날짜로 다시 선택해주세요.');
             return false;
         }
 
@@ -606,6 +669,31 @@
     }
 </script>
 
+<!--print Code-->
+<script type="text/javascript">
+    function setCodeValue() {
+        var teacherCode = '';
+
+        if ($('#manage_type').val() == 'EurekaMath'){
+            teacherCode = 'te';
+        }
+        else if ($('#manage_type').val() == '학교'){
+            teacherCode = 'ts';
+        }
+        else{
+            teacherCode = 'ti';
+        }
+
+//        $('#code_show').text($('#sub_category').val()+'-'+ teacherCode+$('#leader').val()+'-');
+//        $('#code').attr('value', $('#sub_category').val()+'-'+ teacherCode+$('#leader').val()+'-p');
+
+        var value = $('#sub_category').val()+'-'+teacherCode+$('#leader').val()+'-'+$('#code').val();
+
+        $('#code').attr('value', value);
+
+    }
+</script>
+
 <!--핵심 개념 선택-->
 <script type="text/javascript">
     <% sub_index = 0 %>
@@ -630,7 +718,6 @@
                 $('#sub_category').append( $('<option>').text(subCategory_options[i].text).attr('value',subCategory_options[i].values));
             }
         });
-
         selectSubCategory();
     }
 
@@ -664,6 +751,8 @@
                 selectConcept();
             }
         });
+
+//        setCodeValue();
     }
 
     function selectConcept() {
@@ -833,7 +922,13 @@
     }
 
     $('#leader').change(function () {
-       get_groups();
+        get_groups();
     });
 
 </script>
+
+<% unless @discussion_form_id == 'new_discussion' %>
+    <script type="text/javascript">
+        $('.discussion_templet').hide();
+    </script>
+<% end %>

@@ -1,57 +1,709 @@
-<%= form_for(@discussion_templet) do |f| %>
-  <% if @discussion_templet.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@discussion_templet.errors.count, "error") %> prohibited this discussion_templet from being saved:</h2>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
-      <ul>
-      <% @discussion_templet.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<link href="/css/select2.min.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/select2.min.js"></script>
+
+<div class="row">
+    <!-- Begin Content -->
+    <div class="col-md-12 margin-bottom-50 margin-top-20">
+        <!-- Contacts -->
+        <div class="sky-form">
+            <%= form_for(@discussion_templet) do |f| %>
+
+                <!--discussion_templet-->
+                <input hidden type="text" name="discussion_templet[user_id]" value="<%= current_user.id %>">
+                <input hidden type="text" name="discussion_templet[creator_type]" value="<%= @user_type %>">
+                <input hidden name="discussion_image_id" id="discussion_image_id" value="">
+                <input hidden id="leader" value="<%= current_user.id %>">
+
+                <header>토론 주제 양식</header>
+
+                <fieldset>
+
+                    <p><span style="color: red">*</span> 필수입력</p>
+
+                    <div class="row">
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Category</label>
+                            <select class="form-control" id="category" onchange="selectCategory()">
+                                <% if @discussion_templet_form_id.include? 'edit' %>
+                                    <% Concept::CATEGORIES.each_pair do |key, value| %>
+                                    <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.category %>><%= value %></option>
+                                    <% end %>
+                                <% else %>
+                                    <option>선택하세요</option>
+                                    <% Concept::CATEGORIES.each_pair do |key, value| %>
+                                        <option value="<%= key %>"><%= value %></option>
+                                    <% end %>
+                                <% end %>
+                            </select>
+                        </section>
+
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Sub Category</label>
+                            <select class="form-control" id="sub_category" onchange="selectSubCategory()">
+                                <% if @discussion_templet_form_id.include? 'edit' %>
+                                <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                <% if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
+                                <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.sub_category %>><%= value %></option>
+                                <% end %>
+                                <% end %>
+                                <% end %>
+                            </select>
+                        </section>
+
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">Concept</label>
+                            <select class="form-control" id="concept" onchange="selectConcept()">
+                                <% if @discussion_templet_form_id.include? 'edit' %>
+                                <% @concepts.each do |concept| %>
+                                <option value="<%= concept.concept_code %>" <%= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%= concept.concept_name %></option>
+                                <% end %>
+                                <% end %>
+                            </select>
+                        </section>
+
+                        <!--discussion_templet-->
+                        <section class="col col-3 discussion_templet">
+                            <label class="label">핵심 개념<span style="color: red">*</span></label>
+                            <select class="form-control" name="discussion_templet[unit_concept_id]" id="unit_concept_id">
+                                <% if @discussion_templet_form_id.include? 'edit' %>
+                                <% @unit_concepts.each do |unit_concept| %>
+                                <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion_templet.unit_concept_id %>><%= unit_concept.name %></option>
+                                <% end %>
+                                <% end %>
+                            </select>
+                        </section>
+                    </div>
+
+                    <div class="row discussion_templet">
+                        <section class="col col-6">
+                            <div class="label">종합문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('concept')"></div>
+                            <select class="form-control" id="concept_exercise">
+                                <option>Sub Category 선택하기</option>
+                            </select>
+                        </section>
+                        <section class="col col-6">
+                            <div class="label">유형문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('unit_concept')"></div>
+                            <select class="form-control" id="unit_concept_exercise">
+                                <option>Concept 선택하기</option>
+                            </select>
+                        </section>
+                    </div>
+
+                    <div class="row">
+                        <!--discussion_templet-->
+                        <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
+                        <section class="col col-6 discussion_templet">
+                            <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
+                            <div class="inline-group">
+                                <% UnitConcept::GRADES.each do |key, value| %>
+                                    <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
+                                <% end %>
+                            </div>
+                        </section>
+
+                        <section class="col-md-4 discussion_templet">
+                            <label class="label">Code<span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion_templet.code.to_s.split('-', 3).last() unless @discussion_templet.code.nil? %>">
+                        </section>
+                    </div>
+
+                    <!--discussion_templet-->
+                    <div class="row">
+                        <section class="col-md-5 discussion_templet">
+                            <label class="label">Level 선택<span style="color: red">*</span></label>
+                            <div class="inline-group">
+                                <% val_num = 1 %>
+                                <% (1..5).each do |idx| %>
+                                    <label class="radio"><input type="radio" name="discussion_templet[level]" value="<%= val_num %>" <%='checked' if @discussion_templet.level.nil? || val_num == 1 %><%='checked' if @discussion_templet.level == val_num %>><i class="rounded-x"></i><%= val_num %></label>
+                                    <% val_num = val_num + 1 %>
+                                <% end %>
+                            </div>
+                        </section>
+                    </div>
+
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">주제<span style="color: red">*</span></label>
+                            <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion_templet.title unless @discussion_templet.title.nil? %>">
+                        </section>
+                    </div>
+
+                    <!--주제 설명 부분-->
+                    <% if @discussion_templet_form_id == 'new_discussion_templet' %>
+                        <div class="row">
+                            <section class="col-md-8 col-sm-8 col-xs-12">
+                                <label class="label">주제 설명</label>
+                                <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
+                            </section>
+                            <section class="col-md-4 col-sm-4 col-xs-12">
+                                <label class="label">관련 개념 검색</label>
+                                <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                    <% @related_unit_concepts.each do |related_unit_concept| %>
+                                        <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
+                                    <% end %>
+                                </select>
+                            </section>
+                        </div>
+                    <% else %>
+                        <% label_check = 0 %>
+                        <% @discussion_templet.discussion_title_explanations.each do |title_explanation| %>
+                            <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
+                                <section class="col-md-8 col-sm-8 col-xs-12">
+                                    <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
+                                    <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
+                                </section>
+                                <section class="col-md-4 col-sm-4 col-xs-12">
+                                    <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
+                                    <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                        <% @related_unit_concepts.each do |related_unit_concept| %>
+                                        <option value="<%= related_unit_concept.id %>" <%= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
+                                        <% end %>
+                                    </select>
+                                </section>
+                            </div>
+                            <% label_check = 1 %>
+                        <% end %>
+                    <% end %>
+
+                    <div id="add_search_section"></div>
+
+                    <div class="row margin-bottom-20 discussion_templet">
+                        <section class="col-md-12">
+                            <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 주제 설명 & 관련 개념 검색 추가하기" onclick="addRelated()">
+                        </section>
+                    </div>
+                    <!--주제 설명 부분 END-->
+
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">개념 설명</label>
+                            <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
+                            <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion_templet.concept_explanation unless @discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
+
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">본문 내용<span style="color: red">*</span></label>
+                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion_templet.content unless @discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
+
+                    <% if @discussion_templet_form_id == 'new_discussion_templet' %>
+                        <div class="row">
+                            <section class="col-md-12">
+                                <label class="label">문제풀이</label>
+                                <textarea class="form-control solution_summernote" name="solution[]" id="solution_1"></textarea>
+                            </section>
+                        </div>
+                    <% else %>
+                        <% solution_check = 0 %>
+                        <% @discussion_templet.discussion_solutions.each do |discussion_solution| %>
+                            <div class="row discussion_templet">
+                                <section class="col-md-12">
+                                    <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
+                                    <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
+                                </section>
+                            </div>
+                            <% solution_check = solution_check + 1 %>
+                        <% end %>
+                    <% end %>
+
+                    <div id="add_solution_section"></div>
+
+                    <div class="row margin-bottom-20 discussion_templet">
+                        <section class="col-md-12">
+                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
+                        </section>
+                    </div>
+
+                    <!--discussion_templet-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">해답</label>
+                            <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion_templet.answer unless @discussion_templet.nil? %></textarea>
+                        </section>
+                    </div>
+
+                    <footer class="text-center">
+                        <% unless params[:id].nil? %>
+                            <% unless @user_type !='admin' %>
+                                <%= link_to 'Show', @discussion_templet, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                            <% else %>
+                                <%= link_to 'Show', @discussion_templet, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                            <% end %>
+                        <% end %>
+                        <% unless @user_type !='admin' %>
+                            <%= link_to 'Back', '/mypages/discussion_topics_management', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                        <% else %>
+                            <%= link_to 'Back', '/mypages/discussion_topics_management', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                        <% end %>
+                        <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                        <input class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5" type="button" onclick="beforeCheckAndSend('<%= @discussion_templet_form_id %>')" value='입력완료'>
+                    </footer>
+
+                </fieldset>
+            <% end %>
+        </div>
     </div>
-  <% end %>
+</div>
 
-  <div class="field">
-    <%= f.label :code %><br>
-    <%= f.text_field :code %>
-  </div>
-  <div class="field">
-    <%= f.label :title %><br>
-    <%= f.text_area :title %>
-  </div>
-  <div class="field">
-    <%= f.label :content %><br>
-    <%= f.text_area :content %>
-  </div>
-  <div class="field">
-    <%= f.label :concept_explanation %><br>
-    <%= f.text_area :concept_explanation %>
-  </div>
-  <div class="field">
-    <%= f.label :unit_concept_id %><br>
-    <%= f.number_field :unit_concept_id %>
-  </div>
-  <div class="field">
-    <%= f.label :answer %><br>
-    <%= f.text_area :answer %>
-  </div>
-  <div class="field">
-    <%= f.label :level %><br>
-    <%= f.number_field :level %>
-  </div>
-  <div class="field">
-    <%= f.label :grade %><br>
-    <%= f.text_field :grade %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
-  </div>
-  <div class="field">
-    <%= f.label :creator_type %><br>
-    <%= f.text_field :creator_type %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<!--select2-->
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".select2-search-box").select2();
+    });
+
+    <% index = 0 %>
+
+    <% unless @related_unit_concepts.blank? %>
+    var options = [
+        <% @related_unit_concepts.each do |related_unit_concept| %>
+        <% index = index + 1 %>
+        {
+            id: '<%= related_unit_concept.id %>', name: '<%= related_unit_concept.name %>'
+        }
+        <%= ',' unless index == @related_unit_concepts.count  %>
+        <% end %>
+    ]
+    <% end %>
+
+    function addRelated(){
+        var root = $('#add_search_section');
+
+        var row = $('<div>').addClass('row');
+        var title_explanation_part = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var related_unit_concept_part = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
+
+        title_explanation_part.append( $('<textarea>').attr('type', 'text').addClass('form-control title_explanation_summernote').attr('name', 'title_explanation[]').attr('value', ""));
+
+        var select_box = $('<select>').addClass('select2-search-box').attr('name', 'title_explanation_unit_concept_id[]').attr('value', "");
+
+        $.each(options, function(i) {
+            select_box.append( $('<option>').attr('value', options[i].id).text(options[i].name));
+        });
+
+        related_unit_concept_part.append(select_box);
+
+        row.append(title_explanation_part).append(related_unit_concept_part).appendTo(root);
+
+        $('.title_explanation_summernote').summernote({
+            height: 100,
+            placeholder: '주제 설명 및 발문 입력란',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
+
+        $(".select2-search-box").select2();
+    }
+</script>
+
+<!--문제풀이 summernote editor 추가하기-->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.solution_summernote').summernote({
+            height: 200,
+            placeholder: '문제 풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    var solution_num = 2;
+    function addSolution() {
+
+        var root = $('#add_solution_section');
+
+        var row = $('<div>').addClass('row');
+        var solution = $('<section>').addClass('col-md-12');
+
+        solution.append( $('<textarea>').attr('type', 'text').attr('id', 'solution_'+ solution_num++).addClass('form-control solution_summernote').attr('name', 'solution[]').attr('value', ""));
+
+        row.append(solution).appendTo(root);
+
+        $('.solution_summernote').summernote({
+            height: 200,
+            placeholder: '문제 풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    }
+</script>
+<!--END 문제풀이 summernote editor 추가하기-->
+
+<!--summernote 및 필터링 검사-->
+<script type="text/javascript">
+    var image_ids = '';
+
+    function beforeCheckAndSend(discussion_templet_form_id) {
+
+        var grade = "";
+
+        $('input:checkbox[name="grade"]').each(function() {
+            if ($(this).is(':checked')){
+                grade += $(this).val() +',';
+            }
+        });
+
+        if (grade == ''){
+            alert('학년을 선택해주세요.');
+            return false;
+        }
+
+        grade = grade.slice(0, -1);
+        $("#grade").val(grade);
+
+        if ($('#code').val() == ''){
+            alert('Code를 입력해주세요.');
+            return false;
+        }
+
+        setCodeValue();
+
+        if ($('#unit_concept_id').val() == null){
+            alert('핵심개념을 선택해주세요.');
+            return false;
+        }
+
+        if ($('#title').val() == ''){
+            alert('주제를 입력해주세요.');
+            return false;
+        }
+
+        if ($('#content').val() == ''){
+            alert('본문 내용을 입력해주세요.');
+            return false;
+        }
+
+        // form submit() 하기
+        $('#'+discussion_templet_form_id).submit();
+    }
+
+    $(document).ready(function() {
+        $('.title_explanation_summernote').summernote({
+            height: 100,
+            placeholder: '주제 설명 및 발문 입력란',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
+    });
+
+    $(document).ready(function() {
+        $('#concept_explanation').summernote({
+            height: 200,
+            placeholder: '개념 설명을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'concept_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#content').summernote({
+            height: 300,
+            placeholder: '본문 내용을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'content');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#answer').summernote({
+            height: 200,
+            placeholder: '해답을 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'answer');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#interim_report').summernote({
+            height: 300,
+            placeholder: '중간보고서를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#final_report').summernote({
+            height: 300,
+            placeholder: '최종보고서를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                }
+            }
+        });
+    });
+
+    function sendFile(file, editor, welEditable, id_name) {
+        var data = new FormData();
+        data.append("discussion_image[filename]", file);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussion_images",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                var img = document.createElement('img');
+                img.setAttribute('id', data.id);
+                img.src = data.url;
+                //$('#summernote').summernote('insertText', data);
+                $("#" + id_name).summernote('insertNode', img);
+                image_ids += data.id+',';
+                $('#discussion_image_id').val(image_ids);
+            }
+        });
+    }
+</script>
+
+<!--print Code-->
+<script type="text/javascript">
+    function setCodeValue() {
+        var teacherCode = '';
+
+        if ($('#manage_type').val() == 'EurekaMath'){
+            teacherCode = 'te';
+        }
+        else if ($('#manage_type').val() == '학교'){
+            teacherCode = 'ts';
+        }
+        else{
+            teacherCode = 'ti';
+        }
+
+//        $('#code_show').text($('#sub_category').val()+'-'+ teacherCode+$('#leader').val()+'-');
+//        $('#code').attr('value', $('#sub_category').val()+'-'+ teacherCode+$('#leader').val()+'-p');
+
+        var value = $('#sub_category').val()+'-'+teacherCode+$('#leader').val()+'-'+$('#code').val();
+
+        $('#code').attr('value', value);
+
+    }
+</script>
+
+<!--핵심 개념 선택-->
+<script type="text/javascript">
+    <% sub_index = 0 %>
+
+    var subCategory_options = [
+        <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+        <% sub_index = sub_index + 1 %>
+        {
+            values: '<%= key %>', text: '<%= value %>'
+        }
+        <%= ',' unless sub_index == Concept::SUB_CATEGORIES.count  %>
+        <% end %>
+    ]
+
+    function selectCategory() {
+        var category = $('#category').val().slice(0, 2);
+
+        $('#sub_category').empty();
+
+        $.each(subCategory_options, function(i) {
+            if (subCategory_options[i].values.substring(0,2) == category) {
+                $('#sub_category').append( $('<option>').text(subCategory_options[i].text).attr('value',subCategory_options[i].values));
+            }
+        });
+        selectSubCategory();
+    }
+
+    function selectSubCategory() {
+        var sub_category = $('#sub_category').val().slice(0, 3);
+
+        $('#concept').empty();
+        $('#concept_exercise').empty();
+
+        var data = new FormData();
+        data.append("key", sub_category);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/get_concepts",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    if (data[i].exercise_yn == 'concept'){
+                        $('#concept').append( $('<option>').text(data[i].text).attr('value', data[i].values));
+                    }
+                    else {
+                        $('#concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].id));
+                    }
+                });
+                selectConcept();
+            }
+        });
+
+    }
+
+    function selectConcept() {
+        var concept = $('#concept').val().slice(0, 4);
+
+        $('#unit_concept_id').empty();
+        $('#unit_concept_exercise').empty();
+
+        var data = new FormData();
+        data.append("key", concept);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussions/get_unit_concepts",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    if (data[i].exercise_yn == 'concept'){
+                        $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value', data[i].values));
+                    }
+                    else {
+                        $('#unit_concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].values));
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+<!--종합문제 & 유형문제 선택 후 summernote editor에 이미지 삽입-->
+
+<script type="text/javascript">
+    var solution_editor_count = 1;
+
+    function insertImagesToEditor(name) {
+
+        if (name == 'concept'){
+            var id = $('#concept_exercise').val();
+            var url = '/discussions/get_concept_exercise'
+        }
+        else{
+            var id = $('#unit_concept_exercise').val();
+            var url = '/discussions/get_unit_concept_exercise'
+        }
+
+        var data = new FormData();
+        data.append("id", id);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: url,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                $.each(data, function(i) {
+                    if (data[i].type == '1'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //img.className = 'img-responsive';
+                        //$('#summernote').summernote('insertText', data);
+                        $("#content").summernote('insertNode', img);
+                    }
+                    else if (data[i].type == '2'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#concept_explanation").summernote('insertNode', img);
+                    }
+                    else if (data[i].type == '3'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        if (solution_editor_count == 1){
+                            $("#solution_"+solution_editor_count).summernote('insertNode', img);
+                            solution_editor_count++;
+                        }
+                        else{
+                            addSolution();
+                            $("#solution_"+solution_editor_count).summernote('insertNode', img);
+                            solution_editor_count++;
+                        }
+                    }
+                    else if (data[i].type == '7'){
+                        var img = document.createElement('img');
+                        img.src = data[i].filename;
+                        //$('#summernote').summernote('insertText', data);
+                        $("#answer").summernote('insertNode', img);
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+<script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $( function() {
+
+        $('#start_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_from').datepicker('option', 'minDate', selectedDate);
+            }
+        });
+
+        $('#expiration_date').datepicker({
+            dateFormat: 'yy-mm-dd',
+            prevText: '<i class="fa fa-caret-left"></i>',
+            nextText: '<i class="fa fa-caret-right"></i>',
+            onSelect: function( selectedDate ) {
+                $('#expire_to').datepicker('option', 'maxDate', selectedDate);
+            }
+        });
+
+    } );
+</script>

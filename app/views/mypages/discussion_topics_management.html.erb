@@ -1,0 +1,92 @@
+<div class="container profile">
+    <div class="row">
+        <%= render partial: 'mypages/left_sidebar' %>
+
+        <div class="col-md-9">
+            <div class="profile-body margin-top-20 margin-bottom-20">
+                <div class="tab-v1">
+                    <ul class="nav nav-justified nav-tabs">
+                        <li class="active"><a data-toggle="tab">토론 주제 관리</a></li>
+                    </ul>
+                </div>
+
+                <!--토론방 개설 권한 있는 유저에게만 보이기-->
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20">
+                        <% if current_user.can_I_manage_discussion_rooms? %>
+                            <%= button_to '토론 주제 만들기', '/discussion_templets/new', :method => :get, :class => 'btn btn-bitbucket rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                        <% end %>
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="profile-edit tab-pane fade in active">
+                        <% unless @discussion_templets.blank? %>
+                            <div class="table-search-v1 margin-bottom-20">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Code</th>
+                                            <th class="text-center">주제</th>
+                                            <th class="text-center">핵심개념</th>
+                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% @discussion_templets.each do |discussion_templet| %>
+                                            <tr>
+                                                <td class="text-center"><%= discussion_templet.code %></td>
+                                                <td class="text-center"><%= discussion_templet.title %></td>
+                                                <td class="text-center"><%= discussion_templet.unit_concept.name %></td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-pinterest rounded btn-xs" <%= "disabled='true'" unless discussion_templet.creator_type != 'admin' %> <%= "disabled='true'" if discussion_templet.user_id != current_user.id %> onclick="destroyDiscussionTemplet('<%= discussion_templet.id %>')">삭제</button>
+                                                    | <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussion_templets/<%= discussion_templet.id %>')">보기</button>
+                                                    | <button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussion_templets/<%= discussion_templet.id %>/edit')">수정</button>
+                                                </td>
+                                            </tr>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <% else %>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h3>- 관리중인 토론방이 없습니다. -</h3>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function move(url) {
+        location = url;
+    }
+
+    function destroyDiscussionTemplet(id) {
+        if (confirm('해당 토론 주제를 삭제하시겠습니까?')) {
+
+            var url = "/discussion_templets/" + id;
+
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                success : function(data) {
+                    alert('정상적으로 관계를 해제하였습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
+    }
+</script>

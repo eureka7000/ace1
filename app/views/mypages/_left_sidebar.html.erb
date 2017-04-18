@@ -62,6 +62,10 @@
             <li class="list-group-item <%= 'active' if @click == 'discussion_management'%>">
                 <a href="/mypages/discussion_management"><i class="fa fa-university"></i> 토론방 관리</a>
             </li>
+
+            <li class="list-group-item <%= 'active' if @click == 'discussion_topics_management'%>">
+                <a href="/mypages/discussion_topics_management"><i class="fa fa-database"></i> 토론 주제 관리</a>
+            </li>
         <% end %>
         <li class="list-group-item <%= 'active' if @click == 'textbook'%>">
             <a href="/mypages/request_textbook"><i class="fa fa-book"></i> 교재 신청</a>

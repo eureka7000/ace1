@@ -317,6 +317,11 @@ class MypagesController < ApplicationController
         @discussions = Discussion.where('user_id = ? or sub_leader = ?', current_user.id, current_user.id).order(:start_date => :desc)
     end
 
+    def discussion_topics_management
+        @click = 'discussion_topics_management'
+        @discussion_templets = DiscussionTemplet.all
+    end
+
     def user_image_upload
 
         @user = User.find(params[:user_id])

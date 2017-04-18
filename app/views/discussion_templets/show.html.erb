@@ -1,54 +1,108 @@
-<p id="notice"><%= notice %></p>
+<div class="container container-fluid">
 
-<p>
-  <strong>Code:</strong>
-  <%= @discussion_templet.code %>
-</p>
+    <!--주제-->
+    <div class="row blog-page">
+        <div class="col-md-12 margin-top-20">
+            <h2>주제 : <em><%= @discussion_templet.title %></em></h2>
+        </div>
+    </div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @discussion_templet.title %>
-</p>
+    <div class="blog-post-tags">
+        <ul class="list-unstyled list-inline blog-info">
+        </ul>
+        <ul class="list-unstyled list-inline blog-tags">
+            <li>Code : <span style="color: #55b3f8"><%= @discussion_templet.code %></span></li>
+            <span style="color:#5aa0f8">|</span>
+            <li>Level : <span style="color: #55b3f8"><%= @discussion_templet.level %></span></li>
+            <span style="color:#5aa0f8">|</span>
+            <li>핵심개념 : </li>
+            <a target="_blank" href="/contents/<%= @discussion_templet.unit_concept_id %>"><%= @discussion_templet.unit_concept.name %></a>
+            <span style="color:#5aa0f8">|</span>
+            <li>관련개념 : </li>
+            <% @discussion_templet.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+                <% unless unit_concept_desc.desc_type != '5' %>
+                    <a target="_blank" href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                <% end %>
+            <% end %>
+            <span style="color:#5aa0f8">|</span>
+            <li>참가학년 : </li>
+            <% @discussion_templet.grade.split(',').each do |grade| %>
+                <a><%= grade %></a>
+            <% end %>
+        </ul>
+    </div>
 
-<p>
-  <strong>Content:</strong>
-  <%= @discussion_templet.content %>
-</p>
+    <!--본문 내용-->
+    <div class="row">
+        <div class="col-md-12">
+            <h3>*<em>본문 내용</em></h3>
+            <%== @discussion_templet.content %>
+        </div>
+    </div>
 
-<p>
-  <strong>Concept explanation:</strong>
-  <%= @discussion_templet.concept_explanation %>
-</p>
+    <% unless @discussion_templet.discussion_title_explanations.blank? %>
+        <hr>
+        <!--개념 해설-->
+        <div class="row margin-top-20">
+            <div class="col-md-12">
+                <h3>*<em>개념 해설 (발문)</em></h3>
+                <div class="row sky-form" style="border: none">
+                    <% @discussion_templet.discussion_title_explanations.each do |title_explanation| %>
+                        <div class="row col-md-12">
+                            <div class="inline-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <em><%== title_explanation.content %></em>
+                                </div>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    <% end %>
 
-<p>
-  <strong>Unit concept:</strong>
-  <%= @discussion_templet.unit_concept_id %>
-</p>
+    <!--개념 설명-->
+    <% unless @discussion_templet.concept_explanation.blank? %>
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <h3>*<em>개념 설명</em></h3>
+                <%== @discussion_templet.concept_explanation %>
+            </div>
+        </div>
+    <% end %>
 
-<p>
-  <strong>Answer:</strong>
-  <%= @discussion_templet.answer %>
-</p>
+        <!--문제풀이-->
+        <% unless @discussion_templet.discussion_solutions.blank? %>
+            <hr>
 
-<p>
-  <strong>Level:</strong>
-  <%= @discussion_templet.level %>
-</p>
+            <div class="row sky-form" style="border: none">
+                <div class="col-md-12 no-padding no-margin">
+                    <h3>*<em>문제풀이</em></h3>
+                    <% @discussion_templet.discussion_solutions.each do |discussion_solution| %>
+                        <div class="inline-group">
+                            <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
+                                <%== discussion_solution.content %>
+                            </div>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
 
-<p>
-  <strong>Grade:</strong>
-  <%= @discussion_templet.grade %>
-</p>
+        <!--해답-->
+        <% unless @discussion_templet.answer.blank? %>
+            <hr>
 
-<p>
-  <strong>User:</strong>
-  <%= @discussion_templet.user_id %>
-</p>
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>*<em>해답</em></h3>
+                    <%== @discussion_templet.answer %>
+                </div>
+            </div>
+        <% end %>
 
-<p>
-  <strong>Creator type:</strong>
-  <%= @discussion_templet.creator_type %>
-</p>
+    <hr>
+    <a href="/mypages/discussion_topics_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
 
-<%= link_to 'Edit', edit_discussion_templet_path(@discussion_templet) %> |
-<%= link_to 'Back', discussion_templets_path %>
+</div>
