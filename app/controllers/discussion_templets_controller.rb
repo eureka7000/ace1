@@ -34,6 +34,7 @@ class DiscussionTempletsController < ApplicationController
 
   def list
     @discussion_templets = DiscussionTemplet.all
+    @admin_type = session[:admin]['admin_type']
 
     render layout: 'admin_main'
   end
@@ -48,6 +49,8 @@ class DiscussionTempletsController < ApplicationController
   # GET /discussion_templets/1.json
   def show
     unless session[:admin].nil?
+      @admin_type = 'admin'
+
       render layout: 'admin_main'
     end
   end

@@ -35,13 +35,42 @@
                 <td class="text-center"><%= unit_concept.level %></td>
                 <td class="text-center"><%= discussion_templet.grade unless discussion_templet.grade.nil? %></td>
                 <td class="text-center"><%= discussion_templet.level unless discussion_templet.level.nil? %></td>
-                <td class="text-center"><%= link_to 'Show', discussion_templet, class: 'btn btn-windows rounded btn-xs' %></td>
-                <% unless @admin_type != 'admin' %>
-                    <td class="text-center"><%= link_to 'Edit', edit_discussion_path(discussion_templet), class: 'btn btn-podcast rounded btn-xs' %></td>
-                    <td class="text-center"><%= link_to 'Destroy', discussion_templet, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-youtube rounded btn-xs' %></td>
-                <% end %>
+                <td class="text-center">
+                    <%= link_to '보기', discussion_templet, class: 'btn btn-windows rounded btn-xs' %>
+                    <% unless @admin_type != 'admin' %>
+                        | <%= link_to '수정', discussion_templets_edit_for_admin_path(:id => discussion_templet.id), class: 'btn btn-podcast rounded btn-xs' %>
+                        | <button class="btn btn-pinterest rounded btn-xs" onclick="destroyDiscussionTemplet('<%= discussion_templet.id %>')">삭제</button>
+                    <% end %>
+                </td>
             </tr>
         <% end %>
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    function move(url) {
+        location = url;
+    }
+
+    function destroyDiscussionTemplet(id) {
+        if (confirm('해당 토론 주제를 삭제하시겠습니까?')) {
+
+            var url = "/discussion_templets/" + id;
+
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+                success : function(data) {
+                    alert('토론 주제가 삭제되었습니다.');
+                    location.reload();
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+        }
+    }
+</script>

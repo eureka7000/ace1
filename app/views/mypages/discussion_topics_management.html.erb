@@ -80,7 +80,7 @@
                 beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
                 datatype: "json",
                 success : function(data) {
-                    alert('정상적으로 관계를 해제하였습니다.');
+                    alert('토론 주제가 삭제되었습니다.');
                     location.reload();
                 },
                 error : function(){

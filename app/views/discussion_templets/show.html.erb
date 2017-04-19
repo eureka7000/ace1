@@ -103,6 +103,11 @@
         <% end %>
 
     <hr>
-    <a href="/mypages/discussion_topics_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
+
+    <% unless @admin_type.nil? %>
+        <%= link_to 'Back', '/discussion_templets/list', :class => 'btn btn-podcast rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-50' %>
+    <% else %>
+        <a href="/mypages/discussion_topics_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
+    <% end %>
 
 </div>

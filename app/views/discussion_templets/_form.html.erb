@@ -16,7 +16,7 @@
                 <input hidden type="text" name="discussion_templet[creator_type]" value="<%= @user_type %>">
 
                 <input hidden name="discussion_image_id" id="discussion_image_id" value="">
-                <input hidden id="leader" value="<%= current_user.id %>">
+                <input hidden id="leader" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
 
                 <header>토론 주제 양식</header>
 
@@ -30,7 +30,7 @@
                             <select class="form-control" id="category" onchange="selectCategory()">
                                 <% if @discussion_templet_form_id.include? 'edit' %>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
-                                    <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.category %>><%= value %></option>
+                                        <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.category %>><%= value %></option>
                                     <% end %>
                                 <% else %>
                                     <option>선택하세요</option>
@@ -45,11 +45,11 @@
                             <label class="label">Sub Category</label>
                             <select class="form-control" id="sub_category" onchange="selectSubCategory()">
                                 <% if @discussion_templet_form_id.include? 'edit' %>
-                                <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
-                                <% if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
-                                <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.sub_category %>><%= value %></option>
-                                <% end %>
-                                <% end %>
+                                    <% Concept::SUB_CATEGORIES.each_pair do |key, value| %>
+                                        <% if key.to_s.slice(0, 2) == @unit_concept.concept.sub_category.slice(0, 2) %>
+                                            <option value="<%= key %>" <%= 'selected' if key == @unit_concept.concept.sub_category %>><%= value %></option>
+                                        <% end %>
+                                    <% end %>
                                 <% end %>
                             </select>
                         </section>
@@ -58,9 +58,9 @@
                             <label class="label">Concept</label>
                             <select class="form-control" id="concept" onchange="selectConcept()">
                                 <% if @discussion_templet_form_id.include? 'edit' %>
-                                <% @concepts.each do |concept| %>
-                                <option value="<%= concept.concept_code %>" <%= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%= concept.concept_name %></option>
-                                <% end %>
+                                    <% @concepts.each do |concept| %>
+                                        <option value="<%= concept.concept_code %>" <%= 'selected' unless concept.concept_code != @unit_concept.code.slice(0, 4) %>><%= concept.concept_name %></option>
+                                    <% end %>
                                 <% end %>
                             </select>
                         </section>
@@ -70,9 +70,9 @@
                             <label class="label">핵심 개념<span style="color: red">*</span></label>
                             <select class="form-control" name="discussion_templet[unit_concept_id]" id="unit_concept_id">
                                 <% if @discussion_templet_form_id.include? 'edit' %>
-                                <% @unit_concepts.each do |unit_concept| %>
-                                <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion_templet.unit_concept_id %>><%= unit_concept.name %></option>
-                                <% end %>
+                                    <% @unit_concepts.each do |unit_concept| %>
+                                        <option value="<%= unit_concept.id %>" <%= 'selected' unless unit_concept.id != @discussion_templet.unit_concept_id %>><%= unit_concept.name %></option>
+                                    <% end %>
                                 <% end %>
                             </select>
                         </section>
@@ -161,7 +161,7 @@
                                     <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
                                     <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                         <% @related_unit_concepts.each do |related_unit_concept| %>
-                                        <option value="<%= related_unit_concept.id %>" <%= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
+                                            <option value="<%= related_unit_concept.id %>" <%= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
                                         <% end %>
                                     </select>
                                 </section>
