@@ -6,6 +6,8 @@ class DiscussionsController < ApplicationController
   layout 'admin_main'
 
   def topic_select_and_new
+
+    unless current_user.nil?
     @discussion = Discussion.new
     @user_type = 'user'
     @discussion_form_id = 'new_discussion'
@@ -23,6 +25,39 @@ class DiscussionsController < ApplicationController
     end
 
     render layout: 'application'
+
+    else
+
+      @discussion = Discussion.new
+      @discussion_form_id = 'new_discussion'
+      @admin_id = session[:admin]['id']
+      @user_type = 'admin'
+      @manage_type = 'EurekaMath'
+      @sub_leader = DiscussionAuthority.all
+
+      @discussion_templets = DiscussionTemplet.all
+
+      unless session[:admin]['admin_type'] != 'admin'
+        # @leader = Admin.where(:admin_type => 'admin')
+        @leader = Staff.where(:admin_id => session[:admin]['id'])
+      else
+        if current_user.user_types[0].user_type == 'mento'
+          @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
+        else
+          @leader = Teacher.where(:school_id => session[:admin]['school_id'])
+          if session[:admin]['admin_type'] == 'school manager'
+            @manage_type = '학교'
+          else
+            @manage_type = '학원'
+          end
+        end
+      end
+
+      @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+
+      # render layout: 'admin_main'
+    end
+
   end
 
   def save_discussion_solution_history
