@@ -16,7 +16,7 @@
     </div><!--/container-->
 </div>
 
-<div class="container container-fluid">
+<div class="container container-fluid margin-bottom-50">
     <!--주제-->
     <div class="row blog-page">
         <div class="col-md-12 margin-top-20">
@@ -27,6 +27,10 @@
     <div class="blog-post-tags">
         <ul class="list-unstyled list-inline blog-info">
             <li><i class="fa fa-uesr"></i>방장 : <span style="color: #33b2f8"><%= @discussion.user.user_name %></span> 선생님</li>
+            <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' || current_user.user_types.first.user_type == 'mento' %>
+                <span style="color:#5aa0f8">|</span>
+                <li>Code : <span style="color: #55b3f8;"><%= @discussion.discussion_templet.code unless @discussion.discussion_templet.nil? %></span></li>
+            <% end %>
             <span style="color:#5aa0f8">|</span>
             <li><i class="fa fa-calendar"></i> 토론 기간 : <span style="color: #55b3f8"><%= @discussion.start_date %></span> ~ <span style="color: #55b3f8"><%= @discussion.expiration_date %></span></li>
             <span style="color:#5aa0f8">|</span>

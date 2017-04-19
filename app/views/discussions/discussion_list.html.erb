@@ -41,6 +41,9 @@
                         <h3>주제 : <%= discussion.discussion_templet.title %></h3>
                         <ul class="list-inline posted-info">
                             <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name unless discussion.user.nil? %></span> 선생님</li>
+                            <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' || current_user.user_types.first.user_type == 'mento' %>
+                                <li>Code : <span style="color: #1d78cb;"><%= discussion.discussion_templet.code unless discussion.discussion_templet.nil? %></span></li>
+                            <% end %>
                         </ul>
                         <ul class="list-inline posted-info">
                             <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
