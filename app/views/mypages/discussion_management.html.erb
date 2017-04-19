@@ -15,8 +15,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20">
                         <% if current_user.can_I_manage_discussion_rooms? %>
                             <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-xing rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
-
-                            <%#= button_to '토론문제 가져와서 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-viadeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                            <%= button_to '토론문제 가져와서 개설하기', '/discussions/topic_select_and_new', :method => :get, :class => 'btn btn-viadeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
                         <% end %>
                     </div>
                 </div>
@@ -41,8 +40,8 @@
                                         <tbody>
                                         <% @discussions.each do |discussion| %>
                                             <tr>
-                                                <td><%= discussion.discussion_templet.title %></td>
-                                                <td class="text-center"><%= discussion.discussion_templet.unit_concept.name %></td>
+                                                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
+                                                <td class="text-center"><%= discussion.discussion_templet.unit_concept.name unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
                                                 <!--<td class="text-center"><%#= discussion.participants.count %></td>-->
                                                 <!--<td class="text-center"><%#= discussion.organizer_type %></td>-->

@@ -5,6 +5,26 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def topic_select_and_new
+    @discussion = Discussion.new
+    @user_type = 'user'
+    @discussion_form_id = 'new_discussion'
+    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
+    @sub_leader = DiscussionAuthority.all
+
+    @discussion_templets = DiscussionTemplet.all
+
+    if current_user.user_types[0].user_type == 'school teacher'
+      @manage_type = '학교'
+    elsif current_user.user_types[0].user_type == 'institute teacher'
+      @manage_type = '학원'
+    elsif current_user.user_types[0].user_type == 'mento'
+      @manage_type = 'EurekaMath'
+    end
+
+    render layout: 'application'
+  end
+
   def save_discussion_solution_history
     solution_yn = params[:solution_yn]
     solution_id = params[:solution_id]
@@ -386,10 +406,23 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.new(discussion_params)
     discussion_image_ids = params[:discussion_image_id]
 
-    @discussion_templet = DiscussionTemplet.new(discussion_templet_params)
-    @discussion_templet.save
+    unless params[:discussion_templet].blank?
 
-    @discussion.discussion_templet_id = @discussion_templet.id
+      @discussion_templet = DiscussionTemplet.new
+      @discussion_templet.code = params[:discussion_templet][:code]
+      @discussion_templet.title = params[:discussion_templet][:title]
+      @discussion_templet.content = params[:discussion_templet][:content]
+      @discussion_templet.concept_explanation = params[:discussion_templet][:concept_explanation]
+      @discussion_templet.unit_concept_id = params[:discussion_templet][:unit_concept_id]
+      @discussion_templet.answer = params[:discussion_templet][:answer]
+      @discussion_templet.level = params[:discussion_templet][:level]
+      @discussion_templet.grade = params[:discussion_templet][:grade]
+      @discussion_templet.user_id = params[:discussion_templet][:user_id]
+      @discussion_templet.creator_type = params[:discussion_templet][:creator_type]
+      @discussion_templet.save
+
+      @discussion.discussion_templet_id = @discussion_templet.id
+    end
 
     # nested params coding for save discussion_title_explanation
     @title_explanations = params[:title_explanation]
@@ -411,7 +444,7 @@ class DiscussionsController < ApplicationController
           images = discussion_image_ids.to_s.split(',')
           images.each do |image|
             discussion_image = DiscussionImage.find(image)
-            discussion_image.discussion_templet_id = @discussion_templet.id
+            discussion_image.discussion_templet_id = @discussion.discussion_templet_id
             discussion_image.save
           end
         end
@@ -423,7 +456,7 @@ class DiscussionsController < ApplicationController
 
             unless @title_explanations[count].blank?
               @discussion_title_explanation = DiscussionTitleExplanation.new
-              @discussion_title_explanation.discussion_templet_id = @discussion_templet.id
+              @discussion_title_explanation.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
               @discussion_title_explanation.content = @title_explanations[count]
               @discussion_title_explanation.save
@@ -438,7 +471,7 @@ class DiscussionsController < ApplicationController
             unless @solutions[count].blank?
               @discussion_solution = DiscussionSolution.new
               @discussion_solution.content = @solutions[count]
-              @discussion_solution.discussion_templet_id = @discussion_templet.id
+              @discussion_solution.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_solution.save
             end
             count = count + 1
@@ -570,10 +603,6 @@ class DiscussionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
-      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :expiration_date, :interim_report, :final_report, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader, :group_id)
-    end
-
-    def discussion_templet_params
-      params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
+      params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :expiration_date, :interim_report, :final_report, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader, :group_id, :discussion_templet_id)
     end
 end

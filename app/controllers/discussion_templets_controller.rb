@@ -3,6 +3,31 @@ class DiscussionTempletsController < ApplicationController
   before_filter :authenticate_admin_user!, only: [:list, :new_for_admin, :edit_for_admin]
   before_filter :authenticate_user!, only: [:index, :new, :edit]
 
+  def get_templet
+    code = params[:code]
+    @discussion_templets = DiscussionTemplet.where('code like ?', "%#{code}%")
+
+    ret = []
+
+    @discussion_templets.each do | templet |
+
+      logger.info "###########     #{templet.code}    #############"
+
+      tmp = {
+          id: templet.id,
+          code: templet.code,
+          title: templet.title,
+          content: templet.content
+      }
+
+      ret << tmp
+
+    end
+
+    render :json => ret
+
+  end
+
   def new_for_admin
     @discussion_templet = DiscussionTemplet.new
     @admin_type = session[:admin]['admin_type']

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    post 'discussion_templets/get_templet' => 'discussion_templets#get_templet'
     get 'discussion_templets/edit_for_admin' => 'discussion_templets#edit_for_admin'
     get 'discussion_templets/new_for_admin' => 'discussion_templets#new_for_admin'
     get 'discussion_templets/list' => 'discussion_templets#list'
@@ -12,6 +13,8 @@ Rails.application.routes.draw do
     resources :discussion_reply
 
     resources :discussion_images
+
+    get 'discussions/topic_select_and_new' => 'discussions#topic_select_and_new'
     get 'discussions/past_discussions_list' => 'discussions#past_discussions_list'
     get 'discussions/:id/discussion_edit' => 'discussions#discussion_edit'
     get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
