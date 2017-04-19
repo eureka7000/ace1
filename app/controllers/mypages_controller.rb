@@ -319,7 +319,7 @@ class MypagesController < ApplicationController
 
     def discussion_topics_management
         @click = 'discussion_topics_management'
-        @discussion_templets = DiscussionTemplet.all
+        @discussion_templets = DiscussionTemplet.where('user_id = ? and creator_type = ?', current_user.id, 'user')
     end
 
     def user_image_upload

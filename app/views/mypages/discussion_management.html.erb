@@ -16,7 +16,7 @@
                         <% if current_user.can_I_manage_discussion_rooms? %>
                             <%= button_to '토론방 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-xing rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
 
-                            <%#= button_to '토론문제 가져와서 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-viadeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
+                            <%= button_to '토론문제 가져와서 개설하기', '/discussions/discussion_new', :method => :get, :class => 'btn btn-viadeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
                         <% end %>
                     </div>
                 </div>
