@@ -11,8 +11,8 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.new
     @user_type = 'user'
     @discussion_form_id = 'new_discussion'
-    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
-    @sub_leader = DiscussionAuthority.all
+    @leader = Teacher.where('user_id = ?', current_user.id)
+    @sub_leader = Teacher.all
 
     @discussion_templets = DiscussionTemplet.all
 
@@ -33,16 +33,16 @@ class DiscussionsController < ApplicationController
       @admin_id = session[:admin]['id']
       @user_type = 'admin'
       @manage_type = 'EurekaMath'
-      @sub_leader = DiscussionAuthority.all
+      @sub_leader = Teacher.all
 
       @discussion_templets = DiscussionTemplet.all
 
       unless session[:admin]['admin_type'] != 'admin'
         # @leader = Admin.where(:admin_type => 'admin')
-        @leader = Staff.where(:admin_id => session[:admin]['id'])
+        @leader = Teacher.all
       else
         if current_user.user_types[0].user_type == 'mento'
-          @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
+          @leader = Teacher.where('user_id = ?', current_user.id)
         else
           @leader = Teacher.where(:school_id => session[:admin]['school_id'])
           if session[:admin]['admin_type'] == 'school manager'
@@ -146,8 +146,8 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.new
     @discussion_form_id = 'new_discussion'
     @user_type = 'user'
-    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
-    @sub_leader = DiscussionAuthority.all
+    @leader = Teacher.where('user_id = ?', current_user.id)
+    @sub_leader = Teacher.all
 
     if current_user.user_types[0].user_type == 'school teacher'
       @manage_type = '학교'
@@ -167,8 +167,8 @@ class DiscussionsController < ApplicationController
     @user_type = 'user'
     # @checked_grade = @discussion.discussion_templet.grade.split(',')
     @manage_type = @discussion.manage_type
-    @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
-    @sub_leader = DiscussionAuthority.all
+    @leader = Teacher.where('user_id = ?', current_user.id)
+    @sub_leader = Teacher.all
     @groups = Group.where('user_id = ?', @discussion.user_id)
 
     # # 선택 상태 유지
@@ -331,30 +331,6 @@ class DiscussionsController < ApplicationController
     @mentos = UserType.where(:user_type => 'mento')
   end
 
-  # select_leader 에서 multi_select 으로 인한 staff 생성
-  def create_staff
-    user_types = params[:user_types]
-    # month = params[:month].to_i
-
-    @tmp_staff = Staff.where(:admin_id => session[:admin]['id'])
-    @tmp_staff.delete_all
-
-    unless user_types.nil?
-      user_types.each do |user_type|
-        u_type = UserType.find(user_type)
-        staff = Staff.new
-        staff.user_id = u_type.user_id
-        staff.user_type_id = u_type.id
-        staff.admin_id = session[:admin]['id']
-        staff.save
-      end
-    end
-
-    respond_to do |format|
-      format.html { redirect_to '/discussions/select_leader' }
-    end
-  end
-
   # GET /discussions
   # GET /discussions.json
   def index
@@ -382,22 +358,18 @@ class DiscussionsController < ApplicationController
     @admin_id = session[:admin]['id']
     @user_type = 'admin'
     @manage_type = 'EurekaMath'
-    @sub_leader = DiscussionAuthority.all
+    @sub_leader = Teacher.all
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
-      @leader = Staff.where(:admin_id => session[:admin]['id'])
+      @leader = Teacher.all
     else
-      if current_user.user_types[0].user_type == 'mento'
-        @leader = DiscussionAuthority.where('user_id = ?', current_user.id)
-      else
         @leader = Teacher.where(:school_id => session[:admin]['school_id'])
         if session[:admin]['admin_type'] == 'school manager'
           @manage_type = '학교'
-        else
+        elsif session[:admin]['admin_type'] == 'institute manager'
           @manage_type = '학원'
         end
-      end
     end
 
     @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
@@ -420,7 +392,7 @@ class DiscussionsController < ApplicationController
 
     unless session[:admin]['admin_type'] != 'admin'
       # @leader = Admin.where(:admin_type => 'admin')
-      @leader = Staff.where(:admin_id => session[:admin]['id'])
+      @leader = Teacher.all
     else
       @leader = Teacher.where(:school_id => session[:admin]['school_id'])
     end

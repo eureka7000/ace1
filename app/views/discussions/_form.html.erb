@@ -28,7 +28,7 @@
                         <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[user_id]" id="leader">
+                                <select class="select2-search-box" name="discussion[user_id]" id="leader">
                                     <% @leader.each do |leader| %>
                                         <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
                                     <% end %>
@@ -80,7 +80,7 @@
                         <section class="col col-3">
                             <label class="label">토론방 부리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[sub_leader]" id="leader">
+                                <select class="select2-search-box" name="discussion[sub_leader]" id="leader">
                                     <% @sub_leader.each do |sub_leader| %>
                                         <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
                                     <% end %>
