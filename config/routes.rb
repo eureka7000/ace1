@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
     resources :discussion_images
 
+    get '/discussions/discussion_list_of_schools' => 'discussions#discussion_list_of_schools'
     get 'discussions/topic_select_and_new' => 'discussions#topic_select_and_new'
     get 'discussions/past_discussions_list' => 'discussions#past_discussions_list'
     get 'discussions/:id/discussion_edit' => 'discussions#discussion_edit'

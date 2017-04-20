@@ -74,7 +74,7 @@
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
+                <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' || session[:admin]['admin_type'] == 'mento manager' %>
                     <li><a href="/teachers">교사 관리</a></li>
                     <li><a href="/teachers/students_list">학생 목록</a></li>
                     <li><a href="/discussions">토론방</a></li>
@@ -105,7 +105,7 @@
                     <li class="dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">토론방 <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="/discussions">토론방 목록</a></li>
+                            <li><a href="/discussions/discussion_list_of_schools">토론방 목록</a></li>
                             <% unless session[:admin]['admin_type'] != 'admin' %>
                             <li><a href="/discussion_templets/list">토론 주제 목록</a></li>
                                 <% end %>

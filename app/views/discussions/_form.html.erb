@@ -337,7 +337,7 @@
                         <% end %>
                     <% end %>
                     <% unless @user_type !='admin' %>
-                        <%= link_to 'Back', discussions_path, :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                        <%= link_to 'Back', discussions_path(:school_id => @discussion.user.school_id), :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
                     <% else %>
                         <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
                     <% end %>

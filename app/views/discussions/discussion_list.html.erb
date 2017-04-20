@@ -54,7 +54,7 @@
                             <li>LEVEL : <span style="color: red;"><%= discussion.discussion_templet.level %></span></li>
                         </ul>
                         <ul class="list-inline posted-info">
-                            <li>토론기간 : <span style="color: #1d78cb;"><%= discussion.created_at.to_date %></span> ~ <span style="color: #1d78cb;"><%= discussion.expiration_date %></span></li>
+                            <li>토론기간 : <span style="color: #1d78cb;"><%= discussion.start_date.to_date %></span> ~ <span style="color: #1d78cb;"><%= discussion.expiration_date %></span></li>
                         </ul>
 
                         <ul class="post-shares">

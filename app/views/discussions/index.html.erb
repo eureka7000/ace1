@@ -16,25 +16,27 @@
     <% end %>
     <%#= link_to '토론방 개설 권한 부여하기', discussions_give_authority_path, :class => 'btn btn-xing rounded' %>
 
-    <table class="table table-striped">
+    <table class="table table-striped margin-top-20">
         <thead>
         <tr>
-            <th class="text-center">개설자</th>
+            <!--<th class="text-center">개설자</th>-->
             <th class="text-center">리더</th>
-            <th class="text-center">운영타입</th>
-            <th class="text-center">외부 참가자 Y/N</th>
-            <th class="text-center">주제</th>
+            <th class="text-center">부리더</th>
+            <!--<th class="text-center">운영타입</th>-->
+            <th class="text-center">외부참가여부</th>
+            <!--<th class="text-center">주제</th>-->
             <!--<th class="text-center">주제 설명</th>-->
             <!--<th class="text-center">본문 내용</th>-->
             <th class="text-center">핵심개념</th>
-            <th class="text-center">개념 Level</th>
+            <!--<th class="text-center">개념 Level</th>-->
             <!--<th class="text-center">관계된 개념</th>-->
             <th class="text-center">대상학년</th>
-            <th class="text-center">Level</th>
-            <th class="text-center">Think Time(분)</th>
+            <th class="text-center">레벨</th>
+            <th class="text-center">생각시간(분)</th>
             <th class="text-center">시작일</th>
             <th class="text-center">종료일</th>
             <th class="text-center">참가자 수</th>
+            <th class="text-center">진행사항</th>
             <!--<th class="text-center">중간보고</th>-->
             <!--<th class="text-center">최종보고</th>-->
             <!--<th class="text-center">해답</th>-->
@@ -44,16 +46,18 @@
         <tbody>
         <% @discussions.each do |discussion| %>
             <tr>
-                <td class="text-center"><%= discussion.organizer_type == 'admin' ? Admin.find(discussion.organizer).name : User.find(discussion.organizer).user_name %></td>
+                <!--<td class="text-center"><%#= discussion.organizer_type == 'admin' ? Admin.find(discussion.organizer).name : User.find(discussion.organizer).user_name %></td>-->
                 <td class="text-center"><%= discussion.user.user_name unless discussion.user.user_name.nil? %></td>
-                <td class="text-center"><%= discussion.manage_type unless discussion.manage_type.nil? %></td>
+                <% sub_leader = User.find(discussion.sub_leader) %>
+                <td class="text-center"><%= sub_leader.user_name unless sub_leader.nil? %></td>
+                <!--<td class="text-center"><%#= discussion.manage_type unless discussion.manage_type.nil? %></td>-->
                 <td class="text-center"><%= discussion.observer_yn unless discussion.observer_yn.nil? %></td>
-                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.title.nil? %></td>
+                <!--<td><%#= discussion.discussion_templet.title unless discussion.discussion_templet.title.nil? %></td>-->
                 <!--<td><%#== discussion.title_explanation unless discussion.title_explanation.nil? %></td>-->
                 <!--<td><%#== discussion.content unless discussion.content.nil? %></td>-->
                 <% unit_concept = UnitConcept.find(discussion.discussion_templet.unit_concept_id) unless discussion.discussion_templet.unit_concept_id.nil? %>
                 <td class="text-center"><%= unit_concept.name unless discussion.discussion_templet.unit_concept_id.nil? %></td>
-                <td class="text-center"><%= unit_concept.level %></td>
+                <!--<td class="text-center"><#%= unit_concept.level %></td>-->
                 <!--<td>-->
                 <!--<%# unless discussion.unit_concept_id.nil? %>-->
                 <!--<%# discussion.unit_concept.unit_concept_descs.each do |ucd| %>-->
@@ -69,6 +73,12 @@
                 <td class="text-center"><%= discussion.start_date unless discussion.start_date.nil? %></td>
                 <td class="text-center"><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>
                 <td class="text-center"><%= discussion.participants.count unless discussion.participants.nil? %></td>
+                <% if discussion.expiration_date >= Date.today && discussion.start_date <= Date.today %>
+                    <td class="text-center"><span style="color: red">진행중</span></td>
+                <% else %>
+                    <td class="text-center"><span style="color: grey">종료됨</span></td>
+                <% end %>
+
                 <!--<td><%#== discussion.interim_report unless discussion.interim_report.nil? %></td>-->
                 <!--<td><%#== discussion.final_report unless discussion.final_report.nil? %></td>-->
                 <!--<td><%#== discussion.answer unless discussion.answer.nil? %></td>-->

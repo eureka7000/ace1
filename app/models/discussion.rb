@@ -34,7 +34,8 @@ class Discussion < ActiveRecord::Base
       query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.organizer_type, a.think_time, a.like, a.start_date, a.sub_leader, a.group_id, a.discussion_templet_id
                 from discussions a, users b
                 where b.school_id = #{school_id}
-                and a.user_id = b.id"
+                and a.user_id = b.id
+                order by a.expiration_date desc"
       @discussions = Discussion.find_by_sql(query)
 
       @discussions

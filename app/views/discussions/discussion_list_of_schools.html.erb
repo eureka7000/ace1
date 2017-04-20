@@ -1,0 +1,50 @@
+<!-- MathJAX -->
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+
+<div class="container container-fluid">
+    <h1>토론방 목록</h1>
+
+    <% unless session[:admin]['admin_type'] != 'admin' %>
+        <%= link_to '토론방 개설', new_discussion_path, :class => 'btn btn-xing rounded' %> |
+        <%= link_to '토론문제 가져와서 개설하기', '/discussions/topic_select_and_new', :method => :get, :class => 'btn btn-viadeo rounded' %>
+        <%#= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %>
+    <% end %>
+
+    <table class="table table-striped margin-top-20">
+        <thead>
+        <tr>
+            <th class="text-center">이름</th>
+            <th class="text-center">진행중인 토론방 수</th>
+            <th class="text-center">지난 토론방 수</th>
+            <th class="text-center">선생님 수</th>
+            <th class="text-center"><i class="fa fa-cog"></i></th>
+        </tr>
+        </thead>
+        <tbody>
+
+            <% @lists.each do |list| %>
+                <tr>
+                    <td class="text-center"><%= list[:name] %></td>
+                    <td class="text-center"><%= list[:processing] %></td>
+                    <td class="text-center"><%= list[:past] %></td>
+                    <td class="text-center"><%= list[:teacher] %></td>
+                    <td class="text-center"><button class="btn btn-dribbble btn-sm rounded" onclick="move('<%= list[:id] %>')">목록 보기</button></td>
+                </tr>
+            <% end %>
+
+        </tbody>
+    </table>
+
+</div>
+
+<script type="text/javascript">
+    function move(school_id) {
+        location = '/discussions?school_id='+school_id;
+    }
+</script>

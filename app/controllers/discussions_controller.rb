@@ -5,6 +5,42 @@ class DiscussionsController < ApplicationController
 
   layout 'admin_main'
 
+  def discussion_list_of_schools
+    @schools = School.all
+
+    processing = 0
+    past = 0
+
+    @lists = []
+
+    @schools.each do |school|
+      @users = User.where('school_id = ?', school.id)
+
+      @users.each do |user|
+        processing = processing + user.discussions.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).count
+        past = past + user.discussions.where('expiration_date < ?', Date.today).count
+      end
+
+      # logger.info "#{processing}"
+      # logger.info "#{past}"
+
+      tmp = {
+          id: school.id,
+          name: school.name,
+          processing: processing,
+          past: past,
+          total: processing + past,
+          teacher: school.users.count
+      }
+
+      @lists << tmp
+
+      processing = 0
+      past = 0
+    end
+
+  end
+
   def topic_select_and_new
 
     unless current_user.nil?
@@ -147,7 +183,7 @@ class DiscussionsController < ApplicationController
     @discussion_form_id = 'new_discussion'
     @user_type = 'user'
     @leader = Teacher.where('user_id = ?', current_user.id)
-    @sub_leader = Teacher.all
+    @sub_leader = Teacher.where('school_id = ?', current_user.school_id)
 
     if current_user.user_types[0].user_type == 'school teacher'
       @manage_type = '학교'
@@ -186,7 +222,7 @@ class DiscussionsController < ApplicationController
   def discussion_list
     leader = params[:leader]
     unless leader.blank?
-      @discussions = Discussion.where('expiration_date >= ? and user_id = ?', Date.today, leader).order(:created_at => :desc)
+      @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
     else
       @discussions = Discussion.where('expiration_date >= ?', Date.today).order(:created_at => :desc)
     end
@@ -199,7 +235,7 @@ class DiscussionsController < ApplicationController
   def past_discussions_list
     leader = params[:leader]
     unless leader.blank?
-      @discussions = Discussion.where('expiration_date < ? and user_id = ?', Date.today, leader).order(:created_at => :desc)
+      @discussions = Discussion.where('expiration_date < ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
     else
       @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
     end
@@ -335,10 +371,11 @@ class DiscussionsController < ApplicationController
   # GET /discussions.json
   def index
     @admin_type = session[:admin]['admin_type']
-
+    school_id = params[:school_id]
     if @admin_type == 'admin'
-      @discussions = Discussion.all
-    elsif @admin_type == 'school manager' || @admin_type == 'institute manager'
+      # @discussions = Discussion.all
+      @discussions = Discussion.get_org_list(school_id)
+    else
       @discussions = Discussion.get_org_list(session[:admin]['school_id'])
     end
 

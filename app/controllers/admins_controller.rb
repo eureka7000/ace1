@@ -47,7 +47,7 @@ class AdminsController < ApplicationController
             if error
                 format.html { redirect_to '/admins/login', notice: 'Email or password is wrong.' }
             else
-                if @admin.first.admin_type == 'institute manager' || @admin.first.admin_type == 'school manager'
+                if @admin.first.admin_type == 'institute manager' || @admin.first.admin_type == 'school manager' || @admin.first.admin_type == 'mento manager'
                     format.html { redirect_to '/admins/main_for_manager' }
                 end
                 format.html { redirect_to '/admins/main' }
