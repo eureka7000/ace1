@@ -10,11 +10,11 @@
 <div class="container container-fluid">
     <h1>Listing Discussions</h1>
     <% unless session[:admin]['admin_type'] != 'admin' %>
-        <%= link_to '토론방 개설', new_discussion_path, :class => 'btn btn-windows rounded' %> |
+        <%= link_to '토론방 개설', new_discussion_path, :class => 'btn btn-xing rounded' %> |
         <%= link_to '토론문제 가져와서 개설하기', '/discussions/topic_select_and_new', :method => :get, :class => 'btn btn-viadeo rounded' %>
-        <%#= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %> |
+        <%#= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %>
     <% end %>
-    <%= link_to '토론방 개설 권한 부여하기', discussions_give_authority_path, :class => 'btn btn-xing rounded' %>
+    <%#= link_to '토론방 개설 권한 부여하기', discussions_give_authority_path, :class => 'btn btn-xing rounded' %>
 
     <table class="table table-striped">
         <thead>
