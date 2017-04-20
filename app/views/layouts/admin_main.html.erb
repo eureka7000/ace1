@@ -63,7 +63,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' %>
+            <% if session[:admin]['admin_type'] == 'school manager' || session[:admin]['admin_type'] == 'institute manager' || session[:admin]['admin_type'] == 'mento manager' %>
                 <a class="navbar-brand" href="<%= '/admins/main_for_manager'  %>">Eureka Math</a>
             <% else %>
                 <a class="navbar-brand" href="<%= '/admins/main'  %>">Eureka Math</a>

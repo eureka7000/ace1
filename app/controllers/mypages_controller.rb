@@ -53,7 +53,14 @@ class MypagesController < ApplicationController
         @click = 'user_info';
         @active_tab = params[:active_tab] || '2'
 
-        @schools = School.where('is_school = ?', (current_user.user_types[0].user_type == 'school teacher' ? '1' : '0') )
+        if current_user.user_types[0].user_type == 'school teacher'
+          school = '1'
+        elsif current_user.user_types[0].user_type == 'institute teacher'
+          school = '0'
+        else
+          school = '2'
+        end
+        @schools = School.where('is_school = ?', school )
 
         @requests = UserRelation.where('related_user_id=? and confirm_status=?', current_user.id, 'requested').order(:request_date)
 

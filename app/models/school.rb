@@ -11,7 +11,8 @@ class School < ActiveRecord::Base
     SCHOOL_GEADES = {
         "primary" => "초등",
         "middle"  => "중등",
-        "high"    => "고등"
+        "high"    => "고등",
+        "all" => "전체"
     }    
     
 end

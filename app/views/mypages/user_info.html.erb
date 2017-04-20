@@ -251,18 +251,18 @@
 
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <button class="btn-u btn-u-dark-blue rounded margin-top-20 margin-left-10" type="button" onclick="openMyRelationModal()">관계 추가</button>
+                                            <button class="btn btn-bitbucket-inversed btn-sm rounded margin-top-20 margin-left-10 margin-bottom-20" type="button" onclick="openMyRelationModal()">관계 추가</button>
 
                                             <% if current_user.sign_in_count < 2 %>
                                                 <nobr><span class="color-blue">&nbsp;&nbsp;<%= User::USER_TYPES[current_user.user_types.first.user_type] %></span>(으)로 회원 가입되었음을 축하합니다.</nobr>
                                             <% end %>
 
-                                            <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' %>
-
-                                                <nobr> &nbsp;귀하의 학교(학원) 관리자의 확인이 필요합니다. &nbsp;&nbsp;
+                                            <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' || current_user.user_types.first.user_type == 'mento' %>
+                                                <br>
+                                                <nobr>
 
                                                     <% if current_user.teachers.blank? %>
-                                                        <button class="btn-u btn-u-blue rounded" data-toggle="modal" data-target="#responsive">확인요청</button>
+                                                        <button class="btn btn-dropbox-inversed btn-sm margin-left-10 rounded" data-toggle="modal" data-target="#responsive">확인 요청</button>
                                                     <% else %>
                                                         <% if current_user.teachers[0].confirm_yn.nil? %>
                                                             <span class="label label-info">담당자 확인중 ..</span>
@@ -272,6 +272,8 @@
                                                             <span class="label label-warning">확인 완료 <i class="fa fa-check"></i></span>
                                                         <% end %>
                                                     <% end %>
+
+                                                    &nbsp;귀하의 학교(학원) 관리자의 확인이 필요합니다.
                                                 </nobr>
 
                                                 <div class="modal fade" id="responsive" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -287,6 +289,12 @@
                                                                     <div class="row">
                                                                         <div class="alert alert-warning">
                                                                             <p><span style="color:red;" class="fa fa-star"></span> 학교관리자에게 요청하시기 전에 먼저 <strong>사용자명과 전화번호</strong>를 입력해주세요.</p>
+                                                                            <% if current_user.user_name.nil? || current_user.user_name.blank? %>
+                                                                                <p><span style="color:red;" class="fa fa-exclamation"></span> 회원정보에서 <strong>이름</strong>을 저장해주세요</p>
+                                                                            <% end %>
+                                                                            <% if current_user.phone.nil? || current_user.phone.blank? %>
+                                                                                <p><span style="color:red;" class="fa fa-exclamation"></span> 회원정보에서 <strong>연락처</strong>를 저장해주세요</p>
+                                                                            <% end %>
                                                                         </div>
                                                                     </div>
                                                                 <% end %>
@@ -303,7 +311,7 @@
                                                                     </div>
                                                                     <div class="col-md-9">
                                                                         <select id="school" class="form-control">
-                                                                            <option value="">학교(학원)를 선택하세요.</option>
+                                                                            <option value="">학교,학원 또는 기관을 선택하세요.</option>
                                                                             <% @schools.each do |school| %>
                                                                                 <option value="<%= school.id %>"><%= school.name %></option>
                                                                             <% end %>
