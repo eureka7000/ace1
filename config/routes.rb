@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+    post 'discussion_templets/check_code' => 'discussion_templets#check_code'
     post 'discussion_templets/get_templet' => 'discussion_templets#get_templet'
     get 'discussion_templets/edit_for_admin' => 'discussion_templets#edit_for_admin'
     get 'discussion_templets/new_for_admin' => 'discussion_templets#new_for_admin'

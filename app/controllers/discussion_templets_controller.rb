@@ -3,6 +3,23 @@ class DiscussionTempletsController < ApplicationController
   before_filter :authenticate_admin_user!, only: [:list, :new_for_admin, :edit_for_admin]
   before_filter :authenticate_user!, only: [:index, :new, :edit]
 
+  def check_code
+    code = params[:code]
+
+    @discussion_templet = DiscussionTemplet.find_by_code(code)
+
+    unless @discussion_templet.blank?
+      ret = { data: "exist", code: code }
+    else
+      ret = { data: "empty", code: code }
+    end
+
+    respond_to do |format|
+      format.json { render :json => ret }
+    end
+
+  end
+
   def get_templet
     code = params[:code]
     @discussion_templets = DiscussionTemplet.where('code like ?', "%#{code}%")

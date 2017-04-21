@@ -171,9 +171,15 @@
                             </div>
                         </section>
 
-                        <section class="col-md-4 discussion_templet">
+                        <section class="col-md-4 col-sm-4 col-xs-10 discussion_templet">
                             <label class="label">Code<span style="color: red">*</span></label>
                             <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion.discussion_templet.code.to_s.split('-', 3).last() unless @discussion.discussion_templet.nil? %>">
+                        </section>
+
+                        <section class="col-md-2 col-sm-2 col-xs-2 discussion_templet">
+                            <label class="label">&nbsp;</label>
+                            <input type="button" class="btn btn-flickr btn-xs rounded" value="중복확인" id="code_check" onclick="codeCheck()">
+                            <input hidden value="N" id="code_check_yn">
                         </section>
                     </div>
 
@@ -475,6 +481,11 @@
             return false;
         }
 
+        if ($('#code_check_yn').val() == 'N'){
+            alert('Code 중복확인을 해주세요.');
+            return false;
+        }
+
         setCodeValue();
 
         if ($('#unit_concept_id').val() == null){
@@ -672,8 +683,74 @@
         var value = $('#sub_category').val()+'-'+teacherCode+$('#leader').val()+'-'+$('#code').val();
 
         $('#code').attr('value', value);
-
     }
+
+    function codeCheck() {
+        if ($('#sub_category').val() == null) {
+            alert('Sub Category를 선택해주세요.');
+            return false;
+        }
+
+        if ($('#code').val() == '') {
+            alert('Code를 입력해주세요.');
+            return false;
+        }
+        else {
+            var teacherCode = '';
+
+            if ($('#manage_type').val() == 'EurekaMath') {
+                teacherCode = 'te';
+            }
+            else if ($('#manage_type').val() == '학교') {
+                teacherCode = 'ts';
+            }
+            else {
+                teacherCode = 'ti';
+            }
+
+            var data = new FormData();
+            data.append("code", $('#sub_category').val() + '-' + teacherCode + $('#leader').val() + '-' + $('#code').val());
+
+            $.ajax({
+                data: data,
+                type: "POST",
+                dataType: "json",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))
+                },
+                url: "/discussion_templets/check_code",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data.data == 'exist') {
+                        alert('[' + data.code + '] 중복된 코드 입니다.');
+                    }
+                    else {
+                        alert('[' + data.code + '] 사용 가능한 코드 입니다.');
+                        $('#code_check').attr('disabled', 'true');
+                        $('#code_check_yn').val('Y');
+                    }
+                }
+            });
+        }
+    }
+
+    $('#category').change(function () {
+        $('#code_check').removeAttr('disabled', 'true');
+        $('#code_check_yn').val('N');
+    });
+
+    $('#sub_category').change(function () {
+        $('#code_check').removeAttr('disabled', 'true');
+        $('#code_check_yn').val('N');
+    });
+
+    $('#code').change(function () {
+        $('#code_check').removeAttr('disabled', 'true');
+        $('#code_check_yn').val('N');
+    });
+
 </script>
 
 <!--핵심 개념 선택-->
