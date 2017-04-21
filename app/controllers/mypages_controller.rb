@@ -321,7 +321,8 @@ class MypagesController < ApplicationController
 
     def discussion_management
         @click = 'discussion_management'
-        @discussions = Discussion.where('user_id = ? or sub_leader = ?', current_user.id, current_user.id).order(:expiration_date => :desc)
+        @processing_discussions = Discussion.where('expiration_date >= ? and start_date <= ? and (user_id = ? or sub_leader = ?)', Date.today, Date.today, current_user.id, current_user.id).order(:id => :desc)
+        @past_discussions = Discussion.where('expiration_date < ? and (user_id = ? or sub_leader = ?)', Date.today, current_user.id, current_user.id).order(:id => :desc)
     end
 
     def discussion_topics_management

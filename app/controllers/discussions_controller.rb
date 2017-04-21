@@ -21,9 +21,6 @@ class DiscussionsController < ApplicationController
         past = past + user.discussions.where('expiration_date < ?', Date.today).count
       end
 
-      # logger.info "#{processing}"
-      # logger.info "#{past}"
-
       tmp = {
           id: school.id,
           name: school.name,
@@ -207,24 +204,15 @@ class DiscussionsController < ApplicationController
     @sub_leader = Teacher.all
     @groups = Group.where('user_id = ?', @discussion.user_id)
 
-    # # 선택 상태 유지
-    # @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
-    # unit_concept_code = @unit_concept.code.slice(0, 4)
-    # concept_code = @unit_concept.code.slice(0, 3)
-    # @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
-    # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
-    #
-    # @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
-
     render layout: 'application'
   end
 
   def discussion_list
     leader = params[:leader]
     unless leader.blank?
-      @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
+      @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:id => :desc)
     else
-      @discussions = Discussion.where('expiration_date >= ?', Date.today).order(:created_at => :desc)
+      @discussions = Discussion.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).order(:id => :desc)
     end
 
     @leaders = Discussion.where('expiration_date >= ?', Date.today).select(:user_id).distinct
@@ -235,7 +223,7 @@ class DiscussionsController < ApplicationController
   def past_discussions_list
     leader = params[:leader]
     unless leader.blank?
-      @discussions = Discussion.where('expiration_date < ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
+      @discussions = Discussion.where('expiration_date <= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
     else
       @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
     end
@@ -544,13 +532,6 @@ class DiscussionsController < ApplicationController
   def update
     discussion_image_ids = params[:discussion_image_id]
 
-    # # nested params coding for save discussion_title_explanation
-    # @title_explanations = params[:title_explanation]
-    # @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
-    #
-    # # nested params coding for save discussion_solution
-    # @solutions = params[:solution]
-
     unless session[:admin].nil?
       is_admin = true
     else
@@ -567,40 +548,6 @@ class DiscussionsController < ApplicationController
         discussion_image.save
       end
     end
-
-    # unless @title_explanations.blank?
-    #   DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id).delete_all
-    #   count = 0
-    #   (0..@title_explanations.count).each do |idx|
-    #     # logger.info "###########    #{@title_explanations[count]}, #{@title_explanation_unit_concept_ids[count]}    ############"
-    #
-    #     unless @title_explanations[count].blank?
-    #       @discussion_title_explanation = DiscussionTitleExplanation.new
-    #       @discussion_title_explanation.discussion_templet_id = @discussion.discussion_templet_id
-    #       @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
-    #       @discussion_title_explanation.content = @title_explanations[count]
-    #       @discussion_title_explanation.save
-    #     end
-    #     count = count+1
-    #   end
-    # end
-
-    # unless @solutions.blank?
-    #   DiscussionSolution.where('discussion_templet_id = ?', @discussion.discussion_templet_id).delete_all
-    #
-    #   count = 0
-    #   (0..@solutions.count).each do |idx|
-    #     unless @solutions[count].blank?
-    #       logger.info "##########    #{@solutions[count]}    ##########"
-    #       @discussion_solution = DiscussionSolution.new
-    #       @discussion_solution.content = @solutions[count]
-    #       @discussion_solution.discussion_templet_id = @discussion.discussion_templet_id
-    #       @discussion_solution.save
-    #     end
-    #     count = count + 1
-    #   end
-    # end
-
 
     respond_to do |format|
       if @discussion.update(discussion_params)

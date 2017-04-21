@@ -23,7 +23,10 @@
                 <div class="tab-content">
                     <div class="profile-edit tab-pane fade in active">
 
-                        <% unless @discussions.blank? %>
+                        <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-speech"></i> 진행중인 토론방</h3>
+                        <hr>
+
+                        <% unless @processing_discussions.blank? %>
                             <div class="table-search-v1 margin-bottom-20">
                                 <div class="table-responsive">
                                     <table class="table">
@@ -38,7 +41,58 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <% @discussions.each do |discussion| %>
+                                        <% @processing_discussions.each do |discussion| %>
+                                            <tr>
+                                                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
+                                                <td class="text-center"><%= discussion.discussion_templet.unit_concept.name unless discussion.discussion_templet.nil? %></td>
+                                                <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
+                                                <!--<td class="text-center"><%#= discussion.participants.count %></td>-->
+                                                <!--<td class="text-center"><%#= discussion.organizer_type %></td>-->
+                                                <td class="text-center">
+                                                    <button class="btn btn-pinterest rounded btn-xs" <%= "disabled='true'" unless discussion.organizer_type != 'admin' %> <%= "disabled='true'" if discussion.user_id != current_user.id && discussion.sub_leader == current_user.id %> onclick="destroyDiscussion('<%= discussion.id %>')">삭제</button>
+                                                    | <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button>
+                                                    | <button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button>
+                                                </td>
+                                            </tr>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <% else %>
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h3>- 관리중인 토론방이 없습니다. -</h3>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="tab-content">
+                    <div class="profile-edit tab-pane fade in active">
+
+                        <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-line icon-speech"></i> 종료된 토론방</h3>
+                        <hr>
+
+                        <% unless @past_discussions.blank? %>
+                            <div class="table-search-v1 margin-bottom-20">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">주제</th>
+                                            <th class="text-center">핵심개념</th>
+                                            <th class="text-center">토론기간</th>
+                                            <!--<th class="text-center">참가자 수</th>-->
+                                            <!--<th class="text-center">개설자</th>-->
+                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% @past_discussions.each do |discussion| %>
                                             <tr>
                                                 <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.discussion_templet.unit_concept.name unless discussion.discussion_templet.nil? %></td>
