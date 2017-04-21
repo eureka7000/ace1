@@ -3,13 +3,28 @@
         <h1 class="pull-left">토론방 개설</h1>
         <ul class="pull-right breadcrumb">
             <li><a href="/">Home</a></li>
-            <li>STUDY</li>
-            <li>토론방</li>
+            <li>My Page</li>
+            <li>토론방 관리</li>
             <li class="active">토론방 개설</li>
         </ul>
     </div>
 </div>
 
 <div class="container container-fluid">
-    <%= render 'form' %>
+
+    <div class="row">
+        <!-- Begin Content -->
+        <div class="col-md-12 margin-bottom-50 margin-top-20">
+            <!-- Contacts -->
+            <div class="sky-form">
+
+                <%= render 'form' %>
+
+                <footer class="text-center">
+                    <%= link_to '뒤로가기', '/mypages/discussion_management', :class => 'btn btn-podcast rounded col-md-12 col-sm-12 col-xs-12' %>
+                </footer>
+
+            </div>
+        </div>
+    </div>
 </div>

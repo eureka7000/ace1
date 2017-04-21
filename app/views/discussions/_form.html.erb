@@ -4,11 +4,6 @@
 <link href="/css/select2.min.css" rel="stylesheet" />
 <script type="text/javascript" src="/js/select2.min.js"></script>
 
-<div class="row">
-    <!-- Begin Content -->
-    <div class="col-md-12 margin-bottom-50 margin-top-20">
-        <!-- Contacts -->
-        <div class="sky-form">
             <%= form_for(@discussion) do |f| %>
 
                 <!--discussion_templet-->
@@ -28,7 +23,7 @@
                         <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="select2-search-box" name="discussion[user_id]" id="leader">
+                                <select class="select2-search-box" style="width: 100%" name="discussion[user_id]" id="leader">
                                     <% @leader.each do |leader| %>
                                         <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
                                     <% end %>
@@ -80,7 +75,7 @@
                         <section class="col col-3">
                             <label class="label">토론방 부리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="select2-search-box" name="discussion[sub_leader]" id="leader">
+                                <select class="select2-search-box" style="width: 100%" name="discussion[sub_leader]" id="leader">
                                     <% @sub_leader.each do |sub_leader| %>
                                         <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
                                     <% end %>
@@ -88,7 +83,7 @@
                             </label>
                         </section>
 
-                        <section class="col-md-3">
+                        <section class="col col-3">
                             <label class="label">Think time(분)</label>
                             <input type="number" class="form-control" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
                         </section>
@@ -326,30 +321,17 @@
                             <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                         </section>
                     </div>
+
+                    <div class="row">
+                        <section class="col-md-12">
+                            <hr>
+                            <input class="btn btn-dribbble rounded col-md-12 col-sm-12 col-xs-12" type="button" onclick="<%= @discussion_form_id == 'new_discussion' ? "beforeNewCheckAndSend('#{@discussion_form_id}')" : "beforeEditCheckAndSend('#{@discussion_form_id}')" %>" value='입력완료'>
+                        </section>
+                    </div>
                 </fieldset>
 
-                <footer class="text-center">
-                    <% unless params[:id].nil? %>
-                        <% unless @user_type !='admin' %>
-                            <%= link_to 'Show', @discussion, :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
-                        <% else %>
-                            <%= link_to 'Show', '/discussions/discussion_room/'+ params[:id], :class => 'btn btn-vimeo rounded col-md-12 col-sm-12 col-xs-12 margin-bottom-20' %>
-                        <% end %>
-                    <% end %>
-                    <% unless @user_type !='admin' %>
-                        <%= link_to 'Back', discussions_path(:school_id => @discussion.user.school_id), :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
-                    <% else %>
-                        <%= link_to 'Back', '/discussions/discussion_list', :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
-                    <% end %>
-                    <div class="col-md-2 col-sm-2 col-xs-2"></div>
-                    <input class="btn btn-dribbble rounded col-md-5 col-sm-5 col-xs-5" type="button" onclick="<%= @discussion_form_id == 'new_discussion' ? "beforeNewCheckAndSend('#{@discussion_form_id}')" : "beforeEditCheckAndSend('#{@discussion_form_id}')" %>" value='입력완료'>
-                </footer>
             <% end %>
-        </div>
-        <!-- Contacts -->
-    </div>
-    <!-- End Content -->
-</div>
+
 
 <!--select2-->
 <script type="text/javascript">

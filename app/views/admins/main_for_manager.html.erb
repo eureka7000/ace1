@@ -8,7 +8,7 @@
 
             <div class="row margin-bottom-40">
 
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-6 col-sm-6">
                     <div class="service-block service-block-aqua service-or rounded-4x" onclick="goManagementPage('teachers')">
                         <div class="service-bg"></div>
                         <i class="icon-custom icon-color-light rounded-x icon-line icon-user"></i>
@@ -17,7 +17,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-6 col-sm-6">
                     <div class="service-block service-block-blue service-or rounded-4x" onclick="goManagementPage('teachers/students_list')">
                         <div class="service-bg"></div>
                         <i class="icon-custom icon-color-light rounded-x icon-line icon-user-following"></i>
@@ -26,12 +26,21 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-6 col-sm-6">
                     <div class="service-block service-block-dark-blue service-or rounded-4x" onclick="goManagementPage('teachers')">
                         <div class="service-bg"></div>
                         <i class="icon-custom icon-color-light rounded-x icon-line icon-bell"></i>
                         <h2 class="heading-md counter"><%= @approval_requests_count %></h2>
                         <h2 class="heading-md"><strong>승인 요청</strong></h2>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6">
+                    <div class="service-block service-block-green service-or rounded-4x" onclick="goManagementPage('discussions')">
+                        <div class="service-bg"></div>
+                        <i class="icon-custom icon-color-light rounded-x icon-line icon-speech"></i>
+                        <h2 class="heading-md counter"><%= @processing_discussions_count %></h2>
+                        <h2 class="heading-md"><strong>진행중인 토론방</strong></h2>
                     </div>
                 </div>
 

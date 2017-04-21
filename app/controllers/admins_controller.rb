@@ -82,6 +82,13 @@ class AdminsController < ApplicationController
             end
         end
 
+        @users = User.where('school_id = ?', session[:admin]['school_id'])
+
+        @processing_discussions_count = 0
+        @users.each do |user|
+          @processing_discussions_count = @processing_discussions_count + user.discussions.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).count
+        end
+
      end
 
   # GET /admins/1

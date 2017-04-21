@@ -1,6 +1,20 @@
 <div class="container container-fluid">
-    <%= render 'form' %>
 
-    <%#= link_to 'Show', @discussion %>
-    <%#= link_to 'Back', discussions_path %>
+    <div class="row">
+        <!-- Begin Content -->
+        <div class="col-md-12 margin-bottom-50 margin-top-20">
+            <!-- Contacts -->
+            <div class="sky-form">
+
+                <%= render 'form' %>
+
+                <footer class="text-center">
+                    <%= link_to 'Show', @discussion, :class => 'btn btn-vimeo rounded col-md-5 col-sm-5 col-xs-5' %>
+                    <div class="col-md-2 col-sm-2 col-xs-2"></div>
+                    <%= link_to 'Back', discussions_path(:school_id => @discussion.user.school_id), :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
+                </footer>
+
+            </div>
+        </div>
+    </div>
 </div>

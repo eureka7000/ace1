@@ -373,8 +373,11 @@ class DiscussionsController < ApplicationController
     @admin_type = session[:admin]['admin_type']
     school_id = params[:school_id]
     if @admin_type == 'admin'
-      # @discussions = Discussion.all
-      @discussions = Discussion.get_org_list(school_id)
+      unless school_id.blank?
+        @discussions = Discussion.get_org_list(school_id)
+      else
+        @discussions = Discussion.all
+      end
     else
       @discussions = Discussion.get_org_list(session[:admin]['school_id'])
     end
