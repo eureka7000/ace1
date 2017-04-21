@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
     def can_I_manage_discussion_rooms?
         ret = false
 
-        teacher = Teacher.where('user_id = ?', self.id)
+        teacher = Teacher.where('user_id = ? and confirm_yn = ?', self.id, 'Y')
 
         unless teacher.blank?
             ret = true
