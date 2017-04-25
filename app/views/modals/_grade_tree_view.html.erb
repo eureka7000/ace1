@@ -173,9 +173,11 @@
                 grade.addClass('selected');
                 chapter.addClass('selected');
                 category.addClass('selected');
-                sub_category.addClass('selected');
-                sub_category.find('span.sub_category_text').addClass('text-highlights text-highlights-green');
-                sub_category.find('span.sub_category_text').css({color: "white", padding: 0});
+                if ('<%= params[:exercise_type] %>' != 'concept_exercise') {
+                    sub_category.addClass('selected');
+                    sub_category.find('span.sub_category_text').addClass('text-highlights text-highlights-green');
+                    sub_category.find('span.sub_category_text').css({color: "white", padding: 0});
+                }
             } else if ('<%= params[:view_type] %>' == '2' && '<%= params[:step] %>' == '6' && '<%= params[:concept_id] %>' == data[i].concept_id && '<%= params[:grade] %>' == data[i].grade_code) {
                 //다른 학년에서 concept_id가 같은 경우가 있으므로 학년을 조건에 추가함
                 grade.addClass('selected');
@@ -232,35 +234,71 @@
                 }
 
 
-                // 종합문제
-                if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+//                // 이전 종합문제
+//                if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' == data[i].sub_category_code) {
+//                    grade.addClass('selected');
+//                    chapter.addClass('selected');
+//                    category.addClass('selected');
+//                    sub_category.addClass('selected');
+//                    concept = $('<li/>').html(
+//                            "<a href='/contents?view_type=2&step=6&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
+//                            "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
+//                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+//
+//                    if ('<%= params[:exercise_type] %>' == 'concept_exercise') {
+//                        concept.find('a').addClass('text-highlights text-highlights-green');
+//                        concept.find('a').css({color: "white", padding: 0});
+//                    }
+//
+//                } else if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' != data[i].sub_category_code) {
+//                    concept = $('<li/>').html(
+//                            "<a href='/contents?view_type=2&step=6&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
+//                            "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
+//                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+//
+                    <!--<% if @exercise_type == 'concept_exercise' %>-->
+
+//                    if (data[i].sub_category_code == '<%= @unit_concept.sub_category %>') {
+//                        grade.addClass('selected');
+//                        chapter.addClass('selected');
+//                        category.addClass('selected');
+//                        sub_category.addClass('selected');
+//                        concept.find('a').addClass('text-highlights text-highlights-green');
+//                        concept.find('a').css({color: "white", padding: 0});
+//                    }
+//
+                    <!--<% end %>-->
+
+//                }
+
+
+                // 변경 후 종합문제
+                if (data[i].category_code != data[i+1].category_code && '<%= params[:category] %>' == data[i].category_code) {
                     grade.addClass('selected');
                     chapter.addClass('selected');
                     category.addClass('selected');
-                    sub_category.addClass('selected');
                     concept = $('<li/>').html(
-                            "<a href='/contents?view_type=2&step=6&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
-                            "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
-                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                        "<a href='/contents?view_type=2&step=5&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
+                        "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
+                        "&exercise_type=concept_exercise'>종합문제</a>").appendTo(category_ul);
 
                     if ('<%= params[:exercise_type] %>' == 'concept_exercise') {
                         concept.find('a').addClass('text-highlights text-highlights-green');
                         concept.find('a').css({color: "white", padding: 0});
                     }
 
-                } else if (data[i].sub_category_code != data[i+1].sub_category_code && '<%= params[:sub_category] %>' != data[i].sub_category_code) {
+                } else if (data[i].category_code != data[i+1].category_code && '<%= params[:category] %>' != data[i].category_code) {
                     concept = $('<li/>').html(
-                            "<a href='/contents?view_type=2&step=6&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
-                            "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
-                            "&exercise_type=concept_exercise'>종합문제</a>").appendTo(sub_category_ul);
+                        "<a href='/contents?view_type=2&step=5&grade="+data[i].grade_code+"&chapter="+data[i].chapter_code +
+                        "&category=" + data[i].category_code + "&sub_category=" + data[i].sub_category_code +
+                        "&exercise_type=concept_exercise'>종합문제</a>").appendTo(category_ul);
 
                     <% if @exercise_type == 'concept_exercise' %>
 
-                    if (data[i].sub_category_code == '<%= @unit_concept.sub_category %>') {
+                    if (data[i].category_code == '<%= @unit_concept.category %>') {
                         grade.addClass('selected');
                         chapter.addClass('selected');
                         category.addClass('selected');
-                        sub_category.addClass('selected');
                         concept.find('a').addClass('text-highlights text-highlights-green');
                         concept.find('a').css({color: "white", padding: 0});
                     }

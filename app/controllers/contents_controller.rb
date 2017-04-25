@@ -372,13 +372,17 @@ class ContentsController < ApplicationController
             end    
             
             if @step > 3
-                @current_page_name = GradeUnitConcept::CATEGORIES[params[:category].to_i]
+                @current_page_name = GradeUnitConcept::CATEGORIES[@category.to_i]
                 @breadcrumbs << { 'step4' => @current_page_name }                
             end
             
             if @step > 4
                 @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
                 @breadcrumbs << { 'step5' => @current_page_name }
+
+                unless params[:exercise_type].blank?
+                  @current_page_name = '종합문제'
+                end
             end
             
             if @step > 5
@@ -386,7 +390,7 @@ class ContentsController < ApplicationController
                     @current_page_name = Concept.find(@concept_id).concept_name
                 else
                     @current_page_name = '종합문제'
-                end                        
+                end
                 @breadcrumbs << { 'step6' => @current_page_name }
             end
             
@@ -422,18 +426,55 @@ class ContentsController < ApplicationController
                     end    
                 end
             elsif @step == 4    
-                
+                first_key = ''
+                count = 0
                 GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
                     unless @category.to_i != key/100
                         @items << {
                             key: key,
                             value: value
                         }
-                    end    
+                    end
+
+                    if count == 0
+                      first_key = key
+                      count = count + 1
+                    end
                 end
-                
-            elsif @step == 5    
-                
+
+            #     종합문제 표시 위치 변경
+                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+
+                      @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+
+                      if @concept_exercises.count > 0
+
+                          @items << {
+                              key: first_key,
+                              value: '종합문제'
+                          }
+                      end
+                  end
+
+            elsif @step == 5
+
+              if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+                @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                @concept_exercises.each do |concept_exercise|
+                  @items << {
+                      key: concept_exercise.id,
+                      value: concept_exercise.concept_name,
+                      content_yn: true,
+                      level: concept_exercise.level,
+                      exercise_yn: true,
+                      level_star_yn: true,
+                      level_star: concept_exercise.get_level_star,
+                      past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
+                  }
+                end
+
+              else
+
                 @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
                 @grade_unit_concepts.each do |grade_unit_concept|
                     @items << {
@@ -444,24 +485,34 @@ class ContentsController < ApplicationController
                         unit_concept_counts: get_unit_concept_counts(grade_unit_concept.concept_id)                        
                     }
                 end
-                
-                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
-                    
-                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
-                    
-                    if @concept_exercises.count > 0
-                        @items << {
-                            key: '',
-                            value: '종합문제'
-                        }
-                    end    
-                end    
-                
+              end
+
+                # unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+                #
+                #     @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                #
+                #     if @concept_exercises.count > 0
+                #         @items << {
+                #             key: '',
+                #             value: '종합문제'
+                #         }
+                #     end
+                # end
+
+
+
+
             elsif @step == 6
                 
                 if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
-                    
-                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+
+                    # num = @sub_category.to_s.slice(-2, 1).to_i - 1
+                    # str = GradeUnitConcept::MAPPING_EXERCISE[@category]
+                    # logger.info "##############    sub_category : #{@sub_category}     ##############"
+                    # logger.info "##############    num : #{num}     ##############"
+                    # @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', str[num], "exercise", @grade)
+
+                    @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
                     @concept_exercises.each do |concept_exercise|
                         @items << {
                             key: concept_exercise.id,
@@ -473,9 +524,9 @@ class ContentsController < ApplicationController
                             level_star: concept_exercise.get_level_star,
                             past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
                         }
-                    end                                        
-                    
-                else    
+                    end
+
+                else
 
                     @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade = ?', @concept_id, "concept", @grade)
                     @unit_concepts.each do |unit_concept|
@@ -500,7 +551,7 @@ class ContentsController < ApplicationController
                         }                    
                     end
                     
-                end    
+                end
                 
             elsif @step == 7
 

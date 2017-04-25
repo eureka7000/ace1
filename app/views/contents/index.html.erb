@@ -77,6 +77,9 @@
                         <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                            <% if item[:value] == '종합문제' && @step == 4 %>
+                                <% item_link_str += "&exercise_type=concept_exercise" %>
+                            <% end %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{item[:key]}&level=#{@level}&exercise_type=concept_exercise" if @step == 5 && params[:view_type] == '2' %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{@level}&exercise_type=unit_concept_exercise" if @step == 6 && params[:view_type] == '2' %>
                     <% end %>
