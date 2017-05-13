@@ -92,6 +92,8 @@
                         <section class="col-md-6 col-sm-6 col-xs-6">
                             <label class="label">토론주제 검색</label>
                             <select class="select2-search-box col-md-6" id="templet_id" name="discussion[discussion_templet_id]">
+                                puts "#{@discussion_templets.count}"
+                                puts '........................'
                                 <% @discussion_templets.each do |discussion_templet| %>
                                     <option value="<%= discussion_templet.id %>" <%= 'selected' unless discussion_templet.id != @discussion.discussion_templet_id %>><%= discussion_templet.code %> | <%= discussion_templet.unit_concept.name %></option>
                                 <% end %>

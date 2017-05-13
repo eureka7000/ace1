@@ -31,7 +31,12 @@ class Discussion < ActiveRecord::Base
     }
 
     def self.get_org_list(school_id)
-      query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.organizer_type, a.think_time, a.like, a.start_date, a.sub_leader, a.group_id, a.discussion_templet_id
+      #query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.organizer_type, a.think_time, a.like, a.start_date, a.sub_leader, a.group_id, a.discussion_templet_id
+      #          from discussions a, users b
+      #          where b.school_id = #{school_id}
+      #          and a.user_id = b.id
+      #          order by a.expiration_date desc"
+      query = "select a.id, a.organizer, a.user_id, a.manage_type, a.observer_yn, a.expiration_date, a.interim_report, a.final_report, a.created_at, a.updated_at, a.organizer_type, a.think_time, a.like, a.start_date, a.sub_leader, a.discussion_templet_id
                 from discussions a, users b
                 where b.school_id = #{school_id}
                 and a.user_id = b.id
@@ -41,18 +46,20 @@ class Discussion < ActiveRecord::Base
       @discussions
     end
 
-    def self.can_I_join_this_room?(group_id, student_id, observer_yn, user_type)
+    #def self.can_I_join_this_room?(group_id, student_id, observer_yn, user_type)
+    def self.can_I_join_this_room?(student_id, observer_yn, user_type)
 
       if user_type == 'student'
         if observer_yn == 'Y'
           true
         else
-          @groups_users = GroupsUser.where('group_id = ? and user_id = ?', group_id, student_id)
-          unless @groups_users.blank?
-            true
-          else
-            false
-          end
+          #@groups_users = GroupsUser.where('group_id = ? and user_id = ?', group_id, student_id)
+          #unless @groups_users.blank?
+          #  true
+          #else
+          #  false
+          #end
+          false
         end
       else
         true

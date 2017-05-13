@@ -20,9 +20,11 @@
     <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
         <select class="select2-search-box" style="width: 100%;" id="leaderSearch" name="" value="">
             <option value="">방장검색</option>
+            <%= puts "------" %>
             <% @discussions.select(:user_id).distinct.each do |leader| %>
                 <option value="<%= leader.user_id %>"><%= leader.user.user_name %></option>
             <% end %>
+            <%= puts "------" %>
         </select>
     </div>
     <div class="col-md-6 col-sm-12 col-xs-12">

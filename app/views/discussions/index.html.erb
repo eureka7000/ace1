@@ -73,7 +73,8 @@
                 <td class="text-center"><%= discussion.start_date unless discussion.start_date.nil? %></td>
                 <td class="text-center"><%= discussion.expiration_date unless discussion.expiration_date.nil? %></td>
                 <td class="text-center"><%= discussion.participants.count unless discussion.participants.nil? %></td>
-                <% if discussion.expiration_date >= Date.today && discussion.start_date <= Date.today %>
+                <!--<<%# if discussion.expiration_date >= Date.today && discussion.start_date <= Date.today %>-->
+                <% if discussion.expiration_date >= Date.today %>
                     <td class="text-center"><span style="color: red">진행중</span></td>
                 <% else %>
                     <td class="text-center"><span style="color: grey">종료됨</span></td>

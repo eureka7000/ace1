@@ -14,11 +14,18 @@ class DiscussionsController < ApplicationController
     @lists = []
 
     @schools.each do |school|
+      puts school.id
+      puts school.name
       @users = User.where('school_id = ?', school.id)
 
       @users.each do |user|
+        puts user.id
+        puts user.email
+        puts user.discussions.count
         processing = processing + user.discussions.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).count
+        puts "#{processing}---------------------------"
         past = past + user.discussions.where('expiration_date < ?', Date.today).count
+        puts "#{past}========================="
       end
 
       tmp = {
@@ -41,29 +48,47 @@ class DiscussionsController < ApplicationController
   def topic_select_and_new
 
     unless current_user.nil?
-    @discussion = Discussion.new
-    @user_type = 'user'
-    @discussion_form_id = 'new_discussion'
-    @leader = Teacher.where('user_id = ?', current_user.id)
-    @sub_leader = Teacher.all
+      puts "==========================거의 관계없음"
+      puts session.inspect
+      puts current_user.user_name
+      puts current_user
+      puts current_user.inspect
+      @discussion = Discussion.new
+      @user_type = 'user'
+      @discussion_form_id = 'new_discussion'
+      @leader = Teacher.where('user_id = ?', current_user.id)
+      @sub_leader = Teacher.all
 
-    @discussion_templets = DiscussionTemplet.all
+      @discussion_templets = DiscussionTemplet.all
+      puts "=========================="
+      puts current_user.user_types[0].user_type
+      puts @discussion_templets.first.user_id
+      puts @discussion_templets[1].user_id
+      puts "=========================="
+      puts current_user.user_types.count
+      puts "=========================="
+      if current_user.user_types[0].user_type == 'school teacher'
+        @manage_type = '학교'
+        elsif current_user.user_types[0].user_type == 'institute teacher'
+          @manage_type = '학원'
+        elsif current_user.user_types[0].user_type == 'mento'
+          @manage_type = 'EurekaMath'
+      end
+      puts "------------------"
+      puts @manage_type
 
-    if current_user.user_types[0].user_type == 'school teacher'
-      @manage_type = '학교'
-    elsif current_user.user_types[0].user_type == 'institute teacher'
-      @manage_type = '학원'
-    elsif current_user.user_types[0].user_type == 'mento'
-      @manage_type = 'EurekaMath'
-    end
-
-    render layout: 'application'
+      render layout: 'application'
 
     else
-
+      puts "------------------"
       @discussion = Discussion.new
       @discussion_form_id = 'new_discussion'
       @admin_id = session[:admin]['id']
+      #@admin_type = session[:admin]['admin_type']
+      puts @admin_id
+      puts session[:admin].inspect
+      puts session[:current_user].inspect
+      #puts @admin_type
       @user_type = 'admin'
       @manage_type = 'EurekaMath'
       @sub_leader = Teacher.all
@@ -71,22 +96,29 @@ class DiscussionsController < ApplicationController
       @discussion_templets = DiscussionTemplet.all
 
       unless session[:admin]['admin_type'] != 'admin'
+        puts session[:admin]['admin_type']
         # @leader = Admin.where(:admin_type => 'admin')
         @leader = Teacher.all
-      else
-        if current_user.user_types[0].user_type == 'mento'
-          @leader = Teacher.where('user_id = ?', current_user.id)
+        puts session[:admin]['admin_type']
         else
-          @leader = Teacher.where(:school_id => session[:admin]['school_id'])
-          if session[:admin]['admin_type'] == 'school manager'
-            @manage_type = '학교'
+          puts "aaaaaaa"
+          if current_user.user_types[0].user_type == 'mento'
+            puts "aaaaaaa111111111"
+            @leader = Teacher.where('user_id = ?', current_user.id)
           else
-            @manage_type = '학원'
+            puts "bbbbbbb"
+            @leader = Teacher.where(:school_id => session[:admin]['school_id'])
+            if session[:admin]['admin_type'] == 'school manager'
+              puts "cccccccc"
+              @manage_type = '학교'
+            else
+              @manage_type = '학원'
           end
         end
       end
-
+      puts session[:admin]['admin_type']
       @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
+      puts session[:admin]['admin_type']
 
       # render layout: 'admin_main'
     end
@@ -224,11 +256,16 @@ class DiscussionsController < ApplicationController
     leader = params[:leader]
     unless leader.blank?
       @discussions = Discussion.where('expiration_date <= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
-    else
-      @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
+      puts "-------------------"
+      else
+        @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
+        puts "====================="
     end
 
     @leaders = Discussion.where('expiration_date < ?', Date.today).select(:user_id).distinct
+    puts @leaders.count
+    puts @leaders.select(:user_id)
+    puts "lllllllll" 
 
     render layout: 'application'
   end
@@ -359,6 +396,7 @@ class DiscussionsController < ApplicationController
   # GET /discussions.json
   def index
     @admin_type = session[:admin]['admin_type']
+    puts @admin_type
     school_id = params[:school_id]
     if @admin_type == 'admin'
       unless school_id.blank?
@@ -375,8 +413,11 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1
   # GET /discussions/1.json
   def show
+    puts @discussion
     @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
+    puts @unit_concept.id
     @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
+    puts @discussion.user.user_types.first.user_type
   end
 
   # GET /discussions/new
@@ -407,6 +448,8 @@ class DiscussionsController < ApplicationController
   # GET /discussions/1/edit
   def edit
     @discussion_form_id = 'edit_discussion_' + @discussion.id.to_s
+    puts @discussion_form_id
+    puts '-------------------------------'
     @admin_id = session[:admin]['id']
     unless session[:admin]['admin_type'].nil?
       @user_type = 'admin'
@@ -428,7 +471,9 @@ class DiscussionsController < ApplicationController
     # 선택 상태 유지
     @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
     unit_concept_code = @unit_concept.code.slice(0, 4)
+    puts "#{unit_concept_code}===================="
     concept_code = @unit_concept.code.slice(0, 3)
+    puts "#{concept_code}====================="
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
     @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
 

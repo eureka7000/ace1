@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307090742) do
+ActiveRecord::Schema.define(version: 20170417071844) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "name",                  limit: 255
@@ -114,31 +114,104 @@ ActiveRecord::Schema.define(version: 20170307090742) do
     t.datetime "updated_at",                          null: false
   end
 
+  create_table "discussion_authorities", force: :cascade do |t|
+    t.integer  "admin_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "discussion_histories", force: :cascade do |t|
+    t.integer  "discussion_id",    limit: 4
+    t.integer  "user_id",          limit: 4
+    t.integer  "discussion_count", limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
   create_table "discussion_images", force: :cascade do |t|
+    t.string   "filename",              limit: 255
+    t.integer  "width",                 limit: 4
+    t.integer  "height",                limit: 4
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "discussion_templet_id", limit: 4
+    t.integer  "discussion_id",         limit: 4
+  end
+
+  create_table "discussion_replies", force: :cascade do |t|
     t.integer  "discussion_id", limit: 4
-    t.string   "filename",      limit: 255
-    t.integer  "width",         limit: 4
-    t.integer  "height",        limit: 4
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "user_id",       limit: 4
+    t.text     "comment",       limit: 65535
+    t.integer  "group_id",      limit: 4
+    t.integer  "group_no",      limit: 4
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.integer  "depth",         limit: 4
+  end
+
+  create_table "discussion_solution_histories", force: :cascade do |t|
+    t.integer  "discussion_solution_id", limit: 4
+    t.integer  "user_id",                limit: 4
+    t.string   "know_yn",                limit: 255
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  create_table "discussion_solutions", force: :cascade do |t|
+    t.text     "content",               limit: 65535
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "discussion_templet_id", limit: 4
+  end
+
+  create_table "discussion_templets", force: :cascade do |t|
+    t.string   "code",                limit: 255
+    t.text     "title",               limit: 65535
+    t.text     "content",             limit: 65535
+    t.text     "concept_explanation", limit: 65535
+    t.integer  "unit_concept_id",     limit: 4
+    t.text     "answer",              limit: 65535
+    t.integer  "level",               limit: 4
+    t.string   "grade",               limit: 255
+    t.integer  "user_id",             limit: 4
+    t.string   "creator_type",        limit: 255
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  create_table "discussion_title_explanation_histories", force: :cascade do |t|
+    t.integer  "discussion_title_explanation_id", limit: 4
+    t.integer  "user_id",                         limit: 4
+    t.string   "know_yn",                         limit: 255
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+  end
+
+  create_table "discussion_title_explanations", force: :cascade do |t|
+    t.integer  "unit_concept_id",       limit: 4
+    t.text     "content",               limit: 65535
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "discussion_templet_id", limit: 4
   end
 
   create_table "discussions", force: :cascade do |t|
-    t.integer  "organizer",         limit: 4
-    t.integer  "leader",            limit: 4
-    t.string   "manage_type",       limit: 255
-    t.string   "observer_yn",       limit: 255
-    t.text     "title",             limit: 65535
-    t.string   "content",           limit: 255
-    t.text     "title_explanation", limit: 65535
-    t.text     "answer",            limit: 65535
-    t.string   "grade",             limit: 255
+    t.integer  "organizer",             limit: 4
+    t.string   "manage_type",           limit: 255
+    t.string   "observer_yn",           limit: 255
     t.date     "expiration_date"
-    t.text     "interim_report",    limit: 65535
-    t.text     "final_report",      limit: 65535
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "unit_concept_id",   limit: 4
+    t.text     "interim_report",        limit: 65535
+    t.text     "final_report",          limit: 65535
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "organizer_type",        limit: 255
+    t.integer  "user_id",               limit: 4
+    t.date     "start_date"
+    t.integer  "think_time",            limit: 4
+    t.integer  "like",                  limit: 4
+    t.integer  "sub_leader",            limit: 4
+    t.integer  "discussion_templet_id", limit: 4
   end
 
   create_table "exam_images", force: :cascade do |t|
@@ -181,6 +254,20 @@ ActiveRecord::Schema.define(version: 20170307090742) do
     t.string   "name",            limit: 255
     t.integer  "unit_concept_id", limit: 4
     t.integer  "concept_id",      limit: 4
+  end
+
+  create_table "groups", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "groups_users", force: :cascade do |t|
+    t.integer  "group_id",   limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "identities", force: :cascade do |t|
@@ -475,6 +562,12 @@ ActiveRecord::Schema.define(version: 20170307090742) do
     t.integer  "coupon_id",              limit: 4
     t.string   "coupon_code",            limit: 255
     t.string   "login_token",            limit: 255
+    t.string   "school_name",            limit: 255
+    t.string   "school_class",           limit: 255
+    t.string   "institute_name",         limit: 255
+    t.string   "institute_class",        limit: 255
+    t.string   "nickname",               limit: 255
+    t.text     "etc",                    limit: 65535
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

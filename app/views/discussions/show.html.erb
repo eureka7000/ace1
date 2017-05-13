@@ -12,7 +12,7 @@
         <div class="col-md-12 margin-top-20"></div>
         <div class="col-md-4">
             <p>
-                <strong>개설자:</strong>
+                <strong>개설자 : </strong>
                 <% if @discussion.organizer_type == 'admin' %>
                     <%= Admin.find(@discussion.organizer).name %>
                 <% else %>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-4">
             <p>
-                <strong>토론방 리더:</strong>
+                <strong>토론방 리더 : </strong>
                 <%= @discussion.user.user_name %> <%= "(#{User::USER_TYPES[@discussion.user.user_types.first.user_type]})" %>
             </p>
         </div>
@@ -30,7 +30,7 @@
         <div class="col-md-4">
             <% @sub_leader = User.find(@discussion.sub_leader) %>
             <p>
-                <strong>토론방 부리더:</strong>
+                <strong>토론방 부리더 : </strong>
                 <%= @sub_leader.user_name %> <%= "(#{User::USER_TYPES[@sub_leader.user_types.first.user_type]})" %>
             </p>
         </div>
@@ -38,19 +38,19 @@
 
         <div class="col-md-4">
             <p>
-                <strong>운영타입:</strong>
+                <strong>운영타입 : </strong>
                 <%= @discussion.manage_type %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>외부 참가자가 여부:</strong>
+                <strong>외부 참가자가 여부 : </strong>
                 <%= @discussion.observer_yn == 'Y' ? 'YES' : 'NO' %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>핵심 개념:</strong>
+                <strong>핵심 개념 : </strong>
                 <%= @unit_concept.name %>
                 (<% (1..@unit_concept.level).each do |idx| %>
                     <i class="fa fa-star" style="color: red"></i>
@@ -60,9 +60,9 @@
                 <% end %>)
             </p>
         </div>
-        <div class="col-md-4">
+        <div hidden class="col-md-4">
             <p>
-                <strong>관련 개념:</strong>
+                <strong>관련 개념 : </strong>
                 <span style="color:red"><%= ' | ' %></span>
                 <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
                     <% unless unit_concept_desc.desc_type != '5' %>
@@ -74,57 +74,67 @@
         </div>
         <div class="col-md-4">
             <p>
-                <strong>선택 학년:</strong>
+                <strong>선택 학년 : </strong>
                 <%= @discussion.discussion_templet.grade %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>Level:</strong>
+                <strong>문제 수준(Level) : </strong>
                 <%= @discussion.discussion_templet.level %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>Think Time(분):</strong>
+                <strong>Think Time(분) : </strong>
                 <%= @discussion.think_time %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>토론 시작일:</strong>
+                <strong>토론 시작일 : </strong>
                 <%= @discussion.start_date %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>토론 종료일:</strong>
+                <strong>토론 종료일 : </strong>
                 <%= @discussion.expiration_date %>
             </p>
         </div>
         <div class="col-md-4">
             <p>
-                <strong>참가자 수:</strong>
+                <strong>토론 참가자 수 : </strong>
                 <%= @discussion.participants.count %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>주제:</strong>
+                <strong>토론 주제 : </strong>
                 <%= @discussion.discussion_templet.title %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>주제 설명:</strong>
+                <strong>토론 문제 : </strong>
+                <%== @discussion.discussion_templet.content %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>토론 문제 관련개념 (발문) : </strong>
                 <% @discussion_title_explanations.each do |discussion_title_explanation| %>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-smallfa">
+                            <i class="fa fa-plane" style="color: red"></i>
+                        </div>
+                        <div class="col-content">
                             <%== discussion_title_explanation.content %>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-name">
                             <%= discussion_title_explanation.unit_concept.name %>
                         </div>
                     </div>
@@ -134,44 +144,38 @@
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>개념 설명:</strong>
+                <strong>문제 풀이 가이드 : </strong>
                 <%== @discussion.discussion_templet.concept_explanation %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>본문 내용:</strong>
-                <%== @discussion.discussion_templet.content %>
-            </p>
-        </div>
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <strong>문제 풀이:</strong>
+                <strong>문제 풀이 : </strong>
                 <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                     <%== discussion_solution.content %>
+                    <hr>
                 <% end %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>해답:</strong>
+                <strong>해답 : </strong>
                 <%== @discussion.discussion_templet.answer %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>중간 보고서:</strong>
+                <strong>중간 보고서 : </strong>
                 <%== @discussion.interim_report %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>최종 보고서:</strong>
+                <strong>최종 보고서 : </strong>
                 <%== @discussion.final_report %>
             </p>
         </div>
@@ -185,3 +189,28 @@
 
     </div>
 </div>
+
+<style>
+    div.col-smallfa {
+    position: relative;
+    margin-left: 15px;
+    width: 2%;
+    display: inline-block;
+}
+
+div.col-content {
+    position: relative;
+    width: 60%;
+    display: inline-block;
+}
+
+div.col-name {
+    position: relative;
+    width: 34%;
+    display: inline-block;
+}
+</style>
+
+
+
+

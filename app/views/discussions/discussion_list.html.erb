@@ -64,7 +64,12 @@
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                         </ul>
                     </div>
-                    <% if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
+                    <%# if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
+                    <% if Discussion.can_I_join_this_room?(current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
+                        <%= puts current_user.user_types[0].user_type %>
+                        <%= puts current_user %>
+                        <%= puts current_user.user_types[0] %>
+                        <%= puts current_user.user_types[0].user_type %>
                         <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
                     <% else %>
                         <button class="btn btn-block btn-default margin-top-20 rounded"><i class="fa fa-lock"></i></button>
