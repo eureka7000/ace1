@@ -20,7 +20,8 @@
 
                     <div class="row">
 
-                        <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
+                        <!--<section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>-->
+                        <section class="col col-3" <%#= 'hidden' if @user_type == 'user' %>>
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
                                 <select class="select2-search-box" style="width: 100%" name="discussion[user_id]" id="leader">
@@ -38,13 +39,13 @@
                                 <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
                             </div>
                         </section>
-
-                        <section class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
+                        
+                        <!--<section hidden class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
                             <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[group_id]" id="group_id">
+                                <select class="form-control" name="discussion[group_id]" id="group_id">-->
                                     <!--edit일 경우 표시 선택된 Group 표시-->
-                                    <% unless @groups.blank? %>
+                                    <!--<% unless @groups.blank? %>
                                         <% @groups.each do |group| %>
                                             <option value="<%= group.id %>" <%= 'selected' unless @discussion.group_id != group.id %>><%= group.name %></option>
                                         <% end %>
@@ -52,7 +53,7 @@
 
                                 </select>
                             </label>
-                        </section>
+                        </section>-->
 
                     </div>
 
