@@ -152,12 +152,15 @@
                                 <option>Sub Category 선택하기</option>
                             </select>
                         </section>
-                        <section class="col col-6">
+
+                        <!--유형문제 가져오기 삭제-->
+                        <!--<section class="col col-6">
                             <div class="label">유형문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('unit_concept')"></div>
                             <select class="form-control" id="unit_concept_exercise">
                                 <option>Concept 선택하기</option>
                             </select>
-                        </section>
+                        </section>-->
+
                     </div>
 
                     <div class="row">
@@ -770,25 +773,33 @@
 
     function selectCategory() {
         var category = $('#category').val().slice(0, 2);
+        console.log($('#category').val());
+        console.log(category);
 
         $('#sub_category').empty();
 
         $.each(subCategory_options, function(i) {
             if (subCategory_options[i].values.substring(0,2) == category) {
                 $('#sub_category').append( $('<option>').text(subCategory_options[i].text).attr('value',subCategory_options[i].values));
+                console.log(subCategory_options[i].text);
+                console.log(subCategory_options[i].values);
             }
         });
         selectSubCategory();
     }
 
     function selectSubCategory() {
-        var sub_category = $('#sub_category').val().slice(0, 3);
+        //var sub_category = $('#sub_category').val().slice(0, 3);
+        var sub_category = $('#sub_category').val();
+        console.log(sub_category);   // c110   c11
 
         $('#concept').empty();
         $('#concept_exercise').empty();
 
         var data = new FormData();
         data.append("key", sub_category);
+        console.log('==========');
+        console.log(data);
 
         $.ajax({
             data: data,
@@ -801,6 +812,7 @@
             processData: false,
             success: function(data) {
                 $.each(data, function(i) {
+                    console.log(data[i].text);   // 
                     if (data[i].exercise_yn == 'concept'){
                         $('#concept').append( $('<option>').text(data[i].text).attr('value', data[i].values));
                     }
@@ -838,9 +850,13 @@
                     if (data[i].exercise_yn == 'concept'){
                         $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value', data[i].values));
                     }
-                    else {
-                        $('#unit_concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].values));
-                    }
+
+// 유형문제 가져오기 삭제
+//                    else {
+//                       $('#unit_concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].values));
+//                    }
+// 유형문제 가져오기 삭제
+
                 });
             }
         });
@@ -858,7 +874,7 @@
             var id = $('#concept_exercise').val();
             var url = '/discussions/get_concept_exercise'
         }
-        else{
+        else {
             var id = $('#unit_concept_exercise').val();
             var url = '/discussions/get_unit_concept_exercise'
         }

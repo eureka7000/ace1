@@ -344,9 +344,11 @@ class DiscussionsController < ApplicationController
   end
 
   def get_concepts
-    key = params[:key]
+    key = params[:key]  
+    puts params[:key]    # c11
     # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
-    @concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
+    #@concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
+    @concepts = Concept.where(sub_category: key).order(:concept_code)
     ret = []
     @concepts.each do |concept|
       ret << {
