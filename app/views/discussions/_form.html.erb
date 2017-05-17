@@ -40,12 +40,12 @@
                             </div>
                         </section>
                         
-                        <!--<section hidden class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
+                        <section hidden class="col col-3" <%= 'hidden' unless @discussion.observer_yn != 'Y' %> <%= 'hidden' unless @discussion_form_id != 'new_discussion' %> id="group_section">
                             <label class="label">참여 그룹 선택<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[group_id]" id="group_id">-->
+                                <select class="form-control" name="discussion[group_id]" id="group_id">
                                     <!--edit일 경우 표시 선택된 Group 표시-->
-                                    <!--<% unless @groups.blank? %>
+                                    <% unless @groups.blank? %>
                                         <% @groups.each do |group| %>
                                             <option value="<%= group.id %>" <%= 'selected' unless @discussion.group_id != group.id %>><%= group.name %></option>
                                         <% end %>
@@ -53,7 +53,7 @@
 
                                 </select>
                             </label>
-                        </section>-->
+                        </section>
 
                     </div>
 
@@ -176,7 +176,7 @@
                         </section>
 
                         <section class="col-md-4 col-sm-4 col-xs-10 discussion_templet">
-                            <label class="label">Code<span style="color: red">*</span></label>
+                            <label class="label">Code(숫자)<span style="color: red">*</span></label>
                             <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion.discussion_templet.code.to_s.split('-', 3).last() unless @discussion.discussion_templet.nil? %>">
                         </section>
 
@@ -215,8 +215,16 @@
                     <!--discussion_templet-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">주제<span style="color: red">*</span></label>
+                            <label class="label">토론 주제<span style="color: red">*</span></label>
                             <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %>">
+                        </section>
+                    </div>
+                    
+                    <!--토론 문제 부분-->
+                    <div class="row discussion_templet">
+                        <section class="col-md-12">
+                            <label class="label">토론 문제<span style="color: red">*</span></label>
+                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
 
@@ -224,11 +232,11 @@
                     <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
                             <section class="col-md-8 col-sm-8 col-xs-12">
-                                <label class="label">주제 설명</label>
+                                <label class="label">토론문제 발문 및 관련개념</label>
                                 <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
-                                <label class="label">관련 개념 검색</label>
+                                <label class="label">관련개념 검색</label>
                                 <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                     <% @related_unit_concepts.each do |related_unit_concept| %>
                                         <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
@@ -241,11 +249,11 @@
                         <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
                             <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
-                                    <% unless label_check != 0 %><label class="label">주제 설명</label><% end %>
+                                    <% unless label_check != 0 %><label class="label">토론문제 관련개념</label><% end %>
                                     <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
-                                    <% unless label_check != 0 %><label class="label">관련 개념 검색</label><% end %>
+                                    <% unless label_check != 0 %><label class="label">관련개념 검색</label><% end %>
                                     <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
                                         <%# @related_unit_concepts.each do |related_unit_concept| %>
                                             <!--<option value="<%#= related_unit_concept.id %>" <%#= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%#= related_unit_concept.name %></option>-->
@@ -269,18 +277,12 @@
                     <!--discussion_templet-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">개념 설명</label>
+                            <label class="label">문제풀이 가이드</label>
                             <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
                             <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion.discussion_templet.concept_explanation unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
 
-                    <div class="row discussion_templet">
-                        <section class="col-md-12">
-                            <label class="label">본문 내용<span style="color: red">*</span></label>
-                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
-                        </section>
-                    </div>
 
                     <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
@@ -869,16 +871,21 @@
     var solution_editor_count = 1;
 
     function insertImagesToEditor(name) {
+// 유형문제 가져오기 삭제       
+//        if (name == 'concept'){
+//            var id = $('#concept_exercise').val();
+//            var url = '/discussions/get_concept_exercise'
+//        }
+//        else {
+//            var id = $('#unit_concept_exercise').val();
+//            var url = '/discussions/get_unit_concept_exercise'
+//        }
+// 유형문제 가져오기 삭제
 
-        if (name == 'concept'){
-            var id = $('#concept_exercise').val();
-            var url = '/discussions/get_concept_exercise'
-        }
-        else {
-            var id = $('#unit_concept_exercise').val();
-            var url = '/discussions/get_unit_concept_exercise'
-        }
 
+        var id = $('#concept_exercise').val();
+        var url = '/discussions/get_concept_exercise'
+        
         var data = new FormData();
         data.append("id", id);
 
