@@ -88,10 +88,10 @@ class UsersController < ApplicationController
             end        
         end    
 
-        @users = User.all
-        # @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
-        #     .joins("left outer join user_types on user_types.user_id = users.id")
-        #     .joins("left join schools on schools.id = users.school_id").where(str).order(id: :desc)
+        #@users = User.all
+        @users = User.select('users.id, users.email, users.user_name, schools.name as school_name, school_class, institute_name, institute_class, nickname, users.phone, user_types.user_type, users.sign_in_count, users.expire_date ')
+             .joins("left outer join user_types on user_types.user_id = users.id")
+             .joins("left join schools on schools.id = users.school_id").where(str).order(id: :desc)
         
         render :layout => 'layouts/admin_main'        
     end    
