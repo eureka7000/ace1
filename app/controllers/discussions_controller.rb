@@ -196,16 +196,32 @@ class DiscussionsController < ApplicationController
     render layout: 'application'
   end
 
-  def like
+#  def like
+#    if @discussion.like.nil?
+#      @discussion.like = 1
+#    else
+#      @discussion.like = @discussion.like + 1
+#    end
+#    @discussion.save
+#    #ret = { status: "ok" }
+#    ret = { 'like' => @discussion.like, status: "ok" }
+#    render :json => ret
+#  end
+
+def like
+    puts params[:id]
     if @discussion.like.nil?
-      @discussion.like = 1
-    else
-      @discussion.like = @discussion.like + 1
-    end
+       @discussion.like = 1
+     else
+       @discussion.like = @discussion.like + 1
+     end
     @discussion.save
-    ret = { status: "ok" }
+    @like = @discussion.like
+    #ret = { status: "ok" }
+    ret = { 'like' => @like}
     render :json => ret
   end
+
 
   def discussion_new
     @discussion = Discussion.new

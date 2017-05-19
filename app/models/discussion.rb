@@ -47,24 +47,42 @@ class Discussion < ActiveRecord::Base
     end
 
     #def self.can_I_join_this_room?(group_id, student_id, observer_yn, user_type)
-    def self.can_I_join_this_room?(student_id, observer_yn, user_type)
-
-      if user_type == 'student'
-        if observer_yn == 'Y'
-          true
-        else
+    #def self.can_I_join_this_room?(student_id, observer_yn, user_type)
+    #  if user_type == 'student'
+    #    if observer_yn == 'Y'
+    #      true
+    #    else
           #@groups_users = GroupsUser.where('group_id = ? and user_id = ?', group_id, student_id)
           #unless @groups_users.blank?
           #  true
           #else
           #  false
           #end
-          false
-        end
-      else
-        true
-      end
+    #      false
+    #    end
+    #  else
+    #    true
+    #  end
 
+    #end
+
+    # can_I_join_this_room를 처음부터 다시 작성
+    def self.can_I_join_this_room?(group_id, user_id, observer_yn, discussion_id)
+      if observer_yn == 'Y'
+        true
+        else
+          @groups_users = GroupsUser.where('group_id = ? and user_id = ?', group_id, user_id)
+          unless @groups_users.blank?
+            true
+          else
+            @discussions = Discussion.where('id = ? and organizer = ?', discussion_id, user_id)
+            unless @discussions.blank?
+              true
+            else
+              false
+            end
+          end
+      end 
     end
 
 end

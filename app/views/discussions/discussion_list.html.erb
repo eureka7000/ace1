@@ -60,16 +60,24 @@
                         <ul class="post-shares">
                             <li><img src="<%= discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion.user.user_img unless discussion.user.nil? %>" class="rounded-x img-center" style="width: 40px; height: 40px; margin-bottom: 10px; background: #eee"></li>
                             <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee"><%= discussion.discussion_replies.count %></span></li>
-                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
+                            <!--<li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>-->
+
+
+
+
+                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                         </ul>
                     </div>
+
+
+
+
                     <%# if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
-                    <% if Discussion.can_I_join_this_room?(current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
-                        <%= puts current_user.user_types[0].user_type %>
-                        <%= puts current_user %>
-                        <%= puts current_user.user_types[0] %>
-                        <%= puts current_user.user_types[0].user_type %>
+
+
+
+                    <% if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, discussion.id) %>
                         <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
                     <% else %>
                         <button class="btn btn-block btn-default margin-top-20 rounded"><i class="fa fa-lock"></i></button>
@@ -92,7 +100,7 @@
     $(document).ready(function() {
         $(".select2-search-box").select2();
     });
-
+/*
     function discussionLike(discussion_id) {
 
         <% if current_user.nil? %>
@@ -107,7 +115,13 @@
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             datatype: "json",
             success : function(data) {
-                location.reload();
+                console.log('------------');
+                console.log(data['like']);
+                //console.log($("#like").val());
+                //location.reload();
+                //console.log($("#like").text())
+                $("#like").text(data['like']);
+
             },
             error : function(){
                 alert("try to again. please.");
@@ -115,6 +129,47 @@
         });
         <% end %>
     }
+*/
+
+    function discussionLike(discussion_id) {
+
+        <% if current_user.nil? %>
+        location = '/users/sign_in';
+        <% else %>
+        console.log(discussion_id);
+
+        var data = new FormData();
+        data.append("like", $('#like').val());
+
+        var url = "/discussions/" + discussion_id + "/like";
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            success : function(data) {
+                console.log(data['like']);     //   3
+                console.log(this);
+                console.log($(this)[0]);
+                var like = data['like']
+
+
+                //$("#like").text("data['like']");
+                //document.getElementById('like').innerHTML = data['like'];
+                //$("#like").text(like);
+                //this.find("#like").text(like);
+                location.reload();
+
+
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+        <% end %>
+    }
+
 
     function participate(discussion_id) {
         location = "/discussions/discussion_room/" + discussion_id
