@@ -63,9 +63,9 @@
                             <!--<li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>-->
 
 
+                        
 
-
-                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
+                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like_<%= discussion.id %>"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                         </ul>
                     </div>
@@ -136,10 +136,6 @@
         <% if current_user.nil? %>
         location = '/users/sign_in';
         <% else %>
-        console.log(discussion_id);
-
-        var data = new FormData();
-        data.append("like", $('#like').val());
 
         var url = "/discussions/" + discussion_id + "/like";
 
@@ -149,19 +145,10 @@
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             datatype: "json",
             success : function(data) {
-                console.log(data['like']);     //   3
-                console.log(this);
-                console.log($(this)[0]);
-                var like = data['like']
-
-
-                //$("#like").text("data['like']");
-                //document.getElementById('like').innerHTML = data['like'];
-                //$("#like").text(like);
-                //this.find("#like").text(like);
-                location.reload();
-
-
+                console.log(data['like']);   // 현재 like 숫자
+                var like = data['like']     
+                var likeid = "#like_" + discussion_id;
+                $(likeid).text(like);
             },
             error : function(){
                 alert("try to again. please.");
