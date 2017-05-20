@@ -63,8 +63,11 @@
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                         </ul>
                     </div>
-                    <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
-
+                    <!-- 토론방 참여하기가 아니라 토론방 보기로 변경-->
+                    <button class="btn btn-block btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussion_templets/<%= discussion.discussion_templet.id %>/show1')">토론방 보기</button>
+                    <!--
+                    <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">토론방 보기</button>
+                    -->
                 </div>
             </div>
         <% end %>
@@ -106,10 +109,14 @@
         });
         <% end %>
     }
-
-    function participate(discussion_id) {
-        location = "/discussions/discussion_room/" + discussion_id
+// 지난 토론방이므로 '토론방 참여하기'가 아니라 '토론방 보기'로 변경
+    function move(url) {
+        location = url;
     }
+
+//    function participate(discussion_id) {
+//        location = "/discussions/discussion_room/" + discussion_id
+//    }
 
     function leaderSearch() {
         location = '/discussions/past_discussions_list?leader=' + $('#leaderSearch option:selected').val();

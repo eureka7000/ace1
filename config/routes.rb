@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get 'discussion_templets/edit_for_admin' => 'discussion_templets#edit_for_admin'
     get 'discussion_templets/new_for_admin' => 'discussion_templets#new_for_admin'
     get 'discussion_templets/list' => 'discussion_templets#list'
+    get 'discussion_templets/:id/show1' => 'discussion_templets#show1'   # 토론방에서 '토론방 보기' 크릭시 토론문제 등 보기
     resources :discussion_templets
 
     post 'groups/get_groups' => 'groups#get_groups'

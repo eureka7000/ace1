@@ -1,5 +1,5 @@
 class DiscussionTempletsController < ApplicationController
-  before_action :set_discussion_templet, only: [:show, :edit, :update, :destroy, :edit_for_admin]
+  before_action :set_discussion_templet, only: [:show, :show1, :edit, :update, :destroy, :edit_for_admin]
   before_filter :authenticate_admin_user!, only: [:list, :new_for_admin, :edit_for_admin]
   before_filter :authenticate_user!, only: [:index, :new, :edit]
 
@@ -96,6 +96,12 @@ class DiscussionTempletsController < ApplicationController
       render layout: 'admin_main'
     end
   end
+
+  # 토론방 리스트에서 '토론방 보기' 버튼 클릭시 토론문제 등 보기
+  def show1
+    
+  end
+
 
   # GET /discussion_templets/new
   def new

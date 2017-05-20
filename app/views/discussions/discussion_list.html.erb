@@ -44,11 +44,12 @@
                             <% if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' || current_user.user_types.first.user_type == 'mento' %>
                                 <li>Code : <span style="color: #1d78cb;"><%= discussion.discussion_templet.code unless discussion.discussion_templet.nil? %></span></li>
                             <% end %>
+                            <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
                         </ul>
-                        <ul class="list-inline posted-info">
+                        <!--<ul class="list-inline posted-info">
                             <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
                             <li>생각시간 : <span style="color: #1d78cb;"><%= discussion.think_time %>분</span></li>
-                        </ul>
+                        </ul>-->
                         <ul class="list-inline posted-info">
                             <li>핵심개념 : <span style="color: #1d78cb"><%= discussion.discussion_templet.unit_concept.name %></span></li>
                             <li>LEVEL : <span style="color: red;"><%= discussion.discussion_templet.level %></span></li>
@@ -61,26 +62,19 @@
                             <li><img src="<%= discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion.user.user_img unless discussion.user.nil? %>" class="rounded-x img-center" style="width: 40px; height: 40px; margin-bottom: 10px; background: #eee"></li>
                             <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee"><%= discussion.discussion_replies.count %></span></li>
                             <!--<li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>-->
-
-
-                        
-
                             <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like_<%= discussion.id %>"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
                         </ul>
                     </div>
-
-
-
+                        <button class="btn btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussion_templets/<%= discussion.discussion_templet.id %>/show1')">토론방 보기</button>
 
                     <%# if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
 
 
-
                     <% if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, discussion.id) %>
-                        <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">참여하기</button>
+                        <button class="btn btn-windows margin-top-10 rounded" onclick="participate('<%= discussion.id %>')">토론방 참여하기</button>
                     <% else %>
-                        <button class="btn btn-block btn-default margin-top-20 rounded"><i class="fa fa-lock"></i></button>
+                        <button class="btn btn-default margin-top-10 rounded"><i class="fa fa-lock"></i></button>
                     <% end %>
                 </div>
             </div>
@@ -95,11 +89,28 @@
     <div class="col-md-12 margin-bottom-50"></div>
 </div>
 
+<!--
+<style type="text/css">
+ul.post-shares1 {
+  padding-left: 0;
+  list-style: none;
+  margin: 10px 0 0 -5px;
+}
+</style>
+-->
+
+
 <script type="text/javascript">
 
     $(document).ready(function() {
         $(".select2-search-box").select2();
     });
+
+    function move(url) {
+        location = url;
+    }
+
+
 /*
     function discussionLike(discussion_id) {
 
