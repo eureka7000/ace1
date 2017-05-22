@@ -186,6 +186,7 @@
 
             <li class="<%= 'active' if @active == 'mypage' %>">
             <% if @session_yn == 'Y' %>
+                <%= puts "---------------" %>
                 <% if current_user.user_types[0].user_type == 'school teacher' || 'mento' %>
                     <a href="/mypages/overall">MY PAGE&nbsp;<span class="label rounded label-danger pull-right"><%= @questions_number unless @questions_number == 0 %></span></a>
                 <% end %>

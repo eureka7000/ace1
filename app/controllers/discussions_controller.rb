@@ -162,21 +162,28 @@ class DiscussionsController < ApplicationController
   end
 
   def discussion_room
+    puts '=========='
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
+    puts '----------'
 
     @participant = Participant.where('discussion_id = ? and user_id = ?', @discussion.id, current_user.id)
 
-    @participant_before_check = true
+#    @participant_before_check = true
 
     if @participant.blank?
       @participant = Participant.new
       @participant.discussion_id = @discussion.id
       @participant.user_id = current_user.id
-
-      if @participant.save
-        @participant_before_check = false
-      end
+      @participant.save
+      @participant_before_check = false
+    else
+      @participant_before_check = true
     end
+
+#      if @participant.save
+#        @participant_before_check = false
+#      end
+#    end
 
     # 토론방 이력 저장.
     discussion_history = DiscussionHistory.where('user_id = ? and discussion_id = ?', current_user.id, @discussion.id)

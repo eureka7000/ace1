@@ -41,11 +41,10 @@
             <a target="_blank" href="/contents/<%= @discussion.discussion_templet.unit_concept_id %>"><%= @discussion.discussion_templet.unit_concept.name %></a>
             <span style="color:#5aa0f8">|</span>
             <li>관련개념 : </li>
-            <% @discussion.discussion_templet.unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
-                <% unless unit_concept_desc.desc_type != '5' %>
-                    <a target="_blank" href="/contents/<%= unit_concept_desc.link %>"><%= UnitConcept.find(unit_concept_desc.link).name %></a>
+                <% @discussion.discussion_templet.discussion_title_explanations.each do |discussion_title_explanation| %>
+                    <%= discussion_title_explanation.unit_concept.name %>
+                        <span style="color:red"><%= ' | ' %></span>
                 <% end %>
-            <% end %>
             <span style="color:#5aa0f8">|</span>
             <li>참가학년 : </li>
             <% @discussion.discussion_templet.grade.split(',').each do |grade| %>

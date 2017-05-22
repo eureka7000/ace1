@@ -21,7 +21,7 @@
 
                     <div class="row">
 
-                        <section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>
+                        <section class="col col-3" <%#= 'hidden' if @user_type == 'user' %>>  <!-- 일반 선생님의 경우에도 본인 나올 수 있게 함 -->
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
                                 <select class="form-control" name="discussion[user_id]" id="leader">
@@ -135,14 +135,14 @@
                         <!--</section>-->
                     </div>
 
-                    <div class="row">
+                    <div hidden class="row">
                         <section class="col-md-12">
                             <label class="label">중간보고서</label>
                             <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
                         </section>
                     </div>
 
-                    <div class="row">
+                    <div hidden class="row">
                         <section class="col-md-12">
                             <label class="label">최종보고서</label>
                             <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
