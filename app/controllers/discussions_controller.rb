@@ -361,6 +361,18 @@ def like
         }
       end
     end
+
+#   video 추가 
+#    @unit_concept_exercises.each do |unit_concept_exercise|
+#      if unit_concept_exercise.desc_type != '5'
+#        ret << {
+#            type: unit_concept_exercise.desc_type,
+#            filename: unit_concept_exercise.file_name.to_s(),
+#            video_number: unit_concept_exercise.video.to_s()    video를 읽어 들이려함 
+#        }
+#      end
+#    end
+
     respond_to do |format|
       format.json { render :json => ret }
     end
@@ -368,7 +380,7 @@ def like
 
   def get_concepts
     key = params[:key]  
-    puts params[:key]    # c11
+    puts params[:key]   
     # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
     #@concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
     @concepts = Concept.where(sub_category: key).order(:concept_code)

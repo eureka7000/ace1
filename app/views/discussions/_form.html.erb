@@ -4,6 +4,7 @@
 <link href="/css/select2.min.css" rel="stylesheet" />
 <script type="text/javascript" src="/js/select2.min.js"></script>
 
+
             <%= form_for(@discussion) do |f| %>
 
                 <!--discussion_templet-->
@@ -13,7 +14,7 @@
                 <input hidden type="text" name="discussion[organizer]" value="<%= @admin_id.nil? ? current_user.id : @admin_id %>">
                 <input hidden type="text" name="discussion[organizer_type]" value="<%= @user_type %>">
                 <input hidden name="discussion_image_id" id="discussion_image_id" value="">
-
+ 
                 <header>토론방 입력 양식</header>
                 <fieldset>
                     <p><span style="color: red">*</span> 필수입력</p>
@@ -167,7 +168,7 @@
                         <!--discussion_templet-->
                         <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
                         <section class="col col-6 discussion_templet">
-                            <label class="label">학년 선택 (중복가능)<span style="color: red">*</span></label>
+                            <label class="label">학년 선택<span style="color: red">*</span></label>
                             <div class="inline-group">
                                 <% UnitConcept::GRADES.each do |key, value| %>
                                     <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
@@ -215,15 +216,18 @@
                     <!--discussion_templet-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">토론 주제<span style="color: red">*</span></label>
-                            <input class="form-control" type="text" name="discussion_templet[title]" id="title" value="<%= @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %>">
+                            <div class="label">토론 주제<span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                            <textarea class="form-control title_summernote" name="title[]" value=""></textarea>
+                            <div hidden id="dialog-1" >
+                                <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
+                            </div>
                         </section>
                     </div>
                     
                     <!--토론 문제 부분-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">토론 문제<span style="color: red">*</span></label>
+                        <div class="label">토론 문제<span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
@@ -232,7 +236,7 @@
                     <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
                             <section class="col-md-8 col-sm-8 col-xs-12">
-                                <label class="label">토론문제 발문 및 관련개념</label>
+                            <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                 <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
@@ -249,7 +253,9 @@
                         <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
                             <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
-                                    <% unless label_check != 0 %><label class="label">토론문제 관련개념</label><% end %>
+                                    <% unless label_check != 0 %>
+                                    <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <% end %>
                                     <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
@@ -269,7 +275,7 @@
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 주제 설명 & 관련 개념 검색 추가하기" onclick="addRelated()">
+                            <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 토론문제 발문 및 관련 개념 검색 추가하기" onclick="addRelated()">
                         </section>
                     </div>
                     <!--주제 설명 부분 END-->
@@ -277,7 +283,7 @@
                     <!--discussion_templet-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">문제풀이 가이드</label>
+                        <div class="label">문제풀이 가이드  <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <!--<span style="color: blue"><a href="http://asciimath.org/"><i class="fa fa-question-circle"></i>수학기호 코드 참고하기</a></span>-->
                             <textarea class="form-control" name="discussion_templet[concept_explanation]" id="concept_explanation"><%== @discussion.discussion_templet.concept_explanation unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
@@ -287,7 +293,7 @@
                     <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
                             <section class="col-md-12">
-                                <label class="label">문제풀이</label>
+                                <div class="label">문제풀이 <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                                 <textarea class="form-control solution_summernote" name="solution[]" id="solution_1"></textarea>
                             </section>
                         </div>
@@ -296,7 +302,9 @@
                         <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                             <div class="row discussion_templet">
                                 <section class="col-md-12">
-                                    <% unless solution_check != 0 %><label class="label">문제풀이</label><% end %>
+                                    <% unless solution_check != 0 %>
+                                    <div class="label">문제풀이 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <% end %>
                                     <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
                                 </section>
                             </div>
@@ -315,21 +323,86 @@
                     <!--discussion_templet-->
                     <div class="row discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">해답</label>
+                            <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
 
-                    <div class="row">
+                    <% if @discussion_form_id == 'new_discussion' %>
+                        <div class="row">
+                            <section class="col-md-12">
+                                <div class="label">Video 
+                                <textarea class="form-control video_summernote" name="solution[]" id="video_1"></textarea>
+                            </section>
+                        </div>
+                    <% else %>
+                        <% video_check = 0 %>
+                        <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
+                            <div class="row discussion_templet">
+                                <section class="col-md-12">
+                                    <% unless video_check != 0 %>
+                                    <div class="label">Video 
+                                    <% end %>
+                                    <textarea class="form-control video_summernote" name="video[]" id="video_<%= video_check %>"><%= discussion_video.number %></textarea>
+                                </section>
+                            </div>
+                            <% video_check = video_check + 1 %>
+                        <% end %>
+                    <% end %>
+
+                    <div id="add_video_section"></div>
+
+                    <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <label class="label">중간보고서</label>
-                            <textarea class="form-control" name="discussion[interim_report]" id="interim_report"><%= @discussion.interim_report unless @discussion.interim_report.nil? %></textarea>
+                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ Video 추가하기" onclick="addVideo()">
+                        </section>
+                    </div>
+
+
+                    <% if @discussion_form_id == 'new_discussion' %>
+                        <div class="row">
+                            <section class="col-md-8 col-sm-8 col-xs-12">
+                                <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                <textarea class="form-control condition_summernote" name="condition[]" id="condition_1"></textarea>
+                            </section>
+                            <section class="col-md-4 col-sm-4 col-xs-12">
+                                <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_1"></textarea>
+                            </section>
+                        </div>
+                    <% else %>
+                        <% condition_check = 0 %>
+                        <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
+                            <div class="row discussion_templet">
+                                <section class="col-md-8 col-sm-8 col-xs-12">
+                                    <% unless condition_check != 0 %>
+                                    <div class="label">문제의 조건 변경<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <% end %>
+                                    <textarea class="form-control condition_summernote" name="condition[]" id="condition_<%= condition_check %>"><%= discussion_problem_condition.problem_condition %></textarea>
+                                </section>
+                                <section class="col-md-4 col-sm-4 col-xs-12">
+                                    <% unless condition_check != 0 %>
+                                    <div class="label">해답<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <% end %>
+                                    <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= condition_check %>"><%= discussion_problem_condition.condition_answer %></textarea>
+                                </section>
+                            </div>
+                            <% solution_check = solution_check + 1 %>
+                        <% end %>
+                        
+                    <% end %>
+
+                    <div id="add_condition_section"></div>
+
+                    <div class="row margin-bottom-20 discussion_templet">
+                        <section class="col-md-12">
+                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제의 조건 변경 및 해답 추가하기" onclick="addCondition()">
                         </section>
                     </div>
 
                     <div class="row">
                         <section class="col-md-12">
-                            <label class="label">최종보고서</label>
+                        <div class="label">최종보고서<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                         </section>
                     </div>
@@ -387,7 +460,7 @@
 
         $('.title_explanation_summernote').summernote({
             height: 100,
-            placeholder: '주제 설명 및 발문 입력란',
+            placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -431,6 +504,138 @@
         $('.solution_summernote').summernote({
             height: 200,
             placeholder: '문제 풀이를 입력하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    }
+</script>
+<!--END 문제풀이 summernote editor 추가하기-->
+
+<!--토론문제 조건 변경 및 해답 summernote editor 추가하기-->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.condition_summernote').summernote({
+            height: 200,
+            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    var condition_num = 2;
+    function addCondition() {
+
+        var root = $('#add_condition_section');
+
+        var row = $('<div>').addClass('row');
+        var condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var condition_answer = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
+
+        condition.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_'+ condition_num).addClass('form-control condition_summernote').attr('name', 'condition[]').attr('value', ""));
+        condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
+
+        row.append(condition).append(condition_answer).appendTo(root);
+
+        $('.condition_summernote').summernote({
+            height: 200,
+            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+
+        $('.condition_answer_summernote').summernote({
+            height: 200,
+            placeholder: '토론 문제의 조건 변경에 따른 해답을 입력하세요.',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.condition_answer_summernote').summernote({
+            height: 200,
+            placeholder: '토론 문제의 조건 변경에 따른 해답을 입력하세요.',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+</script>
+<!--END 토론문제 조건 변경 및 해답 summernote editor 추가하기-->
+
+<!--Video summernote editor 추가하기-->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.video_summernote').summernote({
+            height: 200,
+            placeholder: 'video button를 클릭한 후 video를 추가하세요.',
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    var video_num = 2;
+    function addVideo() {
+
+        var root = $('#add_video_section');
+
+        var row = $('<div>').addClass('row');
+        var video = $('<section>').addClass('col-md-12');
+
+        video.append( $('<textarea>').attr('type', 'text').attr('id', 'video_'+ video_num++).addClass('form-control video_summernote').attr('name', 'video[]').attr('value', ""));
+
+        row.append(video).appendTo(root);
+
+        $('.video_summernote').summernote({
+            height: 200,
+            placeholder: 'video button를 클릭한 후 video를 추가하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -569,9 +774,23 @@
     }
 
     $(document).ready(function() {
+        $('.title_summernote').summernote({
+            height: 100,
+            placeholder: '토론 주제를 입력하세요.',
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
+        });
+    });
+
+    $(document).ready(function() {
         $('.title_explanation_summernote').summernote({
             height: 100,
-            placeholder: '주제 설명 및 발문 입력란',
+            placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['fontsize', ['fontsize']],
@@ -585,7 +804,7 @@
     $(document).ready(function() {
         $('#concept_explanation').summernote({
             height: 200,
-            placeholder: '개념 설명을 입력하세요.',
+            placeholder: '문제를 푸는데 도움을 줄 수 있는 내용을 입력하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'concept_explanation');
@@ -597,7 +816,7 @@
     $(document).ready(function() {
         $('#content').summernote({
             height: 300,
-            placeholder: '본문 내용을 입력하세요.',
+            placeholder: '토론 문제의 내용을 입력하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'content');
@@ -620,8 +839,8 @@
 
     $(document).ready(function() {
         $('#interim_report').summernote({
-            height: 300,
-            placeholder: '중간보고서를 입력하세요.',
+            height: 100,
+            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'title_explanation');
@@ -775,16 +994,12 @@
 
     function selectCategory() {
         var category = $('#category').val().slice(0, 2);
-        console.log($('#category').val());
-        console.log(category);
 
         $('#sub_category').empty();
 
         $.each(subCategory_options, function(i) {
             if (subCategory_options[i].values.substring(0,2) == category) {
                 $('#sub_category').append( $('<option>').text(subCategory_options[i].text).attr('value',subCategory_options[i].values));
-                console.log(subCategory_options[i].text);
-                console.log(subCategory_options[i].values);
             }
         });
         selectSubCategory();
@@ -793,15 +1008,12 @@
     function selectSubCategory() {
         //var sub_category = $('#sub_category').val().slice(0, 3);
         var sub_category = $('#sub_category').val();
-        console.log(sub_category);   // c110   c11
 
         $('#concept').empty();
         $('#concept_exercise').empty();
 
         var data = new FormData();
         data.append("key", sub_category);
-        console.log('==========');
-        console.log(data);
 
         $.ajax({
             data: data,
@@ -814,7 +1026,6 @@
             processData: false,
             success: function(data) {
                 $.each(data, function(i) {
-                    console.log(data[i].text);   // 
                     if (data[i].exercise_yn == 'concept'){
                         $('#concept').append( $('<option>').text(data[i].text).attr('value', data[i].values));
                     }
@@ -926,6 +1137,12 @@
                             solution_editor_count++;
                         }
                     }
+                //    else if (data[i].type == '4'){
+                //        var img = document.createElement('img');
+                //        img.src = "https://vimeo.com/" + data[i].video_number;
+                //        //$('#summernote').summernote('insertText', data);
+                //        $("#video").summernote('insertNode', img);
+                //    }
                     else if (data[i].type == '7'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
@@ -962,6 +1179,35 @@
 
     } );
 </script>
+
+<!--asciimath modal-->
+
+<script type="text/javascript">
+
+
+    function asciiMove() {
+    //   location = "https://asciimath.org"
+    //    $(location).attr('href', url);
+    //$('#asciimath-button').click(function() { 
+        $( "#dialog-1" ).dialog({
+            autoOpen: true,
+            title: "수식 입력 방법을 참고하세요.",
+            width: 600,
+            height: 400,
+            draggable: true,
+            resizable: true
+        });
+    //    $('#asciimath').dialog({
+    //       modal: true
+    //     width: 480px, height: 350px,
+    //      show: { effect: "blind", duration: 1000 },
+    //      hide: { effect: "explode", duration: 1000 }
+    //    });
+    };
+
+</script>
+
+
 
 <!--참여 그룹 선택-->
 <script type="text/javascript">
