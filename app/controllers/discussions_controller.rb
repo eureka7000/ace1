@@ -545,8 +545,15 @@ def like
     @title_explanations = params[:title_explanation]
     @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
 
+    # nested params coding for save discussion_problem_condition
+    @problem_conditions = params[:problem_condition]
+    @condition_answers = params[:condition_answer]
+
     # nested params coding for save discussion_solution
     @solutions = params[:solution]
+
+    # nested params coding for save discussion_video
+    @videos = params[:video]
 
     unless session[:admin].nil?
       is_admin = true
@@ -582,6 +589,22 @@ def like
           end
         end
 
+        unless @problem_conditions.blank?
+          count = 0
+          (0..@problem_conditions.count).each do |idx|
+            logger.info "###########    #{@problem_conditions[count]}, #{@condition_answers[count]}    ############"
+
+            unless @problem_conditionns[count].blank?
+              @discussion_problem_condition = DiscussionProblemCondition.new
+              @discussion_problem_condition.discussion_templet_id = @discussion.discussion_templet_id
+              @discussion_problem_condition.problem_condition = @problem_conditions[count]
+              @discussion_problem_condition.condition_answer = @condition_answer[count]
+              @discussion_problem_condition.save
+            end
+            count = count+1
+          end
+        end
+
         unless @solutions.blank?
           count = 0
           (0..@solutions.count).each do |idx|
@@ -590,6 +613,19 @@ def like
               @discussion_solution.content = @solutions[count]
               @discussion_solution.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_solution.save
+            end
+            count = count + 1
+          end
+        end
+
+        unless @videos.blank?
+          count = 0
+          (0..@videos.count).each do |idx|
+            unless @videos[count].blank?
+              @discussion_video = DiscussionVideo.new
+              @discussion_video.number = @videos[count]
+              @discussion_video.discussion_templet_id = @discussion.discussion_templet_id
+              @discussion_video.save
             end
             count = count + 1
           end

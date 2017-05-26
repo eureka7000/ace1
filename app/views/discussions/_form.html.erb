@@ -5,6 +5,16 @@
 <script type="text/javascript" src="/js/select2.min.js"></script>
 
 
+
+<!--<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
             <%= form_for(@discussion) do |f| %>
 
                 <!--discussion_templet-->
@@ -217,10 +227,18 @@
                     <div class="row discussion_templet">
                         <section class="col-md-12">
                             <div class="label">토론 주제<span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                            <textarea class="form-control title_summernote" name="title[]" value=""></textarea>
+                            <textarea class="form-control title_summernote" name="discussion_templet[title]" value=""></textarea>
                             <div hidden id="dialog-1" >
                                 <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
                             </div>
+
+
+                            <div id="dialog" title="Basic dialog">
+                                <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
+                            </div> 
+                            <button id="opener">Open Dialog</button>
+                            
+ 
                         </section>
                     </div>
                     
@@ -254,7 +272,7 @@
                             <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
                                     <% unless label_check != 0 %>
-                                    <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn-u rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
                                     <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
                                 </section>
@@ -275,7 +293,7 @@
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <input class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 토론문제 발문 및 관련 개념 검색 추가하기" onclick="addRelated()">
+                            <input class="btn-u rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 토론문제 발문 및 관련 개념 검색 추가하기" onclick="addRelated()">
                         </section>
                     </div>
                     <!--주제 설명 부분 END-->
@@ -316,7 +334,7 @@
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
+                            <input class="btn-u rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제 풀이 추가하기" onclick="addSolution()">
                         </section>
                     </div>
 
@@ -332,7 +350,7 @@
                         <div class="row">
                             <section class="col-md-12">
                                 <div class="label">Video 
-                                <textarea class="form-control video_summernote" name="solution[]" id="video_1"></textarea>
+                                <textarea class="form-control video_summernote" name="video[]" id="video_1"></textarea>
                             </section>
                         </div>
                     <% else %>
@@ -354,7 +372,7 @@
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ Video 추가하기" onclick="addVideo()">
+                            <input class="btn-u rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ Video 추가하기" onclick="addVideo()">
                         </section>
                     </div>
 
@@ -363,7 +381,7 @@
                         <div class="row">
                             <section class="col-md-8 col-sm-8 col-xs-12">
                                 <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
-                                <textarea class="form-control condition_summernote" name="condition[]" id="condition_1"></textarea>
+                                <textarea class="form-control problem_condition_summernote" name="problem_condition[]" id="problem_condition_1"></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
@@ -371,32 +389,32 @@
                             </section>
                         </div>
                     <% else %>
-                        <% condition_check = 0 %>
+                        <% problem_condition_check = 0 %>
                         <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
                             <div class="row discussion_templet">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
-                                    <% unless condition_check != 0 %>
+                                    <% unless problem_condition_check != 0 %>
                                     <div class="label">문제의 조건 변경<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
-                                    <textarea class="form-control condition_summernote" name="condition[]" id="condition_<%= condition_check %>"><%= discussion_problem_condition.problem_condition %></textarea>
+                                    <textarea class="form-control problem_condition_summernote" name="condition[]" id="problem_condition_<%= problem_condition_check %>"><%= discussion_problem_condition.problem_condition %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
-                                    <% unless condition_check != 0 %>
+                                    <% unless problem_condition_check != 0 %>
                                     <div class="label">해답<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
                                     <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= condition_check %>"><%= discussion_problem_condition.condition_answer %></textarea>
                                 </section>
                             </div>
-                            <% solution_check = solution_check + 1 %>
+                            <% problem_condition_check = problem_condition_check + 1 %>
                         <% end %>
                         
                     <% end %>
 
-                    <div id="add_condition_section"></div>
+                    <div id="add_problem_condition_section"></div>
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
-                            <input class="btn btn-dropbox rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제의 조건 변경 및 해답 추가하기" onclick="addCondition()">
+                            <input class="btn-u rounded col-md-12 col-sm-12 col-xs-12 text-center" value="+ 문제의 조건 변경 및 해답 추가하기" onclick="addProblemCondition()">
                         </section>
                     </div>
 
@@ -517,7 +535,7 @@
 <!--토론문제 조건 변경 및 해답 summernote editor 추가하기-->
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.condition_summernote').summernote({
+        $('.problem_condition_summernote').summernote({
             height: 200,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
@@ -536,21 +554,21 @@
         });
     });
 
-    var condition_num = 2;
-    function addCondition() {
+    var problem_condition_num = 2;
+    function addProblemCondition() {
 
-        var root = $('#add_condition_section');
+        var root = $('#add_problem_condition_section');
 
         var row = $('<div>').addClass('row');
-        var condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var problem_condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
         var condition_answer = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
 
-        condition.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_'+ condition_num).addClass('form-control condition_summernote').attr('name', 'condition[]').attr('value', ""));
-        condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
+        problem_condition.append( $('<textarea>').attr('type', 'text').attr('id', 'problem_condition_'+ problem_condition_num).addClass('form-control problem_condition_summernote').attr('name', 'problem_condition[]').attr('value', ""));
+        condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ problem_condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
 
-        row.append(condition).append(condition_answer).appendTo(root);
+        row.append(problem_condition).append(condition_answer).appendTo(root);
 
-        $('.condition_summernote').summernote({
+        $('.problem_condition_summernote').summernote({
             height: 200,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
@@ -607,7 +625,7 @@
 </script>
 <!--END 토론문제 조건 변경 및 해답 summernote editor 추가하기-->
 
-<!--Video summernote editor 추가하기-->
+<!--Video summernote 추가하기-->
 <script type="text/javascript">
     $(document).ready(function() {
         $('.video_summernote').summernote({
@@ -644,7 +662,7 @@
         });
     }
 </script>
-<!--END 문제풀이 summernote editor 추가하기-->
+<!--END Video summernote 추가하기-->
 
 <!--summernote 및 필터링 검사-->
 <script type="text/javascript">
@@ -837,17 +855,17 @@
         });
     });
 
-    $(document).ready(function() {
-        $('#interim_report').summernote({
-            height: 100,
-            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
-            callbacks: {
-                onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'title_explanation');
-                }
-            }
-        });
-    });
+//    $(document).ready(function() {
+//        $('#interim_report').summernote({
+//            height: 100,
+//            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
+//            callbacks: {
+//                onImageUpload: function(files, editor, welEditable) {
+//                    sendFile(files[0], editor, welEditable, 'title_explanation');
+//                }
+//            }
+//       });
+//    });
 
     $(document).ready(function() {
         $('#final_report').summernote({
@@ -1192,10 +1210,10 @@
         $( "#dialog-1" ).dialog({
             autoOpen: true,
             title: "수식 입력 방법을 참고하세요.",
-            width: 600,
+            width: 800,
             height: 400,
-            draggable: true,
-            resizable: true
+            //draggable: true,
+            //resizable: true
         });
     //    $('#asciimath').dialog({
     //       modal: true
@@ -1206,6 +1224,27 @@
     };
 
 </script>
+
+<script>
+  $( function() {
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+ 
+    $( "#opener" ).on( "click", function() {
+      $( "#dialog" ).dialog( "open" );
+    });
+  } );
+</script>
+
 
 
 
