@@ -107,7 +107,8 @@ class ContentsController < ApplicationController
             @solutions = []
             @videos = []
             
-            @unit_concept.concept_exercises.each do | unit_concept_desc |
+#            @unit_concept.concept_exercises.each do | unit_concept_desc |
+            @unit_concept_descs.each do | unit_concept_desc |
             
                 if unit_concept_desc.desc_type == '1'
                     @concepts << unit_concept_desc
