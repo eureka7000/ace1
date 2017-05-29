@@ -335,13 +335,26 @@ def like
   end
 
   def get_concept_exercise
+    puts params[:id]
     @concept_exercises = ConceptExercise.where(:concept_id => params[:id]).order(:desc_type, :file_name)
     ret = []
+#    @concept_exercises.each do |concept_exercise|
+#      if concept_exercise.desc_type != '4' && concept_exercise.desc_type != '5'
+#        ret << {
+#            type: concept_exercise.desc_type,
+#            filename: concept_exercise.file_name.to_s()
+#        }
+#      end
+#    end
+
+#   video 추가 
     @concept_exercises.each do |concept_exercise|
-      if concept_exercise.desc_type != '4' && concept_exercise.desc_type != '5'
+      if concept_exercise.desc_type != '5'
+              puts '------------111'
         ret << {
             type: concept_exercise.desc_type,
-            filename: concept_exercise.file_name.to_s()
+            filename: concept_exercise.file_name.to_s(),
+            video_content: concept_exercise.video.to_s()
         }
       end
     end
@@ -351,6 +364,7 @@ def like
   end
 
   def get_unit_concept_exercise
+    puts params[:id]
     @unit_concept_exercises = UnitConceptDesc.where(:unit_concept_id => params[:id]).order(:desc_type, :file_name)
     ret = []
     @unit_concept_exercises.each do |unit_concept_exercise|
@@ -362,17 +376,6 @@ def like
       end
     end
 
-#   video 추가 
-#    @unit_concept_exercises.each do |unit_concept_exercise|
-#      if unit_concept_exercise.desc_type != '5'
-#        ret << {
-#            type: unit_concept_exercise.desc_type,
-#            filename: unit_concept_exercise.file_name.to_s(),
-#            video_number: unit_concept_exercise.video.to_s()    video를 읽어 들이려함 
-#        }
-#      end
-#    end
-
     respond_to do |format|
       format.json { render :json => ret }
     end
@@ -381,6 +384,7 @@ def like
   def get_concepts
     key = params[:key]  
     puts params[:key]   
+    puts '------------ccc'
     # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
     #@concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
     @concepts = Concept.where(sub_category: key).order(:concept_code)
@@ -594,7 +598,7 @@ def like
           (0..@problem_conditions.count).each do |idx|
             logger.info "###########    #{@problem_conditions[count]}, #{@condition_answers[count]}    ############"
 
-            unless @problem_conditionns[count].blank?
+            unless @problem_conditions[count].blank?
               @discussion_problem_condition = DiscussionProblemCondition.new
               @discussion_problem_condition.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_problem_condition.problem_condition = @problem_conditions[count]

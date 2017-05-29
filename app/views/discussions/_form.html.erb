@@ -31,7 +31,7 @@
 
                     <div class="row">
 
-                        <!--<section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>-->rails
+                        <!--<section class="col col-3" <%= 'hidden' if @user_type == 'user' %>>-->
                         <section class="col col-3" <%#= 'hidden' if @user_type == 'user' %>>
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
@@ -231,14 +231,6 @@
                             <div hidden id="dialog-1" >
                                 <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
                             </div>
-
-
-                            <div id="dialog" title="Basic dialog">
-                                <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
-                            </div> 
-                            <button id="opener">Open Dialog</button>
-                            
- 
                         </section>
                     </div>
                     
@@ -361,7 +353,7 @@
                                     <% unless video_check != 0 %>
                                     <div class="label">Video 
                                     <% end %>
-                                    <textarea class="form-control video_summernote" name="video[]" id="video_<%= video_check %>"><%= discussion_video.number %></textarea>
+                                    <textarea class="form-control video_summernote" name="video[]" id="video_<%= video_check %>"><%= discussion_video.content %></textarea>
                                 </section>
                             </div>
                             <% video_check = video_check + 1 %>
@@ -420,10 +412,17 @@
 
                     <div class="row">
                         <section class="col-md-12">
-                        <div class="label">최종보고서<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                        <div class="label">종합의견<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                         </section>
                     </div>
+
+                    <!--asciimath-->
+                    <div id="dialog" title="Basic dialog">
+                        <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
+                        </div> 
+                    <!--asciimath-->
+ 
 
                     <div class="row">
                         <section class="col-md-12">
@@ -434,6 +433,15 @@
                 </fieldset>
 
             <% end %>
+
+
+<style>
+.note-editable {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.2;
+}
+</style>
 
 
 <!--select2-->
@@ -480,12 +488,14 @@
             height: 100,
             placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
+    //            ['style', ['bold', 'italic', 'underline', 'clear']],
+    //            ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+    //            ['para', ['ul', 'ol', 'paragraph']],
+    //            ['height', ['height']]
             ]
         });
 
@@ -493,12 +503,19 @@
     }
 </script>
 
+
 <!--문제풀이 summernote editor 추가하기-->
 <script type="text/javascript">
     $(document).ready(function() {
         $('.solution_summernote').summernote({
             height: 200,
             placeholder: '문제 풀이를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -506,6 +523,8 @@
             }
         });
     });
+
+    //$('.solution_summernote').css('fontsize', '18px');
 
     var solution_num = 2;
     function addSolution() {
@@ -522,6 +541,12 @@
         $('.solution_summernote').summernote({
             height: 200,
             placeholder: '문제 풀이를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -536,15 +561,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.problem_condition_summernote').summernote({
-            height: 200,
+            height: 100,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -569,15 +592,13 @@
         row.append(problem_condition).append(condition_answer).appendTo(root);
 
         $('.problem_condition_summernote').summernote({
-            height: 200,
+            height: 100,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough', 'superscript', 'subscript']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -587,13 +608,13 @@
         });
 
         $('.condition_answer_summernote').summernote({
-            height: 200,
+            height: 100,
             placeholder: '토론 문제의 조건 변경에 따른 해답을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -607,13 +628,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.condition_answer_summernote').summernote({
-            height: 200,
+            height: 100,
             placeholder: '토론 문제의 조건 변경에 따른 해답을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
@@ -629,8 +650,14 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.video_summernote').summernote({
-            height: 200,
+            height: 400,
             placeholder: 'video button를 클릭한 후 video를 추가하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -642,6 +669,21 @@
     var video_num = 2;
     function addVideo() {
 
+//        var iframe = document.createElement('iframe');
+//                        iframe.id = "concept_video";
+//                        //iframe.src = "https://player.vimeo.com/video/" + data[i].video_content;
+//                        iframe.width = "662";
+//                        iframe.height = "380";
+//                        iframe.frameborder = "0";
+//                        iframe.allowfullscreen = "allowfullscreen";
+//                        iframe.webkitallowfullscreen = "webkitallowfullscreen";
+//                        iframe.mozallowfullscreen = "mozallowfullscreen";
+//                        console.log(iframe.src);
+
+
+        var video_n = "#video_" + video_num;
+        console.log(video_n);
+
         var root = $('#add_video_section');
 
         var row = $('<div>').addClass('row');
@@ -650,10 +692,18 @@
         video.append( $('<textarea>').attr('type', 'text').attr('id', 'video_'+ video_num++).addClass('form-control video_summernote').attr('name', 'video[]').attr('value', ""));
 
         row.append(video).appendTo(root);
+        //$('#summernote').summernote('insertText', data);
+        $("video_n").summernote('insertNode', iframe);
 
         $('.video_summernote').summernote({
-            height: 200,
+            height: 400,
             placeholder: 'video button를 클릭한 후 video를 추가하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -662,6 +712,7 @@
         });
     }
 </script>
+
 <!--END Video summernote 추가하기-->
 
 <!--summernote 및 필터링 검사-->
@@ -796,11 +847,10 @@
             height: 100,
             placeholder: '토론 주제를 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ]
         });
     });
@@ -810,19 +860,24 @@
             height: 100,
             placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['fontsize', ['fontsize']],
                 ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['height', ['height']]
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
             ]
         });
     });
 
     $(document).ready(function() {
         $('#concept_explanation').summernote({
-            height: 200,
+            height: 100,
             placeholder: '문제를 푸는데 도움을 줄 수 있는 내용을 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'concept_explanation');
@@ -835,6 +890,12 @@
         $('#content').summernote({
             height: 300,
             placeholder: '토론 문제의 내용을 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'content');
@@ -845,8 +906,14 @@
 
     $(document).ready(function() {
         $('#answer').summernote({
-            height: 200,
+            height: 100,
             placeholder: '해답을 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'answer');
@@ -869,8 +936,14 @@
 
     $(document).ready(function() {
         $('#final_report').summernote({
-            height: 300,
-            placeholder: '최종보고서를 입력하세요.',
+            height: 200,
+            placeholder: '토론의 종합의견을 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, 'title_explanation');
@@ -1113,6 +1186,7 @@
 
 
         var id = $('#concept_exercise').val();
+        console.log(id);
         var url = '/discussions/get_concept_exercise'
         
         var data = new FormData();
@@ -1129,6 +1203,7 @@
             processData: false,
             success: function(data) {
                 $.each(data, function(i) {
+                    console.log(data[i].type);
                     if (data[i].type == '1'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
@@ -1153,14 +1228,23 @@
                             addSolution();
                             $("#solution_"+solution_editor_count).summernote('insertNode', img);
                             solution_editor_count++;
-                        }
+                       }
                     }
-                //    else if (data[i].type == '4'){
-                //        var img = document.createElement('img');
-                //        img.src = "https://vimeo.com/" + data[i].video_number;
-                //        //$('#summernote').summernote('insertText', data);
-                //        $("#video").summernote('insertNode', img);
-                //    }
+                    else if (data[i].type == '4'){
+                        console.log('44444444'); 
+                        var iframe = document.createElement('iframe');
+                        iframe.id = "concept_video";
+                        iframe.src = "https://player.vimeo.com/video/" + data[i].video_content;
+                        iframe.width = "662";
+                        iframe.height = "380";
+                        iframe.frameborder = "0";
+                        iframe.allowfullscreen = "allowfullscreen";
+                        iframe.webkitallowfullscreen = "webkitallowfullscreen";
+                        iframe.mozallowfullscreen = "mozallowfullscreen";
+                        console.log(iframe.src);
+                        //$('#summernote').summernote('insertText', data);
+                        $("#video_1").summernote('insertNode', iframe);
+                    }
                     else if (data[i].type == '7'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
@@ -1172,6 +1256,14 @@
         });
     }
 </script>
+
+                    <!--<div hidden id="concept_video" class="col-md-12 col-sm-12 col-xs-12 tabs" style="display:none">-->
+                        <%# @videos.each do | video | %>
+                            <!--<div class="responsive-video">-->
+                                <!--<p>eurekamathv1 from <a href="https://vimeo.com/user49478797">EurekaMath</a> on <a href="https://vimeo.com">Vimeo</a>.</p>-->
+                            <!--</div>-->
+                        <%# end %>
+                    <!--</div>-->
 
 <script src="/assets/plugins/sky-forms-pro/skyforms/js/jquery-ui.min.js"></script>
 <script type="text/javascript">
@@ -1210,11 +1302,21 @@
         $( "#dialog-1" ).dialog({
             autoOpen: true,
             title: "수식 입력 방법을 참고하세요.",
-            width: 800,
+            width: 700,
             height: 400,
-            //draggable: true,
-            //resizable: true
+            draggable: true,
+            resizable: true,
+            position: {my: "right top", at: "right top", of: window},
+            show: {
+                effect: "blind",
+                duration: 500
+            },
+            hide: {
+                effect: "explode",
+                duration: 500
+            }
         });
+
     //    $('#asciimath').dialog({
     //       modal: true
     //     width: 480px, height: 350px,

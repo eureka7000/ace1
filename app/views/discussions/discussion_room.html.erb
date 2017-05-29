@@ -20,7 +20,8 @@
     <!--주제-->
     <div class="row blog-page">
         <div class="col-md-12 margin-top-20">
-            <h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>
+            <!--<h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>-->
+            <h3>* 주제</h3><span class="title"><%= @discussion.discussion_templet.title %></span></h2>
         </div>
     </div>
 
@@ -56,7 +57,7 @@
     <!--본문 내용-->
     <div class="row">
         <div class="col-md-12">
-            <h3>*<em>본문 내용</em></h3>
+            <h3>* 토론 문제</h3>
             <%== @discussion.discussion_templet.content %>
         </div>
     </div>
@@ -96,7 +97,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <h3>*<em>개념 설명</em></h3>
+                <h3>* 문제풀이 가이드</h3>
                 <%== @discussion.discussion_templet.concept_explanation %>
             </div>
         </div>
@@ -109,7 +110,7 @@
 
             <div class="row sky-form" style="border: none">
                 <div class="col-md-12 no-padding no-margin">
-                    <h3>*<em>문제풀이</em></h3>
+                    <h3>* 문제풀이</h3>
                     <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                         <div class="inline-group">
                             <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
@@ -132,7 +133,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>*<em>해답</em></h3>
+                    <h3>* 해답</h3>
                     <%== @discussion.discussion_templet.answer %>
                 </div>
             </div>
@@ -144,7 +145,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>*<em>중간보고서</em></h3>
+                    <h3>* 중간 보고서</h3>
                     <%== @discussion.interim_report %>
                 </div>
             </div>
@@ -156,7 +157,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>*<em>최종보고서</em></h3>
+                    <h3>* 종합 의견</h3>
                     <%== @discussion.final_report %>
                 </div>
             </div>
@@ -166,7 +167,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <h3>*<em>의견달기</em></h3>
+                <h3>* 의견달기</h3>
                 <form action="/discussion_reply" id="discussion_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
                     <%= token_tag nil %>
                     <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
@@ -185,7 +186,7 @@
         <div class="row">
             <div class="col-md-12 margin-bottom-50">
                 <% unless @discussion_replies.blank? %>
-                    <h3>*<em>댓글</em></h3>
+                    <h3>* 댓글 </h3>
                 <% end %>
                 <% unless @discussion_replies.blank? %>
                     <% reply1 = 1 %>
@@ -310,12 +311,27 @@
     </div>
 </div>
 
+
+
+<style>
+    span.title {
+        font-size: 18px;
+    }
+</style>
+
 <!--summernote editor-->
 <script type="text/javascript">
 
     $(document).ready(function() {
         $('.post_reply_summernote').summernote({
             height: 200,
+            toolbar: [
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
@@ -425,6 +441,13 @@
         $(document).ready(function() {
             $('.post_reply_summernote').summernote({
                 height: 200,
+                toolbar: [
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
                 callbacks: {
                     onImageUpload: function(files, editor, welEditable) {
                         sendFile(files[0], editor, welEditable, this.id);
