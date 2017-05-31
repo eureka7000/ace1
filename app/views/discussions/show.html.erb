@@ -50,6 +50,30 @@
         </div>
         <div class="col-md-4">
             <p>
+                <strong>선택 학년 : </strong>
+                <%= @discussion.discussion_templet.grade %>
+            </p>
+        </div>
+        <div class="col-md-5">
+            <p>
+                <strong>문제 수준(Level) : </strong>
+                <%= @discussion.discussion_templet.level %>
+            </p>
+        </div>
+        <div class="col-md-3">
+            <p>
+                <strong>Think Time(분) : </strong>
+                <%= @discussion.think_time %>
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>
+                <strong>토론 참가자 수 : </strong>
+                <%= @discussion.participants.count %>
+            </p>
+        </div>
+        <div class="col-md-5">
+            <p>
                 <strong>핵심 개념 : </strong>
                 <%= @unit_concept.name %>
                 (<% (1..@unit_concept.level).each do |idx| %>
@@ -58,50 +82,6 @@
                 <% (1..5-@unit_concept.level).each do |idx| %>
                     <i class="fa fa-star-o" style="color: red"></i>
                 <% end %>)
-            </p>
-        </div>
-        <!--
-        <div hidden class="col-md-4">
-            <p>
-                <strong>관련 개념 : </strong>
-
-                <span style="color:red"><%= ' | ' %></span>
-                <% @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
-                    <% unless unit_concept_desc.desc_type != '5' %>
-                        <%= UnitConcept.find(unit_concept_desc.link).name %>
-                        <span style="color:red"><%= ' | ' %></span>
-                    <% end %>
-                <% end %>
-            </p>
-        </div>
-        -->
-
-        <div class="col-md-5">
-            <p>
-                <strong>관련 개념 : </strong>
-                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
-                    <%= discussion_title_explanation.unit_concept.name %>
-                        <span style="color:red"><%= ' | ' %></span>
-                <% end %>
-            </p>
-        </div>
-
-        <div class="col-md-3">
-            <p>
-                <strong>선택 학년 : </strong>
-                <%= @discussion.discussion_templet.grade %>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <p>
-                <strong>문제 수준(Level) : </strong>
-                <%= @discussion.discussion_templet.level %>
-            </p>
-        </div>
-        <div class="col-md-5">
-            <p>
-                <strong>Think Time(분) : </strong>
-                <%= @discussion.think_time %>
             </p>
         </div>
         <div class="col-md-3">
@@ -116,12 +96,34 @@
                 <%= @discussion.expiration_date %>
             </p>
         </div>
-        <div class="col-md-5">
+        
+        <!--
+        <div hidden class="col-md-4">
             <p>
-                <strong>토론 참가자 수 : </strong>
-                <%= @discussion.participants.count %>
+                <strong>관련 개념 : </strong>
+
+                <span style="color:red"><%= ' | ' %></span>
+                <%# @unit_concept.unit_concept_descs.each do |unit_concept_desc| %>
+                    <%# unless unit_concept_desc.desc_type != '5' %>
+                        <%#= UnitConcept.find(unit_concept_desc.link).name %>
+                        <span style="color:red"><%= ' | ' %></span>
+                    <%# end %>
+                <%# end %>
             </p>
         </div>
+        -->
+
+        <div class="col-md-12">
+            <p>
+                <strong>관련 개념 : </strong>
+                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
+                    <%= discussion_title_explanation.unit_concept.name %>
+                        <span style="color:red"><%= ' | ' %></span>
+                <% end %>
+            </p>
+        </div>
+
+        
         <div class="col-md-12">
             <hr>
             <p>
@@ -133,7 +135,7 @@
             <hr>
             <p>
                 <strong>토론 문제 : </strong>
-                <%== @discussion.discussion_templet.content %>
+                <%= @discussion.discussion_templet.content %>
             </p>
         </div>
         <div class="col-md-12">
@@ -146,7 +148,7 @@
                             <i class="fa fa-plane" style="color: red"></i>
                         </div>
                         <div class="col-content">
-                            <%== discussion_title_explanation.content %>
+                            <%= discussion_title_explanation.content %>
                         </div>
                         <div class="col-name">
                             <%= discussion_title_explanation.unit_concept.name %>
@@ -159,7 +161,7 @@
             <hr>
             <p>
                 <strong>문제풀이 가이드 : </strong>
-                <%== @discussion.discussion_templet.concept_explanation %>
+                <%= @discussion.discussion_templet.concept_explanation %>
             </p>
         </div>
         <div class="col-md-12">
@@ -167,7 +169,7 @@
             <p>
                 <strong>문제 풀이 : </strong>
                 <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
-                    <%== discussion_solution.content %>
+                    <%= discussion_solution.content %>
                     <hr>
                 <% end %>
             </p>
@@ -176,21 +178,34 @@
             <hr>
             <p>
                 <strong>해답 : </strong>
-                <%== @discussion.discussion_templet.answer %>
+                <%= @discussion.discussion_templet.answer %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>중간 보고서 : </strong>
-                <%== @discussion.interim_report %>
+                <strong>토론 문제 조건 변경 및 해답 : </strong>
+                <%#= @discussion.interim_report %>
+                <% @discussion_problem_conditions.each do |discussion_problem_condition| %>
+                    <div class="row">
+                        <div class="col-smallfa">
+                            <i class="fa fa-plane" style="color: red"></i>
+                        </div>
+                        <div class="col-content">
+                            <%= discussion_problem_condition.problem_condition %>
+                        </div>
+                        <div class="col-name">
+                            <%= discussion_problem_condition.condition_answer %>
+                        </div>
+                    </div>
+                <% end %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <strong>최종 보고서 : </strong>
-                <%== @discussion.final_report %>
+                <strong>종합 의견 : </strong>
+                <%= @discussion.final_report %>
             </p>
         </div>
 

@@ -11,8 +11,8 @@
     <h1>토론방 목록</h1>
 
     <% unless session[:admin]['admin_type'] != 'admin' %>
-        <%= link_to '토론방 개설', new_discussion_path, :class => 'btn btn-xing rounded' %> |
-        <%= link_to '토론문제 가져와서 개설하기', '/discussions/topic_select_and_new', :method => :get, :class => 'btn btn-viadeo rounded' %>
+        <%= link_to '토론방 개설하기 (종합문제 가져오기 가능)', new_discussion_path, :class => 'btn btn-xing rounded' %> |
+        <%= link_to '토론방 개설하기 (기존 토론문제 가져오기', '/discussions/topic_select_and_new', :method => :get, :class => 'btn btn-viadeo rounded' %>
         <%#= link_to '토론방 리더 지정', discussions_select_leader_path, :class => 'btn-u btn-u-dark-blue rounded' %>
     <% end %>
 

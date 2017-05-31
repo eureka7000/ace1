@@ -17,13 +17,6 @@
 </div>
 
 <div class="container container-fluid margin-bottom-50">
-    <!--주제-->
-    <div class="row blog-page">
-        <div class="col-md-12 margin-top-20">
-            <!--<h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>-->
-            <h3>* 주제</h3><span class="title"><%= @discussion.discussion_templet.title %></span></h2>
-        </div>
-    </div>
 
     <div class="blog-post-tags">
         <ul class="list-unstyled list-inline blog-info">
@@ -54,6 +47,15 @@
         </ul>
     </div>
 
+    <!--주제-->
+    <div class="row blog-page">
+        <div class="col-md-12 margin-top-20">
+            <!--<h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>-->
+            <h3>* 주제</h3><span class="title"><%= @discussion.discussion_templet.title %></span></h2>
+        </div>
+    </div>
+        <hr>
+
     <!--본문 내용-->
     <div class="row">
         <div class="col-md-12">
@@ -67,13 +69,13 @@
         <!--개념 해설-->
         <div class="row margin-top-20">
             <div class="col-md-12">
-                <h3>*<em>개념 해설 (발문)</em></h3>
+                <h3>* 토론문제 발문 및 관련개념 </h3>
                 <div class="row sky-form" style="border: none">
                     <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
                         <div class="row col-md-12">
                             <div class="inline-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <em><%== title_explanation.content %></em>
+                                    <%= title_explanation.content %>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <label class="radio"><input type="radio" name="title_explanation_radio_<%= title_explanation.id %>" value="easy" checked=""><i class="rounded-x"></i>쉬움</label>
@@ -314,9 +316,15 @@
 
 
 <style>
-    span.title {
-        font-size: 18px;
-    }
+span.title {
+    font-size: 18px;
+}
+
+.note-editable {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.2;
+}
 </style>
 
 <!--summernote editor-->

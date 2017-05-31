@@ -9,12 +9,6 @@
 
 <div class="container container-fluid">
 
-    <!--주제-->
-    <div class="row blog-page">
-        <div class="col-md-12 margin-top-20">
-            <h2>주제 : <em><%= @discussion_templet.title %></em></h2>
-        </div>
-    </div>
 
     <div class="blog-post-tags">
         <ul class="list-unstyled list-inline blog-info">
@@ -41,11 +35,18 @@
         </ul>
     </div>
 
+    <!--주제-->
+    <div class="row blog-page">
+        <div class="col-md-12 margin-top-20">
+            <h3>* 토론 주제 :  <%= @discussion_templet.title %></h3>
+        </div>
+    </div>
+
     <!--본문 내용-->
     <div class="row">
         <div class="col-md-12">
-            <h3>*<em>본문 내용</em></h3>
-            <%== @discussion_templet.content %>
+            <h3>* 토론 문제 : </h3>
+            <%= @discussion_templet.content %>
         </div>
     </div>
 
@@ -54,14 +55,28 @@
         <!--개념 해설-->
         <div class="row margin-top-20">
             <div class="col-md-12">
-                <h3>*<em>개념 해설 (발문)</em></h3>
+                <h3>* 토론문제 발문 및 관련개념 : </h3>
                 <div class="row sky-form" style="border: none">
                     <% @discussion_templet.discussion_title_explanations.each do |title_explanation| %>
-                        <div class="row col-md-12">
-                            <div class="inline-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <em><%== title_explanation.content %></em>
-                                </div>
+
+                        <!--<div class="row col-md-12">-->
+                            <!--<div class="inline-group">-->
+                                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
+                                    <%#= title_explanation.content %>
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
+                        <!--발문 및 관련개념 표시-->
+                        <div class="row">
+                            <div class="col-smallfa">
+                                <i class="fa fa-plane" style="color: red"></i>
+                            </div>
+                            <div class="col-content">
+                                <%= discussion_title_explanation.content %>
+                            </div>
+                            <div class="col-name">
+                                <%= discussion_title_explanation.unit_concept.name %>
                             </div>
                         </div>
                     <% end %>
@@ -75,7 +90,7 @@
         <hr>
         <div class="row">
             <div class="col-md-12">
-                <h3>*<em>개념 설명</em></h3>
+                <h3>* 문제풀이 가이드 : </h3>
                 <%== @discussion_templet.concept_explanation %>
             </div>
         </div>
@@ -87,11 +102,11 @@
 
             <div class="row sky-form" style="border: none">
                 <div class="col-md-12 no-padding no-margin">
-                    <h3>*<em>문제풀이</em></h3>
+                    <h3>* 문제풀이 : </h3>
                     <% @discussion_templet.discussion_solutions.each do |discussion_solution| %>
                         <div class="inline-group">
                             <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
-                                <%== discussion_solution.content %>
+                                <%= discussion_solution.content %>
                             </div>
                         </div>
                     <% end %>
@@ -105,11 +120,26 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <h3>*<em>해답</em></h3>
-                    <%== @discussion_templet.answer %>
+                    <h3>* 해답 :</h3>
+                    <%= @discussion_templet.answer %>
                 </div>
             </div>
         <% end %>
+
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>토론 문제 조건 변경 및 해답 : </strong>
+                <%#= @discussion.interim_report %>
+            </p>
+        </div>
+        <div class="col-md-12">
+            <hr>
+            <p>
+                <strong>종합 의견 : </strong>
+                <%#= @discussion.final_report %>
+            </p>
+        </div>
 
     <hr>
 

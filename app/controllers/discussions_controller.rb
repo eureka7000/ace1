@@ -459,6 +459,7 @@ def like
     puts @unit_concept.id
     @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
     puts @discussion.user.user_types.first.user_type
+    @discussion_problem_conditions = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
   end
 
   # GET /discussions/new
@@ -475,6 +476,7 @@ def like
       @leader = Teacher.all
     else
         @leader = Teacher.where(:school_id => session[:admin]['school_id'])
+        @sub_leader = @leader     # 해당 학교, 학원 선생님이 모두 서브리더가 됨 
         if session[:admin]['admin_type'] == 'school manager'
           @manage_type = '학교'
         elsif session[:admin]['admin_type'] == 'institute manager'
@@ -559,14 +561,18 @@ def like
     # nested params coding for save discussion_video
     @videos = params[:video]
 
+    puts session
     unless session[:admin].nil?
       is_admin = true
     else
       is_admin = false
     end
 
+
+    
     respond_to do |format|
       if @discussion.save
+        #@discussion.discussion_templet_id = @discussion_templet.id
 
         unless discussion_image_ids.blank?
           images = discussion_image_ids.to_s.split(',')
@@ -602,7 +608,7 @@ def like
               @discussion_problem_condition = DiscussionProblemCondition.new
               @discussion_problem_condition.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_problem_condition.problem_condition = @problem_conditions[count]
-              @discussion_problem_condition.condition_answer = @condition_answer[count]
+              @discussion_problem_condition.condition_answer = @condition_answers[count]
               @discussion_problem_condition.save
             end
             count = count+1
@@ -627,7 +633,7 @@ def like
           (0..@videos.count).each do |idx|
             unless @videos[count].blank?
               @discussion_video = DiscussionVideo.new
-              @discussion_video.number = @videos[count]
+              @discussion_video.content = @videos[count]
               @discussion_video.discussion_templet_id = @discussion.discussion_templet_id
               @discussion_video.save
             end

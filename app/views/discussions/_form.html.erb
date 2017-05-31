@@ -102,20 +102,20 @@
 
                     </div>
 
-                    <div class="row">
+                    <div class="row edit_cencept">
                         <section class="col col-3 discussion_templet">
                             <label class="label">Category</label>
                             <select class="form-control" id="category" onchange="selectCategory()">
-                                <% if @discussion_form_id.include? 'edit' %>
+                                <%# if @discussion_form_id.include? 'edit' %>
                                     <%# Concept::CATEGORIES.each_pair do |key, value| %>
                                         <!--<option value="<%#= key %>" <%#= 'selected' if key == @unit_concept.concept.category %>><%#= value %></option>-->
                                     <%# end %>
-                                <% else %>
+                                <%# else %>
                                     <option>선택하세요</option>
                                     <% Concept::CATEGORIES.each_pair do |key, value| %>
                                         <option value="<%= key %>"><%= value %></option>
                                     <% end %>
-                                <% end %>
+                                <%# end %>
                             </select>
                         </section>
 
@@ -156,7 +156,7 @@
                         </section>
                     </div>
 
-                    <div class="row discussion_templet">
+                    <div class="row discussion_templet edit_cencept">
                         <section class="col col-6">
                             <div class="label">종합문제 가져오기 <input type="button" class="btn btn-google rounded btn-xs" value="적용" onclick="insertImagesToEditor('concept')"></div>
                             <select class="form-control" id="concept_exercise">
@@ -186,12 +186,12 @@
                             </div>
                         </section>
 
-                        <section class="col-md-4 col-sm-4 col-xs-10 discussion_templet">
-                            <label class="label">Code(숫자)<span style="color: red">*</span></label>
-                            <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion.discussion_templet.code.to_s.split('-', 3).last() unless @discussion.discussion_templet.nil? %>">
+                        <section class="col-md-4 col-sm-4 col-xs-10 discussion_templet edit_cencept">
+                            <label class="label">Code(세 자리 숫자  ex) 001, 201, 899 ) <span style="color: red">*</span></label>
+                            <input type="text" class="form-control" name="discussion_templet[code]" id="code" value="<%= @discussion.discussion_templet.code.to_s.split('-', 3).last unless @discussion.discussion_templet.nil? %>">
                         </section>
 
-                        <section class="col-md-2 col-sm-2 col-xs-2 discussion_templet">
+                        <section class="col-md-2 col-sm-2 col-xs-2 discussion_templet edit_cencept">
                             <label class="label">&nbsp;</label>
                             <input type="button" class="btn btn-flickr btn-xs rounded" value="중복확인" id="code_check" onclick="codeCheck()">
                             <input hidden value="N" id="code_check_yn">
@@ -1122,6 +1122,7 @@
                     }
                     else {
                         $('#concept_exercise').append( $('<option>').text( data[i].code + ' | <' + data[i].text + '> | Level: ' + data[i].level ).attr('value', data[i].id));
+                        
                     }
                 });
                 selectConcept();
@@ -1154,6 +1155,7 @@
                     if (data[i].exercise_yn == 'concept'){
                         $('#unit_concept_id').append( $('<option>').text(data[i].text).attr('value', data[i].values));
                     }
+
 
 // 유형문제 가져오기 삭제
 //                    else {
@@ -1396,9 +1398,14 @@
     });
 
 </script>
-
-<% unless @discussion_form_id == 'new_discussion' %>
+<% if @discussion_form_id.include? 'edit' %>
     <script type="text/javascript">
-        $('.discussion_templet').hide();
+        $('.edit_cencept').hide();
     </script>
 <% end %>
+
+<%# unless @discussion_form_id == 'new_discussion' %>
+    <!--<script type="text/javascript">
+        $('.discussion_templet').hide();
+    </script>-->
+<%# end %>
