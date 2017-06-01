@@ -161,7 +161,7 @@
             <hr>
             <p>
                 <strong>문제풀이 가이드 : </strong>
-                <%= @discussion.discussion_templet.concept_explanation %>
+                <%== @discussion.discussion_templet.concept_explanation %>
             </p>
         </div>
         <div class="col-md-12">
@@ -169,7 +169,7 @@
             <p>
                 <strong>문제 풀이 : </strong>
                 <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
-                    <%= discussion_solution.content %>
+                    <%== discussion_solution.content %>
                     <hr>
                 <% end %>
             </p>
@@ -178,7 +178,7 @@
             <hr>
             <p>
                 <strong>해답 : </strong>
-                <%= @discussion.discussion_templet.answer %>
+                <%== @discussion.discussion_templet.answer %>
             </p>
         </div>
         <div class="col-md-12">
@@ -192,10 +192,10 @@
                             <i class="fa fa-plane" style="color: red"></i>
                         </div>
                         <div class="col-content">
-                            <%= discussion_problem_condition.problem_condition %>
+                            <%== discussion_problem_condition.problem_condition %>
                         </div>
                         <div class="col-name">
-                            <%= discussion_problem_condition.condition_answer %>
+                            <%== discussion_problem_condition.condition_answer %>
                         </div>
                     </div>
                 <% end %>
@@ -205,7 +205,7 @@
             <hr>
             <p>
                 <strong>종합 의견 : </strong>
-                <%= @discussion.final_report %>
+                <%== @discussion.final_report %>
             </p>
         </div>
 
