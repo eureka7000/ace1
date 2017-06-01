@@ -38,7 +38,7 @@
     <!--주제-->
     <div class="row blog-page">
         <div class="col-md-12 margin-top-20">
-            <h3>* 토론 주제 :  <%= @discussion_templet.title %></h3>
+            <h3>* 토론 주제 :  <%== @discussion_templet.title %></h3>
         </div>
     </div>
 
@@ -46,7 +46,7 @@
     <div class="row">
         <div class="col-md-12">
             <h3>* 토론 문제 : </h3>
-            <%= @discussion_templet.content %>
+            <%== @discussion_templet.content %>
         </div>
     </div>
 
@@ -73,10 +73,10 @@
                                 <i class="fa fa-plane" style="color: red"></i>
                             </div>
                             <div class="col-content">
-                                <%= discussion_title_explanation.content %>
+                                <%== title_explanation.content %>
                             </div>
                             <div class="col-name">
-                                <%= discussion_title_explanation.unit_concept.name %>
+                                <%== title_explanation.unit_concept.name %>
                             </div>
                         </div>
                     <% end %>
@@ -106,7 +106,7 @@
                     <% @discussion_templet.discussion_solutions.each do |discussion_solution| %>
                         <div class="inline-group">
                             <div class="col-md-8 col-sm-12 col-xs-12 no-padding no-margin">
-                                <%= discussion_solution.content %>
+                                <%== discussion_solution.content %>
                             </div>
                         </div>
                     <% end %>
@@ -121,7 +121,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <h3>* 해답 :</h3>
-                    <%= @discussion_templet.answer %>
+                    <%== @discussion_templet.answer %>
                 </div>
             </div>
         <% end %>

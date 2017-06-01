@@ -128,14 +128,14 @@
             <hr>
             <p>
                 <strong>토론 주제 : </strong>
-                <%= @discussion.discussion_templet.title %>
+                <%== @discussion.discussion_templet.title %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
                 <strong>토론 문제 : </strong>
-                <%= @discussion.discussion_templet.content %>
+                <%== @discussion.discussion_templet.content %>
             </p>
         </div>
         <div class="col-md-12">
@@ -148,10 +148,10 @@
                             <i class="fa fa-plane" style="color: red"></i>
                         </div>
                         <div class="col-content">
-                            <%= discussion_title_explanation.content %>
+                            <%== discussion_title_explanation.content %>
                         </div>
                         <div class="col-name">
-                            <%= discussion_title_explanation.unit_concept.name %>
+                            <%== discussion_title_explanation.unit_concept.name %>
                         </div>
                     </div>
                 <% end %>
