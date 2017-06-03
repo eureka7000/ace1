@@ -163,6 +163,15 @@ class DiscussionsController < ApplicationController
 
   def discussion_room
     puts '=========='
+    puts @discussion.inspect
+    #@discussion = Discussion.where('id = ?', @discussion.id)
+    #puts @discussion.discussion_templet.first.id
+    #puts @discussion.first.organizer
+    #puts @discussion.first.id
+    @discussion_templet = @discussion.discussion_templet 
+    puts @discussion_templet.inspect
+    @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
+    puts @discussion_problem_condition.inspect
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
     puts '----------'
 
@@ -258,6 +267,7 @@ def like
     @leader = Teacher.where('user_id = ?', current_user.id)
     @sub_leader = Teacher.all
     @groups = Group.where('user_id = ?', @discussion.user_id)
+    @related_unit_concepts = UnitConcept.where(:exercise_yn => 'concept')
 
     render layout: 'application'
   end
@@ -548,8 +558,8 @@ def like
     end
 
     # nested params coding for save discussion_title_explanation
-    @title_explanations = params[:title_explanation]
-    @title_explanation_unit_concept_ids = params[:title_explanation_unit_concept_id]
+    @discussion_title_explanations = params[:discussion_title_explanation]
+    @discussion_title_explanation_unit_concept_ids = params[:discussion_title_explanation_unit_concept_id]
 
     # nested params coding for save discussion_problem_condition
     @problem_conditions = params[:problem_condition]
@@ -583,16 +593,16 @@ def like
           end
         end
 
-        unless @title_explanations.blank?
+        unless @discussion_title_explanations.blank?
           count = 0
-          (0..@title_explanations.count).each do |idx|
-            logger.info "###########    #{@title_explanations[count]}, #{@title_explanation_unit_concept_ids[count]}    ############"
+          (0..@discussion_title_explanations.count).each do |idx|
+            logger.info "###########    #{@discussion_title_explanations[count]}, #{@discussion_title_explanation_unit_concept_ids[count]}    ############"
 
-            unless @title_explanations[count].blank?
+            unless @discussion_title_explanations[count].blank?
               @discussion_title_explanation = DiscussionTitleExplanation.new
               @discussion_title_explanation.discussion_templet_id = @discussion.discussion_templet_id
-              @discussion_title_explanation.unit_concept_id = @title_explanation_unit_concept_ids[count]
-              @discussion_title_explanation.content = @title_explanations[count]
+              @discussion_title_explanation.unit_concept_id = @discussion_title_explanation_unit_concept_ids[count]
+              @discussion_title_explanation.content = @discussion_title_explanations[count]
               @discussion_title_explanation.save
             end
             count = count+1
@@ -658,40 +668,142 @@ def like
   # PATCH/PUT /discussions/1
   # PATCH/PUT /discussions/1.json
   def update
+    puts params
+    @discussion_templet = @discussion.discussion_templet
+    puts @discussion_templet.id
     discussion_image_ids = params[:discussion_image_id]
+
+    # nested params coding for save discussion_title_explanation
+    @discussion_title_explanations = params[:discussion_title_explanation]
+    @discussion_title_explanation_unit_concept_ids = params[:discussion_title_explanation_unit_concept_id]
+
+    # nested params coding for save discussion_problem_condition
+    @problem_conditions = params[:discussion_problem_condition]
+    @condition_answers = params[:condition_answer]
+
+    # nested params coding for save discussion_solution
+    @solutions = params[:solution]
+
+    # nested params coding for save discussion_video
+    @videos = params[:video]
 
     unless session[:admin].nil?
       is_admin = true
     else
       is_admin = false
     end
-
-    # 중간보고서, 최종보고서에 쓰인 이미지
-    unless discussion_image_ids.blank?
-      DiscussionImage.where('discussion_id = ?', @discussion.id).delete_all
-      images = discussion_image_ids.to_s.split(',')
-      images.each do |image|
-        discussion_image = DiscussionImage.find(image)
-        discussion_image.discussion_id = @discussion.id
-        discussion_image.save
-      end
-    end
+    puts is_admin
 
     respond_to do |format|
-      if @discussion.update(discussion_params)
+      if @discussion_templet.update(discussion_templet_params) && @discussion.update(discussion_params)
+
+        unless @discussion_title_explanations.blank?
+          count = 0
+          (0..@discussion_title_explanations.count).each do |idx|
+            logger.info "###########    #{@discussion_title_explanations[count]}, #{@discussion_title_explanation_unit_concept_ids[count]}    ############"
+            unless @discussion_title_explanations[count].blank?
+              @discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ? and  unit_concept_id = ?', @discussion_templet.id, @discussion_title_explanation_unit_concept_ids[count])
+              puts @discussion_title_explanation.inspect
+              puts '----------------------------'
+              unless @discussion_title_explanation[count].blank?
+                #@discussion_title_explanation.first.content = @discussion_title_explanations[count]
+                #@discussion_title_explanation.first.update
+                @discussion_title_explanation[count].update(content: @discussion_title_explanations[count], unit_concept_id: @discussion_title_explanation_unit_concept_ids[count])
+              else
+                @discussion_title_explanation = DiscussionTitleExplanation.new
+                @discussion_title_explanation.discussion_templet_id = @discussion_templet.id
+                @discussion_title_explanation.unit_concept_id = @discussion_title_explanation_unit_concept_ids[count]
+                @discussion_title_explanation.content = @discussion_title_explanations[count]
+                @discussion_title_explanation.save
+              end
+            end
+            count = count+1
+          end
+        end 
+
+        unless @problem_conditions.blank?
+          count = 0
+          (0..@problem_conditions.count).each do |idx|
+            logger.info "###########    #{@problem_conditions[count]}, #{@condition_answers[count]}    ############"
+            unless @problem_conditions[count].blank?
+              @discussion_problem_condition = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion_templet.id)
+              unless @discussion_problem_condition[count].blank?
+                #@discussion_problem_condition.first.problem_condition = @problem_conditions[count]
+                #@discussion_problem_condition.first.condition_answer = @condition_answers[count]
+                puts @discussion_problem_condition[count].inspect
+                @discussion_problem_condition[count].update(problem_condition: @problem_conditions[count], condition_answer: @condition_answers[count])
+              else
+                @discussion_problem_condition = DiscussionProblemCondition.new
+                @discussion_problem_condition.discussion_templet_id = @discussion_templet.id
+                @discussion_problem_condition.problem_condition = @problem_conditions[count]
+                @discussion_problem_condition.condition_answer = @condition_answers[count]
+                @discussion_problem_condition.save
+              end
+            end
+            count = count+1
+          end
+        end
+
+        unless @videos.blank?
+          count = 0
+          (0..@videos.count).each do |idx|
+            unless @videos[count].blank?
+              @discussion_video = DiscussionVideo.where('discussion_templet_id = ?', @discussion_templet.id)
+              unless @discussion_video[count].blank?
+                #@discussion_video.first.content = @videos[count]
+                @discussion_video[count].update(content: @videos[count])
+              else  
+                @discussion_video = DiscussionVideo.new
+                @discussion_video.content = @videos[count]
+                @discussion_video.discussion_templet_id = @discussion_templet.id
+                @discussion_video.save
+              end
+            end
+            count = count + 1
+          end
+        end
+
+        unless discussion_image_ids.blank?
+          images = discussion_image_ids.to_s.split(',')
+          images.each do |image|
+            discussion_image = DiscussionImage.find(image)
+            discussion_image.discussion_templet_id = @discussion.discussion_templet_id
+            discussion_image.save
+          end
+        end
+
+        unless @solutions.blank?
+          count = 0
+          (0..@solutions.count).each do |idx|
+            unless @solutions[count].blank?
+              @discussion_solution = DiscussionSolution.where('discussion_templet_id = ?', @discussion_templet.id)
+              unless @discussion_solution[count].blank?
+                @discussion_solution[count].update(content: @solutions[count])
+              else 
+                @discussion_solution = DiscussionSolution.new
+                @discussion_solution.content = @solutions[count]
+                @discussion_solution.discussion_templet_id = @discussion.discussion_templet_id
+                @discussion_solution.save
+              end
+            end
+            count = count + 1
+          end
+        end
 
         if is_admin == true
-          format.html { redirect_to @discussion, notice: 'Discussion was successfully updated.' }
-          format.json { render :show, status: :ok, location: @discussion }
+          format.html { redirect_to @discussion, notice: 'Discussion was successfully created.' }
+          format.json { render :show, status: :created, location: @discussion }
         else
-          format.html { redirect_to '/mypages/discussion_management', notice: 'Discussion was successfully updated.' }
+          format.html { redirect_to '/mypages/discussion_management', notice: 'Discussion was successfully created.' }
         end
+
       else
         format.html { render :edit }
         format.json { render json: @discussion.errors, status: :unprocessable_entity }
       end
     end
   end
+
 
   # DELETE /discussions/1
   # DELETE /discussions/1.json
@@ -726,5 +838,15 @@ def like
     # Never trust parameters from the scary internet, only allow the white list through.
     def discussion_params
       params.require(:discussion).permit(:organizer, :manage_type, :observer_yn, :expiration_date, :interim_report, :final_report, :organizer_type, :user_id, :start_date, :think_time, :like, :sub_leader, :group_id, :discussion_templet_id)
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def discussion_templet_params
+      params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def discussion_title_explanation_params
+      params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
     end
 end

@@ -227,7 +227,7 @@
                     <div class="row discussion_templet">
                         <section class="col-md-12">
                             <div class="label">토론 주제<span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                            <textarea class="form-control title_summernote" name="discussion_templet[title]" value=""></textarea>
+                            <textarea class="form-control title_summernote" name="discussion_templet[title]" value=""><%== @discussion.discussion_templet.title unless @discussion.discussion_templet.nil? %></textarea>
                             <div hidden id="dialog-1" >
                                 <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
                             </div>
@@ -238,20 +238,20 @@
                     <div class="row discussion_templet">
                         <section class="col-md-12">
                         <div class="label">토론 문제<span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%= @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
+                            <textarea class="form-control" name="discussion_templet[content]" id="content"><%== @discussion.discussion_templet.content unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
 
                     <!--주제 설명 부분-->
                     <% if @discussion_form_id == 'new_discussion' %>
-                        <div class="row">
+                        <div class="row discussion_templet">
                             <section class="col-md-8 col-sm-8 col-xs-12">
-                            <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
-                                <textarea class="form-control title_explanation_summernote" name="title_explanation[]" value=""></textarea>
+                            <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                                <textarea class="form-control discussion_title_explanation_summernote" name="discussion_title_explanation[]" value=""></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
                                 <label class="label">관련개념 검색</label>
-                                <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
+                                <select class="select2-search-box" name="discussion_title_explanation_unit_concept_id[]" value="">
                                     <% @related_unit_concepts.each do |related_unit_concept| %>
                                         <option value="<%= related_unit_concept.id %>"><%= related_unit_concept.name %></option>
                                     <% end %>
@@ -260,20 +260,20 @@
                         </div>
                     <% else %>
                         <% label_check = 0 %>
-                        <% @discussion.discussion_templet.discussion_title_explanations.each do |title_explanation| %>
-                            <div class="row discussion_templet" id="title_explanation_<%= title_explanation.id %>">
+                        <% @discussion.discussion_templet.discussion_title_explanations.each do |discussion_title_explanation| %>
+                            <div class="row discussion_templet" id="discussion_title_explanation_<%= discussion_title_explanation.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
                                     <% unless label_check != 0 %>
-                                    <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn-u rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <div class="label">토론문제 발문 및 관련개념  <input type="button" class="btn-u btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
-                                    <textarea type="text" class="form-control title_explanation_summernote" name="title_explanation[]" value=""><%== title_explanation.content %></textarea>
+                                    <textarea type="text" class="form-control discussion_title_explanation_summernote" name="discussion_title_explanation[]" value=""><%== discussion_title_explanation.content %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
                                     <% unless label_check != 0 %><label class="label">관련개념 검색</label><% end %>
-                                    <select class="select2-search-box" name="title_explanation_unit_concept_id[]" value="">
-                                        <%# @related_unit_concepts.each do |related_unit_concept| %>
-                                            <!--<option value="<%#= related_unit_concept.id %>" <%#= 'selected' unless title_explanation.unit_concept_id != related_unit_concept.id %>><%#= related_unit_concept.name %></option>-->
-                                        <%# end %>
+                                    <select class="select2-search-box" name="discussion_title_explanation_unit_concept_id[]" value="">
+                                        <% @related_unit_concepts.each do |related_unit_concept| %>
+                                            <option value="<%= related_unit_concept.id %>" <%= 'selected' unless discussion_title_explanation.unit_concept_id != related_unit_concept.id %>><%= related_unit_concept.name %></option>
+                                        <% end %>
                                     </select>
                                 </section>
                             </div>
@@ -315,7 +315,7 @@
                                     <% unless solution_check != 0 %>
                                     <div class="label">문제풀이 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
-                                    <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%= discussion_solution.content %></textarea>
+                                    <textarea class="form-control solution_summernote" name="solution[]" id="solution_<%= solution_check %>"><%== discussion_solution.content %></textarea>
                                 </section>
                             </div>
                             <% solution_check = solution_check + 1 %>
@@ -334,26 +334,27 @@
                     <div class="row discussion_templet">
                         <section class="col-md-12">
                             <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                            <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%= @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
+                            <textarea class="form-control" name="discussion_templet[answer]" id="answer"><%== @discussion.discussion_templet.answer unless @discussion.discussion_templet.nil? %></textarea>
                         </section>
                     </div>
 
                     <% if @discussion_form_id == 'new_discussion' %>
                         <div class="row">
                             <section class="col-md-12">
-                                <div class="label">Video 
+                                <div class="label">Video </div>
                                 <textarea class="form-control video_summernote" name="video[]" id="video_1"></textarea>
                             </section>
                         </div>
                     <% else %>
                         <% video_check = 0 %>
+                        <div class="label">Video </div>
                         <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
                             <div class="row discussion_templet">
                                 <section class="col-md-12">
                                     <% unless video_check != 0 %>
-                                    <div class="label">Video 
+                                    <div class="label">Video </div>
                                     <% end %>
-                                    <textarea class="form-control video_summernote" name="video[]" id="video_<%= video_check %>"><%= discussion_video.content %></textarea>
+                                    <textarea class="form-control video_summernote" name="video[]" id="video_<%= video_check %>"><%== discussion_video.content %></textarea>
                                 </section>
                             </div>
                             <% video_check = video_check + 1 %>
@@ -373,7 +374,7 @@
                         <div class="row">
                             <section class="col-md-8 col-sm-8 col-xs-12">
                                 <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
-                                <textarea class="form-control problem_condition_summernote" name="problem_condition[]" id="problem_condition_1"></textarea>
+                                <textarea class="form-control discussion_problem_condition_summernote" name="discussion_problem_condition[]" id="discussion_problem_condition_1"></textarea>
                             </section>
                             <section class="col-md-4 col-sm-4 col-xs-12">
                                 <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
@@ -383,18 +384,18 @@
                     <% else %>
                         <% problem_condition_check = 0 %>
                         <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
-                            <div class="row discussion_templet">
+                            <div class="row discussion_templet" id="discussion_problem_condition_<%= discussion_problem_condition.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
                                     <% unless problem_condition_check != 0 %>
-                                    <div class="label">문제의 조건 변경<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
-                                    <textarea class="form-control problem_condition_summernote" name="condition[]" id="problem_condition_<%= problem_condition_check %>"><%= discussion_problem_condition.problem_condition %></textarea>
+                                    <textarea class="form-control discussion_problem_condition_summernote" name="discussion_problem_condition[]" id="discussion_problem_condition_<%= problem_condition_check %>"><%== discussion_problem_condition.problem_condition %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
                                     <% unless problem_condition_check != 0 %>
-                                    <div class="label">해답<input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
+                                    <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <% end %>
-                                    <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= condition_check %>"><%= discussion_problem_condition.condition_answer %></textarea>
+                                    <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= problem_condition_check %>"><%== discussion_problem_condition.condition_answer %></textarea>
                                 </section>
                             </div>
                             <% problem_condition_check = problem_condition_check + 1 %>
@@ -413,7 +414,7 @@
                     <div class="row">
                         <section class="col-md-12">
                         <div class="label">종합의견<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                            <textarea class="form-control" name="discussion[final_report]" id="final_report"><%= @discussion.final_report unless @discussion.final_report.nil? %></textarea>
+                            <textarea class="form-control" name="discussion[final_report]" id="final_report"><%== @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                         </section>
                     </div>
 
@@ -469,12 +470,12 @@
         var root = $('#add_search_section');
 
         var row = $('<div>').addClass('row');
-        var title_explanation_part = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var discussion_title_explanation_part = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
         var related_unit_concept_part = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
 
-        title_explanation_part.append( $('<textarea>').attr('type', 'text').addClass('form-control title_explanation_summernote').attr('name', 'title_explanation[]').attr('value', ""));
+        discussion_title_explanation_part.append( $('<textarea>').attr('type', 'text').addClass('form-control discussion_title_explanation_summernote').attr('name', 'discussion_title_explanation[]').attr('value', ""));
 
-        var select_box = $('<select>').addClass('select2-search-box').attr('name', 'title_explanation_unit_concept_id[]').attr('value', "");
+        var select_box = $('<select>').addClass('select2-search-box').attr('name', 'discussion_title_explanation_unit_concept_id[]').attr('value', "");
 
         $.each(options, function(i) {
             select_box.append( $('<option>').attr('value', options[i].id).text(options[i].name));
@@ -482,9 +483,9 @@
 
         related_unit_concept_part.append(select_box);
 
-        row.append(title_explanation_part).append(related_unit_concept_part).appendTo(root);
+        row.append(discussion_title_explanation_part).append(related_unit_concept_part).appendTo(root);
 
-        $('.title_explanation_summernote').summernote({
+        $('.discussion_title_explanation_summernote').summernote({
             height: 100,
             placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
@@ -560,7 +561,7 @@
 <!--토론문제 조건 변경 및 해답 summernote editor 추가하기-->
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.problem_condition_summernote').summernote({
+        $('.discussion_problem_condition_summernote').summernote({
             height: 100,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
@@ -583,15 +584,15 @@
         var root = $('#add_problem_condition_section');
 
         var row = $('<div>').addClass('row');
-        var problem_condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
+        var discussion_problem_condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
         var condition_answer = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
 
-        problem_condition.append( $('<textarea>').attr('type', 'text').attr('id', 'problem_condition_'+ problem_condition_num).addClass('form-control problem_condition_summernote').attr('name', 'problem_condition[]').attr('value', ""));
+        discussion_problem_condition.append( $('<textarea>').attr('type', 'text').attr('id', 'discussion_problem_condition_'+ problem_condition_num).addClass('form-control discussion_problem_condition_summernote').attr('name', 'discussion_problem_condition[]').attr('value', ""));
         condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ problem_condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
 
-        row.append(problem_condition).append(condition_answer).appendTo(root);
+        row.append(discussion_problem_condition).append(condition_answer).appendTo(root);
 
-        $('.problem_condition_summernote').summernote({
+        $('.discussion_problem_condition_summernote').summernote({
             height: 100,
             placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
             toolbar: [
@@ -856,7 +857,7 @@
     });
 
     $(document).ready(function() {
-        $('.title_explanation_summernote').summernote({
+        $('.discussion_title_explanation_summernote').summernote({
             height: 100,
             placeholder: '토론문제와 관련된 발문을 입력하세요.',
             toolbar: [
@@ -928,7 +929,7 @@
 //            placeholder: '토론 문제의 특정 조건의 변경 내용을 입력하세요.',
 //            callbacks: {
 //                onImageUpload: function(files, editor, welEditable) {
-//                    sendFile(files[0], editor, welEditable, 'title_explanation');
+//                    sendFile(files[0], editor, welEditable, 'discussion_title_explanation');
 //                }
 //            }
 //       });
@@ -946,7 +947,7 @@
             ],
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
-                    sendFile(files[0], editor, welEditable, 'title_explanation');
+                    sendFile(files[0], editor, welEditable, 'discussion_title_explanation');
                 }
             }
         });
@@ -1209,18 +1210,24 @@
                     if (data[i].type == '1'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
+                        img.setAttribute('width', "50%");
+                        //img.width = "50%";
                         //$('#summernote').summernote('insertText', data);
                         $("#content").summernote('insertNode', img);
                     }
                     else if (data[i].type == '2'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
+                        img.setAttribute('width', "50%");
+                        //img.width = "50%";
                         //$('#summernote').summernote('insertText', data);
                         $("#concept_explanation").summernote('insertNode', img);
                     }
                     else if (data[i].type == '3'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
+                        img.setAttribute('width', "50%");
+                        //img.width = "415px";
                         //$('#summernote').summernote('insertText', data);
                         if (solution_editor_count == 1){
                             $("#solution_"+solution_editor_count).summernote('insertNode', img);
@@ -1250,6 +1257,7 @@
                     else if (data[i].type == '7'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
+                        img.setAttribute('width', "50%");
                         //$('#summernote').summernote('insertText', data);
                         $("#answer").summernote('insertNode', img);
                     }
