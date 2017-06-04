@@ -383,18 +383,19 @@
                         </div>
                     <% else %>
                         <% problem_condition_check = 0 %>
+                        <div class="label">문제의 조건 변경 및 해답</div>
                         <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
                             <div class="row discussion_templet" id="discussion_problem_condition_<%= discussion_problem_condition.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
-                                    <% unless problem_condition_check != 0 %>
+                                    <!--<% unless problem_condition_check != 0 %>-->
                                     <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
-                                    <% end %>
+                                    <!--<% end %>-->
                                     <textarea class="form-control discussion_problem_condition_summernote" name="discussion_problem_condition[]" id="discussion_problem_condition_<%= problem_condition_check %>"><%== discussion_problem_condition.problem_condition %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
-                                    <% unless problem_condition_check != 0 %>
+                                    <!--<% unless problem_condition_check != 0 %>-->
                                     <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
-                                    <% end %>
+                                    <!--<% end %>-->
                                     <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= problem_condition_check %>"><%== discussion_problem_condition.condition_answer %></textarea>
                                 </section>
                             </div>
@@ -413,7 +414,7 @@
 
                     <div class="row">
                         <section class="col-md-12">
-                        <div class="label">종합의견<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                        <div class="label">종합 의견<input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
                             <textarea class="form-control" name="discussion[final_report]" id="final_report"><%== @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                         </section>
                     </div>

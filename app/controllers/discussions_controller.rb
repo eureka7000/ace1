@@ -58,6 +58,9 @@ class DiscussionsController < ApplicationController
       @discussion_form_id = 'new_discussion'
       @leader = Teacher.where('user_id = ?', current_user.id)
       @sub_leader = Teacher.all
+      puts @sub_leader.inspect
+
+      # sub_leader.user_id != @discussion.sub_leader
 
       @discussion_templets = DiscussionTemplet.all
       puts "=========================="
@@ -278,6 +281,7 @@ def like
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:id => :desc)
     else
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).order(:id => :desc)
+      puts @discussions.inspect
     end
 
     @leaders = Discussion.where('expiration_date >= ?', Date.today).select(:user_id).distinct
@@ -464,12 +468,14 @@ def like
   # GET /discussions/1
   # GET /discussions/1.json
   def show
-    puts @discussion
+    puts @discussion.inspect
     @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
     puts @unit_concept.id
     @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
     puts @discussion.user.user_types.first.user_type
     @discussion_problem_conditions = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
+
+    render layout: 'application'
   end
 
   # GET /discussions/new
@@ -702,19 +708,22 @@ def like
           (0..@discussion_title_explanations.count).each do |idx|
             logger.info "###########    #{@discussion_title_explanations[count]}, #{@discussion_title_explanation_unit_concept_ids[count]}    ############"
             unless @discussion_title_explanations[count].blank?
-              @discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ? and  unit_concept_id = ?', @discussion_templet.id, @discussion_title_explanation_unit_concept_ids[count])
+              #@discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ? and  unit_concept_id = ?', @discussion_templet.id, @discussion_title_explanation_unit_concept_ids[count])
+              @discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion_templet.id)
               puts @discussion_title_explanation.inspect
-              puts '----------------------------'
+              puts '11111111'
               unless @discussion_title_explanation[count].blank?
                 #@discussion_title_explanation.first.content = @discussion_title_explanations[count]
                 #@discussion_title_explanation.first.update
                 @discussion_title_explanation[count].update(content: @discussion_title_explanations[count], unit_concept_id: @discussion_title_explanation_unit_concept_ids[count])
+                puts '22222222'
               else
                 @discussion_title_explanation = DiscussionTitleExplanation.new
                 @discussion_title_explanation.discussion_templet_id = @discussion_templet.id
                 @discussion_title_explanation.unit_concept_id = @discussion_title_explanation_unit_concept_ids[count]
                 @discussion_title_explanation.content = @discussion_title_explanations[count]
                 @discussion_title_explanation.save
+                puts '333333333'
               end
             end
             count = count+1

@@ -1,6 +1,16 @@
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
 <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
 
+
+<!--<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
 <!-- MathJAX -->
 <script type="text/javascript" async
         src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -51,7 +61,7 @@
     <div class="row blog-page">
         <div class="col-md-12 margin-top-20">
             <!--<h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>-->
-            <h3>* 주제</h3><span class="title"><%== @discussion.discussion_templet.title %></span></h2>
+            <h3>* 토론 주제</h3><span class="title"><%== @discussion.discussion_templet.title %></span></h2>
         </div>
     </div>
         <hr>
@@ -77,21 +87,22 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12 title">
                                     <%== discussion_title_explanation.content %>
                                 </div>
-                                <div class="col-md-6 col-sm-6 col-xs-12 title">
+                                <!--<div class="col-md-6 col-sm-6 col-xs-12 title">-->
                                     <%#== discussion_title_explanation.unit_concept.name %>
-                                    <button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')"><%== discussion_title_explanation.unit_concept.name %></button>
+                                    <!--<button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')"><%== discussion_title_explanation.unit_concept.name %></button>-->
+                                <!--<</div>-->
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="easy" checked=""><i class="rounded-x"></i>쉬움</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="normal"><i class="rounded-x"></i>보통</label>
+                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="difficult"><i class="rounded-x"></i>어려움</label>
+                                    <div>
+                                        <button class="btn btn-windows btn-xs rounded" id="btn_<%= discussion_title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= discussion_title_explanation.id %>')">Save</button>
+                                        <button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')">개념보기</button>
+                                    </div>
                                 </div>
-                                <!--<div class="col-md-6 col-sm-6 col-xs-12">-->
-                                    <!--<label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="easy" checked=""><i class="rounded-x"></i>쉬움</label>-->
-                                    <!--<label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="normal"><i class="rounded-x"></i>보통</label>-->
-                                    <!--<label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="difficult"><i class="rounded-x"></i>어려움</label>-->
-                                    <!--<div>-->
-                                        <!--<button class="btn btn-windows btn-xs rounded" id="btn_<%= discussion_title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= discussion_title_explanation.id %>')">Save</button>-->
-                                        <!--<button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')">개념보기</button>-->
-                                    <!--</div>-->
-                                <!--</div>-->
                             </div>
                         </div>
+                        <hr>
                     <% end %>
                 </div>
                 <% end %>
@@ -122,20 +133,20 @@
                             <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
                                 <%== discussion_solution.content %>
                             </div>
-                            <!--<div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">-->
-                                <!--<label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>-->
-                                <!--<label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>-->
-                                <!--<label class="radio"><button class="btn btn-windows btn-sm rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>-->
-                            <!--</div>-->
+                            <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
+                                <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
+                                <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>
+                                <label class="radio"><button class="btn btn-windows btn-sm rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>
+                            </div>
                             <hr>
                         </div>
+                        <hr>
                     <% end %>
                 <% end %>
                 </div>
             </div>
 
         <!--해답-->
-            <hr>
 
             <div class="row">
                 <div class="col-md-12">
@@ -180,8 +191,8 @@
                             <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
                                 <%== discussion_problem_condition.condition_answer %>
                             </div>
-                            <hr>
                         </div>
+                        <hr>
                     <% end %>
                 <% end %>
                 </div>
@@ -201,22 +212,27 @@
 
         
         <!--댓글달기-->
-        <!--<hr>-->
-        <!--<div class="row">-->
-            <!--<div class="col-md-12">-->
-                <!--<h3>* 의견달기</h3>-->
-                <!--<form action="/discussion_reply" id="discussion_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">-->
-                    <%#= token_tag nil %>
-                    <!--<input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">-->
-                    <!--<input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">-->
-                    <!--<input hidden name="discussion_reply[group_id]" value="0">-->
-                    <!--<input hidden name="discussion_reply[group_no]" value="0">-->
-                    <!--<input hidden name="discussion_reply[depth]" value="0">-->
-                    <!--<textarea class="post_reply_summernote" id="post_reply" name="discussion_reply[comment]"></textarea>-->
-                    <!--<input type="button" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" onclick="commentFilter('post_reply')" value="의견 저장">-->
-                <!--</form>-->
-            <!--</div>-->
-        <!--</div>-->
+        
+        <div class="row">
+            <div class="col-md-12">
+                
+                <div class="label"><h3>* 의견 달기</h3><span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                <form action="/discussion_reply" id="discussion_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                    <%= token_tag nil %>
+                    <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                    <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                    <input hidden name="discussion_reply[group_id]" value="0">
+                    <input hidden name="discussion_reply[group_no]" value="0">
+                    <input hidden name="discussion_reply[depth]" value="0">
+                    <textarea class="post_reply_summernote" id="post_reply" name="discussion_reply[comment]"></textarea>
+                    <input type="button" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" onclick="commentFilter('post_reply')" value="의견 저장">
+                </form>
+            </div>
+        </div>
+
+        <div hidden id="dialog-1" >
+            <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
+        </div>
 
         <!--댓글 나열-->
         <hr>
@@ -244,21 +260,21 @@
                                     <!--댓글내용-->
                                     <%== discussion_reply.comment %>
 
-                                    <!--<div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>-->
+                                    <div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>
 
                                     <!--대댓글 달기-->
-                                    <!--<form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">-->
-                                        <%#= token_tag nil %>
-                                        <!--<br>-->
-                                        <!--<input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">-->
-                                        <!--<input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">-->
-                                        <!--<input hidden name="discussion_reply[group_id]" value="<%= discussion_reply.id %>">-->
-                                        <!--<input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_2.count + 1 %>">-->
-                                        <!--<input hidden name="discussion_reply[depth]" value="<%= discussion_reply.depth + 1 %>">-->
+                                    <form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                                        <%= token_tag nil %>
+                                        <br>
+                                        <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                        <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                        <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply.id %>">
+                                        <input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_2.count + 1 %>">
+                                        <input hidden name="discussion_reply[depth]" value="<%= discussion_reply.depth + 1 %>">
                                         <!--버튼 클릭시 대댓글 저장-->
-                                        <!--<textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20" id="post_reply_<%= reply1 %>"></textarea>-->
-                                        <!--<input type="button" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12" onclick="commentFilter('<%= reply1 %>')" value="댓글 저장">-->
-                                    <!--</form>-->
+                                        <textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20" id="post_reply_<%= reply1 %>"></textarea>
+                                        <input type="button" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12" onclick="commentFilter('<%= reply1 %>')" value="댓글 저장">
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -284,21 +300,21 @@
                                             <!--댓글내용-->
                                             <%== discussion_reply_2.comment %>
 
-                                            <!--<div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>-->
+                                            <div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>
 
                                             <!--대댓글 달기-->
-                                            <!--<form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">-->
+                                            <form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
                                                 <%= token_tag nil %>
-                                                <!--<br>-->
-                                                <!--<input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">-->
-                                                <!--<input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">-->
-                                                <!--<input hidden name="discussion_reply[group_id]" value="<%= discussion_reply_2.id %>">-->
-                                                <!--<input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_3.count + 1 %>">-->
-                                                <!--<input hidden name="discussion_reply[depth]" value="<%= discussion_reply_2.depth + 1 %>">-->
+                                                <br>
+                                                <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                                <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                                <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply_2.id %>">
+                                                <input hidden name="discussion_reply[group_no]" value="<%= @discussion_replies_3.count + 1 %>">
+                                                <input hidden name="discussion_reply[depth]" value="<%= discussion_reply_2.depth + 1 %>">
                                                 <!--버튼 클릭시 대댓글 저장-->
-                                                <!--<textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20" id="post_reply_<%= reply1 %>"></textarea>-->
-                                                <!--<input type="button" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12" onclick="commentFilter('<%= reply1 %>')" value="댓글 저장">-->
-                                            <!--</form>-->
+                                                <textarea name="discussion_reply[comment]" class="post_reply_summernote margin-top-20" id="post_reply_<%= reply1 %>"></textarea>
+                                                <input type="button" class="btn btn-windows rounded col-md-12 col-sm-12 col-xs-12" onclick="commentFilter('<%= reply1 %>')" value="댓글 저장">
+                                            </form>
 
                                         </div>
                                     </div>
@@ -342,22 +358,26 @@
             </div>
         </div>
 
+        <!--asciimath-->
+            <!--<div id="dialog" title="Basic dialog">-->
+                <!--<img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">-->
+            <!--</div>--> 
+        <!--asciimath-->
+
         <!--종합 의견-->
             <hr>
 
             <div class="row">
                 <div class="col-md-12 title">
-                    <h3>* 종합 의견</h3>
-                    <% unless @discussion.final_report.blank? %>
-                        <%== @discussion.final_report %>
-                    <% end %>
+                <div class="label"><h3>* 종합 의견</h3><span style="color: red">*</span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                <textarea class="form-control" name="discussion[final_report]" id="final_report"><%== @discussion.final_report unless @discussion.final_report.nil? %></textarea>
                 </div>
             </div>
 
             <hr>
                 <!--<a href="/discussions/discussion_list"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>-->
                 <a href="/mypages/discussion_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
-
+            
     </div>
 </div>
 
@@ -378,6 +398,66 @@ div.title {
 }
 </style>
 
+
+<!--asciimath modal-->
+
+<script type="text/javascript">
+
+
+    function asciiMove() {
+    //   location = "https://asciimath.org"
+    //    $(location).attr('href', url);
+    //$('#asciimath-button').click(function() { 
+        $( "#dialog-1" ).dialog({
+            autoOpen: true,
+            title: "수식 입력 방법을 참고하세요.",
+            width: 700,
+            height: 400,
+            draggable: true,
+            resizable: true,
+            position: {my: "right top", at: "right top", of: window},
+            show: {
+                effect: "blind",
+                duration: 500
+            },
+            hide: {
+                effect: "explode",
+                duration: 500
+            }
+        });
+
+    //    $('#asciimath').dialog({
+    //       modal: true
+    //     width: 480px, height: 350px,
+    //      show: { effect: "blind", duration: 1000 },
+    //      hide: { effect: "explode", duration: 1000 }
+    //    });
+    };
+
+</script>
+
+<script>
+  $( function() {
+    $( "#dialog" ).dialog({
+      autoOpen: false,
+      show: {
+        effect: "blind",
+        duration: 1000
+      },
+      hide: {
+        effect: "explode",
+        duration: 1000
+      }
+    });
+ 
+    $( "#opener" ).on( "click", function() {
+      $( "#dialog" ).dialog( "open" );
+    });
+  } );
+</script>
+
+<!--asciimath modal-->
+
 <!--summernote editor-->
 <script type="text/javascript">
 
@@ -393,6 +473,24 @@ div.title {
             callbacks: {
                 onImageUpload: function(files, editor, welEditable) {
                     sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#final_report').summernote({
+            height: 200,
+            placeholder: '토론의 종합의견을 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, 'discussion_title_explanation');
                 }
             }
         });

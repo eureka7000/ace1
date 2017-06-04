@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get 'discussions/topic_select_and_new' => 'discussions#topic_select_and_new'
     get 'discussions/past_discussions_list' => 'discussions#past_discussions_list'
     get 'discussions/:id/discussion_edit' => 'discussions#discussion_edit'
+    get 'discussions/:id/show' => 'discussions#show'
     get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
     #get 'discussions/:id/like' => 'discussions#like'
     post 'discussions/:id/like' => 'discussions#like'

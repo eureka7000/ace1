@@ -24,7 +24,7 @@
                         <section class="col col-3" <%#= 'hidden' if @user_type == 'user' %>>  <!-- 일반 선생님의 경우에도 본인 나올 수 있게 함 -->
                             <label class="label">토론방 리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[user_id]" id="leader">
+                                <select class="select2-search-box form-control" name="discussion[user_id]" id="leader">
                                     <% @leader.each do |leader| %>
                                         <option value="<%= leader.user_id %>" <%= 'selected' unless leader.user_id != @discussion.user_id %>><%= leader.user.user_name unless leader.user.user_name.blank? %><%= leader.user.school_id.blank? ? ' (Mento)' : " (#{leader.user.school.name})" %></option>
                                     <% end %>
@@ -73,17 +73,29 @@
                             </label>
                         </section>
 
+                        <!--<<section class="col col-3">-->
+                            <!--<<label class="label">토론방 부리더<span style="color: red">*</span></label>-->
+                            <!--<<label class="input">-->
+                                <!--<<select class="form-control" name="discussion[sub_leader]" id="leader">-->
+                                    <!--<option>선택하세요</option>-->
+                                    <%# @sub_leader.each do |sub_leader| %>
+                                    <%# end %>
+                                <!--<</select>-->
+                            <!--<</label>-->
+                        <!--<</section>-->
+
                         <section class="col col-3">
                             <label class="label">토론방 부리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="form-control" name="discussion[sub_leader]" id="leader">
-                                    <option>선택하세요</option>
+                                <select class="select2-search-box form-control" style="width: 100%" name="discussion[sub_leader]" id="leader">
                                     <% @sub_leader.each do |sub_leader| %>
-                                        <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @discussion.sub_leader %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                        <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @leader.first.user_id %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
                                     <% end %>
                                 </select>
                             </label>
                         </section>
+
+
 
                         <section class="col-md-3">
                             <label class="label">Think time(분)</label>
