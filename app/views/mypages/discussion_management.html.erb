@@ -29,21 +29,21 @@
                         <% unless @processing_discussions.blank? %>
                             <div class="table-search-v1 margin-bottom-20">
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table col-md-12">
                                         <thead>
                                         <tr>
-                                            <th class="text-center">주제</th>
-                                            <th class="text-center">핵심개념</th>
-                                            <th class="text-center">토론기간</th>
+                                            <th class="text-center col-md-5">주제</th>
+                                            <th class="text-center col-md-2">핵심개념</th>
+                                            <th class="text-center col-md-2">토론기간</th>
                                             <!--<th class="text-center">참가자 수</th>-->
                                             <!--<th class="text-center">개설자</th>-->
-                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                            <th class="text-center col-md-3"><i class="fa fa-cog"></i></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <% @processing_discussions.each do |discussion| %>
                                             <tr>
-                                                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
+                                                <td><%== discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.discussion_templet.unit_concept.name unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
                                                 <!--<td class="text-center"><%#= discussion.participants.count %></td>-->
@@ -82,18 +82,18 @@
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th class="text-center">주제</th>
-                                            <th class="text-center">핵심개념</th>
-                                            <th class="text-center">토론기간</th>
+                                            <th class="text-center col-md-5">주제</th>
+                                            <th class="text-center col-md-2">핵심개념</th>
+                                            <th class="text-center col-md-2">토론기간</th>
                                             <!--<th class="text-center">참가자 수</th>-->
                                             <!--<th class="text-center">개설자</th>-->
-                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                            <th class="text-center col-md-3"><i class="fa fa-cog"></i></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <% @past_discussions.each do |discussion| %>
                                             <tr>
-                                                <td><%= discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
+                                                <td><%== discussion.discussion_templet.title unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.discussion_templet.unit_concept.name unless discussion.discussion_templet.nil? %></td>
                                                 <td class="text-center"><%= discussion.start_date %> - <%= discussion.expiration_date %></td>
                                                 <!--<td class="text-center"><%#= discussion.participants.count %></td>-->

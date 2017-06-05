@@ -87,9 +87,13 @@
                         <section class="col col-3">
                             <label class="label">토론방 부리더<span style="color: red">*</span></label>
                             <label class="input">
-                                <select class="select2-search-box form-control" style="width: 100%" name="discussion[sub_leader]" id="leader">
-                                    <% @sub_leader.each do |sub_leader| %>
-                                        <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @leader.first.user_id %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                <select class="select2-search-box form-control" style="width: 100%" name="discussion[sub_leader]" id="sub_leader">
+                                    <% if @user_type == 'admin' %>
+                                        <option>current_user.user_name</option>
+                                    <% else %>   
+                                        <% @sub_leader.each do |sub_leader| %>
+                                            <option value="<%= sub_leader.user_id %>" <%= 'selected' unless sub_leader.user_id != @leader.first.user_id %>><%= sub_leader.user.user_name unless sub_leader.user.user_name.blank? %><%= sub_leader.user.school_id.blank? ? ' (Mento)' : " (#{sub_leader.user.school.name})" %></option>
+                                        <% end %>
                                     <% end %>
                                 </select>
                             </label>

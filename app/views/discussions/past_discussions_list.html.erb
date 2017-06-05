@@ -15,71 +15,110 @@
     </div><!--/container-->
 </div>
 
-<!--리더 검색 기능-->
-<div class="container col-md-12 margin-top-20">
-    <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
-        <select class="select2-search-box" style="width: 100%;" id="leaderSearch" name="" value="">
-            <option value="">방장검색</option>
-            <%= puts "------" %>
-            <% @discussions.select(:user_id).distinct.each do |leader| %>
-                <option value="<%= leader.user_id %>"><%= leader.user.user_name %></option>
-            <% end %>
-            <%= puts "------" %>
-        </select>
-    </div>
-    <div class="col-md-6 col-sm-12 col-xs-12">
-        <button class="btn btn-podcast btn-sm rounded col-md-12 col-sm-12 col-xs-12"onclick="leaderSearch()">찾기</button>
-    </div>
-</div>
+<div class="container container-fluid">
 
-<div class="container container-fluid margin-bottom-50">
+    <!--리더 검색 기능-->
+    <div class="container col-md-12 margin-top-20">
+        <div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
+            <select class="select2-search-box" style="width: 100%;" id="leaderSearch" name="" value="">
+                <option value="">방장검색</option>
+                <% @discussions.select(:user_id).distinct.each do |leader| %>
+                    <option value="<%= leader.user_id %>"><%= leader.user.user_name %></option>
+                <% end %>
+            </select>
+        </div>
+        <div class="col-md-6 col-sm-12 col-xs-12">
+            <button class="btn btn-podcast btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="leaderSearch()">찾기</button>
+        </div>
+    </div>
 
     <% unless @discussions.blank? %>
         <% @discussions.each do |discussion| %>
             <div class="col-md-6">
-                <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1">
+                <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1 col-md-12 col-sm-12 col-xs-12 margin-bottom-20">
 
-                    <div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20">
-                        <h3>주제 : <%= discussion.discussion_templet.title %></h3>
+                    <!--<div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-20">-->
+                        <%# sanitize_title = sanitize discussion.discussion_templet.title, tags: %w{p} %>
+                        <% strip_tags_title = strip_tags(discussion.discussion_templet.title) %>
+                        <% strip_tags_title1 = truncate(strip_tags_title, length: 35, ommission: '....') %>
+                        <!--<h4>주제 : <%#= stript_tags_title %></h4>-->
+                        <h4>주제 : <%= strip_tags_title1 %></h4>
                         <ul class="list-inline posted-info">
-                            <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name unless discussion.user.nil? %></span> 선생님</li>
-                        </ul>
-                        <ul class="list-inline posted-info">
-                            <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
-                            <li>생각시간 : <span style="color: #1d78cb;"><%= discussion.think_time %>분</span></li>
-                        </ul>
-                        <ul class="list-inline posted-info">
-                            <li>핵심개념 : <span style="color: #1d78cb"><%= discussion.discussion_templet.unit_concept.name %></span></li>
+                            <li>방장 : <span style="color: #1d78cb;"><%= discussion.user.user_name unless discussion.user.nil? %></span> 쌤</li>
+                            <%# if current_user.user_types.first.user_type == 'school teacher' || current_user.user_types.first.user_type == 'institute teacher' || current_user.user_types.first.user_type == 'mento' %>
+                            <%# end %>
+                                <!--<li>Code : <span style="color: #1d78cb;"><%= discussion.discussion_templet.code unless discussion.discussion_templet.nil? %></span></li>-->
+                            <li>대상학년 : <span style="color: red;"><%= discussion.discussion_templet.grade %></span></li>
                             <li>LEVEL : <span style="color: red;"><%= discussion.discussion_templet.level %></span></li>
                         </ul>
+                        <!--<ul class="list-inline posted-info">
+                            <li>대상학년 : <span style="color: #1d78cb;"><%= discussion.discussion_templet.grade %></span></li>
+                            <li>생각시간 : <span style="color: #1d78cb;"><%= discussion.think_time %>분</span></li>
+                        </ul>-->
                         <ul class="list-inline posted-info">
+                            <li>핵심개념 : <span style="color: red"><%= discussion.discussion_templet.unit_concept.name %></span></li>
+                            <!--<li>LEVEL : <span style="color: red;"><%= discussion.discussion_templet.level %></span></li>-->
                             <li>토론기간 : <span style="color: #1d78cb;"><%= discussion.start_date.to_date %></span> ~ <span style="color: #1d78cb;"><%= discussion.expiration_date %></span></li>
                         </ul>
 
                         <ul class="post-shares">
                             <li><img src="<%= discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion.user.user_img unless discussion.user.nil? %>" class="rounded-x img-center" style="width: 40px; height: 40px; margin-bottom: 10px; background: #eee"></li>
                             <li><i class="rounded-x icon-speech" title="답변"></i><span style="background: #55acee"><%= discussion.discussion_replies.count %></span></li>
-                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
+                            <!--<li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>-->
+                            <li><a href="javascript:discussionLike('<%= discussion.id %>')"><i class="rounded-x icon-heart" title="추천"></i><span style="background: #55acee" id="like_<%= discussion.id %>"><%= discussion.like.nil? ? 0 : discussion.like %></span></a></li>
                             <li><i class="rounded-x icon-users"></i><span style="background: #55acee"><%= discussion.participants.count %></span></li>
+                            <li><button class="btn btn-block btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussions/<%= discussion.id %>/show')">토론방 보기</button></li>
                         </ul>
-                    </div>
-                    <!-- 토론방 참여하기가 아니라 토론방 보기로 변경-->
-                    <button class="btn btn-block btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussion_templets/<%= discussion.discussion_templet.id %>/show1')">토론방 보기</button>
-                    <!--
-                    <button class="btn btn-block btn-windows margin-top-20 rounded" onclick="participate('<%= discussion.id %>')">토론방 보기</button>
-                    -->
+                    <!--</div>-->
+                        <!--<button class="btn btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussion_templets/<%= discussion.discussion_templet.id %>/show1')">토론방 보기</button>-->
+                        <!--<button class="btn btn-windows margin-top-10 margin-left-10 rounded" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">토론방 보기</button>-->
+
+                        <%# if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, current_user.user_types[0].user_type) %>
+
+
+                        
                 </div>
             </div>
         <% end %>
     <% else %>
         <div class="col-md-12">
             <div class="news-v3 bg-color-white margin-bottom-20 margin-top-20 tag-box tag-box-v4 box-shadow shadow-effect-1 text-center">
-                <h3>- 지난 토론방이 없습니다 -</h3>
+                <h3>- 현재 진행중인 토론방이 없습니다 -</h3>
             </div>
         </div>
     <% end %>
-    <div class="col-md-12 margin-bottom-50"></div>
+    <!--<div class="col-md-12 margin-bottom-50"></div>-->
 </div>
+
+<!--
+<style type="text/css">
+ul.post-shares1 {
+  padding-left: 0;
+  list-style: none;
+  margin: 10px 0 0 -5px;
+}
+</style>
+-->
+
+<style type="text/css">
+.news-v3 .post-shares {
+    padding-left: 0;
+    list-style: none;
+    margin: 10px 0 0 0px;
+}
+</style>
+<style type="text/css">
+.tag-box {
+    padding: 10px;
+    background: #fff;
+}
+.btn {
+    font-size: 12px;
+}
+
+</style>
+
+
 
 <script type="text/javascript">
 
@@ -97,11 +136,14 @@
 
         $.ajax({
             url: url,
-            type: "GET",
+            type: "POST",
             beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
             datatype: "json",
             success : function(data) {
-                location.reload();
+                console.log(data['like']);   // 현재 like 숫자
+                var like = data['like']     
+                var likeid = "#like_" + discussion_id;
+                $(likeid).text(like);
             },
             error : function(){
                 alert("try to again. please.");
@@ -109,6 +151,8 @@
         });
         <% end %>
     }
+
+    
 // 지난 토론방이므로 '토론방 참여하기'가 아니라 '토론방 보기'로 변경
     function move(url) {
         location = url;

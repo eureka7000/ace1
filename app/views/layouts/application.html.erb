@@ -129,7 +129,7 @@
           <% unless current_user.nil? %>
               <% unless current_user.study_histories.last.nil? %>              
           <li>
-              <a class="text-blue" href="/contents/<%= current_user.study_histories.last.unit_concept_id %>"  title="최근학습">
+              <a class="text-blue" id="history" href="/contents/<%= current_user.study_histories.last.unit_concept_id %>"  title="최근학습">
                   <span class="label rounded-2x label-success" style="margin-left: 5px">
                       <i class="fa fa-bookmark" style="color:white"></i>
                       <%=  current_user.study_histories.last.unit_concept.name %>
@@ -350,8 +350,22 @@
         $('#notice_email_confirm_modal').modal();
         StyleSwitcher.initStyleSwitcher();
     });
+</script>
+
+<script>
+
+    $(document).ready(function() {
+        var wid = $(window).width();
+    console.log(wid);
+
+    if (wid < 500) {
+        $('#history').css({'display':'none'});
+    }
+    });
 
 </script>
+
+
 
 <!--[if lt IE 9]>
     <script src="/assets/plugins/respond.js"></script>

@@ -192,6 +192,9 @@ class DiscussionsController < ApplicationController
       @participant_before_check = true
     end
 
+    # 모든 사람들이 토론방에 참여하기 허용
+    @participant_before_check = true
+
 #      if @participant.save
 #        @participant_before_check = false
 #      end
@@ -474,6 +477,7 @@ def like
     @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
     puts @discussion.user.user_types.first.user_type
     @discussion_problem_conditions = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
+    @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
 
     render layout: 'application'
   end

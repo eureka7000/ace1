@@ -127,21 +127,21 @@
         <div class="col-md-12">
             <hr>
             <p>
-                <h3>* 토론 주제</h3>
-                <%== @discussion.discussion_templet.title %>
+                <h3>* 토론 주제</h3><br>
+                    <span class="title"><%== @discussion.discussion_templet.title %></span>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
                 <h3>* 토론 문제</h3>
-                <%== @discussion.discussion_templet.content %>
+                    <%== @discussion.discussion_templet.content %>
             </p>
         </div>
         <div class="col-md-12">
             <hr>
             <p>
-                <h3>* 토론문제 발문 및 관련개념 </h3>
+                <h3>* 토론문제 발문 및 관련개념 </h3><br>
                 <% @discussion_title_explanations.each do |discussion_title_explanation| %>
                     <div class="row col-md-12">
                             <div class="inline-group">
@@ -187,7 +187,6 @@
             </p>
         </div>
         <div class="col-md-12">
-            <hr>
             <p>
                 <h3>* 해답</h3>
                 <%== @discussion.discussion_templet.answer %>
@@ -226,20 +225,22 @@
                             <i class="fa fa-plane" style="color: red"></i>
                         </div>
                         <div class="col-content">
-                            <%== discussion_problem_condition.problem_condition %>
+                            <span class="title"><%== discussion_problem_condition.problem_condition %></span>
                         </div>
                         <div class="col-name">
-                            <%== discussion_problem_condition.condition_answer %>
+                            <span class="title"><%== discussion_problem_condition.condition_answer %></span>
                         </div>
                     </div>
                 <% end %>
             </p>
+            <hr>
         </div>
 
-
+        
         <!--댓글 나열-->
         <hr>
         <div class="row">
+        <hr>
             <div class="col-md-12 margin-bottom-50">
                 <h3>* 댓글 </h3>
                 <% unless @discussion_replies.blank? %>
@@ -261,7 +262,7 @@
                                     </h5>
 
                                     <!--댓글내용-->
-                                    <%== discussion_reply.comment %>
+                                    <span class="title"><%== discussion_reply.comment %></span>
 
                                     <!--<div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>-->
 
@@ -301,7 +302,7 @@
                                             </h5>
 
                                             <!--댓글내용-->
-                                            <%== discussion_reply_2.comment %>
+                                            <span class="title"><%== discussion_reply_2.comment %></span>
 
                                             <!--<div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>-->
 
@@ -341,7 +342,7 @@
                                                     </h5>
 
                                                     <!--댓글내용-->
-                                                    <%== discussion_reply_3.comment %>
+                                                    <span class="title"><%== discussion_reply_3.comment %></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -365,12 +366,13 @@
 
 
 
-        <div class="col-md-12">
+        <div class="col-md-12 margin-bottom-50">
             <hr>
             <p>
-                <h3>* 종합 의견</h3>
-                <%== @discussion.final_report %>
+                <h3>* 종합 의견</h3><br>
+                <span class="title"><%== @discussion.final_report %></span>
             </p>
+            <hr>
         </div>
 
         <!--<div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-50">-->
@@ -404,6 +406,21 @@ div.col-name {
     position: relative;
     width: 34%;
     display: inline-block;
+}
+</style>
+
+<style>
+span.title {
+    font-size: 18px;
+}
+div.title {
+    font-size: 18px;
+}
+
+.note-editable {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.2;
 }
 </style>
 
