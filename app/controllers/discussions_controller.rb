@@ -858,8 +858,4 @@ def like
       params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def discussion_title_explanation_params
-      params.require(:discussion_templet).permit(:code, :title, :content, :concept_explanation, :unit_concept_id, :answer, :level, :grade, :user_id, :creator_type)
-    end
 end

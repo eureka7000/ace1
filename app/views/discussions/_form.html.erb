@@ -176,16 +176,27 @@
 
                     <div class="row">
                         <!--discussion_templet-->
-                        <input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">
+                        <!--<input type="text" class="form-control hidden" name="discussion_templet[grade]" id="grade" value="">-->
+                        <!--<section class="col col-6 discussion_templet">-->
+                            <!--<label class="label">학년 선택<span style="color: red">*</span></label>-->
+                            <!--<div class="inline-group">-->
+                                <%# UnitConcept::GRADES.each do |key, value| %>
+                                    <!--<label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%#= value %>" <%#= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%#= value %></label>-->
+                                    <!--<label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%#= value %>" <%#= 'checked' if !@discussion.discussion_templet.grade.nil? and @discussion.discussion_templet.grade.include? value %>><i></i><%#= value %></label>-->
+                                <%# end %>
+                            <!--</div>-->
+                        <!--</section>-->
+
+                        <!--checkbox를 radio로 변경-->
                         <section class="col col-6 discussion_templet">
                             <label class="label">학년 선택<span style="color: red">*</span></label>
                             <div class="inline-group">
                                 <% UnitConcept::GRADES.each do |key, value| %>
-                                    <!--<label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%#= value %>" <%#= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>-->
-                                    <label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%= value %>" <%= 'checked' if !@discussion.discussion_templet.grade.nil? and @discussion.discussion_templet.grade.include? value %>><i></i><%= value %></label>
+                                    <label class="radio"><input type="radio" name="discussion_templet[grade]" value="<%= value %>" <%='checked' if @discussion.nil? || key == 1 %><%='checked' if !@discussion.discussion_templet.nil? && @discussion.discussion_templet.grade == value %>><i class="rounded-x"></i><%= value %></label>
                                 <% end %>
                             </div>
                         </section>
+                        <!--checkbox를 radio로 변경-->
 
                         <section class="col-md-4 col-sm-4 col-xs-10 discussion_templet edit_cencept">
                             <label class="label">Code(세 자리 숫자  ex) 001, 201, 899 ) <span style="color: red">*</span></label>
@@ -724,8 +735,9 @@
 
     function beforeNewCheckAndSend(discussion_form_id) {
 
-        var grade = "";
         var observer_is_check = false;
+        var grade_is_check = false;
+        var level_is_check = false;
         $('input:radio[name="discussion[observer_yn]"]').each(function () {
             if ($(this).is(':checked')){
                 observer_is_check = true;
@@ -745,19 +757,50 @@
             }
         }
 
-        $('input:checkbox[name="discussion_templet[grade]"]').each(function() {
+
+
+// 학년 선택을 checkbax에서  radio로 변경
+        $('input:radio[name="discussion_templet[grade]"]').each(function () {
             if ($(this).is(':checked')){
-                grade += $(this).val() +',';
+                grade_is_check = true;
             }
         });
 
-        if (grade == ''){
+        if (grade_is_check == false){
             alert('학년을 선택해주세요.');
             return false;
         }
 
-        grade = grade.slice(0, -1);
-        $("#grade").val(grade);
+
+        //var grade = "";
+//        $('input:checkbox[name="discussion_templet[grade]"]').each(function() {
+//            if ($(this).is(':checked')){
+//                grade += $(this).val() +',';
+//            }
+//        });
+
+//        if (grade == ''){
+//            alert('학년을 선택해주세요.');
+//            return false;
+//        }
+
+//        grade = grade.slice(0, -1);
+//        $("#grade").val(grade);
+
+
+//      Level 선택 추가
+        $('input:radio[name="discussion_templet[level]"]').each(function () {
+            if ($(this).is(':checked')){
+                level_is_check = true;
+            }
+        });
+
+        if (level_is_check == false){
+            alert('Level을 선택해주세요.');
+            return false;
+        }
+//      Level 선택 추가
+
 
         if ($('#code').val() == ''){
             alert('Code를 입력해주세요.');
