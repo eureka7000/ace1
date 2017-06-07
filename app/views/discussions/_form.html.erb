@@ -181,7 +181,8 @@
                             <label class="label">학년 선택<span style="color: red">*</span></label>
                             <div class="inline-group">
                                 <% UnitConcept::GRADES.each do |key, value| %>
-                                    <label class="checkbox"><input type="checkbox" name="grade" value="<%= value %>" <%= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>
+                                    <!--<label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%#= value %>" <%#= 'checked' if !@checked_grade.nil? and @checked_grade.include? value %>><i></i><%= value %></label>-->
+                                    <label class="checkbox"><input type="checkbox" name="discussion_templet[grade]" value="<%= value %>" <%= 'checked' if !@discussion.discussion_templet.grade.nil? and @discussion.discussion_templet.grade.include? value %>><i></i><%= value %></label>
                                 <% end %>
                             </div>
                         </section>
@@ -382,29 +383,29 @@
                             </section>
                         </div>
                     <% else %>
-                        <% problem_condition_check = 0 %>
+                        <% discussion_problem_condition_check = 0 %>
                         <div class="label">문제의 조건 변경 및 해답</div>
                         <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
                             <div class="row discussion_templet" id="discussion_problem_condition_<%= discussion_problem_condition.id %>">
                                 <section class="col-md-8 col-sm-8 col-xs-12">
-                                    <!--<% unless problem_condition_check != 0 %>-->
+                                    <!--<% unless discussion_problem_condition_check != 0 %>-->
                                     <div class="label">문제의 조건 변경 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <!--<% end %>-->
-                                    <textarea class="form-control discussion_problem_condition_summernote" name="discussion_problem_condition[]" id="discussion_problem_condition_<%= problem_condition_check %>"><%== discussion_problem_condition.problem_condition %></textarea>
+                                    <textarea class="form-control discussion_problem_condition_summernote" name="discussion_problem_condition[]" id="discussion_problem_condition_<%= discussion_problem_condition_check %>"><%== discussion_problem_condition.problem_condition %></textarea>
                                 </section>
                                 <section class="col-md-4 col-sm-4 col-xs-12">
-                                    <!--<% unless problem_condition_check != 0 %>-->
+                                    <!--<% unless discussion_problem_condition_check != 0 %>-->
                                     <div class="label">해답 <input type="button" class="btn btn-google rounded btn-xs" value="수식편집 참고" onclick="asciiMove()"></div>
                                     <!--<% end %>-->
-                                    <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= problem_condition_check %>"><%== discussion_problem_condition.condition_answer %></textarea>
+                                    <textarea class="form-control condition_answer_summernote" name="condition_answer[]" id="condition_answer_<%= discussion_problem_condition_check %>"><%== discussion_problem_condition.condition_answer %></textarea>
                                 </section>
                             </div>
-                            <% problem_condition_check = problem_condition_check + 1 %>
+                            <% discussion_problem_condition_check = discussion_problem_condition_check + 1 %>
                         <% end %>
                         
                     <% end %>
 
-                    <div id="add_problem_condition_section"></div>
+                    <div id="add_discussion_problem_condition_section"></div>
 
                     <div class="row margin-bottom-20 discussion_templet">
                         <section class="col-md-12">
@@ -579,17 +580,17 @@
         });
     });
 
-    var problem_condition_num = 2;
+    var discussion_problem_condition_num = 2;
     function addProblemCondition() {
 
-        var root = $('#add_problem_condition_section');
+        var root = $('#add_discussion_problem_condition_section');
 
         var row = $('<div>').addClass('row');
         var discussion_problem_condition = $('<section>').addClass('col-md-8 col-sm-8 col-xs-12');
         var condition_answer = $('<section>').addClass('col-md-4 col-sm-4 col-xs-12');
 
-        discussion_problem_condition.append( $('<textarea>').attr('type', 'text').attr('id', 'discussion_problem_condition_'+ problem_condition_num).addClass('form-control discussion_problem_condition_summernote').attr('name', 'discussion_problem_condition[]').attr('value', ""));
-        condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ problem_condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
+        discussion_problem_condition.append( $('<textarea>').attr('type', 'text').attr('id', 'discussion_problem_condition_'+ discussion_problem_condition_num).addClass('form-control discussion_problem_condition_summernote').attr('name', 'discussion_problem_condition[]').attr('value', ""));
+        condition_answer.append( $('<textarea>').attr('type', 'text').attr('id', 'condition_answer_'+ discussion_problem_condition_num++).addClass('form-control condition_answer_summernote').attr('name', 'condition_answer[]').attr('value', ""));
 
         row.append(discussion_problem_condition).append(condition_answer).appendTo(root);
 
@@ -744,7 +745,7 @@
             }
         }
 
-        $('input:checkbox[name="grade"]').each(function() {
+        $('input:checkbox[name="discussion_templet[grade]"]').each(function() {
             if ($(this).is(':checked')){
                 grade += $(this).val() +',';
             }
@@ -1227,7 +1228,7 @@
                     else if (data[i].type == '3'){
                         var img = document.createElement('img');
                         img.src = data[i].filename;
-                        img.setAttribute('width', "50%");
+                        img.setAttribute('width', "100%");
                         //img.width = "415px";
                         //$('#summernote').summernote('insertText', data);
                         if (solution_editor_count == 1){

@@ -572,7 +572,7 @@ def like
     @discussion_title_explanation_unit_concept_ids = params[:discussion_title_explanation_unit_concept_id]
 
     # nested params coding for save discussion_problem_condition
-    @problem_conditions = params[:problem_condition]
+    @discussion_problem_conditions = params[:discussion_problem_condition]
     @condition_answers = params[:condition_answer]
 
     # nested params coding for save discussion_solution
@@ -619,15 +619,15 @@ def like
           end
         end
 
-        unless @problem_conditions.blank?
+        unless @discussion_problem_conditions.blank?
           count = 0
-          (0..@problem_conditions.count).each do |idx|
-            logger.info "###########    #{@problem_conditions[count]}, #{@condition_answers[count]}    ############"
+          (0..@discussion_problem_conditions.count).each do |idx|
+            logger.info "###########    #{@discussion_problem_conditions[count]}, #{@condition_answers[count]}    ############"
 
-            unless @problem_conditions[count].blank?
+            unless @discussion_problem_conditions[count].blank?
               @discussion_problem_condition = DiscussionProblemCondition.new
               @discussion_problem_condition.discussion_templet_id = @discussion.discussion_templet_id
-              @discussion_problem_condition.problem_condition = @problem_conditions[count]
+              @discussion_problem_condition.problem_condition = @discussion_problem_conditions[count]
               @discussion_problem_condition.condition_answer = @condition_answers[count]
               @discussion_problem_condition.save
             end
@@ -688,7 +688,7 @@ def like
     @discussion_title_explanation_unit_concept_ids = params[:discussion_title_explanation_unit_concept_id]
 
     # nested params coding for save discussion_problem_condition
-    @problem_conditions = params[:discussion_problem_condition]
+    @discussion_problem_conditions = params[:discussion_problem_condition]
     @condition_answers = params[:condition_answer]
 
     # nested params coding for save discussion_solution
@@ -734,21 +734,21 @@ def like
           end
         end 
 
-        unless @problem_conditions.blank?
+        unless @discussion_problem_conditions.blank?
           count = 0
-          (0..@problem_conditions.count).each do |idx|
-            logger.info "###########    #{@problem_conditions[count]}, #{@condition_answers[count]}    ############"
-            unless @problem_conditions[count].blank?
+          (0..@discussion_problem_conditions.count).each do |idx|
+            logger.info "###########    #{@discussion_problem_conditions[count]}, #{@condition_answers[count]}    ############"
+            unless @discussion_problem_conditions[count].blank?
               @discussion_problem_condition = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion_templet.id)
               unless @discussion_problem_condition[count].blank?
-                #@discussion_problem_condition.first.problem_condition = @problem_conditions[count]
+                #@discussion_problem_condition.first.problem_condition = @discussion_problem_conditions[count]
                 #@discussion_problem_condition.first.condition_answer = @condition_answers[count]
                 puts @discussion_problem_condition[count].inspect
-                @discussion_problem_condition[count].update(problem_condition: @problem_conditions[count], condition_answer: @condition_answers[count])
+                @discussion_problem_condition[count].update(problem_condition: @discussion_problem_conditions[count], condition_answer: @condition_answers[count])
               else
                 @discussion_problem_condition = DiscussionProblemCondition.new
                 @discussion_problem_condition.discussion_templet_id = @discussion_templet.id
-                @discussion_problem_condition.problem_condition = @problem_conditions[count]
+                @discussion_problem_condition.problem_condition = @discussion_problem_conditions[count]
                 @discussion_problem_condition.condition_answer = @condition_answers[count]
                 @discussion_problem_condition.save
               end
