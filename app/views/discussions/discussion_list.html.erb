@@ -73,7 +73,7 @@
                             <% if Discussion.can_I_join_this_room?(discussion.group_id, current_user.id, discussion.observer_yn, discussion.id) %>
                             <li><button class="btn btn-windows margin-top-10 rounded" onclick="participate('<%= discussion.id %>')">토론방 참여하기</button>
                             <% else %></li>
-                            <li><button class="btn btn-default margin-top-10 rounded">토론방 참여 못함 <i class="fa fa-lock"></i></button></li>
+                            <li><button class="btn btn-default margin-top-10 rounded">토론방 참여하지 못함 <i class="fa fa-lock"></i></button></li>
                             <% end %>
                         </ul>
                     <!--</div>-->
@@ -112,6 +112,12 @@ ul.post-shares1 {
     padding-left: 0;
     list-style: none;
     margin: 10px 0 0 0px;
+}
+
+.news-v3 .post-shares li i {
+    width: 18px;
+    height: 18px;
+    padding: 2px;
 }
 </style>
 <style type="text/css">
