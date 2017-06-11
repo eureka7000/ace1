@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     has_many :study_histories
     has_many :replies
     has_many :identities, :dependent => :delete_all
-    has_many :staffs, :dependent => :delete_all
+    has_many :staffs#, :dependent => :delete_all
     has_many :discussion_authorities, :dependent => :delete_all
     has_many :discussions
     has_many :discussion_histories
