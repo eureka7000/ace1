@@ -176,6 +176,7 @@ Rails.application.routes.draw do
     get 'blogs/how_to_purchase_membership' => 'blogs#how_to_purchase_membership'
     get 'blogs/student_teacher_connection' => 'blogs#student_teacher_connection'
     get 'blogs/student_administration' => 'blogs#student_administration'
+    get 'blogs/discussion_room_manual' => 'blogs#discussion_room_manual'
     resources :blogs
 
     get 'users/get_mento' => 'users#get_mento'

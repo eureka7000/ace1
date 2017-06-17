@@ -118,6 +118,13 @@
   background-size: cover; /*Scales the background image to be as large as possible*/
 }
 
+.breadcrumbs-v1.img-v11 {
+  background: url(../img/bg/11.jpg) no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+
 .breadcrumbs-v1:after {
   top: 0;
   left: 0;
@@ -221,6 +228,7 @@
   background-size: cover;
   background-position: center center;
 }
+
 
 .breadcrumbs-v3:after {
   top: 0;
