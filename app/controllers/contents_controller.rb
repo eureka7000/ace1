@@ -11,13 +11,21 @@ class ContentsController < ApplicationController
 
     def get_grade_list
 
-        query ="select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+#        query ="select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+#        from grade_unit_concepts a, concepts b, unit_concepts c
+#        where a.concept_id = b.id
+#        and b.id = c.concept_id
+#        and c.exercise_yn = 'concept'
+#        and a.grade = c.grade
+#        order by a.grade, a.chapter, a.category, a.sub_category"
+
+        query ="select a.grade, a.chapter, a.category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
         from grade_unit_concepts a, concepts b, unit_concepts c
         where a.concept_id = b.id
         and b.id = c.concept_id
         and c.exercise_yn = 'concept'
         and a.grade = c.grade
-        order by a.grade, a.chapter, a.category, a.sub_category"
+        order by a.grade, a.chapter, a.category"
 
         @rs = GradeUnitConcept.find_by_sql(query)
 
@@ -32,8 +40,8 @@ class ContentsController < ApplicationController
                 chapter_code: rs.chapter,
                 category: GradeUnitConcept::CATEGORIES[rs.category.to_i],
                 category_code: rs.category,
-                sub_category: GradeUnitConcept::SUB_CATEGORIES[rs.sub_category.to_i],
-                sub_category_code: rs.sub_category,
+#                sub_category: GradeUnitConcept::SUB_CATEGORIES[rs.sub_category.to_i],
+#                sub_category_code: rs.sub_category,
                 concept_id: rs.concept_id,
                 concept_name: rs.concept_name,
                 unit_concept_id: rs.unit_concept_id,
@@ -372,33 +380,67 @@ class ContentsController < ApplicationController
                 @breadcrumbs << { 'step3' => @current_page_name }
             end    
             
+#            if @step > 3
+#               @current_page_name = GradeUnitConcept::CATEGORIES[@category.to_i]
+#                @breadcrumbs << { 'step4' => @current_page_name }   
+#            end
+            
+#            if @step > 4
+#                @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
+#                @breadcrumbs << { 'step5' => @current_page_name }
+
+#                unless params[:exercise_type].blank?
+#                  @current_page_name = '종합문제'
+#                end
+#            end
+            
+#            if @step > 5
+#                if params[:exercise_type].blank?
+#                    @current_page_name = Concept.find(@concept_id).concept_name
+#                else
+#                    @current_page_name = '종합문제'
+#                end
+#                @breadcrumbs << { 'step6' => @current_page_name }
+#            end
+            
+#            if @step > 6
+#                @current_page_name = '유형문제'
+#                @breadcrumbs << { 'step7' => @current_page_name }
+#            end    
+
+
             if @step > 3
                 @current_page_name = GradeUnitConcept::CATEGORIES[@category.to_i]
-                @breadcrumbs << { 'step4' => @current_page_name }                
-            end
-            
-            if @step > 4
-                @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
-                @breadcrumbs << { 'step5' => @current_page_name }
+                @breadcrumbs << { 'step4' => @current_page_name }   
 
                 unless params[:exercise_type].blank?
                   @current_page_name = '종합문제'
-                end
+                end             
             end
             
-            if @step > 5
+#            if @step > 4
+#                @current_page_name = GradeUnitConcept::SUB_CATEGORIES[params[:sub_category].to_i]
+#                @breadcrumbs << { 'step5' => @current_page_name }
+
+#                unless params[:exercise_type].blank?
+#                  @current_page_name = '종합문제'
+#                end
+#            end
+            
+            if @step > 4
                 if params[:exercise_type].blank?
                     @current_page_name = Concept.find(@concept_id).concept_name
                 else
                     @current_page_name = '종합문제'
                 end
-                @breadcrumbs << { 'step6' => @current_page_name }
+                @breadcrumbs << { 'step5' => @current_page_name }
             end
             
-            if @step > 6
+            if @step > 5
                 @current_page_name = '유형문제'
-                @breadcrumbs << { 'step7' => @current_page_name }
-            end    
+                @breadcrumbs << { 'step6' => @current_page_name }
+            end  
+
             
             # data
             if @step == 1
@@ -426,67 +468,68 @@ class ContentsController < ApplicationController
                         }
                     end    
                 end
-            elsif @step == 4    
-                first_key = ''
-                count = 0
-                GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
-                    unless @category.to_i != key/100
-                        @items << {
-                            key: key,
-                            value: value
-                        }
-                    end
-
-                    if count == 0
-                      first_key = key
-                      count = count + 1
-                    end
-                end
+#            elsif @step == 4      
+#                first_key = ''
+#                count = 0
+#                GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
+#                    unless @category.to_i != key/100
+#                        @items << {
+#                            key: key,
+#                            value: value
+#                        }
+#                    end
+#
+#                    if count == 0
+#                      first_key = key
+#                      count = count + 1
+#                    end
+#                end
 
             #     종합문제 표시 위치 변경
-                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+#                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
 
-                      @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+#                      @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
 
-                      if @concept_exercises.count > 0
+#                      if @concept_exercises.count > 0
 
-                          @items << {
-                              key: first_key,
-                              value: '종합문제'
-                          }
-                      end
-                  end
+#                          @items << {
+#                              key: first_key,
+#                              value: '종합문제'
+#                          }
+#                      end
+#                  end
 
-            elsif @step == 5
+#            elsif @step == 5
 
-              if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
-                @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
-                @concept_exercises.each do |concept_exercise|
-                  @items << {
-                      key: concept_exercise.id,
-                      value: concept_exercise.concept_name,
-                      content_yn: true,
-                      level: concept_exercise.level,
-                      exercise_yn: true,
-                      level_star_yn: true,
-                      level_star: concept_exercise.get_level_star,
-                      past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
-                  }
-                end
+#              if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+#                @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+#                @concept_exercises.each do |concept_exercise|
+#                  @items << {
+#                      key: concept_exercise.id,
+#                      value: concept_exercise.concept_name,
+#                      content_yn: true,
+#                      level: concept_exercise.level,
+#                      exercise_yn: true,
+#                      level_star_yn: true,
+#                      level_star: concept_exercise.get_level_star,
+#                      past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
+#                  }
+#                  puts @items[level_star]
+#                end
 
-              else
+#              else
 
-                @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
-                @grade_unit_concepts.each do |grade_unit_concept|
-                    @items << {
-                        key: grade_unit_concept.concept.id,
-                        value: grade_unit_concept.concept.concept_name,
-                        load_modal: true,        # 난이도 설정 모달.
-                        drop_down: true,
-                        unit_concept_counts: get_unit_concept_counts(grade_unit_concept.concept_id)                        
-                    }
-                end
-              end
+#                @grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
+#                @grade_unit_concepts.each do |grade_unit_concept|
+#                    @items << {
+#                        key: grade_unit_concept.concept.id,
+#                        value: grade_unit_concept.concept.concept_name,
+#                        load_modal: true,        # 난이도 설정 모달.
+#                        drop_down: true,
+#                       unit_concept_counts: get_unit_concept_counts(grade_unit_concept.concept_id)                        
+#                    }
+#                end
+#              end
 
                 # unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
                 #
@@ -503,7 +546,159 @@ class ContentsController < ApplicationController
 
 
 
-            elsif @step == 6
+#            elsif @step == 6
+                
+#                if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+
+                    # num = @sub_category.to_s.slice(-2, 1).to_i - 1
+                    # str = GradeUnitConcept::MAPPING_EXERCISE[@category]
+                    # logger.info "##############    sub_category : #{@sub_category}     ##############"
+                    # logger.info "##############    num : #{num}     ##############"
+                    # @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', str[num], "exercise", @grade)
+
+#                    @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+#                    @concept_exercises.each do |concept_exercise|
+#                        @items << {
+#                           key: concept_exercise.id,
+#                            value: concept_exercise.concept_name,
+#                            content_yn: true,
+#                            level: concept_exercise.level,
+#                            exercise_yn: true,
+#                            level_star_yn: true,
+#                            level_star: concept_exercise.get_level_star,
+#                            past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
+#                        }
+#                    end
+
+#                else
+
+#                    @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade = ?', @concept_id, "concept", @grade)
+#                    @unit_concepts.each do |unit_concept|
+#                        @items << {
+#                            key: unit_concept.id,
+#                            value: unit_concept.name,
+#                            content_yn: true,
+#                            level: unit_concept.level,
+#                            level_star_yn: true,
+#                            level_star: unit_concept.get_level_star
+#                        }
+#                    end
+            
+#                    @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")                
+#                    if @unit_concept_exercises.length > 0
+#                        @items << {
+#                            key: '',
+#                            value: '유형문제',
+#                            level: 0,
+#                            level_star_yn: true,
+#                            level_star: UnitConcept.get_level_star_empty
+#                        }                    
+#                    end
+                    
+#                end
+                
+#            elsif @step == 7
+
+#                @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade <= ?', @concept_id, "exercise", @grade)
+
+#                @unit_concept_exercises.each do |unit_concept_exercise|
+                    
+#                    @items << {
+#                        key: unit_concept_exercise.id,
+#                        value: unit_concept_exercise.name,
+#                        content_yn: true,
+#                       level: unit_concept_exercise.level,
+#                        level_star_yn: true,
+#                        level_star: unit_concept_exercise.get_level_star,
+#                        exercise_yn: true,
+#                        video_count: unit_concept_exercise.get_video_count
+#                    }
+#                end
+
+#            end
+
+
+
+#            elsif @step == 4    
+#                first_key = ''
+#                count = 0
+#                GradeUnitConcept::SUB_CATEGORIES.each_pair do |key, value|
+#                    unless @category.to_i != key/100
+#                        @items << {
+#                            key: key,
+#                            value: value
+#                        }
+#                    end
+#
+#                    if count == 0
+#                      first_key = key
+#                      count = count + 1
+#                    end
+#                end
+
+            #     종합문제 표시 위치 변경
+#                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+
+#                      @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+
+#                      if @concept_exercises.count > 0
+#
+#                          @items << {
+#                              key: first_key,
+#                              value: '종합문제'
+#                          }
+#                      end
+#                  end
+
+            elsif @step == 4
+
+#              if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
+#                @concept_exercises = Concept.where('sub_category in (?) and exercise_yn = ? and grade <= ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+#                @concept_exercises.each do |concept_exercise|
+#                  @items << {
+#                      key: concept_exercise.id,
+#                      value: concept_exercise.concept_name,
+#                      content_yn: true,
+#                      level: concept_exercise.level,
+#                      exercise_yn: true,
+#                      level_star_yn: true,
+#                      level_star: concept_exercise.get_level_star,
+#                     past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org]
+#                  }
+#                  puts @items[level_star]
+#                end
+
+#              else
+
+                #@grade_unit_concepts = GradeUnitConcept.where('sub_category = ?', @sub_category)
+                @grade_unit_concepts = GradeUnitConcept.where('category = ?', @category)
+                @grade_unit_concepts.each do |grade_unit_concept|
+                    @items << {
+                        key: grade_unit_concept.concept.id,
+                        value: grade_unit_concept.concept.concept_name,
+                        load_modal: true,        # 난이도 설정 모달.
+                        drop_down: true,
+                        unit_concept_counts: get_unit_concept_counts(grade_unit_concept.concept_id)                        
+                    }
+                end
+#              end
+
+                unless GradeUnitConcept::MAPPING_EXERCISE[@category].nil?
+                
+                    @concept_exercises = Concept.where('sub_category in (?)  and exercise_yn = ? and grade = ? ', GradeUnitConcept::MAPPING_EXERCISE[@category], "exercise", @grade)
+                
+                    if @concept_exercises.count > 0
+                        @items << {
+                            key: '',
+                            value: '종합문제'
+                        }
+                    end
+                end
+
+
+
+
+            elsif @step == 5
                 
                 if params[:exercise_type] == 'concept_exercise' # 종합문제일 경우
 
@@ -554,7 +749,7 @@ class ContentsController < ApplicationController
                     
                 end
                 
-            elsif @step == 7
+            elsif @step == 6
 
                 @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ? and grade <= ?', @concept_id, "exercise", @grade)
 
@@ -573,6 +768,10 @@ class ContentsController < ApplicationController
                 end
 
             end
+
+
+
+
             
         end
 

@@ -241,17 +241,41 @@ class UnitConcept < ActiveRecord::Base
 
     end
 
-    def get_next_concept_at_view_type_2(sub_category)
+#    def get_next_concept_at_view_type_2(sub_category)
 
-        query = "select grade, chapter, category, sub_category, concept_id, concept_name, unit_concept_id, unit_concept_name, unit_concept_level
+#        query = "select grade, chapter, category, sub_category, concept_id, concept_name, unit_concept_id, unit_concept_name, unit_concept_level
+#from (
+#	select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+#	from grade_unit_concepts a, concepts b, unit_concepts c
+#	where a.concept_id = b.id
+#	and b.id = c.concept_id
+#	order by a.grade, a.chapter, a.category, a.sub_category) e
+#where e.sub_category = #{sub_category}
+#order by grade, chapter, sub_category, concept_id;"
+
+#        grade_unit_concepts = GradeUnitConcept.find_by_sql(query)
+
+#        grade_unit_concepts.each_with_index do | grade_unit_concept, index |
+
+#            if grade_unit_concept.concept_id > self.concept.id && index != grade_unit_concepts.count
+#                return grade_unit_concept
+#            end
+#        end
+
+#        nil
+#    end
+
+    def get_next_concept_at_view_type_2(category)
+
+        query = "select grade, chapter, category, concept_id, concept_name, unit_concept_id, unit_concept_name, unit_concept_level
 from (
-	select a.grade, a.chapter, a.category, a.sub_category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
-	from grade_unit_concepts a, concepts b, unit_concepts c
-	where a.concept_id = b.id
-	and b.id = c.concept_id
-	order by a.grade, a.chapter, a.category, a.sub_category) e
-where e.sub_category = #{sub_category}
-order by grade, chapter, sub_category, concept_id;"
+    select a.grade, a.chapter, a.category, a.concept_id, b.concept_name, c.id as unit_concept_id, c.name as unit_concept_name, c.level as unit_concept_level
+    from grade_unit_concepts a, concepts b, unit_concepts c
+    where a.concept_id = b.id
+    and b.id = c.concept_id
+    order by a.grade, a.chapter, a.category) e
+where e.category = #{category}
+order by grade, chapter, concept_id;"
 
         grade_unit_concepts = GradeUnitConcept.find_by_sql(query)
 
