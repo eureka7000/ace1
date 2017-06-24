@@ -1,3 +1,13 @@
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"></script>
+
+<!--<link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">-->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <div class="modal fade" id="s" role="dialog">
 
     <div class="modal-dialog">
@@ -69,8 +79,16 @@
                             <strong style="color:darkblue">&nbsp; &nbsp; Comment</strong>
                         </div>
                         <div class="col-md-9">
-                            <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+                            <div> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                            <br><br>
+                            <div>
+                                <textarea id="evaluation_comment" name="unit_concept_self_evaluation[comment]" class="form-control evaluation_comment_summernote" rows="3" style="width:100%" placeholder="입력하세요"></textarea>
+                            </div>
+                            <div hidden id="dialog-1" >
+                                <img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">
+                            </div>
                         </div>
+
                     </div>
 
                     <input type="hidden" name="unit_concept_self_evaluation[unit_concept_id]" value="<%= @unit_concept.id %>" />
@@ -89,9 +107,73 @@
     </div>
 </div>
 
+<style>
+.note-editable {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 1.2;
+}
+</style>
+
 <script type="text/javascript">
     function sendForm() {
         update_study_history('self_evaluation', 'finish');
         $('#new_unit_concept_self_evaluation').submit();
     }
 </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.evaluation_comment_summernote').summernote({
+            height: 100,
+            placeholder: '자기평가(이해가 안되는 점, 오답노트 등)를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+
+    function asciiMove() {
+    //   location = "https://asciimath.org"
+    //    $(location).attr('href', url);
+    //$('#asciimath-button').click(function() { 
+        $( "#dialog-1" ).dialog({
+            autoOpen: true,
+            title: "수식 입력 방법을 참고하세요.",
+            width: 700,
+            height: 400,
+            draggable: true,
+            resizable: true,
+            position: {my: "right bottom", at: "right bottom", of: window},
+            show: {
+                effect: "blind",
+                duration: 500
+            },
+            hide: {
+                effect: "explode",
+                duration: 500
+            }
+        });
+
+    //    $('#asciimath').dialog({
+    //       modal: true
+    //     width: 480px, height: 350px,
+    //      show: { effect: "blind", duration: 1000 },
+    //      hide: { effect: "explode", duration: 1000 }
+    //    });
+    };
+
+</script>
+

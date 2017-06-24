@@ -35,11 +35,9 @@ class AdminsController < ApplicationController
         else
             @admin = Admin.where('email = ? and password = ?',email, password)
             if @admin.empty?
-                logger.error "----------" + @admin.inspect
                 error = true
             else
                 session[:admin] = @admin.first
-                logger.debug "--------" + session[:admin].inspect
             end
         end    
         

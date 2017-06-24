@@ -69,7 +69,7 @@
                                         <section>
                                             <label class="input">
                                                 <i class="icon-append fa fa-phone"></i>
-                                                <input type="text" placeholder="연락처" name="user[phone]" value="<%= current_user.phone %>">
+                                                <input type="text" placeholder="핸드폰 번호(보다 좋은 서비스를 받기 위해 꼭 필요합니다.)" name="user[phone]" value="<%= current_user.phone %>">
                                                 <b class="tooltip tooltip-bottom-right">예) 010-1111-1111 </b>
                                             </label>
                                         </section>
@@ -158,7 +158,7 @@
                                             <label class="input">
                                                 <i class="icon-append fa fa-smile-o"></i>
                                                 <input type="text" placeholder="닉네임을 입력하세요" name="user[nickname]" value="<%= current_user.nickname %>">
-                                                <b class="tooltip tooltip-bottom-right">닉네임을 설정하세요. </b>
+                                                <b class="tooltip tooltip-bottom-right">닉네임을 설정하세요.(닉네임을 설정하면 토론방에서 의견 및 댓글을 달 때 본인 이름 대신 닉네임이 표시됩니다.) </b>
                                             </label>
                                         </section>
                                     </dd>
@@ -723,6 +723,7 @@
     }
 
     function checkValidate() {
+
 
         if ($('#relation_type').val() == "") {
             alert('관계구분을 선택하세요.');

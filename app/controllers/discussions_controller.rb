@@ -14,18 +14,11 @@ class DiscussionsController < ApplicationController
     @lists = []
 
     @schools.each do |school|
-      puts school.id
-      puts school.name
       @users = User.where('school_id = ?', school.id)
 
       @users.each do |user|
-        puts user.id
-        puts user.email
-        puts user.discussions.count
         processing = processing + user.discussions.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).count
-        puts "#{processing}---------------------------"
         past = past + user.discussions.where('expiration_date < ?', Date.today).count
-        puts "#{past}========================="
       end
 
       tmp = {

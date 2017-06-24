@@ -24,13 +24,18 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-2" style="text-align:left">제목</div>
-                        <div class="col-md-10"><input type="text" id="question_title" name="question[title]" class="form-control" /></div>
+                        <div class="col-md-10">
+                            <textarea id="question_title" rows="10" class="form-control question_title_summernote" name="question[title]"></textarea>
+                            <!--<input type="text" id="question_title" name="question[title]" class="form-control" />-->
+                        </div>
                     </div>
 
                     <div class="row" style="margin-top: 10px">
                         <div class="col-md-2" style="text-align:left">내용</div>
                         <div class="col-md-10">
-                            <textarea id="question_content" rows="10" class="form-control" name="question[content]"></textarea>
+                            <div> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                            <br><br>
+                            <textarea id="question_content" rows="10" class="form-control question_content_summernote" name="question[content]"></textarea>
                         </div>
                     </div>
 
@@ -53,3 +58,38 @@
     </div>
     
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.question_title_summernote').summernote({
+            height: 50,
+            placeholder: '문제 풀이를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+        $('.question_content_summernote').summernote({
+            height: 100,
+            placeholder: '문제 풀이를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    });
+</script>
