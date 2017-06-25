@@ -298,6 +298,18 @@
         StyleSwitcher.initStyleSwitcher();
     });
 </script>
+
+<script>
+
+    $(document).ready(function() {
+        var wid = $(window).width();
+
+    if (wid < 500) {
+        $('#history').css({'display':'none'});
+    }
+    });
+
+</script>
 <!--[if lt IE 9]>
 <script src="/assets/plugins/respond.js"></script>
 <script src="/assets/plugins/html5shiv.js"></script>
