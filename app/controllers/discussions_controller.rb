@@ -1,7 +1,7 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room, :discussion_edit]
+  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room_participant, :discussion_room_show, :discussion_edit]
   before_action :authenticate_admin_user!, only: [:index, :edit, :select_leader, :give_authority]
-  before_filter :authenticate_user!, only: [:past_discussions_list, :discussion_list, :discussion_room, :discussion_new, :discussion_edit]
+  before_filter :authenticate_user!, only: [:past_discussions_list, :discussion_list, :discussion_room_participant, :discussion_room_show, :discussion_new, :discussion_edit]
 
   layout 'admin_main'
 
@@ -41,11 +41,6 @@ class DiscussionsController < ApplicationController
   def topic_select_and_new
 
     unless current_user.nil?
-      puts "==========================거의 관계없음"
-      puts session.inspect
-      puts current_user.user_name
-      puts current_user
-      puts current_user.inspect
       @discussion = Discussion.new
       @user_type = 'user'
       @discussion_form_id = 'new_discussion'
@@ -56,13 +51,7 @@ class DiscussionsController < ApplicationController
       # sub_leader.user_id != @discussion.sub_leader
 
       @discussion_templets = DiscussionTemplet.all
-      puts "=========================="
-      puts current_user.user_types[0].user_type
-      puts @discussion_templets.first.user_id
-      puts @discussion_templets[1].user_id
-      puts "=========================="
       puts current_user.user_types.count
-      puts "=========================="
       if current_user.user_types[0].user_type == 'school teacher'
         @manage_type = '학교'
         elsif current_user.user_types[0].user_type == 'institute teacher'
@@ -70,21 +59,14 @@ class DiscussionsController < ApplicationController
         elsif current_user.user_types[0].user_type == 'mento'
           @manage_type = 'EurekaMath'
       end
-      puts "------------------"
       puts @manage_type
 
       render layout: 'application'
 
     else
-      puts "------------------"
       @discussion = Discussion.new
       @discussion_form_id = 'new_discussion'
       @admin_id = session[:admin]['id']
-      #@admin_type = session[:admin]['admin_type']
-      puts @admin_id
-      puts session[:admin].inspect
-      puts session[:current_user].inspect
-      #puts @admin_type
       @user_type = 'admin'
       @manage_type = 'EurekaMath'
       @sub_leader = Teacher.all
@@ -92,20 +74,13 @@ class DiscussionsController < ApplicationController
       @discussion_templets = DiscussionTemplet.all
 
       unless session[:admin]['admin_type'] != 'admin'
-        puts session[:admin]['admin_type']
-        # @leader = Admin.where(:admin_type => 'admin')
         @leader = Teacher.all
-        puts session[:admin]['admin_type']
         else
-          puts "aaaaaaa"
           if current_user.user_types[0].user_type == 'mento'
-            puts "aaaaaaa111111111"
             @leader = Teacher.where('user_id = ?', current_user.id)
           else
-            puts "bbbbbbb"
             @leader = Teacher.where(:school_id => session[:admin]['school_id'])
             if session[:admin]['admin_type'] == 'school manager'
-              puts "cccccccc"
               @manage_type = '학교'
             else
               @manage_type = '학원'
@@ -157,19 +132,15 @@ class DiscussionsController < ApplicationController
     end
   end
 
-  def discussion_room
-    puts '=========='
-    puts @discussion.inspect
+  def discussion_room_participant
     #@discussion = Discussion.where('id = ?', @discussion.id)
     #puts @discussion.discussion_templet.first.id
     #puts @discussion.first.organizer
     #puts @discussion.first.id
+    @discussion_room_id = 'room_participant'
     @discussion_templet = @discussion.discussion_templet 
-    puts @discussion_templet.inspect
     @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
-    puts @discussion_problem_condition.inspect
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
-    puts '----------'
 
     @participant = Participant.where('discussion_id = ? and user_id = ?', @discussion.id, current_user.id)
 
@@ -211,6 +182,56 @@ class DiscussionsController < ApplicationController
     render layout: 'application'
   end
 
+  def discussion_room_show
+    #@discussion = Discussion.where('id = ?', @discussion.id)
+    #puts @discussion.discussion_templet.first.id
+    #puts @discussion.first.organizer
+    #puts @discussion.first.id
+    @discussion_room_id = 'room_show'
+    @discussion_templet = @discussion.discussion_templet 
+    @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
+    @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
+
+    @participant = Participant.where('discussion_id = ? and user_id = ?', @discussion.id, current_user.id)
+
+#    @participant_before_check = true
+
+    if @participant.blank?
+      @participant = Participant.new
+      @participant.discussion_id = @discussion.id
+      @participant.user_id = current_user.id
+      @participant.save
+      @participant_before_check = false
+    else
+      @participant_before_check = true
+    end
+
+    # 모든 사람들이 토론방에 참여하기 허용
+    @participant_before_check = true
+
+#      if @participant.save
+#        @participant_before_check = false
+#      end
+#    end
+
+    # 토론방 이력 저장.
+    discussion_history = DiscussionHistory.where('user_id = ? and discussion_id = ?', current_user.id, @discussion.id)
+
+    if discussion_history.count > 0
+      discussion_history[0].discussion_count = discussion_history[0].discussion_count + 1
+      discussion_history[0].save
+    else
+      discussion_history = DiscussionHistory.new
+      discussion_history.user_id = current_user.id
+      discussion_history.discussion_id = @discussion.id
+      discussion_history.discussion_count = 1
+      discussion_history.save
+    end
+    # 토론방 이력 저장 끝.
+
+    render layout: 'mypages'
+  end
+
 #  def like
 #    if @discussion.like.nil?
 #      @discussion.like = 1
@@ -223,7 +244,7 @@ class DiscussionsController < ApplicationController
 #    render :json => ret
 #  end
 
-def like
+  def like
     puts params[:id]
     if @discussion.like.nil?
        @discussion.like = 1
@@ -277,7 +298,6 @@ def like
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:id => :desc)
     else
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).order(:id => :desc)
-      puts @discussions.inspect
     end
 
     @leaders = Discussion.where('expiration_date >= ?', Date.today).select(:user_id).distinct
@@ -289,16 +309,11 @@ def like
     leader = params[:leader]
     unless leader.blank?
       @discussions = Discussion.where('expiration_date <= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
-      puts "-------------------"
       else
         @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
-        puts "====================="
     end
 
     @leaders = Discussion.where('expiration_date < ?', Date.today).select(:user_id).distinct
-    puts @leaders.count
-    puts @leaders.select(:user_id)
-    puts "lllllllll" 
 
     render layout: 'application'
   end
@@ -360,7 +375,6 @@ def like
 #   video 추가 
     @concept_exercises.each do |concept_exercise|
       if concept_exercise.desc_type != '5'
-              puts '------------111'
         ret << {
             type: concept_exercise.desc_type,
             filename: concept_exercise.file_name.to_s(),
@@ -393,8 +407,6 @@ def like
 
   def get_concepts
     key = params[:key]  
-    puts params[:key]   
-    puts '------------ccc'
     # @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{key}%")
     #@concepts = Concept.where('concept_code like ?', "#{key}%").order(:concept_code)
     @concepts = Concept.where(sub_category: key).order(:concept_code)
@@ -447,7 +459,6 @@ def like
   # GET /discussions.json
   def index
     @admin_type = session[:admin]['admin_type']
-    puts @admin_type
     school_id = params[:school_id]
     if @admin_type == 'admin'
       unless school_id.blank?
@@ -504,8 +515,6 @@ def like
   # GET /discussions/1/edit
   def edit
     @discussion_form_id = 'edit_discussion_' + @discussion.id.to_s
-    puts @discussion_form_id
-    puts '-------------------------------'
     @admin_id = session[:admin]['id']
     unless session[:admin]['admin_type'].nil?
       @user_type = 'admin'
@@ -527,9 +536,7 @@ def like
     # 선택 상태 유지
     @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
     unit_concept_code = @unit_concept.code.slice(0, 4)
-    puts "#{unit_concept_code}===================="
     concept_code = @unit_concept.code.slice(0, 3)
-    puts "#{concept_code}====================="
     @unit_concepts = UnitConcept.where('exercise_yn = ? and code like ?', 'concept', "#{unit_concept_code}%")
     @concepts = Concept.where('exercise_yn = ? and concept_code like ?', 'concept', "#{concept_code}%")
 
@@ -707,20 +714,16 @@ def like
             unless @discussion_title_explanations[count].blank?
               #@discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ? and  unit_concept_id = ?', @discussion_templet.id, @discussion_title_explanation_unit_concept_ids[count])
               @discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion_templet.id)
-              puts @discussion_title_explanation.inspect
-              puts '11111111'
               unless @discussion_title_explanation[count].blank?
                 #@discussion_title_explanation.first.content = @discussion_title_explanations[count]
                 #@discussion_title_explanation.first.update
                 @discussion_title_explanation[count].update(content: @discussion_title_explanations[count], unit_concept_id: @discussion_title_explanation_unit_concept_ids[count])
-                puts '22222222'
               else
                 @discussion_title_explanation = DiscussionTitleExplanation.new
                 @discussion_title_explanation.discussion_templet_id = @discussion_templet.id
                 @discussion_title_explanation.unit_concept_id = @discussion_title_explanation_unit_concept_ids[count]
                 @discussion_title_explanation.content = @discussion_title_explanations[count]
                 @discussion_title_explanation.save
-                puts '333333333'
               end
             end
             count = count+1
