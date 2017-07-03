@@ -2,6 +2,27 @@ class DiscussionReplyController < ApplicationController
   before_action :set_discussion_reply, only: [:edit, :update, :destroy]
   before_filter :authenticate_user!
 
+  def get_discussion_reply_comment
+    discussion_reply_id = params[:discussion_reply_id]
+    @discussion_replys = DiscussionReply.where(:id => discussion_reply_id)
+
+    unless @discussion_replys.blank?
+      ret = []
+      @discussion_replys.each do |discussion_reply|
+        ret << {
+            id: discussion_reply.id,
+            comment: discussion_reply.comment
+        }
+      end
+    end
+
+    puts ret.inspect
+
+    respond_to do |format|
+      format.json { render :json => ret }
+    end
+  end
+
   def create
     @discussion_reply = DiscussionReply.new(discussion_reply_params)
 
@@ -22,11 +43,26 @@ class DiscussionReplyController < ApplicationController
   end
 
   def update
+    @status = 'update'
+
+    respond_to do |format|
+      if @discussion_reply.update(discussion_reply_params)
+        format.html { redirect_to "/discussions/discussion_room/#{@discussion_reply.discussion_id}", notice: '댓글이 성공적으로 수정되었습니다.' }
+        format.json { render :show, status: :ok, location: @discussion_reply }
+      else
+        format.html { render :edit }
+        format.json { render json: @discussion_reply.errors, status: :unprocessable_entity }
+      end
+    end
 
   end
 
   def destroy
-
+    @discussion_reply.destroy
+    respond_to do |format|
+      format.html { redirect_to "/discussions/discussion_room/#{@discussion_reply.discussion_id}", notice: 'Discussion_reply was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private

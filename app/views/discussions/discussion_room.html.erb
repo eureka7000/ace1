@@ -261,9 +261,33 @@
                                     <!--댓글내용-->
                                     <span class="title"><%== discussion_reply.comment %></span>
 
+                                    
+
+                                    <!--수정 버튼 클릭시 댓글 수정-->
+                                    <form action="/discussion_reply/<%= discussion_reply.id %>" id="discussion_reply_<%= discussion_reply.id %>" class="margin-bottom-10" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                                        <%= token_tag nil %>
+                                        <br>
+                                        <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                        <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                        <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply.group_id %>">
+                                        <input hidden name="discussion_reply[group_no]" value="<%= discussion_reply.group_no %>">
+                                        <input hidden name="discussion_reply[depth]" value="<%= discussion_reply.depth %>">
+                                        <!--댓글내용 수정-->
+                                        <% if discussion_reply.user_id == @current_user_id %>
+                                            <div id="edit_comment_section_<%= discussion_reply.id %>"></div>
+                                        <% else %>
+                                            <div></div>
+                                        <% end %>
+                                    </form>
+
                                     <div class="margin-top-20 margin-bottom-50">
-                                        <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1" onclick="editReply('discussion_reply')">수정</button>
-                                        <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1" onclick="destroyReply('discussion_reply')">삭제</button>
+                                        <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 edit_button" id="edit_button_<%= discussion_reply.id %>" onclick="editReply('<%= discussion_reply.id %>')">수정</button>
+                                        <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 cancel_button" id="cancel_button_<%= discussion_reply.id %>" onclick="cancelReply('<%= discussion_reply.id %>')">취소</button>
+                                        <% if @current_user_id == @organizer || @current_user_id == discussion_reply.user_id %>
+                                            <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 destroy_button" id="destroy_button_<%= discussion_reply.id %>" onclick="destroyReply('<%= discussion_reply.id %>')">삭제</button>
+                                        <% else %>
+                                            <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 null_button">button</button>
+                                        <% end %>
                                         <button class="btn btn-dropbox btn-sm rounded col-md-10 col-sm-10 col-xs-10" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button>
                                     </div>
 
@@ -306,7 +330,34 @@
                                             <!--댓글내용-->
                                             <span class="title"><%== discussion_reply_2.comment %></span>
 
-                                            <div class="margin-top-20 margin-bottom-50"><button class="btn btn-dropbox btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button></div>
+
+                                            <!--수정 버튼 클릭시 댓글 수정-->
+                                            <form action="/discussion_reply/<%= discussion_reply_2.id %>" id="discussion_reply_<%= discussion_reply_2.id %>" class="margin-bottom-10" method="post" enctype="multipart/form-data"       novalidate="novalidate" charset="utf-8">
+                                                <%= token_tag nil %>
+                                                <br>
+                                                <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                                <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                                <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply_2.group_id %>">
+                                                <input hidden name="discussion_reply[group_no]" value="<%= discussion_reply_2.group_no %>">
+                                                <input hidden name="discussion_reply[depth]" value="<%= discussion_reply_2.depth %>">
+                                                <!--댓글내용 수정-->
+                                                <% if discussion_reply_2.user_id == @current_user_id %>
+                                                    <div id="edit_comment_section_<%= discussion_reply_2.id %>"></div>
+                                                <% else %>
+                                                    <div></div>
+                                                <% end %>
+                                            </form>
+
+                                            <div class="margin-top-20 margin-bottom-50">
+                                                <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 edit_button" id="edit_button_<%= discussion_reply_2.id %>" onclick="editReply('<%= discussion_reply_2.id %>')">수정</button>
+                                                <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 cancel_button" id="cancel_button_<%= discussion_reply_2.id %>" onclick="cancelReply('<%= discussion_reply_2.id %>')">취소</button>
+                                                <% if @current_user_id == @organizer || @current_user_id == discussion_reply_2.user_id %>
+                                                    <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 destroy_button" id="destroy_button_<%= discussion_reply_2.id %>" onclick="destroyReply('<%= discussion_reply_2.id %>')">삭제</button>
+                                                <% else %>
+                                                    <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 null_button">button</button>
+                                                <% end %>
+                                                <button class="btn btn-dropbox btn-sm rounded col-md-10 col-sm-10 col-xs-10" onclick="toggleReplyForm('discussion_reply_<%= reply1 %>')">댓글 달기</button>
+                                            </div>
 
                                             <!--대댓글 달기-->
                                             <form hidden action="/discussion_reply" id="discussion_reply_<%= reply1 %>" class="margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
@@ -346,6 +397,35 @@
 
                                                     <!--댓글내용-->
                                                     <span class="title"><%== discussion_reply_3.comment %></span>
+
+                                                    <!--수정 버튼 클릭시 댓글 수정-->
+                                                    <form action="/discussion_reply/<%= discussion_reply_3.id %>" id="discussion_reply_<%= discussion_reply_3.id %>" class="margin-bottom-10" method="post" enctype="multipart/form-data"       novalidate="novalidate" charset="utf-8">
+                                                        <%= token_tag nil %>
+                                                        <br>
+                                                        <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
+                                                        <input hidden name="discussion_reply[user_id]" value="<%= current_user.id %>">
+                                                        <input hidden name="discussion_reply[group_id]" value="<%= discussion_reply_3.group_id %>">
+                                                        <input hidden name="discussion_reply[group_no]" value="<%= discussion_reply_3.group_no %>">
+                                                        <input hidden name="discussion_reply[depth]" value="<%= discussion_reply_3.depth %>">
+                                                        <!--댓글내용 수정-->
+                                                        <% if discussion_reply_2.user_id == @current_user_id %>
+                                                            <div id="edit_comment_section_<%= discussion_reply_3.id %>"></div>
+                                                        <% else %>
+                                                            <div></div>
+                                                        <% end %>
+                                                    </form>
+
+                                                    <div class="margin-top-20 margin-bottom-50">
+                                                        <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 edit_button" id="edit_button_<%= discussion_reply_3.id %>" onclick="editReply('<%= discussion_reply_3.id %>')">수정</button>
+                                                        <button  class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 cancel_button" id="cancel_button_<%= discussion_reply_3.id %>" onclick="cancelReply('<%= discussion_reply_3.id %>')">취소</button>
+                                                        <% if @current_user_id == @organizer || @current_user_id == discussion_reply_2.user_id %>
+                                                            <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 destroy_button" id="destroy_button_<%= discussion_reply_3.id %>" onclick="destroyReply('<%= discussion_reply_3.id %>')">삭제</button>
+                                                        <% else %>
+                                                            <button class="btn btn-dropbox btn-sm rounded col-md-1 col-sm-1 col-xs-1 null_button">button</button>
+                                                        <% end %>
+                                                        <!--<button class="btn btn-dropbox btn-sm rounded col-md-10 col-sm-10 col-xs-10" onclick="toggleReplyForm('discussion_reply_<%#= reply1 %>')">댓글 달기</button>-->
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -383,11 +463,14 @@
             </div>
 
             <hr>
-                <%= if @discussion_room_id = 'room_particiant' %>
+                <% if @discussion_room_id == 'room_participant' %>
+                    <%= puts @discussion_room_id %>
+                    <%= puts '-----------11111111' %>
                     <a href="/discussions/discussion_list"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
-                <%= else%>
+                <% else %>
+                    <%= puts '-----------22222222' %>
                     <a href="/mypages/discussion_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
-                <%= <% end %>
+                <% end %>
             
     </div>
 </div>
@@ -407,6 +490,18 @@ div.title {
     font-weight: normal;
     line-height: 1.2;
 }
+
+button.cancel_button {
+    display: none;
+}
+button.null_button {
+    display: none;
+}
+.blog-comments .comments-itself {
+    /* background: #ddd; */
+    padding: 10px 30px;
+}
+
 </style>
 
 
@@ -473,6 +568,10 @@ div.title {
 <script type="text/javascript">
 
     $(document).ready(function() {
+        var discussion_r_id = '';
+    });
+
+    $(document).ready(function() {
         $('.post_reply_summernote').summernote({
             height: 100,
             toolbar: [
@@ -489,6 +588,7 @@ div.title {
         });
     });
 
+    
     $(document).ready(function() {
         $('#final_report').summernote({
             height: 200,
@@ -506,6 +606,8 @@ div.title {
             }
         });
     });
+
+
 
     function sendFile(file, editor, welEditable, id_name) {
         var data = new FormData();
@@ -623,7 +725,132 @@ div.title {
         });
 
     }
+
+
 </script>
+
+    
+<script type="text/javascript">
+
+
+    function editReply(discussion_reply_id) {
+        discussion_r_id = discussion_reply_id;
+        var edit_comment_section_id = "#edit_comment_section_" + discussion_reply_id;
+        var root = $(edit_comment_section_id);
+    if ( root.length ) {
+        var edit_button_id = "#edit_button_" + discussion_reply_id;
+        $(edit_button_id).hide();
+        var cancel_button_id = "#cancel_button_" + discussion_reply_id;
+        $(cancel_button_id).show();
+        var row = $('<div>').addClass('row');
+        var section = $('<section>').addClass('col-md-12');
+        var br = $('<br>');
+        var ascii = $('<div>').addClass('label');
+
+        var asciiinput = ascii.append($('<input>').attr('type', 'button').addClass('btn btn-google rounded btn-xs pull-right').attr('value', '수식편집 참고').attr('onclick', 'asciiMove()'));
+//        var textarea = $('<textarea>').addClass('form-control edit_comment_summernote').attr('name', 'discussion_reply[comment]').attr('id', 'comment').attr('value', '<%== @strip_tags_comment unless @strip_tags_comment.nil? %>');
+        var textarea = $('<textarea>').addClass('form-control edit_comment_summernote').attr('name', 'discussion_reply[comment]').attr('id', 'discussion_reply_id_comment');
+        var input = $('<input>').attr('type', 'button').addClass('btn btn-google rounded btn-xs pull-right input_edit_comment').attr('value', '댓글수정 저장').attr('onclick', 'editCommentSave()');
+        console.log(discussion_reply_id);
+
+        var data = new FormData();
+        data.append("discussion_reply_id", discussion_reply_id);
+
+        $.ajax({
+            data: data,
+            type: "POST",
+            dataType: "json",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            url: "/discussion_reply/get_discussion_reply_comment",
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+                    comment = data[0].comment;
+                    $('.edit_comment_summernote').attr('value', $(comment).text());
+                    console.log('1111111111111');
+                    console.log($('.edit_comment_summernote').attr('value', $(comment).text()));
+                    editReply1();
+                }
+//                else {
+//                    alert('댓글이 없습니다.');
+//                   return;
+//                    }
+//                }
+        });
+        console.log(discussion_reply_id);
+        section.append(asciiinput).append(br).append(br).append(textarea).append(input).appendTo(row).appendTo(root);
+    } else {
+        alert('댓글을 단 본인이 아니면 수정할 수 없습니다.');
+    }
+
+    }
+
+    function editReply1() {
+
+        $('.edit_comment_summernote').summernote({
+            height: 100,
+            placeholder: '문제 풀이를 입력하세요.',
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
+    }
+
+    function cancelReply(id) {
+        var edit_comment_section_id = "#edit_comment_section_" + id;
+        $(edit_comment_section_id).empty();
+        var edit_button_id = "#edit_button_" + id;
+        $(edit_button_id).show();
+        var cancel_button_id = "#cancel_button_" + id;
+        $(cancel_button_id).hide();
+    }
+
+
+    function editCommentSave() {
+        var br = $('<br>'); 
+        console.log('edit');
+        var discussion_reply_id = "#discussion_reply_" + discussion_r_id;
+        console.log(discussion_reply_id);
+        console.log($(discussion_reply_id_comment).val());
+        if ($(discussion_reply_id_comment).val() != ''){
+//                $(discussion_reply_id_comment).html();
+//                $(discussion_reply_id_comment).append(br);
+//                $(discussion_reply_id_comment).summernote("insertHTML", '<br>');
+                $(discussion_reply_id_comment).summernote('pasteHTML', '<b></b>');
+                console.log($(discussion_reply_id_comment).val());
+//                $(discussion_reply_id_comment).slide.delay(10000);
+                $(discussion_reply_id).submit();
+            }
+            else {
+                alert('의견을 입력해주세요');
+            }
+    }
+
+    function destroyReply(discussion_reply_id) {
+        var retVal = confirm("정말로 삭제하겠습니까?");
+        if( retVal == true ){
+            location = '/discussion_replies/' + discussion_reply_id;
+            //document.write ("User wants to continue!");
+            //return true;
+        }
+        else{
+            //document.write ("User does not want to continue!");
+            return false;
+        }
+    }
+
+</script>
+
+
 
 <!--form check-->
 <script type="text/javascript">
@@ -655,4 +882,5 @@ div.title {
     <% else %>
     $('#timer').show();
     <% end %>
+
 </script>

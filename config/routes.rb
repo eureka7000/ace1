@@ -12,7 +12,11 @@ Rails.application.routes.draw do
     post 'groups/save_users' => 'groups#save_users'
     post 'groups/:id' => 'groups#updateName'
     resources :groups
+
     resources :discussion_reply
+    post '/discussion_reply/get_discussion_reply_comment' => 'discussion_reply#get_discussion_reply_comment'
+    post '/discussion_reply/:id' => 'discussion_reply#update'
+    get '/discussion_replies/:id' => 'discussion_reply#destroy'
 
     resources :discussion_images
 
@@ -21,6 +25,7 @@ Rails.application.routes.draw do
     get 'discussions/past_discussions_list' => 'discussions#past_discussions_list'
     get 'discussions/:id/discussion_edit' => 'discussions#discussion_edit'
     get 'discussions/:id/show' => 'discussions#show'
+    get 'discussions/discussion_room/:id' => 'discussions#discussion_room'
     get 'discussions/discussion_room_participant/:id' => 'discussions#discussion_room_participant'
     get 'discussions/discussion_room_show/:id' => 'discussions#discussion_room_show'
     #get 'discussions/:id/like' => 'discussions#like'
@@ -37,6 +42,7 @@ Rails.application.routes.draw do
     post 'discussions/get_unit_concepts' => 'discussions#get_unit_concepts'
     post 'discussions/get_concept_exercise' => 'discussions#get_concept_exercise'
     post 'discussions/get_unit_concept_exercise' => 'discussions#get_unit_concept_exercise'
+
     resources :discussions
     resources :exam_images
     get '/exams/previous_exams' => 'exams#previous_exams'
