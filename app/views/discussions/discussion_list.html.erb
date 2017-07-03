@@ -204,10 +204,15 @@ ul.post-shares1 {
     }
 
 
+//    function participate(discussion_id) {
+//        location = "/discussions/discussion_room_participant/" + discussion_id;
+//    }
+
     function participate(discussion_id) {
-        location = "/discussions/discussion_room_participant/" + discussion_id
+        location = "/discussions/discussion_room/" + discussion_id + "?discussion_room_id=room_participant";
     }
 
+    
     function leaderSearch() {
         location = '/discussions/discussion_list?leader=' + $('#leaderSearch option:selected').val();
     }

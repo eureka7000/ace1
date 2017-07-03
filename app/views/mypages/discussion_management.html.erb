@@ -49,7 +49,7 @@
                                                 <!--<td class="text-center"><%#= discussion.participants.count %></td>-->
                                                 <!--<td class="text-center"><%#= discussion.organizer_type %></td>-->
                                                 <td class="text-center">
-                                                    <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room_show/<%= discussion.id %>')">보기</button> |
+                                                    <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>')">보기</button> |
                                                     <button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button> | <button class="btn btn-pinterest rounded btn-xs" <%= "disabled='true'" unless discussion.organizer_type != 'admin' %> <%= "disabled='true'" if discussion.user_id != current_user.id && discussion.sub_leader == current_user.id %> onclick="destroyDiscussion('<%= discussion.id %>')">삭제</button>
                                                 </td>
                                             </tr>
@@ -99,7 +99,7 @@
                                                 <!--<td class="text-center"><%#= discussion.participants.count %></td>-->
                                                 <!--<td class="text-center"><%#= discussion.organizer_type %></td>-->
                                                 <td class="text-center">
-                                                    <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room_show/<%= discussion.id %>')">보기</button> |
+                                                    <button class="btn btn-podcast rounded btn-xs" onclick="move('/discussions/discussion_room/<%= discussion.id %>?discussion_room_id=room_show')">보기</button> |
                                                     <button class="btn btn-dribbble rounded btn-xs" onclick="move('/discussions/<%= discussion.id %>/discussion_edit')">수정</button> | <button class="btn btn-pinterest rounded btn-xs" <%= "disabled='true'" unless discussion.organizer_type != 'admin' %> <%= "disabled='true'" if discussion.user_id != current_user.id && discussion.sub_leader == current_user.id %> onclick="destroyDiscussion('<%= discussion.id %>')">삭제</button>
                                                 </td>
                                             </tr>

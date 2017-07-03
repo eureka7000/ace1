@@ -1,7 +1,7 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room_participant, :discussion_room_show, :discussion_edit]
+  before_action :set_discussion, only: [:show, :edit, :update, :destroy, :like, :discussion_room, :discussion_edit]
   before_action :authenticate_admin_user!, only: [:index, :edit, :select_leader, :give_authority]
-  before_filter :authenticate_user!, only: [:past_discussions_list, :discussion_list, :discussion_room_participant, :discussion_room_show, :discussion_new, :discussion_edit]
+  before_filter :authenticate_user!, only: [:past_discussions_list, :discussion_list, :discussion_room, :discussion_new, :discussion_edit]
 
   layout 'admin_main'
 
@@ -132,12 +132,16 @@ class DiscussionsController < ApplicationController
     end
   end
 
-  def discussion_room_participant
+  def discussion_room
     #@discussion = Discussion.where('id = ?', @discussion.id)
     #puts @discussion.discussion_templet.first.id
     #puts @discussion.first.organizer
     #puts @discussion.first.id
-    @discussion_room_id = 'room_participant'
+    @current_user_id = current_user.id
+    @organizer = @discussion.organizer
+    puts @current_user_id
+    puts @organizer
+    @discussion_room_id = params[:discussion_room_id]
     @discussion_templet = @discussion.discussion_templet 
     @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
@@ -180,56 +184,6 @@ class DiscussionsController < ApplicationController
     # 토론방 이력 저장 끝.
 
     render layout: 'application'
-  end
-
-  def discussion_room_show
-    #@discussion = Discussion.where('id = ?', @discussion.id)
-    #puts @discussion.discussion_templet.first.id
-    #puts @discussion.first.organizer
-    #puts @discussion.first.id
-    @discussion_room_id = 'room_show'
-    @discussion_templet = @discussion.discussion_templet 
-    @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
-    @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
-
-    @participant = Participant.where('discussion_id = ? and user_id = ?', @discussion.id, current_user.id)
-
-#    @participant_before_check = true
-
-    if @participant.blank?
-      @participant = Participant.new
-      @participant.discussion_id = @discussion.id
-      @participant.user_id = current_user.id
-      @participant.save
-      @participant_before_check = false
-    else
-      @participant_before_check = true
-    end
-
-    # 모든 사람들이 토론방에 참여하기 허용
-    @participant_before_check = true
-
-#      if @participant.save
-#        @participant_before_check = false
-#      end
-#    end
-
-    # 토론방 이력 저장.
-    discussion_history = DiscussionHistory.where('user_id = ? and discussion_id = ?', current_user.id, @discussion.id)
-
-    if discussion_history.count > 0
-      discussion_history[0].discussion_count = discussion_history[0].discussion_count + 1
-      discussion_history[0].save
-    else
-      discussion_history = DiscussionHistory.new
-      discussion_history.user_id = current_user.id
-      discussion_history.discussion_id = @discussion.id
-      discussion_history.discussion_count = 1
-      discussion_history.save
-    end
-    # 토론방 이력 저장 끝.
-
-    render layout: 'mypages'
   end
 
 #  def like
