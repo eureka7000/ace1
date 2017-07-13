@@ -218,7 +218,8 @@ class ContentsController < ApplicationController
         
         if current_user.grade.to_i > 0 && current_user.grade.to_i < 4
             @student = 'middle'
-        elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7
+        #elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7 
+        elsif current_user.grade.to_i > 3 && current_user.grade.to_i < 7 || current_user.grade == nil    # current_user가 학생이 아닌 경우 단위개념 전부 열리도록함
             @student = 'high'
         end
 
