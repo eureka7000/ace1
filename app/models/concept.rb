@@ -7,7 +7,7 @@ class Concept < ActiveRecord::Base
     validates_presence_of :category, :sub_category, :concept_name, :exercise_yn
     
     CATEGORIES = {
-        "c000" => "총괄",
+        "c000" => "총괄/초등수학",
         "c100" => "집합과 명제",
         "c200" => "수와 식",
         "c300" => "방정식과 부등식",
