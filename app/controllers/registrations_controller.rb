@@ -15,7 +15,6 @@ class RegistrationsController < Devise::RegistrationsController
         puts '---------1'
         puts user
         puts user.inspect
-        console.log('안녕하세요.')
     
         # Coupon 적용.
         if coupon_code.blank?
