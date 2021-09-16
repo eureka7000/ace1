@@ -7,7 +7,7 @@ class RegistrationsController < Devise::RegistrationsController
 
     
     def create
-
+        puts '---------bigin'
         super
     
         coupon_code = params[:user][:coupon_code]
