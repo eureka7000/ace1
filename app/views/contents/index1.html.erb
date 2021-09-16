@@ -1,0 +1,290 @@
+<link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons.css" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html">
+<link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
+
+<% if current_user.user_types[0].user_type == 'student' && current_user.grade.nil? %>
+
+    <!-- Modal -->
+    <div class="modal show" id="moveToSettingModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title text-center">
+                        <h4><span style="color:darkred">현재 학년이 설정되어 있지 않습니다!!</span></h4>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h5>
+                        회원정보수정 화면에서 학년 설정이 가능합니다.
+                        <a href="/mypages/user_info">여기</a> 클릭 하시면 회원정보수정 화면으로 이동합니다.
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal END-->
+
+<% else %>
+
+<h3 style="float:left; margin-top: 10px;">
+    <i class="fa fa-delicious"></i><span style="color:red;"> <%= @current_page_name %></span>
+</h3>
+
+<button id="btn_tree" class="btn btn-info btn-sm rounded" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>
+      
+<hr style="clear:both; margin: 0">
+        
+        
+        <div class="col-md-12">    
+    
+            <ul class="row list-row margin-bottom-30">
+            <% idx = 0 %>
+            <% @items.each do | item | %>
+    
+                <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
+        
+                <% if item[:content_yn] %>
+                    <% if item[:exercise_yn] %>
+                            <% if @view_type == '1' %>
+                                <% item_link_str = "/contents/exercise?view_type=#{@view_type}&unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
+                            <% else %>
+                                <% item_link_str = "/contents/exercise?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{item[:level]}&unit_concept_id=#{item[:key]}&exercise_type=#{params[:exercise_type]}" %>
+                            <% end %>
+                    <% else %>
+                            <% if @view_type == '1'%>
+                                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+                            <% else %>
+                                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+                            <% end %>
+                    <% end %>
+            
+                    <% if item[:level].nil? %>
+                    <% item[:level] = 0 %>
+                    <% end %>
+            
+                    <% if item[:level] > 1 && !current_user.can_I_use? %>
+                        <% item_link_str = "javascript:openUserAuthModal()" %> 
+                    <% end %>
+                <% else %>
+                    <% if item[:load_modal] %>
+                        <% item_link_str = "javascript:loadModal(#{item[:key]})" %>
+                    <% else %>    
+                        <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>
+                        <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
+                        <%# item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                            <%# if item[:value] == '종합문제' && @step == 4 %>
+                                <%# item_link_str += "&exercise_type=concept_exercise" %>
+                            <%# end %>
+                        <%# item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{item[:key]}&level=#{@level}&exercise_type=concept_exercise" if @step == 5 && params[:view_type] == '2' %>
+                        <%# item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{@level}&exercise_type=unit_concept_exercise" if @step == 6 && params[:view_type] == '2' %>
+
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&concept_id=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                            <% if item[:value] == '종합문제' && @step == 4 %>
+                                <% item_link_str += "&exercise_type=concept_exercise" %>
+                            <% end %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&concept_id=#{@concept_id}&level=#{@level}&exercise_type=unit_concept_exercise" if @step == 5 && params[:view_type] == '2' %>
+                    <% end %>
+                <% end %>    
+        
+                <li class="col-md-4 md-margin-bottom-30">
+                    <div class="content-boxes-v2 text-center block-grid-v1 rounded">
+                        <a href="<%= item_link_str %>">
+                            <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %>"></i>
+                        </a>
+                        <div class="content-boxes-in-v3">
+                    
+                            <% if item[:level_star_yn] %>
+                                <%= raw item[:level_star] %><br>                    
+                            <% end %>
+                    
+                            <div class="btn-group">
+                                <a href="<%= item_link_str %>" class="btn btn_link" style="font-size: 20px; line-height: 27px;">
+                                    <%= item[:value] %>
+                                    <% unless item[:video_count].nil? %>
+                                        <% unless item[:video_count] == 0 %>
+                                    <i class="fa fa-film tooltips color-brown" data-placement="right" data-toggle="tooltip" title="video 있음"></i>
+                                        <% end %>
+                                    <% end %>
+                                </a>
+                        
+                                <% if item[:drop_down] %>
+                                <button type="button" class="btn btn-link dropdown-toggle" style="font-size: 20px; line-height: 27px;" data-toggle="dropdown">
+                                    <b class="fa fa-caret-down"></b>
+                                </button>    
+                                <% end %>
+                    
+                                <% if item[:drop_down] %>
+                                <ul class="dropdown-menu" role="menu" style="min-width: 200px !important">
+                                <%
+                                    item[:unit_concept_counts].each do | count |
+                                        icon = 'fa-book'
+                                        title = '개념'
+
+                                        if count[:exercise_yn] == "exercise"
+                                            icon = 'fa-jsfiddle'
+                                            title = '유형문제'
+                                        elsif count[:exercise_yn] == "similar exercise"
+                                            icon = 'fa-cloud-upload'
+                                            title = '유사문제'
+                                        end
+                                %>
+                                <li>
+                                    <i class="fa <%= icon %>" style="color:red; margin-left:20px;" title="<%= title %>"></i>
+                                    <span class="item-box">
+                                        <span class="item">&nbsp; &nbsp;
+                                            <% for i in 0..(count[:level]-1) %>
+                                            <i class="fa fa-star"></i>
+                                            <% end %>
+                                            <% for i in count[:level]..4 %>
+                                            <i class="fa fa-star-o"></i>
+                                            <% end %>
+                                        </span>
+                                    </span>
+                                    <span class="badge rounded badge-purple" style="float:right; margin-right: 20px"><%= count[:count] %></span>
+                                </li>
+                                <% end %>
+                                </ul>
+                                <% end %> 
+                        
+                            </div> 
+                    
+                            <% if (params[:view_type] == '1' && @step == 4 && params[:exercise_type] == 'concept_exercise') || (params[:view_type] == '2' && @step == 6) %>
+                            <p class="color-blue">&nbsp;<%= item[:past_test] unless item[:past_test].nil? %></p>        
+                            <% end %>               
+                    
+                        </div>
+                    </div>
+                </li>
+                <% idx += 1 %>
+                <% idx %= 12 %>
+            <% end %>    
+            </ul>        
+            <!-- items end -->
+        </div>    
+  
+        
+
+<% end %><!-- current_user.grade -->
+
+<!-- level_choice_modal -->
+<div class="modal fade" id="level_choice_modal" role="dialog">
+    
+    <div class="modal-dialog modal-md">
+        
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-title text-left">
+
+                    <% if @student  == 'middle' %>
+                        <% if @study_level.to_i == 1 %>
+                            <% levelStr = '초급' %>
+                        <% elsif @study_level.to_i == 2 %>
+                            <% levelStr = '중급' %>
+                        <% else %>
+                            <% levelStr = '상급' %>
+                        <% end %>
+                    <% else %>
+                        <% if @study_level.to_i == 3 %>
+                            <% levelStr = '초급' %>
+                        <% elsif @study_level.to_i == 4 %>
+                            <% levelStr = '중급' %>
+                        <% else %>
+                            <% levelStr = '상급' %>
+                        <% end %>
+                    <% end %>
+
+                    <span class="label rounded-2x label-green">현재 학습수준 :  <%= levelStr %> </span> &nbsp;&nbsp; <span class="label rounded-2x label-aqua text-center">학습수준 선택</span>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <% User::USER_STUDY_LEVELS.each_pair do |key, value| %>
+                        <div class="col-md-4 content-boxes-v6 md">
+                            <% unless @view_type != '1' %>
+                            <a href="javascript:goNext(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                            <% else %>
+                            <a href="javascript:goNext2(<%= key %>)"><i class="rounded-x icon-rocket"></i></a>
+                            <h1 class="title-v3-md text-uppercase margin-bottom-10"><%= value %></h1>
+                            <% end %>
+                        </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var concept_id;
+
+        function goNext(level) {
+
+            var curLevel = level;
+
+            if ("<%= @student %>" == "high") {
+                curLevel = curLevel + 2;
+            }
+
+            var url = "/contents?view_type=<%= @view_type %>&step=<%= @step+1 %>&category=<%= @category %>&sub_category=<%= @sub_category %>&student=<%= @student %>&level=" + curLevel + "&concept_id=" + concept_id;
+
+
+            location = url;
+        }
+
+        function goNext2(level) {
+            
+            var curLevel = level;
+
+            if ("<%= @student %>" == "high") {
+                curLevel = curLevel + 2;
+            }
+
+            var url = "/contents?view_type=<%= @view_type %>&step=<%= @step+1 %>&grade=<%= @grade %>&chapter=<%= @chapter %>&category=<%= @category %>&sub_category=<%= @sub_category %>&concept_id=" + concept_id + "&student=<%= @student %>&level=" + curLevel;
+            location = url;
+        }
+
+    </script>
+
+</div>
+<!-- Modal END-->
+
+<!-- User Auth Modal -->
+<div class="modal fade user_auth_modal in" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="mySmallModalLabel" style="display: none; padding-right: 15px;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 id="myLargeModalLabel3" class="modal-title"><i class="fa fa-exclamation-triangle"></i>Infomation</h4>
+            </div>
+            <div class="modal-body">
+                <p class="color-green">Level 2이상은 결제를 하셔야 이용하실 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+  function loadModal(new_concept_id) {
+    concept_id = new_concept_id;
+    $('#level_choice_modal').modal();
+  }
+  
+  function openUserAuthModal() {
+      $(".user_auth_modal").modal();
+  }
+
+</script>
