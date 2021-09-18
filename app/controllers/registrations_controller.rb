@@ -7,19 +7,19 @@ class RegistrationsController < Devise::RegistrationsController
 
     
     def create
-        puts '---------bigin'
-        logger.debug '******************--------super-bigin'
+        # puts '---------bigin'
+        # logger.debug '******************--------super-bigin'
 
         super
         # @user.skip_confirmation!    # 'mypage에서 인증메일 발송하였습니다. 2일이내에 인증바람'라는 모달 안뜸
 
-        puts '---------super-end'
+        # puts '---------super-end'
     
         coupon_code = params[:user][:coupon_code]
         user = User.find(current_user.id)    
-        puts '---------1'
-        puts user
-        puts user.inspect
+        # puts '---------1'
+        # puts user
+        # puts user.inspect
     
         # Coupon 적용.
         if coupon_code.blank?

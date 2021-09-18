@@ -117,18 +117,18 @@ class User < ActiveRecord::Base
 
     def can_I_use?
         # 전체 free
-        # true
+        true
 
         # level 1 만 볼 수 있도록..결제해야 전체를 볼 수 있음
-        if self.expire_date.nil?
-            false
-        else
-            if self.expire_date > Time.new
-                true
-            else
-                false
-            end
-        end
+        # if self.expire_date.nil?
+        #     false
+        # else
+        #     if self.expire_date > Time.new
+        #         true
+        #     else
+        #         false
+        #     end
+        # end
 
     end
 
