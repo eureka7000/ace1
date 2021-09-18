@@ -11,7 +11,7 @@ class RegistrationsController < Devise::RegistrationsController
         logger.debug '******************--------super-bigin'
 
         super
-        @user.skip_confirmation!    # 'mypage에서 인증메일 발송하였습니다. 2일이내에 인증바람'라는 모달 안뜸
+        # @user.skip_confirmation!    # 'mypage에서 인증메일 발송하였습니다. 2일이내에 인증바람'라는 모달 안뜸
 
         puts '---------super-end'
     
@@ -49,7 +49,9 @@ class RegistrationsController < Devise::RegistrationsController
             end
             
         end
-        user.skip_confirmation!
+        
+        # user.skip_confirmation!     # 'mypage에서 인증메일 발송하였습니다. 2일이내에 인증바람'라는 모달 안뜸
+
         user.save
         
         user_type = UserType.new

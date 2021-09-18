@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
     validates_presence_of :email
     validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
 
-    devise :database_authenticatable, :registerable, :confirmable,
-           :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+    # devise :database_authenticatable, :registerable, :confirmable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable
+    devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable   # 메일 인증 삭제
 
     USER_TYPES = {
         "student"           => "학생",
