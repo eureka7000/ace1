@@ -5,7 +5,7 @@
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="유레카매스는 온라인 중・고등 수학학습 서비스를 제공하는 회사입니다, 맞춤형 수학교육 솔루션, 중학교 수학, 고등학교 수학, 토론수업, 토론식 수학, 토론수학, eureka math, mathmatics, 유레카 메스, 유레카 매스, 수학 동영상 강의 ">
+    <meta name="description" content="유레카매스는 온라인 중・고등 수학학습 서비스를 제공하는 회사입니다, 맞춤형 수학교육 솔루션, 수학, 온라인 수학교육, 온라인 수학, 초등수학, 초등학교 수학,중학교 수학, 고등학교 수학, 토론수업, 토론식 수학, 토론수학, eureka math, mathmatics, 유레카 메스, 유레카 매스, 수학 동영상 강의 ">
     <meta name="author" content="">
 
     <!-- Favicon -->
@@ -166,6 +166,29 @@
             <div class="container">
 
                 <ul class="nav navbar-nav margin-right-10">
+
+                    <li class="<%= 'active' if @active == 'home' %> dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">초등수학</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu">
+                                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;공부방</a>
+                                <ul class="dropdown-menu submenu-left">
+                                    <li><a href="/blogs/recommendation">- 5학년</a></li>
+                                    <li><a href="/blogs/company_introduction">- 6학년</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu">
+                                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;토론방</a>
+                                <ul class="dropdown-menu submenu-right">
+                                    <li><a href="/discussions/discussion_list?dgrade=5">- 5학년 (진행중인 토론방)</a></li>
+                                    <li><a href="/discussions/past_discussions_list?dgrade=5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
+                                    <li><a href="/discussions/discussion_list?dgrade=6">- 6학년 (진행중인 토론방)</a></li>
+                                    <li><a href="/discussions/past_discussions_list?dgrade=6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li class="<%= 'active' if @active == 'home' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>
                         <ul class="dropdown-menu">
