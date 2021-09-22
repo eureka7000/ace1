@@ -167,27 +167,30 @@
 
                 <ul class="nav navbar-nav margin-right-10">
 
-                    <li class="<%= 'active' if @active == 'home' %> dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">초등수학</a>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-submenu">
-                                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;공부방</a>
-                                <ul class="dropdown-menu submenu-left">
-                                    <li><a href="/blogs/recommendation">- 5학년</a></li>
-                                    <li><a href="/blogs/company_introduction">- 6학년</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                                <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;토론방</a>
-                                <ul class="dropdown-menu submenu-right">
-                                    <li><a href="/discussions/discussion_list?dgrade=5">- 5학년 (진행중인 토론방)</a></li>
-                                    <li><a href="/discussions/past_discussions_list?dgrade=5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
-                                    <li><a href="/discussions/discussion_list?dgrade=6">- 6학년 (진행중인 토론방)</a></li>
-                                    <li><a href="/discussions/past_discussions_list?dgrade=6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+            <!-- 초등수학 -->  
+            <li class="<%= 'active' if @active == 'home' %> dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">초등수학</a>
+                <ul class="dropdown-menu">
+                  <li class="dropdown-submenu">
+                    <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;공부방</a>
+                    <ul class="dropdown-menu submenu-left">
+                      <li><a href="/blogs/recommendation">- 5학년</a></li>
+                      <li><a href="/blogs/company_introduction">- 6학년</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown-submenu">
+                    <a href="javascript:void(0);">&nbsp;&nbsp;&nbsp;토론방</a>
+                    <ul class="dropdown-menu submenu-right">
+                      <li><a href="/discussions/discussion_list?dgrade=5">- 5학년 (진행중인 토론방)</a></li>
+                      <li><a href="/discussions/past_discussions_list?dgrade=5">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
+                      <li><a href="/discussions/discussion_list?dgrade=6">- 6학년 (진행중인 토론방)</a></li>
+                      <li><a href="/discussions/past_discussions_list?dgrade=6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( 지난 토론방 )</a></li>
+                    </ul>
+                  </li>
+                </ul>
+            </li>
+            <!-- 초등수학 -->
+
 
                     <li class="<%= 'active' if @active == 'home' %> dropdown">
                         <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">STUDY</a>

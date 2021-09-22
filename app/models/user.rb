@@ -32,9 +32,9 @@ class User < ActiveRecord::Base
     devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :omniauthable   # 메일 인증 삭제
 
     USER_TYPES = {
-        "student"           => "학생",
-        "parent"            => "부모님",
-        "school teacher"    => "학교 선생님",
+        "student"           => "학생 (student)",
+        "parent"            => "부모님 (parent)",
+        "school teacher"    => "학교 선생님 (school teacher)",
         "institute teacher" => "학원 선생님",
         "school manager"    => "학교 관리자",
         "institute manager" => "학원 관리자",
@@ -117,7 +117,7 @@ class User < ActiveRecord::Base
 
     def can_I_use?
         # 전체 free
-        true
+        true   # 모두 사용 가능토록 함 (단, main 화면에서 정회원은 Member, 아니면 Free) 124 ~ 132까지 주석처리함
 
         # level 1 만 볼 수 있도록..결제해야 전체를 볼 수 있음
         # if self.expire_date.nil?

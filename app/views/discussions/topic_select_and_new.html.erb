@@ -35,8 +35,14 @@
                         <section class="col col-3">
                             <label class="label">외부 참가자 Y/N<span style="color: red">*</span></label>
                             <div class="inline-group">
-                                <label class="radio"><input type="radio" name="discussion[observer_yn]" value="Y" <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>><i class="rounded-x"></i>YES</label>
-                                <label class="radio"><input type="radio" name="discussion[observer_yn]" value="N" <%= 'checked' unless @discussion.observer_yn != 'N' %>><i class="rounded-x"></i>NO</label>
+                                <label class="radio">
+                                    <input type="radio" name="discussion[observer_yn]" value="Y" 
+                                    <%= 'checked' if @discussion.observer_yn.nil? %> <%= 'checked' unless @discussion.observer_yn != 'Y' %>>
+                                    <i class="rounded-x"></i>YES</label>
+                                <label class="radio">
+                                    <input type="radio" name="discussion[observer_yn]" value="N" 
+                                    <%= 'checked' unless @discussion.observer_yn != 'N' %>>
+                                    <i class="rounded-x"></i>NO</label>
                             </div>
                         </section>
 
@@ -103,16 +109,20 @@
 
                         <section class="col-md-3">
                             <label class="label">Think time(분)</label>
+                            <%= puts '........................' %>
+                            <%= puts "#{@discussion.think_time}" %>
                             <input type="number" class="form-control" name="discussion[think_time]" value="<%= @discussion.think_time.nil? ? 0 : @discussion.think_time %>">
                         </section>
 
                         <section class="col-md-6 col-sm-6 col-xs-6">
                             <label class="label">토론주제 검색</label>
                             <select class="select2-search-box col-md-6" id="templet_id" name="discussion[discussion_templet_id]">
-                                puts "#{@discussion_templets.count}"
-                                puts '........................'
+                                <%= puts "#{@discussion_templets.count}" %>
+                                <%= puts "#{@discussion_templets.count()}" %>
+                                <%= puts '........................' %>
                                 <% @discussion_templets.each do |discussion_templet| %>
-                                    <option value="<%= discussion_templet.id %>" <%= 'selected' unless discussion_templet.id != @discussion.discussion_templet_id %>><%= discussion_templet.code %> | <%= discussion_templet.unit_concept.name %></option>
+                                    <!-- <option value="<%= discussion_templet.id %>" <%= 'selected' unless discussion_templet.id != @discussion.discussion_templet_id %>><%= discussion_templet.code %> | <%= discussion_templet.unit_concept.name %></option> -->
+                                    <option value="<%= discussion_templet.id %>" <%= 'selected' unless discussion_templet.id != @discussion.discussion_templet_id %>><%= discussion_templet.unit_concept.name %></option>
                                 <% end %>
                             </select>
                         </section>

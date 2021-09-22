@@ -16,6 +16,13 @@ class UserRelation < ActiveRecord::Base
     def get_related_user_name
         User.find(self.related_user_id).user_name
     end
+
+    def get_related_group_name
+        @group_user = GroupsUser.where('user_id = ?', self.related_user_id)
+        @group_id = @group_user[0].group_id
+        @group = Group.where('id = ?', @group_id)
+        @group[0].name
+    end
     
     def self.create_relation(from, target, type)
         

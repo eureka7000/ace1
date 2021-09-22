@@ -13,11 +13,11 @@
     <div class="news-v3-in">
         <ul class="list-inline posted-info">
         <li>By <a href="javascript:getUserProfile(<%= question.user_id %>)"><%= question.user.user_name unless question.user.nil? %></a></li>
-        <li>In <a href="/contents/<%= question.unit_concept_id %>"><%= question.unit_concept.name %></a></li>
+        <li>In <a href="/contents/<%= question.unit_concept_id %>"><%= sanitize(question.unit_concept.name) %></a></li>
         <li>Posted <%=l question.created_at.in_time_zone("Asia/Seoul").to_date, :format => :long %></li>
         </ul>
         
-        <h2><a href="/questions/<%= question.id %>"><%= question.title %></a></h2>
+        <h2><a href="/questions/<%= question.id %>"><%= sanitize(question.title) %></a></h2>
         <p><%= raw question.content.truncate(300) %></p>
         
         <ul class="post-shares">

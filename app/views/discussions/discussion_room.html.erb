@@ -28,6 +28,116 @@
 
 <div class="container container-fluid margin-bottom-50">
 
+    <div class="col-md-12 bg-color-white">
+        <div class="col-md-12 margin-top-20"></div>
+        <div class="col-md-12">
+            <!-- Grey Panel with Equal Height -->
+            <!-- <div class="panel panel-red equal-height-column" style="height: 220px;"> -->
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-tasks"></i> 토론방 개요</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <p>
+                            <strong>개설자 : </strong>
+                                <% if @discussion.organizer_type == 'admin' %>
+                                    <span style="color:#5aa0f8"><%= Admin.find(@discussion.organizer).name %></span>
+                                <% else %>
+                                    <span style="color:#5aa0f8"><%= User.find(@discussion.organizer).user_name %></span>
+                                <% end %>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론방 리더 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.user.user_name %> <%= "(#{User::USER_TYPES[@discussion.user.user_types.first.user_type]})" %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <% @sub_leader = User.find(@discussion.sub_leader) %>
+                        <p>
+                            <strong>토론방 부리더 : </strong>
+                                <span style="color:#5aa0f8"><%= @sub_leader.user_name %> <%= "(#{User::USER_TYPES[@sub_leader.user_types.first.user_type]})" %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3"> 
+                        <p>
+                            <strong>운영타입 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.manage_type %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>외부 참가 여부 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.observer_yn == 'Y' ? 'YES' : 'NO' %>
+                                    <%= " (#{@discussion.observer_yn == 'N' ? Group.find(@discussion.group_id).name : ""})" %>
+                                </span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 시작일 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.start_date %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 종료일 : </strong>
+                            <span style="color:#5aa0f8"><%= @discussion.expiration_date %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 참가자 수 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.participants.count %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>대상 학년 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.discussion_templet.grade %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>문제 수준(Level) : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.discussion_templet.level %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>Think Time(분) : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.think_time %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            <strong>핵심 개념 : </strong>
+                                <span style="color:#5aa0f8"><%= @unit_concept.name %></span>
+                                (<% (1..@unit_concept.level).each do |idx| %>
+                                    <i class="fa fa-star" style="color: red"></i>
+                                <% end %>
+                                <% (1..5-@unit_concept.level).each do |idx| %>
+                                    <i class="fa fa-star-o" style="color: red"></i>
+                                <% end %>)
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            <strong>관련 개념 : </strong>
+                                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
+                                    <span style="color:#5aa0f8"><%= discussion_title_explanation.unit_concept.name %></span>
+                                    <span style="color:red"><%= '  |  ' %></span>
+                                <% end %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <!-- End Grey Panel with Equal Height -->
+        </div>
+
+<!-- 
     <div class="blog-post-tags">
         <ul class="list-unstyled list-inline blog-info">
             <li><i class="fa fa-uesr"></i>방장 : <span style="color: #33b2f8"><%= @discussion.user.user_name %></span> 선생님</li>
@@ -46,178 +156,216 @@
             <span style="color:#5aa0f8">|</span>
             <li>관련개념 : </li>
                 <% @discussion.discussion_templet.discussion_title_explanations.each do |discussion_title_explanation| %>
-                    <%= discussion_title_explanation.unit_concept.name %>
+                    <span style="color: #55b3f8"><%= discussion_title_explanation.unit_concept.name %></span>
                         <span style="color:red"><%= ' | ' %></span>
                 <% end %>
             <span style="color:#5aa0f8">|</span>
             <li>참가학년 : </li>
             <% @discussion.discussion_templet.grade.split(',').each do |grade| %>
-                <a><%= grade %></a>
+                <span style="color: #55b3f8"><%= grade %></span>
             <% end %>
         </ul>
     </div>
-
-    <!--주제-->
-    <div class="row blog-page">
-        <div class="col-md-12 margin-top-20">
-            <!--<h2>주제 : <em><%= @discussion.discussion_templet.title %></em></h2>-->
-            <h3>* 토론 주제</h3><br>
-            <span class="title"><%== @discussion.discussion_templet.title %></span></h2>
-        </div>
-    </div>
-        <hr>
-
-    <!--본문 내용-->
-    <div class="row">
-        <div class="col-md-12">
-            <h3>* 토론 문제</h3><br>
-            <%== @discussion.discussion_templet.content %>
-        </div>
-    </div>
-
-        <hr>
-        <!--개념 해설-->
-        <div class="row margin-top-50">
-            <div class="col-md-12">
-                <h3>* 토론문제 발문 및 관련개념 </h3><br><br>
-                <% unless @discussion.discussion_templet.discussion_title_explanations.blank? %>
-                <div class="row sky-form" style="border: none">
-                    <% @discussion.discussion_templet.discussion_title_explanations.each do |discussion_title_explanation| %>
-                        <div class="row col-md-12">
-                            <div class="inline-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 title">
-                                    <%== discussion_title_explanation.content %>
-                                </div>
-                                <!--<div class="col-md-6 col-sm-6 col-xs-12 title">-->
-                                    <%#== discussion_title_explanation.unit_concept.name %>
-                                    <!--<button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')"><%== discussion_title_explanation.unit_concept.name %></button>-->
-                                <!--<</div>-->
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="easy" checked=""><i class="rounded-x"></i>쉬움</label>
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="normal"><i class="rounded-x"></i>보통</label>
-                                    <label class="radio"><input type="radio" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="difficult"><i class="rounded-x"></i>어려움</label>
-                                    <div>
-                                        <button class="btn btn-windows btn-xs rounded" id="btn_<%= discussion_title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= discussion_title_explanation.id %>')">Save</button>
-                                        <button class="btn btn-dropbox btn-xs rounded" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')">개념보기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    <% end %>
-                </div>
-                <% end %>
-            </div>
-        </div>
-
-    <!--개념 설명-->
-        <hr>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>* 문제풀이 가이드</h3><br>
-                <% unless @discussion.discussion_templet.concept_explanation.blank? %>
-                <%== @discussion.discussion_templet.concept_explanation %>
-                <% end %>
-            </div>
-        </div>
-
-    <div hidden id="timer">
-        <!--문제풀이-->
-            <hr>
-
-            <div class="row sky-form" style="border: none">
-                <div class="col-md-12 no-padding no-margin">
-                    <h3>* 문제풀이</h3><br>
-                <% unless @discussion.discussion_templet.discussion_solutions.blank? %>
-                    <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
-                        <div class="inline-group">
-                            <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
-                                <%== discussion_solution.content %>
-                            </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
-                                <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="Y" checked=""><i class="rounded-x"></i>YES</label>
-                                <label class="radio"><input type="radio" name="solution_radio_<%= discussion_solution.id %>" value="N"><i class="rounded-x"></i>NO</label>
-                                <label class="radio"><button class="btn btn-windows btn-sm rounded" id="solution_btn_<%= discussion_solution.id %>" onclick="saveSolutionHistory('<%= discussion_solution.id %>')">Save</button></label>
-                            </div>
-                            <hr>
-                        </div>
-                        <hr>
-                    <% end %>
-                <% end %>
-                </div>
-            </div>
-
-        <!--해답-->
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>* 해답</h3><br>
-                <% unless @discussion.discussion_templet.answer.blank? %>
-                    <%== @discussion.discussion_templet.answer %>
-                <% end %>
-                </div>
-            </div>
-
-        <!--video-->
-            <hr>
-
-            <div class="row sky-form" style="border: none">
-                <div class="col-md-12 no-padding no-margin">
-                    <h3>* video</h3>
-                <% unless @discussion.discussion_templet.discussion_videos.blank? %>
-                    <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
-                        <div class="inline-group">
-                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
-                                <%== discussion_video.content %>
-                            </div>
-                            <hr>
-                        </div>
-                    <% end %>
-                <% end %>
-                </div>
-            </div>
-
-        <!--토론문제 조건 변경 및 해답-->
-            <hr>
-
-            <div class="row sky-form" style="border: none">
-                <div class="col-md-12 no-padding no-margin">
-                    <h3>* 토론문제 조건 변경 및 해답</h3><br>
-                <% unless @discussion.discussion_templet.discussion_problem_conditions.blank? %>
-                    <% @discussion.discussion_templet.discussion_problem_conditions.each do |discussion_problem_condition| %>
-                        <div class="inline-group">
-                            <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
-                                <span class="title"><%== discussion_problem_condition.problem_condition %></span>
-                            </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12 no-padding no-margin">
-                                <span class="title"><%== discussion_problem_condition.condition_answer %></span>
-                            </div>
-                        </div>
-                        <hr>
-                    <% end %>
-                <% end %>
-                </div>
-            </div>
-
-        <!--중간보고서-->
-        <%# unless @discussion.interim_report.blank? %>
-            <!--<hr>-->
-
-            <!--<div class="row">-->
-                <!--<div class="col-md-12">-->
-                    <!--<h3>* 중간 보고서</h3>-->
-                    <%#== @discussion.interim_report %>
-                <!--</div>-->
-            <!--</div>-->
-        <%# end %>
-
+-->
         
-        <!--댓글달기-->
+
+        <!--문제 관련 버튼들 및 관련 이미지-->
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 주제 버튼-->
+            <button class="btn-u rounded btn-u-blue margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion1')"> 토론 주제</button><br>
+            <!-- <div class="col-md-12 margin-top-20 margin-left-20"></div> -->
+            <div class="discussion1">
+                <div class="col-md-12 margin-top-20"></div>
+                <span class="title">
+                            <%== @discussion.discussion_templet.title %>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 버튼-->
+            <button class="btn-u rounded btn-u-purple margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion2')"> 토론 문제</button><br>
+            <span class="discussion2 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <%== @discussion.discussion_templet.content %>
+            </span>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 발문 및 관련 개념 버튼-->
+            <button class="btn-u rounded btn-u-yellow margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion3')">토론 문제 발문 및 관련 개념</button><br>
+            <span hidden class="discussion3 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                <div class="col-md-12">
+                <div class="panel panel-yellow margin-bottom-40">
+                        <!-- <div class="panel-heading"> -->
+                            <!-- <h3 class="panel-title"><i class="fa fa-tasks"></i> 토론 문제 발문 및 관련 개념</h3> -->
+                        <!-- </div> -->
+                        <div class="panel-body">
+                            <p>선생님께서 이번 토론 문제를 풀기 전에 학생들이 알아야 할 사항이나 질문을 발문 형식으로 제시하였으며, 아래 관련 개념 버튼을 누르면 해당 개념을 공부할 수 있고, 자기 평가도 할 수 있습니다.</p>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <!-- <th class="col-md-1">No</th> -->
+                                    <th class="col-md-3">발    문</th>
+                                    <th class="col-md-3">관련 개념</th>
+                                    <th class="col-md-5">
+                                        <span>자기 평가</span>
+                                        <span><input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></span>
+                                    </th>
+                                    <th class="col-md-1">자기평가저장 </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% unless @discussion_title_explanations.blank? %>
+                                <% number = 1 %>
+                                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
+                                        <tr>
+                                            <!-- <td><%= number %></td> -->
+                                            <td>
+                                                <%== discussion_title_explanation.content %>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info btn-xs" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')"> <%== discussion_title_explanation.unit_concept.name %></button>
+                                            </td>
+                                            <td>
+                                                <form>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" id="evaluation_easy_<%= discussion_title_explanation.id %>" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="easy">쉬움
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" id="evaluation_normal_<%= discussion_title_explanation.id %>" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="normal">보통
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" id="evaluation_difficult_<%= discussion_title_explanation.id %>" name="title_explanation_radio_<%= discussion_title_explanation.id %>" value="difficult">어려움
+                                                    </label>
+                                                </form>
+                                                <div class="row sky-form" style="border: none">
+                                                    <br>
+                                                    <form>
+                                                        <textarea class="title_explanation_comment_summernote" id="evaluation_comment_<%= discussion_title_explanation.id %>" name="title_explanation_comment_<%= discussion_title_explanation.id %>"></textarea>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-windows btn-xs rounded radio-inline" id="btn_<%= discussion_title_explanation.id %>" onclick="saveTitleExplanationHistory('<%= discussion_title_explanation.id %>')"> 저장</button>
+                                            </td>
+                                        </tr>
+                                    <% number += 1 %>
+                                <% end %>
+                            <% end %>
+                            </tbody>
+                        </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--문제 풀이 가이드 버튼-->
+            <button class="btn-u rounded btn-u-green margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion4')">문제 풀이 가이드</button><br>
+            <span hidden class="discussion4 margin-top-20">
+                <%== @discussion.discussion_templet.concept_explanation %>
+            </span>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--문제 풀이 버튼-->
+            <button class="btn-u rounded btn-u-default margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion5')">문제 풀이</button><br>
+            <span hidden class="discussion5 margin-top-20">
+                <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
+                    <%== discussion_solution.content %>
+                    <hr>
+                <% end %>
+            </span>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--해답 버튼-->
+            <button class="btn-u rounded btn-u-orange margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion6')">해답</button><br>
+            <span hidden class="discussion6 margin-top-20">
+                <!-- <div class="col-md-12 margin-top-20"></div> -->
+                    <%== @discussion.discussion_templet.answer %>
+            </span>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--Video 버튼-->
+            <button class="btn-u rounded btn-u-brown margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion7')">Video</button><br>
+            <span hidden class="discussion7 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <% unless @discussion.discussion_templet.discussion_videos.blank? %>
+                        <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
+                            <div class="inline-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <%== discussion_video.content %>
+                                </div>
+                                <hr>
+                            </div>
+                        <% end %>
+                    <% end %>
+            </span>
+        </div>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 조건 변경 및 해답 버튼-->
+            <button class="btn-u rounded btn-u-aqua margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion8')">토론 문제 조건 변경 및 해답</button><br>
+            <span hidden class="discussion8 margin-top-20">
+                <br><br><br>
+                <div class="panel panel-aqua margin-bottom-40">
+                        <!-- <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-globe"></i> </h3>
+                        </div> -->
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1">No</th>
+                                        <th class="col-md-8">토론문제 조건 변경 내용</th>
+                                        <th class="col-md-3">해답</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% unless @discussion_title_explanations.blank? %>
+                                        <% number = 1 %>
+                                        <% @discussion_problem_conditions.each do |discussion_problem_condition| %>
+                                            <tr>
+                                                <td><%= number %></td>
+                                                <td><span class="title"><%== discussion_problem_condition.problem_condition %></span></td>
+                                                <td><span class="title"><%== discussion_problem_condition.condition_answer %></span></td>
+                                            <% number += 1 %>
+                                        <% end %>
+                                    <% end %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </span>
+        </div>
+
+        <!--의견 달기-->
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--댓글 버튼-->
+            <button class="btn-u rounded btn-u-red margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion9')">의견 달기</button><br>
+            <span class="discussion9 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <div class="row">
         <hr>
+
         <div class="row sky-form" style="border: none">
             <div class="col-md-12 no-padding no-margin">
-                <div class="label"><h3>* 의견 달기</h3><span></span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
-                <br>
+                <!-- <div class="label"><h3>* 의견 달기</h3> -->
+                    <span></span> <input type="button" class="btn btn-google rounded btn-xs pull-right" value="수식편집 참고" onclick="asciiMove()"></div>
+                <br><br>
                 <form action="/discussion_reply" id="discussion_reply" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
                     <%= token_tag nil %>
                     <input hidden name="discussion_reply[discussion_id]" value="<%= @discussion.id %>">
@@ -228,7 +376,7 @@
                     <textarea class="post_reply_summernote" id="post_reply" name="discussion_reply[comment]"></textarea>
                     <input type="button" class="btn btn-windows col-md-12 col-sm-12 col-xs-12 rounded" onclick="commentFilter('post_reply')" value="의견 저장">
                 </form>
-            </div>
+        </div>
         </div>
 
         <div hidden id="dialog-1" >
@@ -236,8 +384,10 @@
         </div>
 
         <!--댓글 나열-->
-        <hr>
+
+        
         <div class="row">
+            <br><br><br>
             <div class="col-md-12 margin-bottom-50">
                 <h3>* 댓글 </h3>
                 <% unless @discussion_replies.blank? %>
@@ -444,24 +594,21 @@
 
             </div>
         </div>
-
-        <!--asciimath-->
-            <!--<div id="dialog" title="Basic dialog">-->
-                <!--<img alt="asciimath" src="/assets/img/asciimath.png" class="img-responsive center-block">-->
-            <!--</div>--> 
-        <!--asciimath-->
+        </span>
+        </div>
 
         <!--종합 의견-->
-            <hr>
 
-            <div class="row sky-form" style="border: none">
-                <div class="col-md-12 no-padding no-margin">
-                    <div class="label title"><h3>* 종합 의견</h3><br>
-                        <span class="title"><%== @discussion.final_report unless @discussion.final_report.nil? %></span>
-                    </div>
-                </div>
-            </div>
-
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--종합 의견 버튼-->
+            <button class="btn-u rounded btn-u-dark margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion10')">종합 의견</button><br>
+            <span hidden class="discussion10 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <span class="title"><%== @discussion.final_report unless @discussion.final_report.nil? %></span>
+            </span>
+        </div>
+        <div class="col-md-12 margin-top-20">
             <hr>
                 <% if @discussion_room_id == 'room_participant' %>
                     <%= puts @discussion_room_id %>
@@ -471,13 +618,15 @@
                     <%= puts '-----------22222222' %>
                     <a href="/mypages/discussion_management"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
                 <% end %>
-            
+        </div>
     </div>
 </div>
 
 
 
+
 <style>
+
 span.title {
     font-size: 18px;
 }
@@ -503,6 +652,18 @@ button.null_button {
 }
 
 </style>
+
+
+<script type="text/javascript">
+    function show_images(class_value) {
+        if(class_value == 'video_lecture'){
+            $(".exercise_main").toggle();
+        }
+
+        $('.'+class_value).toggle();
+    }
+
+</script>
 
 
 <!--asciimath modal-->
@@ -569,6 +730,23 @@ button.null_button {
 
     $(document).ready(function() {
         var discussion_r_id = '';
+    });
+
+    $(document).ready(function() {
+        $('.title_explanation_comment_summernote').summernote({
+            height: 50,
+            toolbar: [
+                ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen']],
+                ['help', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable, this.id);
+                }
+            }
+        });
     });
 
     $(document).ready(function() {
@@ -641,6 +819,17 @@ button.null_button {
 
     function saveTitleExplanationHistory(id) {
 
+        if ( !$('#evaluation_easy_'+id).is(":checked") && !$('#evaluation_normal_'+id).is(":checked") && !$('#evaluation_difficult_'+id).is(":checked") ) {
+                alert('난이도를 선택하세요.');
+                // $('#loading').hide();
+                return false;
+            } 
+            else if ( $('#evaluation_comment_'+id).val() == '') {
+                alert('comment를 입력하세요.');
+                // $('#loading').hide();
+                return false;
+            }
+
         var radioName = document.getElementsByName('title_explanation_radio_'+id);
 
         var radioValue = '';
@@ -651,9 +840,14 @@ button.null_button {
             }
         }
 
+        var commentName = document.getElementsByName('title_explanation_comment_'+id);
+        var commentValue = '';
+        commentValue = commentName[0].value
+
         var data = new FormData();
         data.append("title_explanation_yn", radioValue);
         data.append('title_explanation_id', id);
+        data.append('title_explanation_comment', commentValue);
         document.getElementById("btn_"+id).disabled = true;
         $.ajax({
             data: data,
@@ -883,4 +1077,14 @@ button.null_button {
     $('#timer').show();
     <% end %>
 
+</script>
+
+
+
+<script type="text/javascript">
+    function videoPause(){
+        var iframe = $('#vimeo-player')[0];
+        var player = $f(iframe);
+        player.api('pause');
+    }
 </script>

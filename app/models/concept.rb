@@ -30,7 +30,13 @@ class Concept < ActiveRecord::Base
     ]    
     
     SUB_CATEGORIES = {
-        "c010" => "수학 전반",
+        "c010" => "수학 전반/수의 체계",
+        "c020" => "수의 연산",
+        "c040" => "평면도형",
+        "c050" => "입체도형",
+        "c060" => "측정 : 양의 측정",
+        "c080" => "규칙성과 대응",
+        "c090" => "자료와 가능성",
         "c110" => "집합",
         "c130" => "명제",
         "c210" => "자연수",
@@ -100,7 +106,7 @@ class Concept < ActiveRecord::Base
         2 => "Explanation",
         3 => "Solution",
         4 => "Video",
-        5 => "link",
+        5 => "Link",
         7 => "Answer"
     }
     

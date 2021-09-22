@@ -29,8 +29,8 @@
                                     <table class="table table-bordered table-striped" style="clear: both">
                                     <thead>
                                     <tr>
-                                    <th>개념</th>
-                                    <th>유닛개념</th>
+                                    <!-- <th>개념</th> -->
+                                    <th>학습개념</th>
                                     <th>전체 진행도</th>
                                     <th>개념</th>
                                     <th>개념해설</th>
@@ -117,7 +117,7 @@
                                             end
                                     %>
                                     <tr>
-                                    <td><%= study_history.concept_name %></td>
+                                    <!-- <td><%= study_history.concept_name %></td> -->
                                     <td><%= study_history.unit_concept_name %></td>
                                         <td>
                                             <!--전체 진행도-->
@@ -179,7 +179,7 @@
                                                        status_str = '자기평가 보기'
                                                 end %>
                                                 <div class="progress-bar progress-bar-<%= status_str == '자기평가 보기' ? 'success' : 'warning' %>" role="progressbar" aria-valuenow="<%= concept_self_evaluation_per %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= concept_self_evaluation_per %>%">
-                                                    <div onclick="self_evaluation_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>')"><%= status_str %></div>
+                                                    <div class="grow" onclick="self_evaluation_show('<%= params[:user_id] %>', '<%= study_history.unit_concept_id %>')"><%= status_str %></div>
                                                 </div>
                                             </div>
                                         </td>

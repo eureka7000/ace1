@@ -94,7 +94,7 @@ class QuestionsController < ApplicationController
                         # Sening SMS
                         unless related_teacher.phone.blank?
                             message = "#{current_user.user_name} 학생이 선생님에게 질문한 내용이 유레카매스에 등록되었습니다."
-                            TwilioSms.sendSMS("+82"+related_teacher.phone, message)
+                            #TwilioSms.sendSMS("+82"+related_teacher.phone, message)
                         end
                     end
                 end

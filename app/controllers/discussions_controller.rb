@@ -50,7 +50,8 @@ class DiscussionsController < ApplicationController
 
       # sub_leader.user_id != @discussion.sub_leader
 
-      @discussion_templets = DiscussionTemplet.all
+      # @discussion_templets = DiscussionTemplet.all
+      @discussion_templets = DiscussionTemplet.where('id > ?', 0).order(:created_at => :desc)
       puts current_user.user_types.count
       if current_user.user_types[0].user_type == 'school teacher'
         @manage_type = '학교'
@@ -117,12 +118,14 @@ class DiscussionsController < ApplicationController
   def save_title_explanation_history
     title_explanation_yn = params[:title_explanation_yn]
     title_explanation_id = params[:title_explanation_id]
+    title_explanation_comment = params[:title_explanation_comment]
 
     @discussion_title_explanation_history = DiscussionTitleExplanationHistory.new
 
     @discussion_title_explanation_history.user_id = current_user.id
     @discussion_title_explanation_history.discussion_title_explanation_id = title_explanation_id
     @discussion_title_explanation_history.know_yn = title_explanation_yn
+    @discussion_title_explanation_history.comment = title_explanation_comment
 
     if @discussion_title_explanation_history.save
       ret = { status: "ok" }
@@ -141,8 +144,16 @@ class DiscussionsController < ApplicationController
     @organizer = @discussion.organizer
     puts @current_user_id
     puts @organizer
+    @unit_concept = UnitConcept.find(@discussion.discussion_templet.unit_concept_id)
+    puts @unit_concept.name
+    puts  @discussion.discussion_templet_id
+    @discussion_title_explanations = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
+    puts @discussion_title_explanations.first
+    puts @current_user_id
+
     @discussion_room_id = params[:discussion_room_id]
     @discussion_templet = @discussion.discussion_templet 
+    @discussion_problem_conditions = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion.discussion_templet_id)
     @discussion_problem_condition = @discussion.discussion_templet.discussion_problem_conditions.first
     @discussion_replies = DiscussionReply.where('discussion_id = ? and group_id = ?', @discussion.id, 0)
 
@@ -248,10 +259,17 @@ class DiscussionsController < ApplicationController
 
   def discussion_list
     leader = params[:leader]
+    puts leader
+    puts '-------'
+    puts params
+    puts '-------'
     unless leader.blank?
+      puts '111'
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:id => :desc)
     else
+      puts '222'
       @discussions = Discussion.where('expiration_date >= ? and start_date <= ?', Date.today, Date.today).order(:id => :desc)
+      puts @discussions.count
     end
 
     @leaders = Discussion.where('expiration_date >= ?', Date.today).select(:user_id).distinct
@@ -263,8 +281,8 @@ class DiscussionsController < ApplicationController
     leader = params[:leader]
     unless leader.blank?
       @discussions = Discussion.where('expiration_date <= ? and start_date <= ? and user_id = ?', Date.today, Date.today, leader).order(:created_at => :desc)
-      else
-        @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
+    else
+      @discussions = Discussion.where('expiration_date < ?', Date.today).order(:created_at => :desc)
     end
 
     @leaders = Discussion.where('expiration_date < ?', Date.today).select(:user_id).distinct
@@ -576,7 +594,6 @@ class DiscussionsController < ApplicationController
         unless @discussion_problem_conditions.blank?
           count = 0
           (0..@discussion_problem_conditions.count).each do |idx|
-            logger.info "###########    #{@discussion_problem_conditions[count]}, #{@condition_answers[count]}    ############"
 
             unless @discussion_problem_conditions[count].blank?
               @discussion_problem_condition = DiscussionProblemCondition.new
@@ -632,9 +649,7 @@ class DiscussionsController < ApplicationController
   # PATCH/PUT /discussions/1
   # PATCH/PUT /discussions/1.json
   def update
-    puts params
     @discussion_templet = @discussion.discussion_templet
-    puts @discussion_templet.id
     discussion_image_ids = params[:discussion_image_id]
 
     # nested params coding for save discussion_title_explanation
@@ -664,7 +679,6 @@ class DiscussionsController < ApplicationController
         unless @discussion_title_explanations.blank?
           count = 0
           (0..@discussion_title_explanations.count).each do |idx|
-            logger.info "###########    #{@discussion_title_explanations[count]}, #{@discussion_title_explanation_unit_concept_ids[count]}    ############"
             unless @discussion_title_explanations[count].blank?
               #@discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ? and  unit_concept_id = ?', @discussion_templet.id, @discussion_title_explanation_unit_concept_ids[count])
               @discussion_title_explanation = DiscussionTitleExplanation.where('discussion_templet_id = ?', @discussion_templet.id)
@@ -687,7 +701,6 @@ class DiscussionsController < ApplicationController
         unless @discussion_problem_conditions.blank?
           count = 0
           (0..@discussion_problem_conditions.count).each do |idx|
-            logger.info "###########    #{@discussion_problem_conditions[count]}, #{@condition_answers[count]}    ############"
             unless @discussion_problem_conditions[count].blank?
               @discussion_problem_condition = DiscussionProblemCondition.where('discussion_templet_id = ?', @discussion_templet.id)
               unless @discussion_problem_condition[count].blank?

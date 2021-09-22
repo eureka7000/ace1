@@ -44,7 +44,8 @@
                         <div class="service-block-v3 service-block-blue" onclick="go_discussion_room('<%= @discussion_rooms.blank? ? '' : @discussion_rooms.last.discussion_id %>')">
                             <i class="icon-education-024"></i>
                             <span class="service-heading">최근 참여한 토론방</span>
-                            <h3 style="color: white"><%= @discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.discussion_templet.title %></h3>
+                            <!-- <h3 style="color: white"><%= sanitize(@discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.discussion_templet.title) %></h3> -->
+                            <h3 style="color: white"><%= sanitize(@discussion_rooms_title) %></h3>
 
                             <!--<div class="statistics">-->
                                 <!--<h3 class="heading-xs">최근 토론의 참여도 <span class="pull-right">0%</span></h3>-->
@@ -65,7 +66,7 @@
                                 </div>
                                 <div class="col-xs-6 text-right service-in">
                                     <small>참여한 토론 수</small>
-                                    <h4 class="counter"><%= @discussion_rooms.distinct(:discussion_id).count %></h4>
+                                    <h4 class="counter"><%= @discussion_rooms_total.distinct(:discussion_id).count %></h4>
                                 </div>
                             </div>
                         </div>
@@ -91,7 +92,7 @@
                                         <div class="profile-post color-<%= Question::QUESTION_COUNT[number] %>">
                                             <span class="profile-post-numb">0<%= number %></span>
                                             <div class="profile-post-in">
-                                                <h3 class="heading-xs"><a href="/questions/<%= question.id %>"><%= question.title %></a></h3>
+                                                <h3 class="heading-xs"><a href="/questions/<%= question.id %>"><%= sanitize(question.title) %></a></h3>
                                                 <p><%== question.content.truncate(65) %> <span class="badge rounded badge-<%= 'red' unless question.confirm_yn != 'N' %><%= 'u' unless question.confirm_yn != 'Y' %>"><%= question.confirm_yn %></span></p>
                                             </div>
                                         </div>
@@ -124,7 +125,7 @@
                                             <!--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>-->
                                             <img class="rounded-x" src="<%= discussion_room.discussion.user.user_img.blank? ? '/assets/img/user_default_img.png' : discussion_room.discussion.user.user_img %>">
                                             <div class="overflow-h">
-                                                <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= discussion_room.discussion.discussion_templet.title %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
+                                                <strong class="color-<%= Discussion::OVERALL_COLOR_2[color] %>"><%= sanitize(discussion_room.discussion.discussion_templet.title) %><small class="pull-right"><em><button class="btn btn-pinterest rounded btn-xs" onclick="go_discussion_room(<%= discussion_room.discussion_id %>)">move</button></em></small></strong>
                                                 <p>참가자 수: <%= discussion_room.discussion.participants.count %> &nbsp;&nbsp;댓글 수: <%= discussion_room.discussion.discussion_replies.count %> &nbsp;&nbsp;likes: <%= discussion_room.discussion.like.nil? ? '0' : discussion_room.discussion.like %></p>
                                             </div>
                                         </div>
@@ -292,7 +293,7 @@
                 <% unless current_user.user_types[0].user_type != 'student' %>
                 <!--Table Search v1-->
                 <div class="panel-heading overflow-h">
-                    <h2 class="panel-title heading-sm pull-left"><i class="fa fa-pencil-square-o"></i>개념 자기평가</h2>
+                    <h2 class="panel-title heading-sm pull-left"><i class="fa fa-pencil-square-o"></i>개념학습 및 자기평가</h2>
                     <a href="/mypages/evaluation" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>
                     <!--<a href="/mypages/user_info" class="btn-u btn-brd btn-brd-hover btn-u-dark btn-u-xs pull-right">View All</a>-->
                 </div>
@@ -305,8 +306,8 @@
                                 <th class="hidden-sm">개념</th>
                                 <th>하위개념</th>
                                 <th>진행도</th>
-                                <th>메모</th>
-                                <th style="width: 100px;">Status</th>
+                                <th style="width: 100px;">자기평가</th>
+                                <th>자기평가 세부내용</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -325,9 +326,6 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span><%= self_eavaluation.comment %></span>
-                                        </td>
-                                        <td>
                                             <% if self_eavaluation.evaluation == 'difficult' %>
                                                 <button class="btn-u btn-block btn-u-red btn-u-xs"><i class="fa fa-level-up margin-right-5"></i><%= self_eavaluation.evaluation %></button>
                                             <% elsif self_eavaluation.evaluation == 'easy' %>
@@ -335,6 +333,9 @@
                                             <% elsif self_eavaluation.evaluation == 'normal' %>
                                                 <button class="btn-u btn-block btn-u-yellow btn-u-xs"><i class="fa fa-arrows-v margin-right-5"></i><%= self_eavaluation.evaluation %></button>
                                             <% end %>
+                                        </td>
+                                        <td>
+                                            <span><%= sanitize(self_eavaluation.comment) %></span>
                                         </td>
                                     </tr>
                                 <% end %>

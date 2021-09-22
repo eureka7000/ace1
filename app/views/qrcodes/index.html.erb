@@ -1,0 +1,102 @@
+<!--<p id="notice"><%= notice %></p>
+
+<h1>Listing Qrcodes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @qrcodes.each do |qrcode| %>
+      <tr>
+        <td><%= qrcode.url %></td>
+        <td><%= link_to 'Show', qrcode %></td>
+        <td><%= link_to 'Edit', edit_qrcode_path(qrcode) %></td>
+        <td><%= link_to 'Destroy', qrcode, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <a class="text-blue" href="<%= qrcode.url %>">
+                  <span class="label rounded-2x label-blue" style="margin-left: 5px">QRcode</span>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+<br>
+
+<%= link_to 'New Qrcode', new_qrcode_path %>-->
+<!--<div class="qr-container" style="height: 300px; width: 200px;">-->
+
+<div style="height: 100px;">
+
+      <!-- Logo -->
+      <a class="logo" >
+        <img src="/assets/img/logo.jpg" alt="Logo" class="img-responsive" style="margin-left: 10px; margin-top: 30px;">
+      </a>
+      <!-- End Logo -->
+</div>
+<div class="qr-container" style="height: 300px; width: 90%;">
+  <div style="height: 20%; width: 90%;"> </div>
+  <% @qrcodes.each do |qrcode| %>
+          <a class="text-blue" href="<%= qrcode.url %>">
+                  <span class="label rounded-2x label-green qrcode-style" style="margin-left: 0%; margin-top: 100px;">QR code</span>
+          </a>
+          <br></br>
+          <span class="" style="margin-left: 55%; margin-top: 200px;">Click 하세요!</span>
+  <% end %>
+
+</div>
+<script>
+
+    $(document).ready(function() {
+        var wid = $(window).width();
+        var hei = $(window).height();
+        console.log(wid);
+        console.log(hei);
+
+
+    if (wid < 650) {
+        $('.container').css({'display':'none'});
+        $('.navbar-toggle').css({'display':'none'});
+    }
+    });
+
+</script>
+
+<style>
+span.label {
+    font-size: 30px;
+    font-weight: 400;
+    padding: 4px 7px;
+}
+.qrcode-style {
+    
+  margin-top: 100px;
+  margin-left: 100px;
+}
+.text-blue {  
+  margin-top: 50%;
+  margin-left: 50%;
+}
+.bqrcode {
+  z-index: 5;
+  color: #eee;
+  width: 45px;
+  height: 45px;
+  font-size: 30px;
+  margin-top: -22px;
+  position: absolute;
+  text-align: center;
+  display: inline-block;
+  border: 2px solid #eee;
+  background: rgba(0,0,0,0.1);
+}
+</style>
+
+

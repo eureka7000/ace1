@@ -16,12 +16,227 @@
                     </ul>
                     
                     <div class="tab-content">
-                        
+
                         <hr class="devider devider-dotted" style="margin:10px">
+
+                        <!--group-->
+                        <div class="profile-edit tab-pane fade in active">
+
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-finance-005"></i> 그룹 설정</h3>
+
+                            <div class="table-search-v1 margin-bottom-50">
+
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>그룹이름</th>
+                                            <th class="text-center">인원</th>
+                                            <th class="text-center"><i class="fa fa-cog"></i></th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        <% unless @groups.blank? %>
+                                            <% @groups.each do |group| %>
+                                                <input hidden type="text" value="<%= group.name %>" id="preserved_<%= group.id %>">
+                                                <tr>
+                                                    <td id="group_name_<%= group.id %>"><strong onclick="updateGroupName( '<%= group.id %>', '<%= group.name %>')"><%= group.name %></strong></td>
+                                                    <td class="text-center"><%= group.users.count() %></td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-podcast btn-xs rounded" onclick="showGroup('/mypages/show_groups?group_id=<%= group.id %>')">보기</button>
+                                                        <button class="btn btn-dribbble btn-xs rounded" onclick="destroyGroup('<%= group.id %>')">삭제</button>
+                                                        <button type="button" class="btn btn-podcast btn-xs rounded" onclick="moveToSetGroup('/groups/<%= group.id %>')">학생추가</button>
+                                                    </td>
+                                                </tr>
+                                            <% end %>
+                                        <% else %>
+                                            <tr>
+                                                <td colspan="6" class="text-center">현재 생성된 그룹이 없습니다.</td>
+                                            </tr>
+                                        <% end %>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <hr>
+                                <button class="btn btn-xing btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="showForm()">Group 추가</button>
+
+                                <form hidden action="/groups" id="new_group" class="sky-form margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
+                                    <%= token_tag nil %>
+                                    <!--<header>General Unify Forms</header>-->
+                                    <input type="hidden" name="group[user_id]" value="<%= current_user.id %>">
+                                    <fieldset>
+                                        <section>
+                                            <label class="label">그룹이름</label>
+                                            <label class="input">
+                                                <input type="text" id="group_name" name="group[name]">
+                                            </label>
+                                        </section>
+                                    </fieldset>
+
+                                    <footer class="text-right">
+                                        <input type="button" class="btn btn-dribbble btn-sm rounded" value="Group 생성" onclick="formCheck()">
+                                    </footer>
+                                </form>
+                            </div>
+
+                        </div>
+                        <!--group end-->
+
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <!--진행중인 토론방 참여-->
                         
                         <div class="profile-edit tab-pane fade in active">
                             
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-198"></i> 학습진도확인</h3>
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-198"></i> 진행중인 토론방 참여 현황</h3>
+                            
+                            <div class="table-search-v1 margin-bottom-20">
+
+                                <div class="table-responsive">
+                                    
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                    <th class="text-center">토론 주제</th>
+                                    <th class="text-center">토론 그룹명</th>
+                                    <th class="text-center">대상 학생수</th>
+                                    <th class="text-center">참여 학생수</th>
+                                    <th class="text-center">의견 및 댓글 수</th>
+                                    <th class="text-center">발문수</th>
+                                    <th class="text-center">자기평가수</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <% if @discussions.count == 0 %>
+                                    <tr>
+                                    <td colspan="7" class="text-center">진행중인 토론방이 없습니다.</td>
+                                    </tr>
+                                    <% end %>
+                                    
+                                    <% @discussions.each do | discussion | %>
+                                    <tr>
+                                    <td class="text-center"><% discussion_templet = DiscussionTemplet.find(discussion.discussion_templet_id) %><%= sanitize(discussion_templet.title) %>
+                                     </td>
+                                    <td class="text-center"><% g_name = '' %>
+                                                            <% unless discussion.group_id.nil?
+                                                                    discussion_group = Group.find(discussion.group_id)
+                                                                    g_name = discussion_group.name
+                                                               else g_name = '-'
+                                                               end %>
+                                                            <%= g_name %></td>
+                                    <td class="text-center"><% g_count = '' %>
+                                                            <% unless discussion.group_id.nil?
+                                                                    g_count = GroupsUser.where('group_id = ?', discussion.group_id).count()
+                                                               else g_count = '-'
+                                                               end %>
+                                                            <%= g_count %></td>
+                                    <td class="text-center"><%= Participant.where('discussion_id = ?', discussion.id).count() %></td>
+                                    <td class="text-center"><%= DiscussionReply.where('discussion_id = ?', discussion.id).count() %></td>
+                                    <td class="text-center"><% discussion_templet = DiscussionTemplet.find(discussion.discussion_templet_id) %><%= DiscussionTitleExplanation.where('discussion_templet_id = ?', discussion_templet.id).count() %></td>
+                                    <td class="text-center"><% @dte = DiscussionTitleExplanation.where('discussion_templet_id = ?', discussion_templet.id) %>
+                                        <% dte_count = 0 %>
+                                        <% @dte.each do |d| 
+                                            dte_count +=DiscussionTitleExplanationHistory.where('discussion_title_explanation_id = ?', d.id).count() %>
+                                        <% end %>
+                                        <%= dte_count %>
+                                    </td>
+                                    </tr>
+                                    <% end %>
+                                    </tbody>
+                                    </table>
+                                    
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <!--진행중인 토론방 참여 end-->
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <!--지난 토론방 참여-->
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-198"></i> 지난 토론방 참여 현황</h3>
+                            
+                            <div class="table-search-v1 margin-bottom-20">
+
+                                <div class="table-responsive">
+                                    
+                                    <table class="table table-hover tavle-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                    <th class="text-center">토론 주제</th>
+                                    <th class="text-center">토론 그룹명</th>
+                                    <th class="text-center">대상 학생수</th>
+                                    <th class="text-center">참여 학생수</th>
+                                    <th class="text-center">의견 및 댓글 수</th>
+                                    <th class="text-center">발문수</th>
+                                    <th class="text-center">자기평가수</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <% if @discussions_1.count == 0 %>
+                                    <tr>
+                                    <td colspan="7" class="text-center">지난 토론방이 없습니다.</td>
+                                    </tr>
+                                    <% end %>
+                                    
+                                    <% @discussions_1.each do | discussion | %>
+                                    <tr>
+                                    <td class="text-center"><% discussion_templet = DiscussionTemplet.find(discussion.discussion_templet_id) %><%= sanitize(discussion_templet.title) %>
+                                     </td>
+                                    <td class="text-center"><% g_name = '' %>
+                                                            <% unless discussion.group_id.nil?
+                                                                    discussion_group = Group.find(discussion.group_id)
+                                                                    g_name = discussion_group.name
+                                                               else g_name = '-'
+                                                               end %>
+                                                            <%= g_name %></td>
+                                    <td class="text-center"><% g_count = '' %>
+                                                            <% unless discussion.group_id.nil?
+                                                                    g_count = GroupsUser.where('group_id = ?', discussion.group_id).count()
+                                                               else g_count = '-'
+                                                               end %>
+                                                            <%= g_count %></td>
+                                    <td class="text-center"><%= Participant.where('discussion_id = ?', discussion.id).count() %></td>
+                                    <td class="text-center"><%= DiscussionReply.where('discussion_id = ?', discussion.id).count() %></td>
+                                    <td class="text-center"><% discussion_templet = DiscussionTemplet.find(discussion.discussion_templet_id) %><%= DiscussionTitleExplanation.where('discussion_templet_id = ?', discussion_templet.id).count() %></td>
+                                    <td class="text-center"><% @dte = DiscussionTitleExplanation.where('discussion_templet_id = ?', discussion_templet.id) %>
+                                        <% dte_count = 0 %>
+                                        <% @dte.each do |d| 
+                                            dte_count +=DiscussionTitleExplanationHistory.where('discussion_title_explanation_id = ?', d.id).count() %>
+                                        <% end %>
+                                        <%= dte_count %>
+                                    </td>
+                                    </tr>
+                                    <% end %>
+                                    </tbody>
+                                    </table>
+                                    
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        <!--지난 토론방 참여 end-->
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+
+                        <!--학습진도 -->
+                        
+                        <div class="profile-edit tab-pane fade in active">
+                            
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-198"></i> 학습 진도</h3>
                             
                             <div class="table-search-v1 margin-bottom-20">
 
@@ -65,72 +280,7 @@
                             
                         </div>
 
-                        <hr class="devider devider-dotted" style="margin:10px">
-
-                        <!--group-->
-                        <div class="profile-edit tab-pane fade in active">
-
-                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-finance-005"></i> 그룹설정</h3>
-
-                            <div class="table-search-v1 margin-bottom-50">
-
-                                <div class="table-responsive">
-
-                                    <table class="table table-hover tavle-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>그룹이름</th>
-                                            <th class="text-center">인원</th>
-                                            <th class="text-center"><i class="fa fa-cog"></i></th>
-                                        </tr>
-                                        </thead>
-
-                                        <tbody>
-                                        <% unless @groups.blank? %>
-                                            <% @groups.each do |group| %>
-                                                <input hidden type="text" value="<%= group.name %>" id="preserved_<%= group.id %>">
-                                                <tr>
-                                                    <td id="group_name_<%= group.id %>"><strong onclick="updateGroupName( '<%= group.id %>', '<%= group.name %>')"><%= group.name %></strong></td>
-                                                    <td class="text-center"><%= group.users.count() %></td>
-                                                    <td class="text-center"><button class="btn btn-dribbble btn-xs rounded" onclick="destroyGroup('<%= group.id %>')">삭제</button>
-                                                        | <button type="button" class="btn btn-podcast btn-xs rounded" onclick="moveToSetGroup('/groups/<%= group.id %>')">학생추가</button>
-                                                    </td>
-                                                </tr>
-                                            <% end %>
-                                        <% else %>
-                                            <tr>
-                                                <td colspan="6" class="text-center">현재 생성된 그룹이 없습니다.</td>
-                                            </tr>
-                                        <% end %>
-                                        </tbody>
-                                    </table>
-
-                                </div>
-
-                                <hr>
-                                <button class="btn btn-xing btn-sm rounded col-md-12 col-sm-12 col-xs-12" onclick="showForm()">Group 추가</button>
-
-                                <form hidden action="/groups" id="new_group" class="sky-form margin-bottom-50" method="post" enctype="multipart/form-data" novalidate="novalidate" charset="utf-8">
-                                    <%= token_tag nil %>
-                                    <!--<header>General Unify Forms</header>-->
-                                    <input type="hidden" name="group[user_id]" value="<%= current_user.id %>">
-                                    <fieldset>
-                                        <section>
-                                            <label class="label">그룹이름</label>
-                                            <label class="input">
-                                                <input type="text" id="group_name" name="group[name]">
-                                            </label>
-                                        </section>
-                                    </fieldset>
-
-                                    <footer class="text-right">
-                                        <input type="button" class="btn btn-dribbble btn-sm rounded" value="Group 생성" onclick="formCheck()">
-                                    </footer>
-                                </form>
-                            </div>
-
-                        </div>
-                        <!--group end-->
+                        <!--학습진도 -->
 
                     </div>
                     
@@ -198,6 +348,10 @@
 
         root.empty();
         strong.appendTo(root);
+    }
+
+    function showGroup(url) {
+        location = url;
     }
 
     function moveToSetGroup(url) {

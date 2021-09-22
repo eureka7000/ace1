@@ -12,6 +12,7 @@ class MypagesController < ApplicationController
         # 최근 공부한 개념
         unless current_user.study_histories.blank?
             @last_studied_unit_concept_id = current_user.study_histories.last.unit_concept_id
+            puts @last_studied_unit_concept_id
             @last_study_histories = StudyHistory.where('user_id=? and unit_concept_id=?', current_user.id, @last_studied_unit_concept_id)
         else
             @last_studied_unit_concept_id = 1
@@ -23,7 +24,10 @@ class MypagesController < ApplicationController
         unless @last_study_histories.nil?
             unit_concept_id = @last_studied_unit_concept_id
             count = UnitConceptDesc.get_unit_concept_desc_count(unit_concept_id)
+            puts count
+            puts @last_study_histories.count
             @progress_percent = @last_study_histories.count.to_f/count * 100
+            puts @progress_percent
         end
 
         # 최근 질문들
@@ -38,13 +42,23 @@ class MypagesController < ApplicationController
         @latest_notices = Blog.where('blog_type = ?', '5').order(id: :desc).first(7)
 
         # 관계된 사람들
-        @related_users = UserRelation.where('related_user_id = ? and confirmed_at != ?', current_user.id, nil?)
+        @related_users = UserRelation.where('related_user_id = ? and confirmed_at != ?', current_user.id, nil?).order(created_at: :desc)
+        # @related_users = UserRelation.where('related_user_id = ? and confirmed_status = ?', current_user.id, 'confirmed').order(created_at: :desc)
 
         # 개념 자기 평가 이력들
-        @self_evaluations = UnitConceptSelfEvaluation.where(user_id: current_user.id).order(created_at: :desc).limit(5)
+        @self_evaluations = UnitConceptSelfEvaluation.where(user_id: current_user.id).order(created_at: :desc).limit(7)
 
         # 최근 참여한 토론방
-        @discussion_rooms = DiscussionHistory.where('user_id = ?', current_user.id)
+        @discussion_rooms = DiscussionHistory.where('user_id = ?', current_user.id).order(created_at: :desc).limit(7)
+        unless @discussion_rooms.blank?
+            @discussion_rooms_title = @discussion_rooms.first.discussion.discussion_templet.title
+        else
+            @discussion_rooms_title = '- 참여한 토론방이 없습니다 -'
+        end
+        # @discussion_rooms.blank? ? '- 참여한 토론방이 없습니다 -' : @discussion_rooms.last.discussion.discussion_templet.title
+
+        # 참여한 총 토론방
+        @discussion_rooms_total = DiscussionHistory.where('user_id = ?', current_user.id).order(created_at: :desc)
 
     end
 
@@ -123,6 +137,18 @@ class MypagesController < ApplicationController
         @student = User.find(params[:user_id])
     end
 
+    def show_groups
+        @click = 'show_groups'
+        puts params
+        @groups = Group.where('id = ?', params[:group_id] )
+        puts @groups[0].name
+        @groups_users = GroupsUser.where('group_id = ?', params[:group_id] )
+        puts @groups_users.inspect
+
+
+
+    end
+
     def self_evaluation_show
         @self_evaluations = UnitConceptSelfEvaluation.where('user_id = ? and unit_concept_id = ?', params[:user_id], params[:unit_concept_id]).order('created_at desc limit 3')
 
@@ -180,9 +206,37 @@ class MypagesController < ApplicationController
         # if current_user.user_types[0].user_type == 'school teacher' || current_user.user_types[0].user_type == 'mento'
         #     @questions_number = Question.where('to_user_id = ? and confirm_yn = ?', current_user.id, 'N').count()
         # end
+        puts @study_histories.inspect
         @questions_number = Question.get_question_number(current_user.id)
 
         @groups = Group.where('user_id = ?', current_user.id)
+        @study_histories.each do |s|
+            puts s.inspect
+            puts s.user_name
+            puts s.concept_count
+            puts s.last_study
+            puts s.last_sign_in_at
+            puts s.coupon_code
+            # puts s.schools.name
+        end
+        # @groups.each do |g|
+        #     g.users.each do |u|
+        #         puts u.groups.inspect
+        #     end
+        # end
+
+        @discussions = Discussion.where('expiration_date >= ? and start_date <= ? and user_id = ?', Date.today, Date.today, current_user.id).order(:id => :desc)
+        @discussions_1 = Discussion.where('expiration_date < ? and (user_id = ? or sub_leader = ?)', Date.today, current_user.id, current_user.id).order(:id => :desc)
+        # @past_discussions = Discussion.where('expiration_date < ? and (user_id = ? or sub_leader = ?)', Date.today, current_user.id, current_user.id).order(:id => :desc)
+        @discussions.each do |d|
+            @discussion_templet = DiscussionTemplet.where('id = ?', d.discussion_templet_id)
+            t = DiscussionTemplet.find(d.discussion_templet_id)
+            puts t.title
+            @discussion_templet.each do |t|
+                puts t.inspect
+                puts t.title
+            end
+        end
     end
 
     def get_textbook_price

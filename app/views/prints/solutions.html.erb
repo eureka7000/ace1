@@ -218,8 +218,9 @@
             
             // put the image to pane
             console.log('stackHeight, imageHeight',stackHeight + ", " + imageHeight);
-            console.log('stackHeight, paneHeight',(stackHeight + imageHeight + 10) + "," + paneHeight );
+            console.log('stackHeight, paneHeight',(stackHeight + imageHeight + 100) + "," + paneHeight );
             
+            //if (stackHeight + imageHeight + 25 /* Question number */ + 100 >= paneHeight) {  // should add new pane 
             if (stackHeight + imageHeight + 25 /* Question number */ + 100 >= paneHeight) {  // should add new pane 
                 
                 console.log('Image의 높이가 pane을 넘어섰습니다. 새로운 Pane을 추가하고, 이미지를 넣습니다.');
@@ -235,7 +236,8 @@
                     page = $('<div />').addClass('page').attr('id','page'+pageNum).css('background-color','white').appendTo(root);
                     subpage = $('<div />').addClass('subpage').attr('id','subpage'+pageNum).appendTo(page);
                     
-                    paneHeight = maxHeight - 100;  // without header.
+                    // paneHeight = maxHeight - 100;  // without header.
+                    paneHeight = maxHeight - 67;  // without top, bottom margin.
                     
                 } 
                 

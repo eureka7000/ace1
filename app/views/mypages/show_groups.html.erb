@@ -1,0 +1,187 @@
+<div class="container profile">
+
+    <div class="row">
+
+        <%= render :partial=>"left_sidebar"%>
+
+        <div class="col-md-9 margin-top-20">
+        
+            <div class="profile-body margin-bottom-20">
+                
+                <div class="tab-v1">
+                    
+                    <ul class="nav nav-justified nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#passwordTab">그룹 명단</a></li>
+                    </ul>
+                    
+                    <div class="tab-content">
+                        
+                        <hr class="devider devider-dotted" style="margin:10px">
+                        
+                        <div class="profile-edit tab-pane fade in active">
+
+                            <h3 class="heading-md"><i class="icon-custom icon-sm rounded-x icon-color-u icon-education-073"></i> <%= @groups[0].name %> 그룹의 학생 명단</h3>
+                            
+                            <div class="table-search-v1 margin-bottom-20">
+
+                                <div class="table-responsive">
+                                    
+                                    <table class="table table-bordered table-striped" style="clear: both">
+                                    <thead>
+                                    <tr>
+                                    <!-- <th>개념</th> -->
+                                    <th>이름</th>
+                                    <th>학년</th>
+                                    <th>반</th>
+                                    <th>가입일</th>
+                                    <th>비고</th>
+                                    </tr>
+                                    </thead>                        
+
+                                    <tbody>
+                                    <% if @groups_users.count == 0 %>
+                                    <tr>
+                                    <td colspan="11" class="text-center">그룹에 학생이 없습니다.</td>
+                                    </tr>
+                                    <% end %>    
+                            
+                                    <%@groups_users.each do | groups_user | %>
+                                    	<tr>
+                                     		<td><%= User.find(groups_user.user_id).user_name %></td>
+                                     		<td><% g = User.find(groups_user.user_id).grade %>
+                                     			  <%= UnitConcept::GRADES[g.to_i] %>
+                                     		</td>
+                                     		<td><%= User.find(groups_user.user_id).school_class %></td>
+                                     		<td><%= groups_user.created_at.in_time_zone("Asia/Seoul").strftime('%Y-%m-%d %H:%M') %></td>
+                                     		<td> </td>
+                                        
+                                    	</tr>
+                                    <% end %>
+
+                                    </tbody>
+                                    </table>
+                                    
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                        
+                    </div>
+                    
+                </div>
+
+
+                        <%= link_to 'Back', "/mypages/student_management", :class => 'btn btn-default', :style => 'margin-top: 10px'  %>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<%= render partial: 'modals/self_evaluation_modal_for_teachers' %>
+<%= render partial: 'modals/exercise_history_modal_for_teachers' %>
+
+<script type="text/javascript">
+    function unit_concept_exercise_show(user_id, unit_concept_id) {
+        var url = "/mypages/unit_concept_exercise_show";
+
+        var data = {
+            user_id: user_id,
+            unit_concept_id: unit_concept_id
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                exercise_history_print_table(data);
+                $('#exercise_modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + "개념문제 - " + data[0].unit_concept_name );
+                $('#student_exercise_history').modal();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function exercise_history_print_table(data) {
+        var root = $('#exercise_history_table');
+        var tr;
+        var td_number;
+        var td_history;
+        var str='';
+        root.empty();
+
+        for (var i=0; i<data.length; i++) {
+            tr = $('<tr/>').appendTo(root);
+
+            td_number = $('<td/>').html('no. ' + data[i].memo.toString().substr(data[i].memo.toString().length-2)).addClass('text-center').appendTo(tr);
+
+            str = ''
+            for (var j=1; j<=data[i].history.length; j++){
+                str += data[i].history.toString().charAt(data[i].history.length - j);
+            }
+
+            td_history = $('<td/>').html(str).addClass('text-center').appendTo(tr);
+        }
+    }
+
+    function self_evaluation_show(user_id, unit_concept_id) {
+        var url = "/mypages/self_evaluation_show";
+
+        var data = {
+            user_id: user_id,
+            unit_concept_id: unit_concept_id
+        };
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            data: data,
+            success : function(data) {
+                self_evaluation_print_table(data);
+                $('#modal_unit_concept_name').html("<i class='icon icon-education-008'></i> " + "자기평가 - " + data[0].unit_concept_name );
+                $('#student_self_evaluation').modal();
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function self_evaluation_print_table(data) {
+        var root = $('#self_evaluation_table');
+        var tr;
+        var td_date;
+        var td_evaluation;
+        var td_comment;
+        var evaluation = '';
+
+        root.empty();
+
+        for (var i=0; i<data.length; i++) {
+            tr = $('<tr/>').appendTo(root);
+            td_date = $('<td/>').html(data[i].date).addClass('text-center').appendTo(tr);
+            if(data[i].evaluation == 'easy'){
+                evaluation = '쉬움';
+            }
+            else if (data[i].evaluation == 'normal'){
+                evaluation = '보통';
+            }
+            else{
+                evaluation = '어려움';
+            }
+            td_evaluation = $('<td/>').html(evaluation).addClass('text-center').appendTo(tr);
+            td_comment = $('<td/>').html(data[i].comment).appendTo(tr);
+        }
+    }
+</script>

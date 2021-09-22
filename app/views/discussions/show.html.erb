@@ -7,9 +7,116 @@
         MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
 </script>
 
-<div class="container">
+<div class="container container-fluid">
     <div class="col-md-12 bg-color-white">
         <div class="col-md-12 margin-top-20"></div>
+        <div class="col-md-12">
+            <!-- Grey Panel with Equal Height -->
+            <!-- <div class="panel panel-red equal-height-column" style="height: 220px;"> -->
+            <div class="panel panel-red">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-tasks"></i> 토론방 개요</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <p>
+                            <strong>개설자 : </strong>
+                                <% if @discussion.organizer_type == 'admin' %>
+                                    <span style="color:#5aa0f8"><%= Admin.find(@discussion.organizer).name %></span>
+                                <% else %>
+                                    <span style="color:#5aa0f8"><%= User.find(@discussion.organizer).user_name %></span>
+                                <% end %>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론방 리더 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.user.user_name %> <%= "(#{User::USER_TYPES[@discussion.user.user_types.first.user_type]})" %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <% @sub_leader = User.find(@discussion.sub_leader) %>
+                        <p>
+                            <strong>토론방 부리더 : </strong>
+                                <span style="color:#5aa0f8"><%= @sub_leader.user_name %> <%= "(#{User::USER_TYPES[@sub_leader.user_types.first.user_type]})" %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3"> 
+                        <p>
+                            <strong>운영타입 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.manage_type %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>외부 참가 여부 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.observer_yn == 'Y' ? 'YES' : 'NO' %>
+                                    <%= " (#{@discussion.observer_yn == 'N' ? Group.find(@discussion.group_id).name : ""})" %>
+                                </span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 시작일 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.start_date %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 종료일 : </strong>
+                            <span style="color:#5aa0f8"><%= @discussion.expiration_date %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>토론 참가자 수 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.participants.count %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>대상 학년 : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.discussion_templet.grade %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>문제 수준(Level) : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.discussion_templet.level %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>
+                            <strong>Think Time(분) : </strong>
+                                <span style="color:#5aa0f8"><%= @discussion.think_time %></span>
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            <strong>핵심 개념 : </strong>
+                                <span style="color:#5aa0f8"><%= @unit_concept.name %></span>
+                                (<% (1..@unit_concept.level).each do |idx| %>
+                                    <i class="fa fa-star" style="color: red"></i>
+                                <% end %>
+                                <% (1..5-@unit_concept.level).each do |idx| %>
+                                    <i class="fa fa-star-o" style="color: red"></i>
+                                <% end %>)
+                        </p>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            <strong>관련 개념 : </strong>
+                                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
+                                    <span style="color:#5aa0f8"><%= discussion_title_explanation.unit_concept.name %></span>
+                                    <span style="color:red"><%= '  |  ' %></span>
+                                <% end %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <!-- End Grey Panel with Equal Height -->
+        </div>
+        <!--
         <div class="col-md-5">
             <p>
                 <strong>개설자 : </strong>
@@ -96,6 +203,7 @@
                 <%= @discussion.expiration_date %>
             </p>
         </div>
+        -->
         
         <!--
         <div hidden class="col-md-4">
@@ -111,7 +219,7 @@
                 <%# end %>
             </p>
         </div>
-        -->
+        
 
         <div class="col-md-12">
             <p>
@@ -122,26 +230,75 @@
                 <% end %>
             </p>
         </div>
+        -->
 
         
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 토론 주제</h3><br>
-                    <span class="title"><%== @discussion.discussion_templet.title %></span>
-            </p>
+        <!--문제 관련 버튼들 및 관련 이미지-->
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 주제 버튼-->
+            <button class="btn-u rounded btn-u-blue margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion1')"> 토론 주제</button><br>
+            <!-- <div class="col-md-12 margin-top-20 margin-left-20"></div> -->
+            <div class="discussion1">
+                <div class="col-md-12 margin-top-20"></div>
+                <span class="title">
+                            <%== @discussion.discussion_templet.title %>
+                </span>
+            </div>
         </div>
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 토론 문제</h3>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 버튼-->
+            <button class="btn-u rounded btn-u-purple margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion2')"> 토론 문제</button><br>
+            <span class="discussion2 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
                     <%== @discussion.discussion_templet.content %>
-            </p>
+            </span>
         </div>
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 토론문제 발문 및 관련개념 </h3><br>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 발문 및 관련 개념 버튼-->
+            <button class="btn-u rounded btn-u-yellow margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion3')">토론 문제 발문 및 관련 개념</button><br>
+            <span hidden class="discussion3 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                <div class="col-md-12">
+                <div class="panel panel-yellow margin-bottom-40">
+                        <!-- <div class="panel-heading"> -->
+                            <!-- <h3 class="panel-title"><i class="fa fa-tasks"></i> 토론 문제 발문 및 관련 개념</h3> -->
+                        <!-- </div> -->
+                        <div class="panel-body">
+                            <p>선생님께서 이번 토론 문제를 풀기 전에 학생들이 알아야 할 사항이나 질문을 발문 형식으로 제시하였으며, 실제 토론방에서는 관련 개념 버튼을 누르면 해당 개념을 공부할 수 있습니다.</p>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>발     문</th>
+                                    <th>관련 개념</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <% unless @discussion_title_explanations.blank? %>
+                                <% number = 1 %>
+                                <% @discussion_title_explanations.each do |discussion_title_explanation| %>
+                                        <tr>
+                                            <td><%= number %></td>
+                                            <td>
+                                                <%== discussion_title_explanation.content %>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info btn-xs" onclick="moveToStudyRoom('<%= discussion_title_explanation.unit_concept_id %>')"> <%== discussion_title_explanation.unit_concept.name %></button>
+                                            </td>
+                                        </tr>
+                                    <% number += 1 %>
+                                <% end %>
+                            <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- 
                 <% @discussion_title_explanations.each do |discussion_title_explanation| %>
                     <div class="row col-md-12">
                             <div class="inline-group">
@@ -154,95 +311,108 @@
                                 </div>
                             </div>
                     </div>
-                <% end %>
+                <% end %> -->
+                </div>
+            </span>
+        </div>
 
-                    <!--<div class="row">-->
-                        <!--<div class="col-smallfa">-->
-                            <!--<i class="fa fa-plane" style="color: red"></i>-->
-                        <!--</div>-->
-                        <!--<div class="col-content">-->
-                            <%#== discussion_title_explanation.content %>
-                        <!--</div>-->
-                        <!--<div class="col-name">-->
-                            <%#== discussion_title_explanation.unit_concept.name %>
-                        <!--</div>-->
-                    <!--</div>-->
-            </p>
-        </div>
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 문제풀이 가이드</h3>
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--문제 풀이 가이드 버튼-->
+            <button class="btn-u rounded btn-u-green margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion4')">문제 풀이 가이드</button><br>
+            <span hidden class="discussion4 margin-top-20">
                 <%== @discussion.discussion_templet.concept_explanation %>
-            </p>
+            </span>
         </div>
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 문제풀이</h3>
+
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--문제 풀이 버튼-->
+            <button class="btn-u rounded btn-u-default margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion5')">문제 풀이</button><br>
+            <span hidden class="discussion5 margin-top-20">
                 <% @discussion.discussion_templet.discussion_solutions.each do |discussion_solution| %>
                     <%== discussion_solution.content %>
                     <hr>
                 <% end %>
-            </p>
-        </div>
-        <div class="col-md-12">
-            <p>
-                <h3>* 해답</h3>
-                <%== @discussion.discussion_templet.answer %>
-            </p>
+            </span>
         </div>
 
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--해답 버튼-->
+            <button class="btn-u rounded btn-u-orange margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion6')">해답</button><br>
+            <span hidden class="discussion6 margin-top-20">
+                <!-- <div class="col-md-12 margin-top-20"></div> -->
+                    <%== @discussion.discussion_templet.answer %>
+            </span>
+        </div>
 
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* video</h3>
-                <% unless @discussion.discussion_templet.discussion_videos.blank? %>
-                    <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
-                        <div class="inline-group">
-                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
-                                <%== discussion_video.content %>
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--Video 버튼-->
+            <button class="btn-u rounded btn-u-brown margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion7')">Video</button><br>
+            <span hidden class="discussion7 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <% unless @discussion.discussion_templet.discussion_videos.blank? %>
+                        <% @discussion.discussion_templet.discussion_videos.each do |discussion_video| %>
+                            <div class="inline-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <%== discussion_video.content %>
+                                </div>
+                                <hr>
                             </div>
-                            <hr>
-                        </div>
+                        <% end %>
                     <% end %>
-                <% end %>
-            </p>
+            </span>
         </div>
 
-
-
-
-        <div class="col-md-12">
-            <hr>
-            <p>
-                <h3>* 토론문제 조건 변경 및 해답</h3>
-                <%#= @discussion.interim_report %>
-                <% @discussion_problem_conditions.each do |discussion_problem_condition| %>
-                    <div class="row">
-                        <div class="col-smallfa">
-                            <i class="fa fa-plane" style="color: red"></i>
-                        </div>
-                        <div class="col-content">
-                            <span class="title"><%== discussion_problem_condition.problem_condition %></span>
-                        </div>
-                        <div class="col-name">
-                            <span class="title"><%== discussion_problem_condition.condition_answer %></span>
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--토론 문제 조건 변경 및 해답 버튼-->
+            <button class="btn-u rounded btn-u-aqua margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion8')">토론 문제 조건 변경 및 해답</button><br>
+            <span hidden class="discussion8 margin-top-20">
+                <br><br><br>
+                <div class="panel panel-aqua margin-bottom-40">
+                        <!-- <div class="panel-heading">
+                            <h3 class="panel-title"><i class="fa fa-globe"></i> </h3>
+                        </div> -->
+                        <div class="panel-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-1">No</th>
+                                        <th class="col-md-8">토론문제 조건 변경 내용</th>
+                                        <th class="col-md-3">해답</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% unless @discussion_title_explanations.blank? %>
+                                        <% number = 1 %>
+                                        <% @discussion_problem_conditions.each do |discussion_problem_condition| %>
+                                            <tr>
+                                                <td><%= number %></td>
+                                                <td><span class="title"><%== discussion_problem_condition.problem_condition %></span></td>
+                                                <td><span class="title"><%== discussion_problem_condition.condition_answer %></span></td>
+                                            <% number += 1 %>
+                                        <% end %>
+                                    <% end %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                <% end %>
-            </p>
-            <hr>
+            </span>
         </div>
 
-        
-        <!--댓글 나열-->
-        <hr>
-        <div class="row">
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--댓글 버튼-->
+            <button class="btn-u rounded btn-u-red margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion9')">댓글</button><br>
+            <span class="discussion9 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <div class="row">
         <hr>
             <div class="col-md-12 margin-bottom-50">
-                <h3>* 댓글 </h3>
+                <!-- <h3>* 댓글 </h3> -->
                 <% unless @discussion_replies.blank? %>
                     <% reply1 = 1 %>
                     <% @discussion_replies.each do |discussion_reply| %>
@@ -361,32 +531,43 @@
 
             </div>
         </div>
-
-
-
-
-
-        <div class="col-md-12 margin-bottom-50">
-            <hr>
-            <p>
-                <h3>* 종합 의견</h3><br>
-                <span class="title"><%== @discussion.final_report %></span>
-            </p>
-            <hr>
+                    
+            </span>
         </div>
 
-        <!--<div class="col-md-12 col-sm-12 col-xs-12 margin-bottom-50">-->
-            <!--<hr><!-->
-            <%#= link_to 'Edit', edit_discussion_path(@discussion), :class => 'btn btn-windows rounded col-md-5 col-sm-5 col-xs-5' %>
-            <!--<div class="col-md-2 col-sm-2 col-xs-2"></div>-->
-            <%#= link_to 'Back', discussions_path(:school_id => @discussion.user.school_id), :class => 'btn btn-podcast rounded col-md-5 col-sm-5 col-xs-5' %>
-        <!--</div>-->
+        <div class="col-md-12 margin-top-20"></div>
+        <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+            <!--종합 의견 버튼-->
+            <button class="btn-u rounded btn-u-dark margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="show_images('discussion10')">종합 의견</button><br>
+            <span hidden class="discussion10 margin-top-20">
+                <div class="col-md-12 margin-top-20"></div>
+                    <span class="title"><%== @discussion.final_report %></span>
+            </span>
+        </div>
 
-        <hr>
+
+
+        <!-- <div class="col-md-12 margin-top-50"></div> -->
+        <div class="col-md-12 margin-top-50">
+            <hr>
                 <!--<a href="/discussions/discussion_list"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>-->
                 <a href="/discussions/discussion_list"><button class="btn btn-podcast col-md-12 col-sm-12 col-xs-12 rounded margin-bottom-50">뒤로가기</button></a>
+        </div>
     </div>
 </div>
+
+<script type="text/javascript">
+    function show_images(class_value) {
+        if(class_value == 'video_lecture'){
+            $(".exercise_main").toggle();
+        }
+
+        $('.'+class_value).toggle();
+    }
+
+</script>
+
+
 
 <style>
     div.col-smallfa {
