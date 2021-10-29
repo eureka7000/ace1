@@ -2,7 +2,7 @@
       xmlns="http://www.w3.org/1999/html">
 <link rel="stylesheet" href="assets/plugins/brand-buttons/brand-buttons-inversed.css">
 
-<% if current_user.user_types[0].user_type == 'student' && current_user.grade.nil? %>
+<!-- <% if current_user.user_types[0].user_type == 'student' && current_user.grade.nil? %> 학년설정 삭제(외국인 가입시 배려)--> 
 
     <!-- Modal -->
     <div class="modal show" id="moveToSettingModal" role="dialog">
@@ -24,34 +24,49 @@
     </div>
     <!-- Modal END-->
 
-<% else %>
+<!-- <% else %> -->
 
 <h3 style="float:left; margin-top: 10px;">
     <i class="fa fa-delicious"></i><span style="color:red;"> <%= @current_page_name %></span>
 </h3>
-
-<button id="btn_tree" class="btn btn-info btn-sm rounded" style="margin-top: 10px; margin-left: 20px; display: none; float:right" onclick="view_change('backward')">목차보이기</button>
       
 <hr style="clear:both; margin: 0">
-        
-        
+
+  
+<% if @view_type == '1' %>
+
+<!-- <div class="container container-fluid margin-bottom-50"> -->
+<div class="container container-fixed margin-bottom-50">
+    
         <div class="col-md-12">    
     
             <ul class="row list-row margin-bottom-30">
             <% idx = 0 %>
+            <% color = '' %>
+            <% color_c000 = '' %>
+            <% color_c100 = '' %>
+            <% color_c200 = '' %>
+            <% color_c300 = '' %>
+            <% color_c400 = '' %>
+            <% color_c500 = '' %>
+            <% color_c600 = '' %>
+            <% color_c700 = '' %>
+            <% color_c800 = '' %>
+            <% color_c900 = '' %>
+
             <% @items.each do | item | %>
     
                 <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
         
-                <% if item[:content_yn] %>
+                <% if item[:content_yn] %>      <%# 종합문제, 유형문제, 단위개념 %>
                     <% if item[:exercise_yn] %>
-                            <% if @view_type == '1' %>
+                            <% if @view_type == '1' %>       <%# 종합문제, 유형문제 %>
                                 <% item_link_str = "/contents/exercise?view_type=#{@view_type}&unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
                             <% else %>
                                 <% item_link_str = "/contents/exercise?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{item[:level]}&unit_concept_id=#{item[:key]}&exercise_type=#{params[:exercise_type]}" %>
                             <% end %>
                     <% else %>
-                            <% if @view_type == '1'%>
+                            <% if @view_type == '1'%>      <%# 단위개념 %>
                                 <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
                             <% else %>
                                 <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
@@ -65,14 +80,14 @@
                     <% if item[:level] > 1 && !current_user.can_I_use? %>
                         <% item_link_str = "javascript:openUserAuthModal()" %> 
                     <% end %>
-                <% else %>
+                <% else %>            <%# category, sub_category, 개념(concept), "종합문제", 유형문제" %>
                     <% if item[:load_modal] %>
-                        <% item_link_str = "javascript:loadModal(#{item[:key]})" %>
+                        <% item_link_str = "javascript:loadModal(#{item[:key]})" %>      <%# 개념(concept)%>
                     <% else %>    
-                        <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>
-                        <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>
-                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>
-                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>
+                        <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>      <%# category %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>        <%# sub_category %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>      <%# "종합문제" %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>       <%# "유형문제" %>
                         <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
@@ -89,9 +104,636 @@
                             <% end %>
                         <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&concept_id=#{@concept_id}&level=#{@level}&exercise_type=unit_concept_exercise" if @step == 5 && params[:view_type] == '2' %>
                     <% end %>
-                <% end %>    
+                <% end %> 
+
+                <% case item[:key] %>
+                    <% when 'c000' %>
+                        <% color = 'blue' %>
+                        <% color_c000 = 'blue' %>
+                    <% when 'c100' %>
+                        <% color = 'orange' %> 
+                        <% color_c100 = 'orange' %>
+                    <% when 'c200' %>
+                        <% color = 'sea' %>
+                        <% color_c200 = 'sea' %>
+                    <% when 'c300' %>
+                        <% color = 'yellow' %>
+                        <% color_c300 = 'yellow' %>
+                    <% when 'c400' %>
+                        <% color = 'purple' %>
+                        <% color_c400 = 'purple' %>
+                    <% when 'c500' %>
+                        <% color = 'aqua' %>
+                        <% color_c500 = 'aqua' %>
+                    <% when 'c600' %>
+                        <% color = 'brown' %>
+                        <% color_c600 = 'brown' %>
+                    <% when 'c700' %>
+                        <% color = 'red' %>
+                        <% color_c700 = 'red' %>
+                    <% when 'c800' %>
+                        <% color = 'green' %>
+                        <% color_c800 = 'green' %>
+                    <% when 'c900' %>
+                        <% color = 'default' %>
+                        <% color_c900 = 'default' %>
+                    <% else %>
+                        <% color = 'default' %>
+                        <% color_c900 = 'default' %>
+                <% end %> 
+                
+                <li class="col-md-12 md-margin-bottom-30">
+                    
+                    <div class="col-md-12 margin-top-20"></div>
+                    <div id="concept_desc" class="col-md-12 col-sm-12 col-xs-12 tabs exercise_main">
+                        <!-- <button class="btn-u rounded btn-u-<%= color %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="pre_show_list('<%= item[:key] %>', '<%= @step + 1 %>')"> <%= item[:value] %></button><br> -->
+                        <button class="btn-u rounded btn-u-<%= color %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left" onclick="pre_show_list('<%= @view_type %>', '<%= @step + 1 %>', '<%= item[:key] %>')"> <%= item[:value] %></button><br>
+                        <div hidden class="<%= item[:key] %>">
+                            <!-- <div class="col-md-12 margin-top-5"></div> -->
+                            <span class="title">
+                                <p id="tree_<%= item[:key] %>"> </p><br>
+                                <!-- <p id="tree1"> </p><br> -->
+                                
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                <% idx += 1 %>
+                <% idx %= 12 %>
+            <% end %>    
+            </ul>        
+            <!-- items end -->
+        </div>
+    
+</div>
+<% end %>
+
+
+<script type="text/javascript">
+
+    // var tree = $('p#tree1');
+    var tree = '';
+    // var item_key_array = [];
+    var item_key_array = [];
+    var sub_category_key_array = [];
+    var sub_category_key_exercise_array = [];
+    var concept_code_array = [];
+    var concept_code_exercise_array = [];
+    var category_key = '';
+    var s_c_key = '';
+    item_color = '';
+    var url = '';
+    var exercise_count = 0;
+
+
+    function pre_show_list(view_type, step, item_key) {
+        if ($.inArray(item_key, item_key_array) >= 0) {
+            $('.'+item_key).toggle();
+        }
+        else {
+            // console.log($.inArray(item_key, item_key_array));
+            item_key_array.push(item_key);
+            show_list(view_type, step, item_key);
+        }
+
+    }
+
+
+
+    function show_list(view_type, step, item_key) {
+        // var url = "contents/key_list?item_key=" + item_key + "&step=" + step;
+        // var url = "contents?item_key=" + item_key + "&step=" + step;
+        url = "contents?view_type=" + view_type + "&step=" + step + "&category=" + item_key;
+        tree = "p#tree_" + item_key;
+
+        $(tree).empty();
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            
+            success: function(data) {
+                $.each(data, function (i, item) {
+                    data_list(view_type, step, item['key'], item['value']);
+                });
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+
+        $('.'+item_key).toggle();
+    }
+
+    function data_list(view_type, step, key, value) {
+        key_array = key.split('');
+        key_array[2] = '0';
+        const item_key_1 = key_array.toString();
+        const item_key = item_key_1.replaceAll(',', '');
+        var step_1 = parseInt(step) + 1;
+        switch (item_key) {
+            case 'c000': 
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c000 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c100':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c100 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c200':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c200 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c300':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c300 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c400':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c400 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c500':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c500 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c600':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c600 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c700':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c700 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c800':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c800 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            case 'c900':
+                $(tree).append($("<button class='btn-u u-btn-inset btn_color btn-u-<%= color_c900 %> margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  key + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+                $(tree).append($("<div class='" + key + "'><span class='title'><p id='tree_" + key + "'> </p><br></span></div>"));
+                break;
+            default:
+                break;
+        };
         
-                <li class="col-md-4 md-margin-bottom-30">
+    }
+
+    function pre_show_list_concept(view_type, step, sub_category_key) {
+        console.log('pre_show_list_concept');
+        if ($.inArray(sub_category_key, sub_category_key_array) >= 0) {
+            $('.'+sub_category_key).toggle();
+        }
+        else {
+            sub_category_key_array.push(sub_category_key);
+            console.log(sub_category_key_array);
+            show_list_concept(view_type, step, sub_category_key);
+        }
+    }
+
+    function show_list_concept(view_type, step, sub_category_key) {
+        category_key_array = sub_category_key.split('');
+        category_key_array[2] = '0';
+        const category_key_1 = category_key_array.toString();
+        category_key = category_key_1.replaceAll(',', '');
+        var step_1 = parseInt(step) + 1;
+        url = "contents?view_type=" + view_type + "&step=" + step + "&category=" + category_key + "&sub_category=" + sub_category_key;
+        tree = "p#tree_" + sub_category_key;
+        $(tree).empty();
+        s_c_key = sub_category_key;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            
+            success: function(data) {
+                $.each(data, function (i, item) {
+                    data_list_concept(view_type, step, sub_category_key, item['key'], item['value'], item['code']);
+                });
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+    function data_list_concept(view_type, step, sub_category_key, concept_key, value, concept_code) {
+        var step_1 = parseInt(step) + 1;
+        console.log(category_key);
+        console.log(s_c_key);
+        var category_color = '';
+        switch (category_key) {
+            case 'c000': category_color = 'blue';
+                break;
+            case 'c100': category_color = 'orange';
+                break;
+            case 'c200': category_color = 'sea';
+                break;
+            case 'c300': category_color = 'yellow';
+                break;
+            case 'c400': category_color = 'purple';
+                break;
+            case 'c500': category_color = 'aqua';
+                break;
+            case 'c600': category_color = 'brown';
+                break;
+            case 'c700': category_color = 'red';
+                break;
+            case 'c800': category_color = 'green';
+                break;
+            case 'c900': category_color = 'default';
+                break;
+            default:
+                break;
+        };
+
+
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-<%= color_c100 %> margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-" + category_color + " margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+
+        $(tree).append($("<button id='btn_" + sub_category_key + concept_code + "' class='btn-u btn-brd btn-xs btn_color btn-u-" + category_color + " g-brd-3 margin-top-20 col-md-12 col-sm-12 col-xs-12 text-left' onclick=\"pre_show_list_unit_concept(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'" +  sub_category_key + "\'"+ ", " + "\'" +  concept_key + "\'"+ ", " + "\'" +  concept_code + "\'" + ")\"><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+        
+        if (concept_key == '') {
+            count_concept_exercise(view_type, step, sub_category_key, concept_key, concept_code);
+        }
+
+        $(tree).append($("<div class='" + sub_category_key + concept_code + "'><span class='title'><p id='tree_" + sub_category_key + concept_code + "'> </p><br></span></div>"));
+        
+    }  
+
+    function count_concept_exercise(view_type, step, sub_category_key, concept_key, concept_code) {
+        exercise_count = 0;
+        var step_1 = parseInt(step) + 1;
+        var url = "contents/?view_type=" + view_type + "&step=" + step_1  + "&category=" + category_key + "&sub_category=" + sub_category_key + "&exercise_type=concept_exercise";
+        $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+            
+                success: function(data) {
+                    exercise_count = data.length;
+                    $('button#btn_' + sub_category_key + concept_code).append(" &nbsp&nbsp <span> (문제수 : " + exercise_count + ")</span>");
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+        });
+    }
+
+     
+
+    function pre_show_list_unit_concept(view_type, step, sub_category_key, concept_key, concept_code) {
+
+        if (concept_key != '') {
+            if ($.inArray(concept_code, concept_code_array) >= 0) {
+                $('.'+ sub_category_key + concept_code).toggle();
+            }
+            else {
+                concept_code_array.push(concept_code);
+                show_list_unit_concept(view_type, step, sub_category_key, concept_key, concept_code);
+            }
+        }
+        else {
+            if ($.inArray(sub_category_key, sub_category_key_exercise_array) >= 0) {
+                $('.'+ sub_category_key + concept_code).toggle();
+            }
+            else {
+                sub_category_key_exercise_array.push(sub_category_key);
+                show_list_concept_exercise(view_type, step, sub_category_key, concept_code);
+            }
+        }
+    }
+
+    function show_list_concept_exercise(view_type, step, sub_category_key, concept_code) {
+            category_key_array = sub_category_key.split('');
+            category_key_array[2] = '0';
+            const category_key_1 = category_key_array.toString();
+            category_key = category_key_1.replaceAll(',', '');
+            var url = "contents/?view_type=" + view_type + "&step=" + step  + "&category=" + category_key + "&sub_category=" + sub_category_key + "&exercise_type=concept_exercise";
+            tree = "p#tree_" + sub_category_key + "undefined";
+            $(tree).empty();
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+            
+                success: function(data) {
+                    $.each(data, function (i, item) {
+                        exercise_count =  exercise_count + 1;
+                        data_list_concept_exercise(view_type, step, item['key'], item['value']);
+                    });
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+            
+    }
+
+    function data_list_concept_exercise(view_type, step, concept_key, value) {
+        var step_1 = parseInt(step) + 1;
+        var category_color = '';
+        switch (category_key) {
+            case 'c000': category_color = 'blue';
+                break;
+            case 'c100': category_color = 'orange';
+                break;
+            case 'c200': category_color = 'sea';
+                break;
+            case 'c300': category_color = 'yellow';
+                break;
+            case 'c400': category_color = 'purple';
+                break;
+            case 'c500': category_color = 'aqua';
+                break;
+            case 'c600': category_color = 'brown';
+                break;
+            case 'c700': category_color = 'red';
+                break;
+            case 'c800': category_color = 'green';
+                break;
+            case 'c900': category_color = 'default';
+                break;
+            default:
+                break;
+        };
+
+
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-<%= color_c100 %> margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-" + category_color + " margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+
+        $(tree).append($("<button id='btn_" + concept_key + "' class='btn-u btn-xs btn-brd u-btn-skew btn_color btn-u-" + category_color + " g-rounded-50 margin-top-20 margin-left-10 col-md-3 col-sm-3 col-xs-3 text-left' onclick=\"go_to_concept_exercise(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'" +  concept_key + "\'" + ")\"><i class='fa fa-clone g-mr-3'></i> " + value + "</button><br>"));
+        
+    }
+
+    function go_to_concept_exercise(view_type, step, concept_key) {
+        var url = "contents/exercise?view_type=" + view_type + "&unit_concept_id=" + concept_key + "&synthesis=1&exercise_type=concept_exercise";
+
+        window.location = url;
+    }
+
+    
+
+
+    function show_list_unit_concept(view_type, step, sub_category_key, concept_key, concept_code) {
+        category_key_array = concept_code.split('');
+
+        category_key_array[3] = '0';
+        // const sub_category_key_1 = category_key_array.toString();
+        // sub_category_key = sub_category_key_1.replaceAll(',', '');
+        // console.log(sub_category_key);
+
+        category_key_array[2] = '0';
+        const category_key_1 = category_key_array.toString();
+        category_key = category_key_1.replaceAll(',', '');
+        console.log(category_key);
+
+        var step_1 = parseInt(step) + 1;
+        url = "contents?view_type=" + view_type + "&step=" + step + "&category=" + category_key + "&sub_category=" + sub_category_key + "&concept_id=" + concept_key;
+        tree = "p#tree_" + sub_category_key + concept_code;
+        $(tree).empty();
+        s_c_key = sub_category_key;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+            datatype: "json",
+            
+            success: function(data) {
+                $.each(data, function (i, item) {
+                    data_list_unit_concept(view_type, step, sub_category_key, concept_key, item['key'], item['value'], item['code']);
+                });
+            },
+            error : function(){
+                alert("try to again. please.");
+            }
+        });
+    }
+
+
+    function data_list_unit_concept(view_type, step, sub_category_key, concept_key, unit_concept_key, value, unit_concept_code) {
+        var step_1 = parseInt(step) + 1;
+        var category_color = '';
+        switch (category_key) {
+            case 'c000': category_color = 'blue';
+                break;
+            case 'c100': category_color = 'orange';
+                break;
+            case 'c200': category_color = 'sea';
+                break;
+            case 'c300': category_color = 'yellow';
+                break;
+            case 'c400': category_color = 'purple';
+                break;
+            case 'c500': category_color = 'aqua';
+                break;
+            case 'c600': category_color = 'brown';
+                break;
+            case 'c700': category_color = 'red';
+                break;
+            case 'c800': category_color = 'green';
+                break;
+            case 'c900': category_color = 'default';
+                break;
+            default:
+                break;
+        };
+
+
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-<%= color_c100 %> margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-" + category_color + " margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+
+        $(tree).append($("<button id='btn_" + concept_key + unit_concept_code + "' class='btn-u btn-xs btn-brd btn_color btn-u-" + category_color + " g-rounded-50 margin-top-20 margin-left-10 col-md-10 col-sm-10 col-xs-10 text-left' onclick=\"pre_show_list_unit_concept_exercise(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'"+  sub_category_key + "\'" + ", "  + "\'" +  concept_key + "\'"+ ", " + "\'" +  unit_concept_key + "\'"+ ", " + "\'" +  unit_concept_code + "\'" + ")\"><i class='fa fa-clone g-mr-3'></i> " + value + "</button><br>"));
+        if (unit_concept_key == '') {
+            $('button#btn_' + concept_key + unit_concept_code).addClass("g-brd-3");
+            $('button#btn_' + concept_key + unit_concept_code).append(" <i class='fa fa-check-circle g-mr-3'></i>");
+            count_exercise(view_type, step, sub_category_key, concept_key, unit_concept_code);
+        }
+
+        $(tree).append($("<div class='" +  concept_key  + unit_concept_code + "'><span class='title'><p id='tree_" +  concept_key + unit_concept_code + "'> </p><br></span></div>"));
+        
+    }
+
+    function count_exercise(view_type, step, sub_category_key, concept_key, unit_concept_code) {
+        exercise_count = 0;
+        var step_1 = parseInt(step) + 1;
+        var url = "contents/?view_type=" + view_type + "&step=" + step_1  + "&category=" + category_key + "&sub_category=" + sub_category_key + "&concept_id=" + concept_key;
+        $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+            
+                success: function(data) {
+                    exercise_count = data.length;
+                    $('button#btn_' + concept_key + unit_concept_code).append(" &nbsp&nbsp <span> (문제수 : " + exercise_count + ")</span>");
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+        });
+    }
+
+
+    function pre_show_list_unit_concept_exercise(view_type, step, sub_category_key, concept_key, unit_concept_key, unit_concept_code) {
+
+        if (unit_concept_key == '') {
+
+            if ($.inArray(concept_key, concept_code_exercise_array) >= 0) {
+                $('.'+ concept_key + "undefined").toggle();
+            }
+            else {
+                // console.log($.inArray(item_key, item_key_array));
+                concept_code_exercise_array.push(concept_key);
+                show_list_unit_concept_exercise(view_type, step, sub_category_key, concept_key, unit_concept_key, unit_concept_code);
+            }
+        }
+        else {
+            var url = "contents/" + unit_concept_key + "?view_type=" + view_type + "&step=" + step  + "&category=" + category_key + "&sub_category=" + sub_category_key + "&concept_id=" + concept_key;
+
+            window.location = url;
+        }
+    }
+
+    function show_list_unit_concept_exercise(view_type, step, sub_category_key, concept_key, unit_concept_key, unit_concept_code) {
+            var url = "contents/?view_type=" + view_type + "&step=" + step  + "&category=" + category_key + "&sub_category=" + sub_category_key + "&concept_id=" + concept_key;
+            tree = "p#tree_" + concept_key + "undefined";
+            $(tree).empty();
+
+            $.ajax({
+                url: url,
+                type: "GET",
+                beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+                datatype: "json",
+            
+                success: function(data) {
+                    $.each(data, function (i, item) {
+                        exercise_count =  exercise_count + 1;
+                        data_list_unit_concept_exercise(view_type, step, concept_key, item['key'], item['value'], item['video_count']);
+                    });
+                },
+                error : function(){
+                    alert("try to again. please.");
+                }
+            });
+            
+    }
+
+    function data_list_unit_concept_exercise(view_type, step, concept_key, unit_concept_key, value, video_count) {
+        var step_1 = parseInt(step) + 1;
+        var category_color = '';
+        switch (category_key) {
+            case 'c000': category_color = 'blue';
+                break;
+            case 'c100': category_color = 'orange';
+                break;
+            case 'c200': category_color = 'sea';
+                break;
+            case 'c300': category_color = 'yellow';
+                break;
+            case 'c400': category_color = 'purple';
+                break;
+            case 'c500': category_color = 'aqua';
+                break;
+            case 'c600': category_color = 'brown';
+                break;
+            case 'c700': category_color = 'red';
+                break;
+            case 'c800': category_color = 'green';
+                break;
+            case 'c900': category_color = 'default';
+                break;
+            default:
+                break;
+        };
+
+
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-<%= color_c100 %> margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+        // $(tree).append($("<button class='btn-u btn-brd btn-xs btn_color btn-u-" + category_color + " margin-top-20 margin-left-10 col-md-12 col-sm-12 col-xs-12 text-left' onclick='pre_show_list_concept(" + concept_key + ")'><i class='fa fa-check-circle g-mr-3'></i> " + value + "</button><br>"));
+
+        $(tree).append($("<button id='btn_" + unit_concept_key + "' class='btn-u btn-xs btn-brd u-btn-skew btn_color btn-u-" + category_color + " g-rounded-50 margin-top-20 margin-left-10 col-md-3 col-sm-3 col-xs-3 text-left' onclick=\"go_to_unit_concept_exercise(" + "\'"+  view_type + "\'" + ", " + "\'" +  step_1 + "\'"+ ", " + "\'" +  concept_key + "\'"+ ", " + "\'" +  unit_concept_key + "\'" + ")\"><i class='fa fa-clone g-mr-3'></i> " + value + "</button><br>"));
+        if (video_count != 0) {
+            console.log('=======')
+            $('button#btn_' + unit_concept_key).append(" <i class='fa fa-film tooltips color-brown'</i>");
+        }
+        
+    }
+
+    function go_to_unit_concept_exercise(view_type, step, concept_key, unit_concept_key, unit_concept_code) {
+        var url = "contents/exercise?view_type=" + view_type + "&unit_concept_id=" + unit_concept_key + "&synthesis=1&exercise_type=";
+
+        window.location = url;
+    }
+
+
+</script>
+
+
+
+
+<% if @view_type == '2' %>
+
+<!-- <div class="container container-fluid margin-bottom-50"> -->
+<div class="container container-fixed margin-bottom-50">
+
+        <div class=" col-md-12">    
+    
+            <ul class="row list-row margin-bottom-30">
+            <% idx = 0 %>
+            <% @items.each do | item | %>
+    
+                <% item_link_str = "/contents?view_type=#{@view_type}&step=#{@step+1}" %>
+        
+                <% if item[:content_yn] %>      <%# 종합문제, 유형문제, 단위개념 %>
+                    <% if item[:exercise_yn] %>
+                            <% if @view_type == '1' %>       <%# 종합문제, 유형문제 %>
+                                <% item_link_str = "/contents/exercise?view_type=#{@view_type}&unit_concept_id=#{item[:key]}&synthesis=1&exercise_type=#{params[:exercise_type]}" %>
+                            <% else %>
+                                <% item_link_str = "/contents/exercise?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}&level=#{item[:level]}&unit_concept_id=#{item[:key]}&exercise_type=#{params[:exercise_type]}" %>
+                            <% end %>
+                    <% else %>
+                            <% if @view_type == '1'%>      <%# 단위개념 %>
+                                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+                            <% else %>
+                                <% item_link_str = "/contents/#{item[:key]}?view_type=#{@view_type}&step=#{@step+1}&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&sub_category=#{@sub_category}&student=#{@student}&level=#{@level}&concept_id=#{@concept_id}" %>
+                            <% end %>
+                    <% end %>
+            
+                    <% if item[:level].nil? %>
+                    <% item[:level] = 0 %>
+                    <% end %>
+            
+                    <% if item[:level] > 1 && !current_user.can_I_use? %>
+                        <% item_link_str = "javascript:openUserAuthModal()" %> 
+                    <% end %>
+                <% else %>            <%# category, sub_category, 개념(concept), "종합문제", 유형문제" %>
+                    <% if item[:load_modal] %>
+                        <% item_link_str = "javascript:loadModal(#{item[:key]})" %>      <%# 개념(concept)%>
+                    <% else %>    
+                        <% item_link_str += "&category=#{item[:key]}" if @step == 1 && params[:view_type] == '1' %>      <%# category %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{item[:key]}" if @step == 2 && params[:view_type] == '1' %>        <%# sub_category %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&exercise_type=concept_exercise" if @step == 3 && params[:view_type] == '1' %>      <%# "종합문제" %>
+                        <% item_link_str += "&category=#{@category}&sub_category=#{@sub_category}&concept_id=#{@concept_id}" if @step == 4 && params[:view_type] == '1' %>       <%# "유형문제" %>
+                        <% item_link_str += "&grade=#{item[:key]}" if @step == 1 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{item[:key]}" if @step == 2 && params[:view_type] == '2' %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{item[:key]}" if @step == 3 && params[:view_type] == '2' %>
+                        
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&concept_id=#{item[:key]}" if @step == 4 && params[:view_type] == '2' %>
+                            <% if item[:value] == '종합문제' && @step == 4 %>
+                                <% item_link_str += "&exercise_type=concept_exercise" %>
+                            <% end %>
+                        <% item_link_str += "&grade=#{@grade}&chapter=#{@chapter}&category=#{@category}&concept_id=#{@concept_id}&level=#{@level}&exercise_type=unit_concept_exercise" if @step == 5 && params[:view_type] == '2' %>
+                    <% end %>
+                <% end %>    
+                    
+                <li class="col-md-4 md-margin-bottom-30"> 
                     <div class="content-boxes-v2 text-center block-grid-v1 rounded">
                         <a href="<%= item_link_str %>">
                             <i class="icon-custom rounded-x <%= Concept::ICONS_BGS[idx] %> fa <%= Concept::FA_ICONS[idx] %>"></i>
@@ -167,9 +809,12 @@
             <!-- items end -->
         </div>    
   
-        
 
-<% end %><!-- current_user.grade -->
+</div>
+<% end %>
+
+<!-- <% end %> current_user.grade -->
+
 
 <!-- level_choice_modal -->
 <div class="modal fade" id="level_choice_modal" role="dialog">

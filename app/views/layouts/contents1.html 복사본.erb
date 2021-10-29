@@ -152,11 +152,12 @@
             <button class="btn btn-info btn-sm rounded" style="margin-bottom: 10px; margin-top: 25px" onclick="view_change('forward')">목차숨기기</button>
             
             <div id="tree_frame" class="row" style="height:-webkit-calc(50% - 25px); border:1px solid lightgrey; overflow-y: auto">
-                
+                <%= render partial: 'modals/chapter_tree_view' unless @view_type == '2' %>
+                <%= render partial: 'modals/grade_tree_view' if @view_type == '2' %>
             </div>
             
             <div class="row profile" style="height:-webkit-calc(50% - 25px); border: 1px solid lightgrey; overflow-y: auto">
-                
+                <%= render partial: 'questions' %>
             </div>    
         </div> -->    
                 

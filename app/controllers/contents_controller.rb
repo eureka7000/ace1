@@ -279,15 +279,19 @@ class ContentsController < ApplicationController
                         @items << {
                             key: key,
                             value: value
-                        }                        
+                        } 
                     end
                 end
+                # 단원별 학습에서 sub_category list을 json 형태로 보이도록 함
+                ret = @items
+                render :json => ret
             elsif @step == 3   # concept view
                 @concepts = Concept.where('category = ? and sub_category = ? and exercise_yn = ?', @category, @sub_category, "concept")
                 @concepts.each do |concept|
                     @items << {
                         key: concept.id,
                         value: concept.concept_name,
+                        code: concept.concept_code,     # 단원별 학습에서 개념코드를 보내 단위개념 리시트, 카테고리, 서브카테고리를 만들고자 함
                         load_modal: true,        # 난이도 설정 모달.
                         drop_down: true,
                         unit_concept_counts: get_unit_concept_counts(concept.id)
@@ -301,6 +305,9 @@ class ContentsController < ApplicationController
                         value: '종합문제'
                     }
                 end
+                # 단원별 학습에서 개념 list을 json 형태로 보이도록 함
+                ret = @items      
+                render :json => ret
                 
             elsif @step == 4
                 
@@ -318,19 +325,20 @@ class ContentsController < ApplicationController
                             past_test: concept_exercise.past_test_org.blank? ? "" : concept_exercise.past_test_year + "년 " + concept_exercise.past_test_month + "월 " + concept_exercise.past_test_type + " " + Concept::PAST_TEST_ORGS[concept_exercise.past_test_org] 
                         }
                     end                    
-                else    
+                else    # 단위개념, 유형문제 경우
+                    @level = 5      # 단원별 학습에서 학생학습수준과 관계없이 모든 단위개념을 보임
                     @unit_concepts = UnitConcept.where('concept_id = ? and exercise_yn = ? and level <= ?', @concept_id, "concept", @level) 
                     @unit_concepts.each do |unit_concept|
                         @items << {
                             key: unit_concept.id,
                             value: unit_concept.name,
+                            code: unit_concept.code,     # 단원별 학습에서 단위개념코드를 보냄
                             content_yn: true,
                             level: unit_concept.level,
                             level_star_yn: true,
                             level_star: unit_concept.get_level_star
                         }
                     end
-                
                     @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")                
                     if @unit_concept_exercises.length > 0
                         @items << {
@@ -342,11 +350,15 @@ class ContentsController < ApplicationController
                         }                    
                     end    
                 end 
+                # 단원별 학습에서 단위개념 list와 유형문제 list를 json 형태로 보이도록 함
+                ret = @items      
+                render :json => ret
                 
             elsif @step == 5
                 
                 @concept = Concept.find(@concept_id)
                 @unit_concept_exercises = UnitConcept.where('concept_id = ? and exercise_yn = ?', @concept_id, "exercise")
+                @unit_concept_exercises_count = @unit_concept_exercises.count
                 @unit_concept_exercises.each do |unit_concept_exercise|
                     
                     @items << {
@@ -360,8 +372,11 @@ class ContentsController < ApplicationController
                         video_count: unit_concept_exercise.get_video_count
                     }
                 end
+                # 단원별 학습에서 유형문제 list를 json 형태로 보이도록 함
+                ret = @items      
+                render :json => ret
                 
-            end    
+            end 
             
         elsif @view_type == '2' # 학년별
             
@@ -896,6 +911,7 @@ class ContentsController < ApplicationController
         end
 
         ret
+        # puts ret    # error 발생
 
     end
     
