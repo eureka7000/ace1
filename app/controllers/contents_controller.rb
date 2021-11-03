@@ -200,7 +200,8 @@ class ContentsController < ApplicationController
             @mento = User.find(current_user.user_relations[0].related_user_id)
         end    
         
-    end    
+    end 
+
 
     def index
         
@@ -224,7 +225,7 @@ class ContentsController < ApplicationController
         end
 
         @study_level = current_user.study_level
-                
+
         
         if @view_type == '1'  # 단원별
             
@@ -258,6 +259,8 @@ class ContentsController < ApplicationController
                 @current_page_name = '유형문제'
                 @breadcrumbs << { 'step5' => @current_page_name }
             end
+
+
             
             # Data
             if @step == 1
@@ -350,6 +353,8 @@ class ContentsController < ApplicationController
                         }                    
                     end    
                 end 
+
+                puts @items.inspect
                 # 단원별 학습에서 단위개념 list와 유형문제 list를 json 형태로 보이도록 함
                 ret = @items      
                 render :json => ret
