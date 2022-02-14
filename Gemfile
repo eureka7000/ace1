@@ -14,8 +14,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'unicorn'
 gem "thin"
 gem 'carrierwave-aws'
-# gem 'mini_magick'
-# gem 'mimemagic', '~> 0.3.10'
+gem 'mini_magick'
 gem 'fog'
 gem 'will_paginate-bootstrap'
 gem 'twilio-ruby'

@@ -406,6 +406,7 @@ DEPENDENCIES
   httparty
   jbuilder (~> 2.0)
   jquery-rails
+  mini_magick
   mysql2 (~> 0.3.20)
   omniauth
   omniauth-facebook
